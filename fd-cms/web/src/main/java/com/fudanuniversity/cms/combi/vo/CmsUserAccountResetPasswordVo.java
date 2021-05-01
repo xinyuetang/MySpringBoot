@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.combi.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CmsUserAccountResetPasswordVo implements Serializable {
 
     private static final long serialVersionUID = 1L;

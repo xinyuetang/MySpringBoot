@@ -9,26 +9,28 @@ CREATE TABLE `fd_cms`.`cms_user`
 (
     `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
     `stu_id`      varchar(32) NOT NULL DEFAULT '' COMMENT '学号',
-    `role_id`     int(11)     NOT NULL DEFAULT 0 COMMENT '权限身份',
+    `role_id`     int         NOT NULL DEFAULT '0' COMMENT '权限身份',
     `name`        varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
     `telephone`   varchar(32) NOT NULL DEFAULT '' COMMENT '手机',
     `email`       varchar(32) NOT NULL DEFAULT '' COMMENT '邮箱',
     `mentor`      varchar(32) NOT NULL DEFAULT '' COMMENT '导师',
     `leader`      varchar(32) NOT NULL DEFAULT '' COMMENT '汇报人',
-    `is_keshuo`   varchar(32) NOT NULL DEFAULT '' COMMENT '是否科硕',
-    `type`        varchar(32) NOT NULL DEFAULT '' COMMENT '就读类型 0-学术型，1-结合型，2-技术型',
-    `enroll_date` varchar(32) NOT NULL DEFAULT '' COMMENT '入学时间',
-    `papers`      varchar(32) NOT NULL DEFAULT '' COMMENT '论文',
-    `patents`     varchar(32) NOT NULL DEFAULT '' COMMENT '专利',
-    `services`    varchar(32) NOT NULL DEFAULT '' COMMENT '服务',
-    `projects`    varchar(32) NOT NULL DEFAULT '' COMMENT '项目',
-    `status`      tinyint(4)  NOT NULL DEFAULT 0 COMMENT '状态',
-    `deleted`     tinyint(4)  NOT NULL DEFAULT 0 COMMENT '删除状态',
+    `type`        tinyint     NOT NULL DEFAULT '0' COMMENT '就读类型',
+    `is_keshuo`   tinyint     NOT NULL DEFAULT '0' COMMENT '论文',
+    `enroll_date` date                 DEFAULT NULL COMMENT '入学时间',
+    `papers`      longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '论文',
+    `patents`     longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '专利',
+    `services`    longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '服务',
+    `projects`    longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '项目',
+    `status`      tinyint     NOT NULL DEFAULT '0' COMMENT '状态',
+    `deleted`     tinyint     NOT NULL DEFAULT '0' COMMENT '删除状态',
     `create_time` datetime    NOT NULL COMMENT '创建时间',
     `modify_time` datetime             DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `idx_stu_id` (`stu_id`) USING BTREE
+    UNIQUE KEY `idx_stu_id` (`stu_id`) USING BTREE,
+    KEY `idx_create_time` (`create_time`) USING BTREE
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 100
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户';
 

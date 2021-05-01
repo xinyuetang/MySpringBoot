@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.enums;
 /**
  * Created by tidu at 2021-05-01 18:11:32
  */
-public enum RoleEnum {
+public enum UserRoleEnum {
 
     Administrator(0, "系统管理员"),
     Seminar(1, "讨论班管理员"),
@@ -18,7 +18,7 @@ public enum RoleEnum {
 
     private final String desc;
 
-    RoleEnum(Integer code, String desc) {
+    UserRoleEnum(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }

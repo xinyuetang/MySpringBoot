@@ -4,7 +4,7 @@ import com.fudanuniversity.cms.combi.service.CmsUserAccountService;
 import com.fudanuniversity.cms.combi.service.CmsUserService;
 import com.fudanuniversity.cms.combi.vo.CmsUserAccountLoginVo;
 import com.fudanuniversity.cms.combi.vo.CmsUserAccountResetPasswordVo;
-import com.fudanuniversity.cms.combi.vo.CmsUserAddVo;
+import com.fudanuniversity.cms.combi.vo.CmsUserMngVo;
 import com.fudanuniversity.cms.commons.constant.Constants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.JsonResult;
@@ -14,13 +14,18 @@ import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.inner.entity.CmsUser;
 import com.fudanuniversity.cms.inner.entity.CmsUserAccount;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
-import static com.fudanuniversity.cms.commons.enums.RoleEnum.Administrator;
+import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
 @RestController
 @RequestMapping(path = "/user")
@@ -47,11 +52,10 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(path = "/reset")
-    public JsonResult<?> login(@Valid CmsUserAccountResetPasswordVo resetPasswordVo) {
+    public JsonResult<?> reset(@Valid CmsUserAccountResetPasswordVo resetPasswordVo) {
         cmsUserAccountService.resetAccountPassword(resetPasswordVo);
         return JsonResult.buildSuccess();
     }
-
 
     @GetMapping(path = "/all")
     public JsonResult<?> getAllUsers(Paging paging) {
@@ -59,53 +63,35 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess(allUsers);
     }
 
-    //添加新用户，stuID是唯一的标识
-    @PostMapping(path = "/add") // Map ONLY POST Requests
-    public JsonResult<?> addNewUser(@Valid CmsUserAddVo userAddVo) {
+    //添加新用户，stuId是唯一的标识
+    @PostMapping(path = "/add")
+    public JsonResult<?> addNewUser(@Valid CmsUserMngVo userAddVo) {
+        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-//        //用户权限验证
-//        String token  = UserRequest.getToken();
-//        Integer roleId = TokenUtil.getRoleId(token);
-//        if(roleId!= Role.Administrator.ordinal()) return "";
-//
-//        //  means the returned String is the response, not a view name
-//        // @RequestParam means it is a parameter from the GET or POST request
-//        JSONObject json=new JSONObject();
-//        //用户已经存在
-//        if(userRepository.findByStudentID(user.getStudentID())!=null) {json.put("result","fail");return json.toString();}
-//        //密码初始化为学号
-//        try {
-//            String encryptedPassword = Md5.EncoderByMd5(user.getStudentID());
-//            user.setPassword(encryptedPassword);
-//        } catch (NoSuchAlgorithmException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        } catch (UnsupportedEncodingException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//        }
-//        userRepository.save(user);
-//        json.put("result","success");
-//        return json.toString();
+        //添加新用户
+        cmsUserService.saveCmsUser(userAddVo);
+        return JsonResult.buildSuccess();
+    }
+
+    @PostMapping(path = "/update")
+    public JsonResult<?> updateUser(@Valid CmsUserMngVo userAddVo) {
+        //当前登录者权限校验
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        //添加新用户
+        cmsUserService.updateCmsUserById(userAddVo);
         return JsonResult.buildSuccess();
     }
 
     @GetMapping(path = "/delete")
-    public JsonResult<?> delete(@RequestParam Integer id) {
-//        //用户权限验证
-//        String token  = UserRequest.getToken();
-//        Integer roleId = TokenUtil.getRoleId(token);
-//        if(roleId!= Role.Administrator.ordinal()) return "";
-//
-//        JSONObject json=new JSONObject();
-//        if(userRepository.findById(id).isPresent()) {
-//            User user = userRepository.findById(id).get();
-//            userRepository.delete(user);
-//            json.put("result", "success");
-//        }
-//        else json.put("result", "fail");
-//        return json.toString();
+    public JsonResult<?> delete(@NotNull @Min(1L) Long userId) {
+        //当前登录者权限校验
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        //删除用户
+        cmsUserService.deleteCmsUserById(userId);
         return JsonResult.buildSuccess();
     }
+
 }

@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.combi.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CmsUserAccountQueryVo {
 
     private static final long serialVersionUID = 1L;

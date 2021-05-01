@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.inner.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,11 +11,12 @@ import java.util.Date;
 /**
  * 用户
  * <p>
- * Created by tidu at 2021-05-01
+ * Created by tidu at 2021-05-02
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CmsUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -76,50 +78,50 @@ public class CmsUser implements Serializable {
     private String leader;
 
     /**
-     * 字段备注:是否科硕 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 字段备注:就读类型 <p>
+     * 数据库字段长度:(3,0) <p>
      * 是否索引:不是
      */
-    private String isKeshuo;
-
-    /**
-     * 字段备注:就读类型 0-学术型，1-结合型，2-技术型 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 是否索引:不是
-     */
-    private String type;
-
-    /**
-     * 字段备注:入学时间 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 是否索引:不是
-     */
-    private String enrollDate;
+    private Integer type;
 
     /**
      * 字段备注:论文 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 数据库字段长度:(3,0) <p>
+     * 是否索引:不是
+     */
+    private Integer isKeshuo;
+
+    /**
+     * 字段备注:入学时间 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 是否索引:不是
+     */
+    private Date enrollDate;
+
+    /**
+     * 字段备注:论文 <p>
+     * 数据库字段长度:(536870911,0) <p>
      * 是否索引:不是
      */
     private String papers;
 
     /**
      * 字段备注:专利 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 数据库字段长度:(536870911,0) <p>
      * 是否索引:不是
      */
     private String patents;
 
     /**
      * 字段备注:服务 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 数据库字段长度:(536870911,0) <p>
      * 是否索引:不是
      */
     private String services;
 
     /**
      * 字段备注:项目 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 数据库字段长度:(536870911,0) <p>
      * 是否索引:不是
      */
     private String projects;

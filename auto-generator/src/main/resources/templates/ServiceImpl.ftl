@@ -6,7 +6,6 @@ import ${packagePrefix}.inner.query.${classSimpleName}Query;
 import ${packagePrefix}.combi.service.${classSimpleName}Service;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.commons.util.JsonUtils;
 import com.fudanuniversity.cms.commons.util.ValueUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
         //TODO 校验与赋值映射
 
         int affect = ${classVariableName}Dao.insert(${classVariableName});
-        logger.info("保存${classSimpleName} affect:{}, ${classVariableName}: {}", affect, JsonUtils.toJsonString(${classVariableName}));
+        logger.info("保存${classSimpleName} affect:{}, ${classVariableName}: {}", affect, ${classVariableName});
     }
 
     /**
@@ -48,7 +47,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
         //TODO 值映射校验与赋值映射
 
         int affect = ${classVariableName}Dao.updateById(updater);
-        logger.info("更新${classSimpleName} affect:{}, updater: {}", affect, JsonUtils.toJsonString(updater));
+        logger.info("更新${classSimpleName} affect:{}, updater: {}", affect, updater);
     }
 
     /**
@@ -58,7 +57,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
     public void delete${classSimpleName}ById(${idType} ${id}) {
         //TODO 补充状态检测业务逻辑
         int affect = ${classVariableName}Dao.deleteById(${id});
-        logger.info("删除${classSimpleName} affect:{}, id: {}", affect, JsonUtils.toJsonString(id));
+        logger.info("删除${classSimpleName} affect:{}, id: {}", affect, id);
     }
 
     /**

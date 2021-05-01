@@ -13,9 +13,9 @@ import java.util.List;
 public interface CmsUserDao {
 
     /**
-     * 保存处理
+     * 保存/更新处理
      */
-    int insert(CmsUser cmsUser);
+    int replace(CmsUser cmsUser);
 
     /**
      * 批量upsert

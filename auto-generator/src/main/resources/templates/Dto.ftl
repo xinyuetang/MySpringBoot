@@ -29,9 +29,7 @@ public class ${classSimpleName}Dto implements Serializable {
 
     /**
     *
-    * 字段备注:${column.columnComment} <p>
-    * 数据库字段长度:(${column.columnPrecision},${column.columnScale}) <p>
-    * 是否索引:${column.index?string('是', '不是')}
+    * ${column.columnComment}
     */
 	private ${column.javaType} ${column.columnProperty};
 	</#list>

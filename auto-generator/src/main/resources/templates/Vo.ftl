@@ -28,7 +28,6 @@ public class ${classSimpleName}Vo implements Serializable {
 	<#list columnList as column>
 
     /**
-     *
      * ${column.columnComment}
      */
 	private ${column.javaType} ${column.columnProperty};

@@ -1,6 +1,7 @@
 package com.fudanuniversity.cms.combi.service;
 
-import com.fudanuniversity.cms.commons.enums.RoleEnum;
+import com.fudanuniversity.cms.combi.vo.CmsUserMngVo;
+import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.inner.entity.CmsUser;
@@ -21,22 +22,22 @@ public interface CmsUserService {
     /**
      * 确认用户权限
      */
-    void confirmUserPrivilege(String stuId, RoleEnum privilege);
+    void confirmUserPrivilege(String stuId, UserRoleEnum privilege);
 
     /**
      * 保存处理
      */
-    void saveCmsUser(CmsUser cmsUser);
+    void saveCmsUser(CmsUserMngVo userAddVo);
 
     /**
      * 根据id更新处理
      */
-    void updateCmsUserById(CmsUser cmsUser);
+    void updateCmsUserById(CmsUserMngVo userUpdateVo);
 
     /**
      * 根据id删除处理
      */
-    void deleteCmsUserById(Long id);
+    void deleteCmsUserById(Long userId);
 
     /**
      * 分页查询数据列表

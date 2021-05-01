@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsUserDao 实现类
  * <p>
- * Created by tidu at 2021-05-01
+ * Created by tidu at 2021-05-02
  */
 @Repository
 public class CmsUserDaoImpl implements CmsUserDao {
@@ -23,12 +23,12 @@ public class CmsUserDaoImpl implements CmsUserDao {
     private CmsUserMapper cmsUserMapper;
 
     @Override
-    public int insert(CmsUser cmsUser) {
+    public int replace(CmsUser cmsUser) {
         Assert.notNull(cmsUser, "保存对象不能为空");
 
         validateEntity(cmsUser);
 
-        return cmsUserMapper.insert(cmsUser);
+        return cmsUserMapper.replace(cmsUser);
     }
 
     @Override
@@ -50,13 +50,8 @@ public class CmsUserDaoImpl implements CmsUserDao {
         Assert.hasText(cmsUser.getEmail(), "邮箱不能为空");
         Assert.hasText(cmsUser.getMentor(), "导师不能为空");
         Assert.hasText(cmsUser.getLeader(), "汇报人不能为空");
-        Assert.hasText(cmsUser.getIsKeshuo(), "是否科硕不能为空");
-        Assert.hasText(cmsUser.getType(), "就读类型 0-学术型，1-结合型，2-技术型不能为空");
-        Assert.hasText(cmsUser.getEnrollDate(), "入学时间不能为空");
-        Assert.hasText(cmsUser.getPapers(), "论文不能为空");
-        Assert.hasText(cmsUser.getPatents(), "专利不能为空");
-        Assert.hasText(cmsUser.getServices(), "服务不能为空");
-        Assert.hasText(cmsUser.getProjects(), "项目不能为空");
+        Assert.notNull(cmsUser.getType(), "就读类型必须有值");
+        Assert.notNull(cmsUser.getIsKeshuo(), "论文必须有值");
         Assert.notNull(cmsUser.getStatus(), "状态必须有值");
         Assert.notNull(cmsUser.getDeleted(), "删除状态必须有值");
         Assert.notNull(cmsUser.getCreateTime(), "创建时间必须有值");

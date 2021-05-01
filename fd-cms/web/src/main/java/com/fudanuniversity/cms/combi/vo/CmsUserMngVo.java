@@ -1,43 +1,57 @@
 package com.fudanuniversity.cms.combi.vo;
 
+import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
+import com.fudanuniversity.cms.commons.enums.UserTypeEnum;
+import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
+import com.fudanuniversity.cms.commons.validation.constraints.In;
+import com.fudanuniversity.cms.commons.validation.group.Update;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 用户
- *
+ * <p>
  * Created by tidu at 2021-05-01
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CmsUserQueryVo {
+public class CmsUserMngVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
+    @NotNull(groups = Update.class)//更新时不能为空
     private Long id;
 
     /**
      * 学号
      */
+    @NotEmpty
+    @NotNull
     private String stuId;
 
     /**
      * 权限身份
      */
+    @EnumValue(value = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
     private Integer roleId;
 
     /**
      * 用户名
      */
+    @NotEmpty
     private String name;
 
     /**
@@ -48,6 +62,7 @@ public class CmsUserQueryVo {
     /**
      * 邮箱
      */
+    @Email
     private String email;
 
     /**
@@ -63,17 +78,19 @@ public class CmsUserQueryVo {
     /**
      * 是否科硕
      */
-    private String isKeshuo;
+    @In({"0", "1"})
+    private Integer isKeshuo;
 
     /**
-     * 就读类型 0-学术型，1-结合型，2-技术型
+     * 就读类型
      */
-    private String type;
+    @EnumValue(value = UserTypeEnum.class, property = "code")
+    private Integer type;
 
     /**
      * 入学时间
      */
-    private String enrollDate;
+    private Date enrollDate;
 
     /**
      * 论文
@@ -94,34 +111,5 @@ public class CmsUserQueryVo {
      * 项目
      */
     private String projects;
-
-    /**
-     * 状态
-     */
-    private Integer status;
-
-    /**
-     * 删除状态
-     */
-    private Integer deleted;
-
-    /**
-     * 小于等于创建时间
-     */
-    private Date eltCreateTime;
-
-    /**
-     * 大于等于创建时间
-     */
-    private Date egtCreateTime;
-
-    /**
-     * 小于等于更新时间
-     */
-    private Date eltModifyTime;
-
-    /**
-     * 大于等于更新时间
-     */
-    private Date egtModifyTime;
 }
+
