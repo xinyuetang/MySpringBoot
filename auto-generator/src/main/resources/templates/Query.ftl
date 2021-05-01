@@ -4,6 +4,7 @@ import com.fudanuniversity.cms.commons.model.query.BaseQuery;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;]
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@ToString
 public class ${classSimpleName}Query extends BaseQuery {
 
     private static final long serialVersionUID = 1L;

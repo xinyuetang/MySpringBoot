@@ -1,9 +1,11 @@
 package com.fudanuniversity.cms.combi.service.impl;
 
 import com.fudanuniversity.cms.combi.service.CmsUserAccountService;
-import com.fudanuniversity.cms.combi.vo.CmsUserAccountVo;
+import com.fudanuniversity.cms.combi.vo.CmsUserAccountLoginVo;
+import com.fudanuniversity.cms.combi.vo.CmsUserAccountResetPasswordVo;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.commons.util.JsonUtils;
 import com.fudanuniversity.cms.inner.dao.CmsUserAccountDao;
 import com.fudanuniversity.cms.inner.entity.CmsUserAccount;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,19 +35,36 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
     private CmsUserAccountDao cmsUserAccountDao;
 
     @Override
-    public void loginAccount(CmsUserAccountVo userAccountVo) {
-        CmsUserAccount userAccount = queryUserAccount(userAccountVo.getStuId());
-        String saltString = userAccount.getSalt() + userAccountVo.getPassword();
+    public CmsUserAccount loginAccount(CmsUserAccountLoginVo accountLoginVo) {
+        CmsUserAccount userAccount = queryUserAccount(accountLoginVo.getStuId());
+        String saltString = userAccount.getSalt() + accountLoginVo.getPassword();
         String digestPassword = DigestUtils.md5Hex(saltString);
         if (!Objects.equals(userAccount.getPassword(), digestPassword)) {
             throw new BusinessException("密码不正确");
         }
-
+        return userAccount;
     }
 
     @Override
-    public void changeAccountPassword(CmsUserAccountVo userAccountVo) {
+    public void resetAccountPassword(CmsUserAccountResetPasswordVo resetPasswordVo) {
+        if (Objects.equals(resetPasswordVo.getOldPassword(), resetPasswordVo.getNewPassword())) {
+            throw new BusinessException("新密码和原密码相同");
+        }
+        CmsUserAccount userAccount = queryUserAccount(resetPasswordVo.getStuId());
+        String oldSaltString = userAccount.getSalt() + resetPasswordVo.getOldPassword();
+        String oldDigestPassword = DigestUtils.md5Hex(oldSaltString);
+        if (!Objects.equals(userAccount.getPassword(), oldDigestPassword)) {
+            throw new BusinessException("原密码不正确");
+        }
 
+        String newSaltString = userAccount.getSalt() + resetPasswordVo.getNewPassword();
+        String newDigestPassword = DigestUtils.md5Hex(newSaltString);
+        CmsUserAccount updater = new CmsUserAccount();
+        updater.setId(userAccount.getId());
+        updater.setPassword(newDigestPassword);
+        updater.setModifyTime(new Date());
+        int affect = cmsUserAccountDao.updateById(updater);
+        AssertUtils.state(affect == 1);
     }
 
     private CmsUserAccount queryUserAccount(String stuId) {

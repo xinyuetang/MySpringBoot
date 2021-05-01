@@ -5,6 +5,8 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+
 <#list columnList as column>
 	<#if (column.javaType == "BigDecimal")>
     import java.math.BigDecimal;
@@ -19,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ${classSimpleName}Vo implements Serializable {
 
 	private static final long serialVersionUID = 1L;

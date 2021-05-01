@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CmsUserAccountVo implements Serializable {
+public class CmsUserAccountLoginVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

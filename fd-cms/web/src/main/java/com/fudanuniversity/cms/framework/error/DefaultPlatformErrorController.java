@@ -43,7 +43,7 @@ public class DefaultPlatformErrorController implements ErrorController, Platform
     public ResponseEntity<Map<String, Object>> error(HttpServletRequest request) {
         WebRequest webRequest = new ServletWebRequest(request);
         Throwable throwable = errorAttributes.getError(webRequest);
-        HttpStatus status = WebExceptionHelper.getStatus(request);
+        HttpStatus status = WebExceptionHelper.getStatus(request, throwable);
         String errorCode = WebExceptionHelper.getCode(status, throwable);
         String message = WebExceptionHelper.getMessage(status, throwable);
         Object model = JsonResult.buildFail(errorCode, message);

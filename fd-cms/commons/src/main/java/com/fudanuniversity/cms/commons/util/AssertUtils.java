@@ -1,6 +1,7 @@
 package com.fudanuniversity.cms.commons.util;
 
-import com.fudanuniversity.cms.commons.exception.ParameterException;
+import com.fudanuniversity.cms.commons.exception.BusinessException;
+import com.fudanuniversity.cms.commons.exception.ErrorCode;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,88 +18,94 @@ import java.util.function.Supplier;
  */
 public final class AssertUtils {
 
+    public static void state(boolean expression) {
+        if (!expression) {
+            throw new BusinessException(ErrorCode.BusinessErrorMsg);
+        }
+    }
+
     public static void state(boolean expression, String message) {
         if (!expression) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void state(boolean expression, Supplier<String> messageSupplier) {
         if (!expression) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isTrue(boolean expression, String message) {
         if (!expression) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void isTrue(boolean expression, Supplier<String> messageSupplier) {
         if (!expression) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void isNull(@Nullable Object object, String message) {
         if (object != null) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void isNull(@Nullable Object object, Supplier<String> messageSupplier) {
         if (object != null) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
 
     public static void notNull(@Nullable Object object, String message) {
         if (object == null) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void notNull(@Nullable Object object, Supplier<String> messageSupplier) {
         if (object == null) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void hasLength(@Nullable String text, String message) {
         if (!StringUtils.isNotEmpty(text)) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void hasLength(@Nullable String text, Supplier<String> messageSupplier) {
         if (!StringUtils.isNotEmpty(text)) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void hasText(@Nullable String text, String message) {
         if (!StringUtils.isNotBlank(text)) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void hasText(@Nullable String text, Supplier<String> messageSupplier) {
         if (!StringUtils.isNotBlank(text)) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
     public static void notEmpty(@Nullable Object[] array, String message) {
         if (isEmpty(array)) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void notEmpty(@Nullable Object[] array, Supplier<String> messageSupplier) {
         if (isEmpty(array)) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
@@ -110,7 +117,7 @@ public final class AssertUtils {
         if (array != null) {
             for (Object element : array) {
                 if (element == null) {
-                    throw new ParameterException(message);
+                    throw new BusinessException(message);
                 }
             }
         }
@@ -120,7 +127,7 @@ public final class AssertUtils {
         if (array != null) {
             for (Object element : array) {
                 if (element == null) {
-                    throw new ParameterException(nullSafeGet(messageSupplier));
+                    throw new BusinessException(nullSafeGet(messageSupplier));
                 }
             }
         }
@@ -128,13 +135,13 @@ public final class AssertUtils {
 
     public static void notEmpty(@Nullable Collection<?> collection, String message) {
         if (CollectionUtils.isEmpty(collection)) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void notEmpty(@Nullable Collection<?> collection, Supplier<String> messageSupplier) {
         if (CollectionUtils.isEmpty(collection)) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 
@@ -142,7 +149,7 @@ public final class AssertUtils {
         if (collection != null) {
             for (Object element : collection) {
                 if (element == null) {
-                    throw new ParameterException(message);
+                    throw new BusinessException(message);
                 }
             }
         }
@@ -152,7 +159,7 @@ public final class AssertUtils {
         if (collection != null) {
             for (Object element : collection) {
                 if (element == null) {
-                    throw new ParameterException(nullSafeGet(messageSupplier));
+                    throw new BusinessException(nullSafeGet(messageSupplier));
                 }
             }
         }
@@ -160,13 +167,13 @@ public final class AssertUtils {
 
     public static void notEmpty(@Nullable Map<?, ?> map, String message) {
         if (MapUtils.isEmpty(map)) {
-            throw new ParameterException(message);
+            throw new BusinessException(message);
         }
     }
 
     public static void notEmpty(@Nullable Map<?, ?> map, Supplier<String> messageSupplier) {
         if (MapUtils.isEmpty(map)) {
-            throw new ParameterException(nullSafeGet(messageSupplier));
+            throw new BusinessException(nullSafeGet(messageSupplier));
         }
     }
 

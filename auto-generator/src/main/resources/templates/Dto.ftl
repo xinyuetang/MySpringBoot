@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 <#list columnList as column>
 	<#if (column.javaType == "BigDecimal")>
     import java.math.BigDecimal;
@@ -20,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@ToString
 public class ${classSimpleName}Dto implements Serializable {
 
 	private static final long serialVersionUID = 1L;

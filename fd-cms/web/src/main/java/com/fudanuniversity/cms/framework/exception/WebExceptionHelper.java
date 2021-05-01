@@ -58,8 +58,11 @@ public final class WebExceptionHelper {
     /**
      * 由当前request和异常返回HttpStatus
      */
-    public static HttpStatus getStatus(HttpServletRequest request) {
+    public static HttpStatus getStatus(HttpServletRequest request, Throwable throwable) {
         Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+        if (throwable instanceof PlatformException) {//平台异常理解为返回了正常的业务状态
+            return HttpStatus.OK;
+        }
         return getStatus(statusCode);
     }
 

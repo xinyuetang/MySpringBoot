@@ -47,7 +47,7 @@ public class PlatformException extends RuntimeException {
      * 堆栈信息过多不利于业务问题排查，这里
      */
     public boolean isEssentialStackTrace(StackTraceElement stackTraceElement) {
-        return stackTraceElement.getClassName().startsWith("com.qiyu.");
+        return stackTraceElement.getClassName().startsWith("com.fudanuniversity.");
     }
 
     /**

@@ -2,6 +2,8 @@ package com.fudanuniversity.cms.combi.service.impl;
 
 import com.fudanuniversity.cms.combi.service.CmsUserService;
 import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.enums.RoleEnum;
+import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
@@ -10,12 +12,14 @@ import com.fudanuniversity.cms.commons.util.JsonUtils;
 import com.fudanuniversity.cms.inner.dao.CmsUserDao;
 import com.fudanuniversity.cms.inner.entity.CmsUser;
 import com.fudanuniversity.cms.inner.query.CmsUserQuery;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * CmsUserService 实现类
@@ -29,6 +33,37 @@ public class CmsUserServiceImpl implements CmsUserService {
 
     @Resource
     private CmsUserDao cmsUserDao;
+
+    @Override
+    public PagingResult<CmsUser> getAllUsers(Paging paging) {
+        PagingResult<CmsUser> pagingResult = PagingResult.create(paging);
+
+        CmsUserQuery query = new CmsUserQuery();
+        query.setOffset(paging.getOffset());
+        query.setLimit(paging.getLimit());
+        query.setGtId(0L);
+        query.setSorts(SortColumn.create(Constants.IdColumn, SortMode.ASC));
+
+        List<CmsUser> users = cmsUserDao.selectListByParam(query);
+        pagingResult.setRows(users);
+
+        return pagingResult;
+    }
+
+    @Override
+    public void confirmUserPrivilege(String stuId, RoleEnum privilege) {
+        CmsUserQuery query = new CmsUserQuery();
+        query.setStuId(stuId);
+        query.setLimit(1);
+        List<CmsUser> users = cmsUserDao.selectListByParam(query);
+        if (CollectionUtils.isEmpty(users)) {
+            throw new BusinessException("用户[" + stuId + "]不存在");
+        }
+        CmsUser cmsUser = users.get(0);
+        if (Objects.equals(cmsUser.getRoleId(), privilege.getCode())) {
+            throw new BusinessException("用户[" + stuId + "]不存在");
+        }
+    }
 
     /**
      * 保存处理
@@ -61,22 +96,6 @@ public class CmsUserServiceImpl implements CmsUserService {
         //TODO 补充状态检测业务逻辑
         int affect = cmsUserDao.deleteById(id);
         logger.info("删除CmsUser affect:{}, id: {}", affect, JsonUtils.toJsonString(id));
-    }
-
-    @Override
-    public PagingResult<CmsUser> getAllUsers(Paging paging) {
-        PagingResult<CmsUser> pagingResult = PagingResult.create(paging);
-
-        CmsUserQuery query = new CmsUserQuery();
-        query.setOffset(paging.getOffset());
-        query.setLimit(paging.getLimit());
-        query.setGtId(0L);
-        query.setSorts(SortColumn.create(Constants.IdColumn, SortMode.ASC));
-
-        List<CmsUser> users = cmsUserDao.selectListByParam(query);
-        pagingResult.setRows(users);
-
-        return pagingResult;
     }
 
     /**

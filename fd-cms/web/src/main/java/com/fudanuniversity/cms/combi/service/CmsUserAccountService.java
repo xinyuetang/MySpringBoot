@@ -1,6 +1,7 @@
 package com.fudanuniversity.cms.combi.service;
 
-import com.fudanuniversity.cms.combi.vo.CmsUserAccountVo;
+import com.fudanuniversity.cms.combi.vo.CmsUserAccountResetPasswordVo;
+import com.fudanuniversity.cms.combi.vo.CmsUserAccountLoginVo;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.inner.entity.CmsUserAccount;
 import com.fudanuniversity.cms.inner.query.CmsUserAccountQuery;
@@ -15,12 +16,12 @@ public interface CmsUserAccountService {
     /**
      * 登录账户，出错则抛出错误
      */
-    void loginAccount(CmsUserAccountVo userAccountVo);
+    CmsUserAccount loginAccount(CmsUserAccountLoginVo accountLoginVo);
 
     /**
      * 重置密码
      */
-    void changeAccountPassword(CmsUserAccountVo userAccountVo);
+    void resetAccountPassword(CmsUserAccountResetPasswordVo resetPasswordVo);
 
     /**
      * 保存处理

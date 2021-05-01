@@ -9,5 +9,4 @@ public class FdCmsApplication {
     public static void main(String[] args) {
         SpringApplication.run(FdCmsApplication.class, args);
     }
-
 }

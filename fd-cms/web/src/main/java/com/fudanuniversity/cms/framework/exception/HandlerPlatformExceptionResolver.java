@@ -46,7 +46,7 @@ public class HandlerPlatformExceptionResolver extends DefaultHandlerExceptionRes
                     WebExceptionHelper.getCode(httpStatus, null), WebExceptionHelper.getMessage(httpStatus));
             modelAndView.addAllObjects(BeanExUtils.introspect(errorInfo));
         } else {
-            httpStatus = WebExceptionHelper.getStatus(request);
+            httpStatus = WebExceptionHelper.getStatus(request, ex);
             code = isPlatformEx ? ((PlatformException) ex).getCode() : ErrorCode.DefaultErrorCode;
             message = isPlatformEx ? ex.getMessage() : WebExceptionHelper.getMessage(httpStatus);
             Object model = JsonResult.buildFail(code, message);

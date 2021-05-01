@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CmsUserVo implements Serializable {
+public class CmsUserAddVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

@@ -13,6 +13,8 @@ public final class ErrorCode {
     public final static String Http5xxCode = "http.5xx";
     public final static String Http5xxMessage = DefaultErrorMsg;
 
+    public final static String LoginErrorCode = "error.login";
+
     public final static String BusinessErrorCode = "error.business";
     public final static String BusinessErrorMsg = "业务处理出错了，请稍后重试";
 

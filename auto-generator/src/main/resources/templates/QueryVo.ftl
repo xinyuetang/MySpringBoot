@@ -3,6 +3,7 @@ package ${packagePrefix}.inner.query;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Date;
 <#list columnList as column>
@@ -20,6 +21,7 @@ import java.math.BigDecimal;]
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ${classSimpleName}QueryVo {
 
     private static final long serialVersionUID = 1L;
