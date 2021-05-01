@@ -1,0 +1,34 @@
+package ${packagePrefix}.combi.service;
+
+import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import ${packagePrefix}.inner.entity.${classSimpleName};
+import ${packagePrefix}.inner.query.${classSimpleName}Query;
+
+/**
+ * ${classSimpleName}Service
+ * <p>
+ * Created by ${user} at ${datetime}
+ */
+public interface ${classSimpleName}Service {
+
+    /**
+     * 保存处理
+     */
+    void save${classSimpleName}(${classSimpleName} ${classVariableName});
+
+    /**
+     * 根据id更新处理
+     */
+    void update${classSimpleName}ById(${classSimpleName} ${classVariableName});
+
+    /**
+     * 根据id删除处理
+     */
+    void delete${classSimpleName}ById(${idType} ${id});
+
+    /**
+     * 分页查询数据列表
+     */
+    PagingResult<${classSimpleName}> queryPagingResultByParam(${classSimpleName}Query query);
+
+}

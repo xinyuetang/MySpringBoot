@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fudanuniversity.cms.inner.mapper.CmsUserMapper">
+
+    <!-- 返回结果集 -->
+    <resultMap id="CmsUserMap" type="com.fudanuniversity.cms.inner.entity.CmsUser">
+        <result column="id" property="id"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="role_id" property="roleId"/>
+        <result column="name" property="name"/>
+        <result column="telephone" property="telephone"/>
+        <result column="email" property="email"/>
+        <result column="mentor" property="mentor"/>
+        <result column="leader" property="leader"/>
+        <result column="is_keshuo" property="isKeshuo"/>
+        <result column="type" property="type"/>
+        <result column="enroll_date" property="enrollDate"/>
+        <result column="papers" property="papers"/>
+        <result column="patents" property="patents"/>
+        <result column="services" property="services"/>
+        <result column="projects" property="projects"/>
+        <result column="status" property="status"/>
+        <result column="deleted" property="deleted"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <!-- 字段列表信息 -->
+    <sql id="_field_list">
+        `id`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `is_keshuo`, `type`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`,  `modify_time`
+    </sql>
+
+    <!-- 值列表信息 -->
+    <sql id="_value_list">
+        #{id}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{isKeshuo}, #{type}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime},  #{modifyTime}
+    </sql>
+
+    <!-- 普通条件查询 -->
+    <sql id="_common_where">
+        <if test="id != null">
+            AND `id` = #{id}
+        </if>
+        <if test="idList != null and idList.size() > 0">
+            AND `id` IN
+            <foreach collection="idList" item="id"
+                     open="( " separator=" , " close=" )">
+                #{id}
+            </foreach>
+        </if>
+        <if test="stuId != null">
+            AND `stu_id` = #{stuId}
+        </if>
+        <if test="roleId != null">
+            AND `role_id` = #{roleId}
+        </if>
+        <if test="name != null">
+            AND `name` = #{name}
+        </if>
+        <if test="telephone != null">
+            AND `telephone` = #{telephone}
+        </if>
+        <if test="email != null">
+            AND `email` = #{email}
+        </if>
+        <if test="mentor != null">
+            AND `mentor` = #{mentor}
+        </if>
+        <if test="leader != null">
+            AND `leader` = #{leader}
+        </if>
+        <if test="isKeshuo != null">
+            AND `is_keshuo` = #{isKeshuo}
+        </if>
+        <if test="type != null">
+            AND `type` = #{type}
+        </if>
+        <if test="enrollDate != null">
+            AND `enroll_date` = #{enrollDate}
+        </if>
+        <if test="papers != null">
+            AND `papers` = #{papers}
+        </if>
+        <if test="patents != null">
+            AND `patents` = #{patents}
+        </if>
+        <if test="services != null">
+            AND `services` = #{services}
+        </if>
+        <if test="projects != null">
+            AND `projects` = #{projects}
+        </if>
+        <if test="status != null">
+            AND `status` = #{status}
+        </if>
+        <if test="deleted != null">
+            AND `deleted` = #{deleted}
+        </if>
+        <if test="eltCreateTime != null">
+            <![CDATA[
+            AND `create_time` <= #{eltCreateTime}
+            ]]>
+        </if>
+        <if test="egtCreateTime != null">
+            <![CDATA[
+            AND `create_time` >= #{egtCreateTime}
+            ]]>
+        </if>
+        <if test="eltModifyTime != null">
+            <![CDATA[
+            AND `modify_time` <= #{eltModifyTime}
+            ]]>
+        </if>
+        <if test="egtModifyTime != null">
+            <![CDATA[
+            AND `modify_time` >= #{egtModifyTime}
+            ]]>
+        </if>
+    </sql>
+
+    <!-- 通用排序 -->
+    <sql id="_common_sorts">
+        <if test="sorts != null">
+            ORDER BY
+            <foreach collection="sorts" item="item" separator=",">
+                ${item.columnName} ${item.sortMode.mode}
+            </foreach>
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            `cms_user`(`stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `is_keshuo`, `type`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{isKeshuo}, #{type}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime}, #{modifyTime}
+        </trim>
+    </insert>
+
+    <insert id="bulkUpsert" parameterType="list">
+        INSERT INTO
+            `cms_user`(`stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `is_keshuo`, `type`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
+        VALUES
+        <foreach collection="list" item="data" separator=",">
+            (#{data.stuId}, #{data.roleId}, #{data.name}, #{data.telephone}, #{data.email}, #{data.mentor}, #{data.leader}, #{data.isKeshuo}, #{data.type}, #{data.enrollDate}, #{data.papers}, #{data.patents}, #{data.services}, #{data.projects}, #{data.status}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+       `stu_id` = VALUES(`stu_id`), 
+       `role_id` = VALUES(`role_id`), 
+       `name` = VALUES(`name`), 
+       `telephone` = VALUES(`telephone`), 
+       `email` = VALUES(`email`), 
+       `mentor` = VALUES(`mentor`), 
+       `leader` = VALUES(`leader`), 
+       `is_keshuo` = VALUES(`is_keshuo`), 
+       `type` = VALUES(`type`), 
+       `enroll_date` = VALUES(`enroll_date`), 
+       `papers` = VALUES(`papers`), 
+       `patents` = VALUES(`patents`), 
+       `services` = VALUES(`services`), 
+       `projects` = VALUES(`projects`), 
+       `status` = VALUES(`status`), 
+       `deleted` = VALUES(`deleted`), 
+       `create_time` = `create_time`, 
+       `modify_time` = VALUES(`modify_time`)
+    </insert>
+
+    <update id="updateById">
+        UPDATE `cms_user`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="stuId != null">
+                `stu_id` = #{stuId},
+            </if>
+            <if test="roleId != null">
+                `role_id` = #{roleId},
+            </if>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="telephone != null">
+                `telephone` = #{telephone},
+            </if>
+            <if test="email != null">
+                `email` = #{email},
+            </if>
+            <if test="mentor != null">
+                `mentor` = #{mentor},
+            </if>
+            <if test="leader != null">
+                `leader` = #{leader},
+            </if>
+            <if test="isKeshuo != null">
+                `is_keshuo` = #{isKeshuo},
+            </if>
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="enrollDate != null">
+                `enroll_date` = #{enrollDate},
+            </if>
+            <if test="papers != null">
+                `papers` = #{papers},
+            </if>
+            <if test="patents != null">
+                `patents` = #{patents},
+            </if>
+            <if test="services != null">
+                `services` = #{services},
+            </if>
+            <if test="projects != null">
+                `projects` = #{projects},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
+            <if test="deleted != null">
+                `deleted` = #{deleted},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                `modify_time` = #{modifyTime},
+            </if>
+        </trim>
+        WHERE `id` = #{id}
+        LIMIT 1
+    </update>
+
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM `cms_user` WHERE `id` = #{id} LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="selectListByParam" parameterType="map" resultMap="CmsUserMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `cms_user`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM `cms_user`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+    </select>
+</mapper>
