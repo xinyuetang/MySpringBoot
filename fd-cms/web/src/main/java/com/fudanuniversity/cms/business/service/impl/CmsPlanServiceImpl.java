@@ -5,6 +5,7 @@ import com.fudanuniversity.cms.repository.entity.CmsPlan;
 import com.fudanuniversity.cms.repository.query.CmsPlanQuery;
 import com.fudanuniversity.cms.business.service.CmsPlanService;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class CmsPlanServiceImpl implements CmsPlanService {
 
         int affect = cmsPlanDao.insert(cmsPlan);
         logger.info("保存CmsPlan affect:{}, cmsPlan: {}", affect, cmsPlan);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -46,6 +48,7 @@ public class CmsPlanServiceImpl implements CmsPlanService {
 
         int affect = cmsPlanDao.updateById(updater);
         logger.info("更新CmsPlan affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -56,6 +59,7 @@ public class CmsPlanServiceImpl implements CmsPlanService {
         //TODO 补充状态检测业务逻辑
         int affect = cmsPlanDao.deleteById(id);
         logger.info("删除CmsPlan affect:{}, id: {}", affect, id);
+        AssertUtils.state(affect == 1);
     }
 
     /**

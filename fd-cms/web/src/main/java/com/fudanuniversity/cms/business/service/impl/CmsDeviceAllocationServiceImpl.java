@@ -5,6 +5,7 @@ import com.fudanuniversity.cms.repository.entity.CmsDeviceAllocation;
 import com.fudanuniversity.cms.repository.query.CmsDeviceAllocationQuery;
 import com.fudanuniversity.cms.business.service.CmsDeviceAllocationService;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
 
         int affect = cmsDeviceAllocationDao.insert(cmsDeviceAllocation);
         logger.info("保存CmsDeviceAllocation affect:{}, cmsDeviceAllocation: {}", affect, cmsDeviceAllocation);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -46,6 +48,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
 
         int affect = cmsDeviceAllocationDao.updateById(updater);
         logger.info("更新CmsDeviceAllocation affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -56,6 +59,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         //TODO 补充状态检测业务逻辑
         int affect = cmsDeviceAllocationDao.deleteById(id);
         logger.info("删除CmsDeviceAllocation affect:{}, id: {}", affect, id);
+        AssertUtils.state(affect == 1);
     }
 
     /**

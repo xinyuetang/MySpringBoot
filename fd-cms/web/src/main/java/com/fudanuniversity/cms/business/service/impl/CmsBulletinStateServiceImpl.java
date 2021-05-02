@@ -5,6 +5,7 @@ import com.fudanuniversity.cms.repository.entity.CmsBulletinState;
 import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
 import com.fudanuniversity.cms.business.service.CmsBulletinStateService;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
 
         int affect = cmsBulletinStateDao.insert(cmsBulletinState);
         logger.info("保存CmsBulletinState affect:{}, cmsBulletinState: {}", affect, cmsBulletinState);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -46,6 +48,7 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
 
         int affect = cmsBulletinStateDao.updateById(updater);
         logger.info("更新CmsBulletinState affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -56,6 +59,7 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
         //TODO 补充状态检测业务逻辑
         int affect = cmsBulletinStateDao.deleteById(id);
         logger.info("删除CmsBulletinState affect:{}, id: {}", affect, id);
+        AssertUtils.state(affect == 1);
     }
 
     /**

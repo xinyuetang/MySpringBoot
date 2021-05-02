@@ -86,10 +86,10 @@ public class CmsArticleDaoImpl implements CmsArticleDao {
     private void validateQueryParameter(CmsArticleQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getCategoryTag() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

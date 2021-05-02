@@ -1,15 +1,28 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.component.ArticleComponent;
+import com.fudanuniversity.cms.business.service.CmsArticleService;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleAddVo;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleEditVo;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleQueryVo;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleVo;
+import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.exception.BusinessException;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
+import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.model.query.SortColumn;
+import com.fudanuniversity.cms.commons.model.query.SortMode;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsArticleDao;
 import com.fudanuniversity.cms.repository.entity.CmsArticle;
+import com.fudanuniversity.cms.repository.entity.CmsArticleCategory;
 import com.fudanuniversity.cms.repository.query.CmsArticleQuery;
-import com.fudanuniversity.cms.business.service.CmsArticleService;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,27 +38,71 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Resource
     private CmsArticleDao cmsArticleDao;
 
+    @Resource
+    private ArticleComponent articleComponent;
+
+    @Override
+    public CmsArticleVo getArticle(Long id) {
+        CmsArticle article = articleComponent.queryArticle(id);
+        if (article != null) {
+            return convertCmsArticleVo(article);
+        }
+        return null;
+    }
+
+    private CmsArticleVo convertCmsArticleVo(CmsArticle article) {
+        CmsArticleVo articleVo = new CmsArticleVo();
+        articleVo.setId(article.getId());
+        articleVo.setCategoryTag(article.getCategoryTag());
+        articleVo.setTitle(article.getTitle());
+        articleVo.setContent(article.getContent());
+        articleVo.setCreateTime(article.getCreateTime());
+        articleVo.setModifyTime(article.getModifyTime());
+        return articleVo;
+    }
+
     /**
      * 保存处理
      */
     @Override
-    public void saveCmsArticle(CmsArticle cmsArticle) {
-        //TODO 校验与赋值映射
-
-        int affect = cmsArticleDao.insert(cmsArticle);
-        logger.info("保存CmsArticle affect:{}, cmsArticle: {}", affect, cmsArticle);
+    public void saveCmsArticle(CmsArticleAddVo articleAddVo) {
+        Integer categoryTag = articleAddVo.getCategoryTag();
+        CmsArticleCategory category = articleComponent.queryArticleCategory(categoryTag);
+        AssertUtils.notNull(category, "文章分类标签不存在");
+        CmsArticle article = new CmsArticle();
+        article.setCategoryTag(articleAddVo.getCategoryTag());
+        article.setTitle(articleAddVo.getTitle());
+        article.setContent(articleAddVo.getContent());
+        article.setCreateTime(new Date());
+        int affect = cmsArticleDao.insert(article);
+        logger.info("保存CmsArticle affect:{}, cmsArticle: {}", affect, articleAddVo);
+        AssertUtils.state(affect == 1);
     }
 
     /**
      * 根据id更新处理
      */
     @Override
-    public void updateCmsArticleById(CmsArticle cmsArticle) {
-        CmsArticle updater = new CmsArticle();
-        //TODO 值映射校验与赋值映射
+    public void editCmsArticleBy(CmsArticleEditVo editVo) {
+        Long articleId = editVo.getId();
+        CmsArticle article = articleComponent.queryArticle(articleId);
+        if (article == null) {
+            throw new BusinessException("当前文章已不存在");
+        }
 
+        Integer categoryTag = editVo.getCategoryTag();
+        if (categoryTag != null) {
+            CmsArticleCategory category = articleComponent.queryArticleCategory(categoryTag);
+            AssertUtils.notNull(category, "文章分类标签不存在");
+        }
+        CmsArticle updater = new CmsArticle();
+        updater.setCategoryTag(editVo.getCategoryTag());
+        updater.setTitle(editVo.getTitle());
+        updater.setContent(editVo.getContent());
+        updater.setModifyTime(new Date());
         int affect = cmsArticleDao.updateById(updater);
         logger.info("更新CmsArticle affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -53,29 +110,39 @@ public class CmsArticleServiceImpl implements CmsArticleService {
      */
     @Override
     public void deleteCmsArticleById(Long id) {
-        //TODO 补充状态检测业务逻辑
+        CmsArticle article = articleComponent.queryArticle(id);
+        if (article == null) {
+            throw new BusinessException("当前文章已不存在");
+        }
+
         int affect = cmsArticleDao.deleteById(id);
         logger.info("删除CmsArticle affect:{}, id: {}", affect, id);
+        AssertUtils.state(affect == 1);
     }
 
     /**
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsArticle> queryPagingResultByParam(CmsArticleQuery query) {
-        PagingResult<CmsArticle> pagingResult = PagingResult.create(query);
+    public PagingResult<CmsArticleVo> queryPagingResult(CmsArticleQueryVo queryVo, Paging paging) {
+        PagingResult<CmsArticleVo> pagingResult = PagingResult.create(paging);
 
-        //TODO 设置参数（分页参数除外）
-
+        CmsArticleQuery query = new CmsArticleQuery();
+        queryVo.setCategoryTag(queryVo.getCategoryTag());
+        queryVo.setTitle(queryVo.getTitle());
+        queryVo.setEltCreateTime(queryVo.getEltCreateTime());
+        queryVo.setEgtCreateTime(queryVo.getEgtCreateTime());
+        queryVo.setEltModifyTime(queryVo.getEltModifyTime());
+        queryVo.setEgtModifyTime(queryVo.getEgtModifyTime());
         Long count = cmsArticleDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            query.setSorts(SortColumn.create(Constants.CreatedTimeColumn, SortMode.DESC));
             List<CmsArticle> cmsArticleList = cmsArticleDao.selectListByParam(query);
-            pagingResult.setRows(cmsArticleList);
+            pagingResult.setRows(cmsArticleList, this::convertCmsArticleVo);
         }
 
         return pagingResult;

@@ -5,6 +5,7 @@ import com.fudanuniversity.cms.repository.entity.CmsDevice;
 import com.fudanuniversity.cms.repository.query.CmsDeviceQuery;
 import com.fudanuniversity.cms.business.service.CmsDeviceService;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
 
         int affect = cmsDeviceDao.insert(cmsDevice);
         logger.info("保存CmsDevice affect:{}, cmsDevice: {}", affect, cmsDevice);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -46,6 +48,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
 
         int affect = cmsDeviceDao.updateById(updater);
         logger.info("更新CmsDevice affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -56,6 +59,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
         //TODO 补充状态检测业务逻辑
         int affect = cmsDeviceDao.deleteById(id);
         logger.info("删除CmsDevice affect:{}, id: {}", affect, id);
+        AssertUtils.state(affect == 1);
     }
 
     /**

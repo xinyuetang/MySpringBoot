@@ -1,5 +1,10 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.article.CmsArticleAddVo;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleEditVo;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleQueryVo;
+import com.fudanuniversity.cms.business.vo.article.CmsArticleVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.repository.entity.CmsArticle;
 import com.fudanuniversity.cms.repository.query.CmsArticleQuery;
@@ -12,14 +17,19 @@ import com.fudanuniversity.cms.repository.query.CmsArticleQuery;
 public interface CmsArticleService {
 
     /**
+     * 查看文章
+     */
+    CmsArticleVo getArticle(Long id);
+
+    /**
      * 保存处理
      */
-    void saveCmsArticle(CmsArticle cmsArticle);
+    void saveCmsArticle(CmsArticleAddVo articleAddVo);
 
     /**
      * 根据id更新处理
      */
-    void updateCmsArticleById(CmsArticle cmsArticle);
+    void editCmsArticleBy(CmsArticleEditVo editVo);
 
     /**
      * 根据id删除处理
@@ -29,6 +39,6 @@ public interface CmsArticleService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsArticle> queryPagingResultByParam(CmsArticleQuery query);
+    PagingResult<CmsArticleVo> queryPagingResult(CmsArticleQueryVo queryVo, Paging paging);
 
 }
