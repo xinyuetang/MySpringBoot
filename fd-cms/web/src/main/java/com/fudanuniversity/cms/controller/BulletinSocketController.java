@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.web.controller;
+package com.fudanuniversity.cms.controller;
 
 //import org.springframework.messaging.handler.annotation.MessageMapping;
 //import org.springframework.messaging.handler.annotation.SendTo;

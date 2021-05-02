@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.web.controller;
+package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.repository.entity.deprecated.Bulletin;

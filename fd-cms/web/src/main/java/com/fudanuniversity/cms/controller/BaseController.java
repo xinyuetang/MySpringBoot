@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.web.controller;
+package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.commons.constant.Constants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;

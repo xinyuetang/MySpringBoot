@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.web.controller;
+package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.business.service.CmsArticleCategoryService;
 import com.fudanuniversity.cms.business.service.CmsArticleService;
@@ -6,7 +6,6 @@ import com.fudanuniversity.cms.business.vo.article.*;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.repository.entity.CmsArticle;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -50,7 +49,7 @@ public class ArticleController {
 
     @GetMapping(path = "/paging")
     public JsonResult<?> getArticle(CmsArticleQueryVo queryVo, Paging paging) {
-        PagingResult<CmsArticle> pagingResult = cmsArticleService.queryPagingResult(queryVo, paging);
+        PagingResult<CmsArticleVo> pagingResult = cmsArticleService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
 

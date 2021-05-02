@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.web.controller;
+package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
