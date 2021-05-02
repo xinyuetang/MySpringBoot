@@ -7,7 +7,7 @@ spring:
     #Hikari 连接池配置 ------ 详细配置请访问：https://github.com/brettwooldridge/HikariCP
     #type: com.zaxxer.hikari.HikariDataSource
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://$HOST:$PORT/fd_cms?zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://$DB_HOST:$DB_PORT/fd_cms?zeroDateTimeBehavior=convertToNull&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
     username: userOfMySQL
     password: passOfMySQL
     hikari.minimum-idle: 5
@@ -18,3 +18,17 @@ spring:
     hikari.max-lifetime: 1800000
     hikari.connection-timeout: 30000
     hikari.connection-test-query: SELECT 1
+  redis:
+    database: 0
+    host: $REDIS_HOST
+    port: 6379
+    #password:
+    timeout: 5000
+    lettuce:
+      pool:
+        max-active: 8
+        max-wait: 10000
+        max-idle: 8
+        min-idle: 0
+  session:
+    store-type: redis

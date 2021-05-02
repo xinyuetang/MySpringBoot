@@ -10,7 +10,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by tidu at 2021-05-01 22:12:43
  */
-public class Webmvc {
+public final class Webmvc {
 
     public static HttpServletRequest request() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
@@ -25,5 +25,8 @@ public class Webmvc {
     public static HttpSession session() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         return attr.getRequest().getSession(true); // true == allow create
+    }
+
+    private Webmvc() {
     }
 }
