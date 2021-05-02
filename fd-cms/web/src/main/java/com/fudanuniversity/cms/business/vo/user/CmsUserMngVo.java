@@ -1,5 +1,7 @@
 package com.fudanuniversity.cms.business.vo.user;
 
+import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
+import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
 import com.fudanuniversity.cms.commons.validation.group.Update;
 import lombok.AllArgsConstructor;
 import lombok.Data;

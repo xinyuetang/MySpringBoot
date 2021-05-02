@@ -21,7 +21,7 @@ public @interface EnumString {
     /**
      * 枚举class
      */
-    Class<? extends Enum<?>> value();
+    Class<? extends Enum<?>> enumClass();
 
     /**
      * 是否区分大小写

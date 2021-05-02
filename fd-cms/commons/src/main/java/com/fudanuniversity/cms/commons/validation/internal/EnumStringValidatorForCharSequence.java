@@ -25,7 +25,7 @@ public class EnumStringValidatorForCharSequence
 
         this.ignoreCase = annotation.ignoreCase();
         this.enumValuesString = new HashSet<>();
-        Class<? extends Enum<?>> enumClass = annotation.value();
+        Class<? extends Enum<?>> enumClass = annotation.enumClass();
         Enum<?>[] enumConstants = enumClass.getEnumConstants();
         for (Enum<?> e : enumConstants) {
             String name = annotation.ignoreCase() ? e.name().toLowerCase() : e.name();

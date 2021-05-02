@@ -22,7 +22,7 @@ public @interface EnumValue {
     /**
      * 枚举class
      */
-    String enumClass();
+    Class<? extends Enum<?>>  enumClass();
 
     /**
      * 属性名称，设置property和method中一个
