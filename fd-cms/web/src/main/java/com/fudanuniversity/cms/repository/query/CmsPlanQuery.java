@@ -44,11 +44,25 @@ public class CmsPlanQuery extends BaseQuery {
     private List<Long> idList;
 
     /**
-     * 字段备注:类型 <p>
+     * 字段备注:是否公共任务 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 索引字段:是
+     */
+    private Integer common;
+
+    /**
+     * 字段备注:是否科硕任务 <p>
      * 数据库字段长度:(3,0) <p>
      * 索引字段:不是
      */
-    private Integer type;
+    private Integer keshuo;
+
+    /**
+     * 字段备注:就读类型 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 索引字段:不是
+     */
+    private Integer studyType;
 
     /**
      * 字段备注:序号 <p>
@@ -72,30 +86,16 @@ public class CmsPlanQuery extends BaseQuery {
     private Integer spendDays;
 
     /**
-     * 字段备注:是否公共任务 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 索引字段:不是
-     */
-    private Integer common;
-
-    /**
-     * 字段备注:是否科硕任务 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 索引字段:不是
-     */
-    private Integer keshuo;
-
-    /**
      * 字段备注:小于等于创建时间 <p>
      * 数据库字段长度:(19,0) <p>
-     * 索引字段:是
+     * 索引字段:不是
      */
     private Date eltCreateTime;
 
     /**
      * 字段备注:大于等于创建时间 <p>
      * 数据库字段长度:(19,0) <p>
-     * 索引字段:是
+     * 索引字段:不是
      */
     private Date egtCreateTime;
 

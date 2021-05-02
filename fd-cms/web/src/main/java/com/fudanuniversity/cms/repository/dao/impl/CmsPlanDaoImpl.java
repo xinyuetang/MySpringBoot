@@ -43,12 +43,12 @@ public class CmsPlanDaoImpl implements CmsPlanDao {
     }
 
     private void validateEntity(CmsPlan cmsPlan) {
-        Assert.notNull(cmsPlan.getType(), "类型必须有值");
+        Assert.notNull(cmsPlan.getCommon(), "是否公共任务必须有值");
+        Assert.notNull(cmsPlan.getKeshuo(), "是否科硕任务必须有值");
+        Assert.notNull(cmsPlan.getStudyType(), "就读类型必须有值");
         Assert.notNull(cmsPlan.getIndex(), "序号必须有值");
         Assert.hasText(cmsPlan.getName(), "名称不能为空");
         Assert.notNull(cmsPlan.getSpendDays(), "计划天数必须有值");
-        Assert.notNull(cmsPlan.getCommon(), "是否公共任务必须有值");
-        Assert.notNull(cmsPlan.getKeshuo(), "是否科硕任务必须有值");
         Assert.notNull(cmsPlan.getCreateTime(), "创建时间必须有值");
     }
 
@@ -90,7 +90,8 @@ public class CmsPlanDaoImpl implements CmsPlanDao {
         query.validateBaseArgument();
 
         if (query.getId() == null
-                && query.getGtId() == null) {
+                && query.getGtId() == null
+               && query.getCommon() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
         }
     }

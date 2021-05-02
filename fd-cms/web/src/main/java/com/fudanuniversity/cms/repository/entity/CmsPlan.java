@@ -29,11 +29,25 @@ public class CmsPlan implements Serializable {
     private Long id;
 
     /**
-     * 字段备注:类型 <p>
+     * 字段备注:是否公共任务 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 是否索引:是
+     */
+    private Integer common;
+
+    /**
+     * 字段备注:是否科硕任务 <p>
      * 数据库字段长度:(3,0) <p>
      * 是否索引:不是
      */
-    private Integer type;
+    private Integer keshuo;
+
+    /**
+     * 字段备注:就读类型 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 是否索引:不是
+     */
+    private Integer studyType;
 
     /**
      * 字段备注:序号 <p>
@@ -57,23 +71,9 @@ public class CmsPlan implements Serializable {
     private Integer spendDays;
 
     /**
-     * 字段备注:是否公共任务 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 是否索引:不是
-     */
-    private Integer common;
-
-    /**
-     * 字段备注:是否科硕任务 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 是否索引:不是
-     */
-    private Integer keshuo;
-
-    /**
      * 字段备注:创建时间 <p>
      * 数据库字段长度:(19,0) <p>
-     * 是否索引:是
+     * 是否索引:不是
      */
     private Date createTime;
 

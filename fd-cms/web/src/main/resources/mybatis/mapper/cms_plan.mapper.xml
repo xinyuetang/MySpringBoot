@@ -6,24 +6,24 @@
     <!-- 返回结果集 -->
     <resultMap id="CmsPlanMap" type="com.fudanuniversity.cms.repository.entity.CmsPlan">
         <result column="id" property="id"/>
-        <result column="type" property="type"/>
+        <result column="common" property="common"/>
+        <result column="keshuo" property="keshuo"/>
+        <result column="study_type" property="studyType"/>
         <result column="index" property="index"/>
         <result column="name" property="name"/>
         <result column="spend_days" property="spendDays"/>
-        <result column="common" property="common"/>
-        <result column="keshuo" property="keshuo"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `type`, `index`, `name`, `spend_days`, `common`, `keshuo`, `create_time`,  `modify_time`
+        `id`, `common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{type}, #{index}, #{name}, #{spendDays}, #{common}, #{keshuo}, #{createTime},  #{modifyTime}
+        #{id}, #{common}, #{keshuo}, #{studyType}, #{index}, #{name}, #{spendDays}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -38,8 +38,14 @@
                 #{id}
             </foreach>
         </if>
-        <if test="type != null">
-            AND `type` = #{type}
+        <if test="common != null">
+            AND `common` = #{common}
+        </if>
+        <if test="keshuo != null">
+            AND `keshuo` = #{keshuo}
+        </if>
+        <if test="studyType != null">
+            AND `study_type` = #{studyType}
         </if>
         <if test="index != null">
             AND `index` = #{index}
@@ -49,12 +55,6 @@
         </if>
         <if test="spendDays != null">
             AND `spend_days` = #{spendDays}
-        </if>
-        <if test="common != null">
-            AND `common` = #{common}
-        </if>
-        <if test="keshuo != null">
-            AND `keshuo` = #{keshuo}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -90,27 +90,27 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_plan`(`type`, `index`, `name`, `spend_days`, `common`, `keshuo`, `create_time`, `modify_time`)
+            `cms_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{type}, #{index}, #{name}, #{spendDays}, #{common}, #{keshuo}, #{createTime}, #{modifyTime}
+            #{common}, #{keshuo}, #{studyType}, #{index}, #{name}, #{spendDays}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_plan`(`type`, `index`, `name`, `spend_days`, `common`, `keshuo`, `create_time`, `modify_time`)
+            `cms_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.type}, #{data.index}, #{data.name}, #{data.spendDays}, #{data.common}, #{data.keshuo}, #{data.createTime}, #{data.modifyTime})
+            (#{data.common}, #{data.keshuo}, #{data.studyType}, #{data.index}, #{data.name}, #{data.spendDays}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `type` = VALUES(`type`), 
+       `common` = VALUES(`common`), 
+       `keshuo` = VALUES(`keshuo`), 
+       `study_type` = VALUES(`study_type`), 
        `index` = VALUES(`index`), 
        `name` = VALUES(`name`), 
        `spend_days` = VALUES(`spend_days`), 
-       `common` = VALUES(`common`), 
-       `keshuo` = VALUES(`keshuo`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -118,8 +118,14 @@
     <update id="updateById">
         UPDATE `cms_plan`
         <trim prefix="SET" suffixOverrides=",">
-            <if test="type != null">
-                `type` = #{type},
+            <if test="common != null">
+                `common` = #{common},
+            </if>
+            <if test="keshuo != null">
+                `keshuo` = #{keshuo},
+            </if>
+            <if test="studyType != null">
+                `study_type` = #{studyType},
             </if>
             <if test="index != null">
                 `index` = #{index},
@@ -129,12 +135,6 @@
             </if>
             <if test="spendDays != null">
                 `spend_days` = #{spendDays},
-            </if>
-            <if test="common != null">
-                `common` = #{common},
-            </if>
-            <if test="keshuo != null">
-                `keshuo` = #{keshuo},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

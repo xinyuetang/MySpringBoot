@@ -16,8 +16,8 @@ CREATE TABLE `fd_cms`.`cms_user`
     `email`       varchar(32) NOT NULL DEFAULT '' COMMENT '邮箱',
     `mentor`      varchar(32) NOT NULL DEFAULT '' COMMENT '导师',
     `leader`      varchar(32) NOT NULL DEFAULT '' COMMENT '汇报人',
-    `study_type` tinyint     NOT NULL DEFAULT '0' COMMENT '就读类型',
-    `keshuo`   tinyint     NOT NULL DEFAULT '0' COMMENT '是否科硕',
+    `study_type`  tinyint     NOT NULL DEFAULT '0' COMMENT '就读类型',
+    `keshuo`      tinyint     NOT NULL DEFAULT '0' COMMENT '是否科硕',
     `enroll_date` date                 DEFAULT NULL COMMENT '入学时间',
     `papers`      longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '论文',
     `patents`     longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '专利',
@@ -328,16 +328,16 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_plan`;
 CREATE TABLE `fd_cms`.`cms_plan`
 (
     `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `type`        tinyint     NOT NULL COMMENT '类型',
+    `common`      tinyint     NOT NULL COMMENT '是否公共任务',
+    `keshuo`      tinyint     NOT NULL COMMENT '是否科硕任务',
+    `study_type`  tinyint     NOT NULL COMMENT '就读类型',
     `index`       int         NOT NULL COMMENT '序号',
     `name`        varchar(32) NOT NULL COMMENT '名称',
     `spend_days`  int         NOT NULL COMMENT '计划天数',
-    `common` tinyint     NOT NULL COMMENT '是否公共任务',
-    `keshuo` tinyint     NOT NULL COMMENT '是否科硕任务',
     `create_time` datetime    NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_create_time` (`create_time`) USING BTREE
+    KEY `uk_common_keshuo_study_type_index` (`common`, `keshuo`, `study_type`, `index`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案';
