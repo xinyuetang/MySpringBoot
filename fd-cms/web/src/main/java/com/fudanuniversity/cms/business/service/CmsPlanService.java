@@ -29,6 +29,6 @@ public interface CmsPlanService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsPlan> queryPagingResultByParam(CmsPlanQuery query);
+    PagingResult<CmsPlan> queryPagingResult(CmsPlanQuery query);
 
 }

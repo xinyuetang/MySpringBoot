@@ -32,6 +32,15 @@ public class CmsUserAccountDaoImpl implements CmsUserAccountDao {
     }
 
     @Override
+    public int replace(CmsUserAccount cmsUserAccount) {
+        Assert.notNull(cmsUserAccount, "保存对象不能为空");
+
+        validateEntity(cmsUserAccount);
+
+        return cmsUserAccountMapper.replace(cmsUserAccount);
+    }
+
+    @Override
     public int bulkUpsert(List<CmsUserAccount> cmsUserAccountList){
         Assert.notEmpty(cmsUserAccountList, "保存对象列表不能为空");
 
@@ -59,10 +68,10 @@ public class CmsUserAccountDaoImpl implements CmsUserAccountDao {
     }
 
     @Override
-    public int deleteById(Long id) {
-        Assert.notNull(id, "删除记录id不能为空");
+    public int deleteByStuId(String stuId) {
+        Assert.notNull(stuId, "删除记录stuId不能为空");
 
-        return cmsUserAccountMapper.deleteById(id);
+        return cmsUserAccountMapper.deleteByStuId(stuId);
     }
 
     @Override

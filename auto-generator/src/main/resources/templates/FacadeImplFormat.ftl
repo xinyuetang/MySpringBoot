@@ -71,7 +71,7 @@ import java.util.stream.Collectors;
     * 分页查询数据列表
     */
     @Override
-    public PagingResult<${classSimpleName}Dto> queryPagingResultByParam(${classSimpleName}QueryDto queryDto, Paging paging) {
+    public PagingResult<${classSimpleName}Dto> queryPagingResult(${classSimpleName}QueryDto queryDto, Paging paging) {
         PagingResult<${classSimpleName}Dto> pagingResult = PagingResult.create(paging);
 
             ${classSimpleName}Query query = new ${classSimpleName}Query();
@@ -83,7 +83,7 @@ import java.util.stream.Collectors;
             if (count > 0L) {
             query.setOffset(ValueUtils.defaultInteger(paging.getOffset()));
             query.setRows(ValueUtils.defaultInteger(paging.getLimit()));
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<${classSimpleName}> ${classVariableName}List = ${classVariableName}Dao.selectListByParam(query);
 
             List<${classSimpleName}Dto> ${classVariableName}DtoList = ${classVariableName}List.stream().map(record -> {

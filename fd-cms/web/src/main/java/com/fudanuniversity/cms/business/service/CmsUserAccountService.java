@@ -21,7 +21,7 @@ public interface CmsUserAccountService {
     /**
      * 重置密码
      */
-    void resetAccountPassword(CmsUserAccountResetPasswordVo resetPasswordVo);
+    void resetAccountPassword(String stuId, CmsUserAccountResetPasswordVo resetPasswordVo);
 
     /**
      * 保存处理
@@ -34,12 +34,12 @@ public interface CmsUserAccountService {
     void updateCmsUserAccountById(CmsUserAccount cmsUserAccount);
 
     /**
-     * 根据id删除处理
+     * 根据stuId删除处理
      */
-    void deleteCmsUserAccountById(Long id);
+    void deleteCmsUserAccountByStuId(String stuId);
 
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsUserAccount> queryPagingResultByParam(CmsUserAccountQuery query);
+    PagingResult<CmsUserAccount> queryPagingResult(CmsUserAccountQuery query);
 }

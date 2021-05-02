@@ -66,7 +66,7 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsBulletinState> queryPagingResultByParam(CmsBulletinStateQuery query) {
+    public PagingResult<CmsBulletinState> queryPagingResult(CmsBulletinStateQuery query) {
         PagingResult<CmsBulletinState> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -77,7 +77,7 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsBulletinState> cmsBulletinStateList = cmsBulletinStateDao.selectListByParam(query);
             pagingResult.setRows(cmsBulletinStateList);
         }

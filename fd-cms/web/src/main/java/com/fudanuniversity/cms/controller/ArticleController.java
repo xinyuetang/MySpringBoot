@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 @RestController
 @RequestMapping(path = "/article")
-public class ArticleController {
+public class ArticleController extends BaseController {
 
     @Resource
     private CmsArticleService cmsArticleService;

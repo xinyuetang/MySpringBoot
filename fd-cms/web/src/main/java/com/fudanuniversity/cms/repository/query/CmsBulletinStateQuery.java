@@ -56,6 +56,7 @@ public class CmsBulletinStateQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Long bulletinId;
+    private List<Long> bulletinIdList;
 
     /**
      * 字段备注:是否已读 <p>
@@ -91,4 +92,16 @@ public class CmsBulletinStateQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsBulletinStateQuery singletonQuery() {
+        CmsBulletinStateQuery query = new CmsBulletinStateQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsBulletinStateQuery listQuery() {
+        CmsBulletinStateQuery query = new CmsBulletinStateQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

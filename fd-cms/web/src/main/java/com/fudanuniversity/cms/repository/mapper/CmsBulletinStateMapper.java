@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.repository.mapper;
 
+import com.fudanuniversity.cms.commons.model.wrapper.TripleTuple;
 import com.fudanuniversity.cms.repository.entity.CmsBulletinState;
 import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
 import org.apache.ibatis.annotations.Mapper;
@@ -18,6 +19,8 @@ public interface CmsBulletinStateMapper {
      * 保存处理
      */
     int insert(CmsBulletinState cmsBulletinState);
+
+    int replace(CmsBulletinState cmsBulletinState);
 
     /**
      * 批量upsert
@@ -44,4 +47,8 @@ public interface CmsBulletinStateMapper {
      */
     Long selectCountByParam(CmsBulletinStateQuery query);
 
+    /**
+     *
+     */
+    TripleTuple<Long, Long, Long> queryCmsBulletinReadCount(CmsBulletinStateQuery query);
 }

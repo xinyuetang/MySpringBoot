@@ -66,7 +66,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<${classSimpleName}> queryPagingResultByParam(${classSimpleName}Query query) {
+    public PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query) {
         PagingResult<${classSimpleName}> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -77,7 +77,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<${classSimpleName}> ${classVariableName}List = ${classVariableName}Dao.selectListByParam(query);
             pagingResult.setRows(${classVariableName}List);
         }

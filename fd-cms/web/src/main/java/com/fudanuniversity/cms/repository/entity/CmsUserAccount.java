@@ -28,6 +28,8 @@ public class CmsUserAccount implements Serializable {
      */
     private Long id;
 
+    private Long userId;
+
     /**
      * 字段备注:学号 <p>
      * 数据库字段长度:(32,0) <p>

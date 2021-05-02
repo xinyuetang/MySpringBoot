@@ -84,4 +84,17 @@ public class CmsArticleCategoryQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+
+    public static CmsArticleCategoryQuery singletonQuery() {
+        CmsArticleCategoryQuery query = new CmsArticleCategoryQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsArticleCategoryQuery listQuery() {
+        CmsArticleCategoryQuery query = new CmsArticleCategoryQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

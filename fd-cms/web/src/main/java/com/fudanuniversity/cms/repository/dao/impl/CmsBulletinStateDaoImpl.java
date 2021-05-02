@@ -1,10 +1,10 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
+import com.fudanuniversity.cms.commons.model.wrapper.TripleTuple;
 import com.fudanuniversity.cms.repository.dao.CmsBulletinStateDao;
-import com.fudanuniversity.cms.repository.mapper.CmsBulletinStateMapper;
 import com.fudanuniversity.cms.repository.entity.CmsBulletinState;
+import com.fudanuniversity.cms.repository.mapper.CmsBulletinStateMapper;
 import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -32,10 +32,19 @@ public class CmsBulletinStateDaoImpl implements CmsBulletinStateDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsBulletinState> cmsBulletinStateList){
+    public int replace(CmsBulletinState cmsBulletinState) {
+        Assert.notNull(cmsBulletinState, "保存对象不能为空");
+
+        validateEntity(cmsBulletinState);
+
+        return cmsBulletinStateMapper.replace(cmsBulletinState);
+    }
+
+    @Override
+    public int bulkUpsert(List<CmsBulletinState> cmsBulletinStateList) {
         Assert.notEmpty(cmsBulletinStateList, "保存对象列表不能为空");
 
-        for(CmsBulletinState cmsBulletinState : cmsBulletinStateList){
+        for (CmsBulletinState cmsBulletinState : cmsBulletinStateList) {
             validateEntity(cmsBulletinState);
         }
 
@@ -83,12 +92,21 @@ public class CmsBulletinStateDaoImpl implements CmsBulletinStateDao {
         return cmsBulletinStateMapper.selectCountByParam(query);
     }
 
+    @Override
+    public TripleTuple<Long, Long, Long> queryCmsBulletinReadCount(CmsBulletinStateQuery query) {
+        Assert.notNull(query, "查询参数不能为空");
+
+        query.validateBaseArgument();
+
+        return cmsBulletinStateMapper.queryCmsBulletinReadCount(query);
+    }
+
     private void validateQueryParameter(CmsBulletinStateQuery query) {
         query.validateBaseArgument();
 
         if (query.getId() == null
                 && query.getGtId() == null
-               && query.getUserId() == null) {
+                && query.getUserId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
         }
     }

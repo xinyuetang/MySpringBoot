@@ -63,7 +63,7 @@ public class AutoGenerate {
                 new ServiceTemplateGenerate(classInfo, metaDataInfo).generate();
                 new ServiceImplTemplateGenerate(classInfo, metaDataInfo).generate();
 //                new BaseQueryTemplateGenerate(templateDir, dBInfo, classInfo).generate();
-//                new SortColumnTemplateGenerate(templateDir, dBInfo, classInfo).generate();
+//                SortColumn.createTemplateGenerate(templateDir, dBInfo, classInfo).generate();
 //                new SortModeTemplateGenerate(templateDir, dBInfo, classInfo).generate();
                 new EntityTemplateGenerate(classInfo, metaDataInfo).generate();
                 new DtoTemplateGenerate(classInfo, metaDataInfo).generate();

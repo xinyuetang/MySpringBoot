@@ -29,6 +29,6 @@ public interface CmsDeviceService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsDevice> queryPagingResultByParam(CmsDeviceQuery query);
+    PagingResult<CmsDevice> queryPagingResult(CmsDeviceQuery query);
 
 }

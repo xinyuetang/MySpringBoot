@@ -66,7 +66,7 @@ public class CmsPlanServiceImpl implements CmsPlanService {
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsPlan> queryPagingResultByParam(CmsPlanQuery query) {
+    public PagingResult<CmsPlan> queryPagingResult(CmsPlanQuery query) {
         PagingResult<CmsPlan> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -77,7 +77,7 @@ public class CmsPlanServiceImpl implements CmsPlanService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsPlan> cmsPlanList = cmsPlanDao.selectListByParam(query);
             pagingResult.setRows(cmsPlanList);
         }

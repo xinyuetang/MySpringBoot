@@ -91,4 +91,16 @@ public class CmsUserAccountQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsUserAccountQuery singletonQuery() {
+        CmsUserAccountQuery query = new CmsUserAccountQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsUserAccountQuery listQuery() {
+        CmsUserAccountQuery query = new CmsUserAccountQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

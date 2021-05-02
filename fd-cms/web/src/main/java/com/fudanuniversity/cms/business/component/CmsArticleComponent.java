@@ -16,7 +16,7 @@ import java.util.List;
  * Created by tidu at 2021-05-02 22:39:10
  */
 @Component
-public class ArticleComponent {
+public class CmsArticleComponent {
 
     @Resource
     private CmsArticleDao cmsArticleDao;
@@ -25,9 +25,8 @@ public class ArticleComponent {
     private CmsArticleCategoryDao cmsArticleCategoryDao;
 
     public CmsArticleCategory queryArticleCategory(Long categoryId) {
-        CmsArticleCategoryQuery query = new CmsArticleCategoryQuery();
+        CmsArticleCategoryQuery query = CmsArticleCategoryQuery.singletonQuery();
         query.setId(categoryId);
-        query.setLimit(1);
         List<CmsArticleCategory> categories = cmsArticleCategoryDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(categories)) {
             return categories.get(0);
@@ -36,9 +35,8 @@ public class ArticleComponent {
     }
 
     public CmsArticleCategory queryArticleCategory(Integer tag) {
-        CmsArticleCategoryQuery query = new CmsArticleCategoryQuery();
+        CmsArticleCategoryQuery query = CmsArticleCategoryQuery.singletonQuery();
         query.setTag(tag);
-        query.setLimit(1);
         List<CmsArticleCategory> categories = cmsArticleCategoryDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(categories)) {
             return categories.get(0);
@@ -47,9 +45,8 @@ public class ArticleComponent {
     }
 
     public CmsArticle queryArticle(Long articleId) {
-        CmsArticleQuery query = new CmsArticleQuery();
+        CmsArticleQuery query = CmsArticleQuery.singletonQuery();
         query.setId(articleId);
-        query.setLimit(1);
         List<CmsArticle> articles = cmsArticleDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(articles)) {
             return articles.get(0);

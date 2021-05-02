@@ -19,6 +19,8 @@ public interface CmsUserAccountMapper {
      */
     int insert(CmsUserAccount cmsUserAccount);
 
+    int replace(CmsUserAccount cmsUserAccount);
+
     /**
      * 批量upsert
      */
@@ -27,7 +29,7 @@ public interface CmsUserAccountMapper {
     /**
      * 删除处理
      */
-    int deleteById(Long id);
+    int deleteByStuId(String stuId);
 
     /**
      * 更新处理
@@ -43,5 +45,4 @@ public interface CmsUserAccountMapper {
      * 根据条件查询信息总数目
      */
     Long selectCountByParam(CmsUserAccountQuery query);
-
 }

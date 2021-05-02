@@ -42,6 +42,6 @@ public interface CmsUserService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsUser> queryPagingResultByParam(CmsUserQuery query);
+    PagingResult<CmsUser> queryPagingResult(CmsUserQuery query);
 
 }

@@ -25,10 +25,9 @@ public class CmsUserComponent {
     private CmsUserDao cmsUserDao;
 
     public CmsUser queryUser(String stuId) {
-        CmsUserQuery query = new CmsUserQuery();
+        CmsUserQuery query = CmsUserQuery.singletonQuery();
         query.setStuId(stuId);
         query.setDeleted(DeletedEnum.Normal.getCode());
-        query.setLimit(1);
         List<CmsUser> users = cmsUserDao.selectListByParam(query);
         if (CollectionUtils.isEmpty(users)) {
             throw new BusinessException("用户[" + stuId + "]不存在");
@@ -38,9 +37,9 @@ public class CmsUserComponent {
 
     public Map<Long, CmsUser> queryUsersMap(List<Long> userIds) {
         if (CollectionUtils.isNotEmpty(userIds)) {
-            CmsUserQuery query = new CmsUserQuery();
+            CmsUserQuery query = CmsUserQuery.listQuery();
             query.setIdList(userIds);
-            query.setLimit(1);
+            query.setLimit(userIds.size());
             List<CmsUser> users = cmsUserDao.selectListByParam(query);
             if (CollectionUtils.isNotEmpty(users)) {
                 return users.stream().collect(Collectors.toMap(CmsUser::getId, Function.identity()));

@@ -29,6 +29,6 @@ public interface CmsDeviceAllocationService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsDeviceAllocation> queryPagingResultByParam(CmsDeviceAllocationQuery query);
+    PagingResult<CmsDeviceAllocation> queryPagingResult(CmsDeviceAllocationQuery query);
 
 }

@@ -1,6 +1,7 @@
 package com.fudanuniversity.cms.business.service.impl;
 
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
+import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
 import com.fudanuniversity.cms.commons.constant.Constants;
@@ -15,12 +16,15 @@ import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.commons.util.JsonUtils;
 import com.fudanuniversity.cms.repository.dao.CmsUserDao;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
+import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -42,6 +46,9 @@ public class CmsUserServiceImpl implements CmsUserService {
 
     @Resource
     private CmsUserComponent cmsUserComponent;
+
+    @Resource
+    private CmsUserAccountService cmsUserAccountService;
 
     @Override
     public PagingResult<CmsUser> getAllUsers(Paging paging) {
@@ -71,6 +78,7 @@ public class CmsUserServiceImpl implements CmsUserService {
     /**
      * 新增用户
      */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void saveCmsUser(CmsUserMngVo userAddVo) {
         String stuId = userAddVo.getStuId();
@@ -93,8 +101,8 @@ public class CmsUserServiceImpl implements CmsUserService {
         cmsUser.setEmail(userAddVo.getEmail());
         cmsUser.setMentor(userAddVo.getMentor());
         cmsUser.setLeader(userAddVo.getLeader());
-        cmsUser.setStudyType(userAddVo.getType());
-        cmsUser.setKeshuo(userAddVo.getIsKeshuo());
+        cmsUser.setStudyType(userAddVo.getStudyType());
+        cmsUser.setKeshuo(userAddVo.getKeshuo());
         cmsUser.setEnrollDate(userAddVo.getEnrollDate());
         cmsUser.setPapers(userAddVo.getPapers());
         cmsUser.setPatents(userAddVo.getPatents());
@@ -107,6 +115,12 @@ public class CmsUserServiceImpl implements CmsUserService {
         int affect = cmsUserDao.replace(cmsUser);
         AssertUtils.state(affect == 1);
         logger.info("保存CmsUser affect:{}, cmsUser: {}", affect, cmsUser);
+
+        CmsUserAccount cmsUserAccount = new CmsUserAccount();
+        cmsUserAccount.setStuId(stuId);
+        cmsUserAccount.setSalt(stuId);
+        cmsUserAccount.setPassword("123456");
+        cmsUserAccountService.saveCmsUserAccount(cmsUserAccount);
     }
 
     /**
@@ -144,8 +158,8 @@ public class CmsUserServiceImpl implements CmsUserService {
         updater.setEmail(userUpdateVo.getEmail());
         updater.setMentor(userUpdateVo.getMentor());
         updater.setLeader(userUpdateVo.getLeader());
-        updater.setStudyType(userUpdateVo.getType());
-        updater.setKeshuo(userUpdateVo.getIsKeshuo());
+        updater.setStudyType(userUpdateVo.getStudyType());
+        updater.setKeshuo(userUpdateVo.getKeshuo());
         updater.setEnrollDate(userUpdateVo.getEnrollDate());
         updater.setPapers(userUpdateVo.getPapers());
         updater.setPatents(userUpdateVo.getPatents());
@@ -164,6 +178,7 @@ public class CmsUserServiceImpl implements CmsUserService {
     /**
      * 根据id删除处理
      */
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
     public void deleteCmsUserById(Long userId) {
         CmsUserQuery query = new CmsUserQuery();
@@ -174,16 +189,18 @@ public class CmsUserServiceImpl implements CmsUserService {
         if (CollectionUtils.isEmpty(cmsUsers)) {
             throw new BusinessException("删除的用户不存在");
         }
+        CmsUser cmsUser = cmsUsers.get(0);
         int affect = cmsUserDao.deleteById(userId);
         AssertUtils.state(affect == 1);
         logger.info("删除CmsUser affect:{}, id: {}", affect, JsonUtils.toJsonString(userId));
+        cmsUserAccountService.deleteCmsUserAccountByStuId(cmsUser.getStuId());
     }
 
     /**
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsUser> queryPagingResultByParam(CmsUserQuery query) {
+    public PagingResult<CmsUser> queryPagingResult(CmsUserQuery query) {
         PagingResult<CmsUser> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -194,7 +211,7 @@ public class CmsUserServiceImpl implements CmsUserService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsUser> cmsUserList = cmsUserDao.selectListByParam(query);
             pagingResult.setRows(cmsUserList);
         }

@@ -1,12 +1,11 @@
 package com.fudanuniversity.cms.business.service.impl;
 
-import com.fudanuniversity.cms.business.component.ArticleComponent;
+import com.fudanuniversity.cms.business.component.CmsArticleComponent;
 import com.fudanuniversity.cms.business.service.CmsArticleCategoryService;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleCategoryAddVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleCategoryQueryVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleCategoryVo;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsArticleCategoryDao;
 import com.fudanuniversity.cms.repository.entity.CmsArticleCategory;
@@ -34,7 +33,7 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
     private CmsArticleCategoryDao cmsArticleCategoryDao;
 
     @Resource
-    private ArticleComponent articleComponent;
+    private CmsArticleComponent cmsArticleComponent;
 
     /**
      * 保存处理
@@ -42,7 +41,7 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
     @Override
     public void addArticleCategory(CmsArticleCategoryAddVo categoryAddVo) {
         Integer tag = categoryAddVo.getTag();
-        CmsArticleCategory exitsCategory = articleComponent.queryArticleCategory(tag);
+        CmsArticleCategory exitsCategory = cmsArticleComponent.queryArticleCategory(tag);
         if (exitsCategory != null) {
             throw new BusinessException("文章分类tag[" + tag + "]已经存在");
         }
@@ -57,7 +56,7 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
 
     @Override
     public void deleteArticleCategoryById(Long id) {
-        CmsArticleCategory exitsCategory = articleComponent.queryArticleCategory(id);
+        CmsArticleCategory exitsCategory = cmsArticleComponent.queryArticleCategory(id);
         if (exitsCategory == null) {
             throw new BusinessException("文章分类不存在");
         }
@@ -72,12 +71,12 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
      */
     @Override
     public List<CmsArticleCategoryVo> listArticleCategories(CmsArticleCategoryQueryVo queryVo) {
-        CmsArticleCategoryQuery query = new CmsArticleCategoryQuery();
+        CmsArticleCategoryQuery query = CmsArticleCategoryQuery.listQuery();
         query.setId(queryVo.getId());
         query.setTag(queryVo.getTag());
         query.setName(queryVo.getName());
 
-        //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+        //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
         List<CmsArticleCategory> categories = cmsArticleCategoryDao.selectListByParam(query);
 
         return categories.stream().map(category -> {

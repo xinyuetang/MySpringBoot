@@ -22,12 +22,6 @@ public class CmsUserAccountResetPasswordVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 学号
-     */
-    @NotEmpty(message = "学号不能为空")
-    private String stuId;
-
     @NotEmpty(message = "原密码不能为空")
     @Length(min = 6, message = "原密码长度不正确")
     private String oldPassword;

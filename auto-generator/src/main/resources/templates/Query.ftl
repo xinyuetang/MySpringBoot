@@ -69,4 +69,16 @@ public class ${classSimpleName}Query extends BaseQuery {
     </#if>
     </#if>
     </#list>
+
+    public static ${classSimpleName}Query singletonQuery() {
+        ${classSimpleName}Query query = new ${classSimpleName}Query();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static ${classSimpleName}Query listQuery() {
+        ${classSimpleName}Query query = new ${classSimpleName}Query();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

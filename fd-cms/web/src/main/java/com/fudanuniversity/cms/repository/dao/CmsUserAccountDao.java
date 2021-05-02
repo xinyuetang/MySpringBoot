@@ -17,6 +17,8 @@ public interface CmsUserAccountDao {
      */
     int insert(CmsUserAccount cmsUserAccount);
 
+    int replace(CmsUserAccount cmsUserAccount);
+
     /**
      * 批量upsert
      */
@@ -29,8 +31,9 @@ public interface CmsUserAccountDao {
 
     /**
      * 根据id删除
+     * @param stuId
      */
-    int deleteById(Long id);
+    int deleteByStuId(String stuId);
 
     /**
      * 查询数据
@@ -41,5 +44,4 @@ public interface CmsUserAccountDao {
      * 查询数量
      */
     Long selectCountByParam(CmsUserAccountQuery query);
-
 }

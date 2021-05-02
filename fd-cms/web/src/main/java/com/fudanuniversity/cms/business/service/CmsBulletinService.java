@@ -1,8 +1,8 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.bulletin.*;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.repository.entity.CmsBulletin;
-import com.fudanuniversity.cms.repository.query.CmsBulletinQuery;
 
 /**
  * CmsBulletinService
@@ -14,21 +14,31 @@ public interface CmsBulletinService {
     /**
      * 保存处理
      */
-    void saveCmsBulletin(CmsBulletin cmsBulletin);
+    void addNewBulletin(CmsBulletinAddVo addVo);
 
     /**
      * 根据id更新处理
      */
-    void updateCmsBulletinById(CmsBulletin cmsBulletin);
+    void editBulletin(CmsBulletinEditVo editVo);
 
     /**
      * 根据id删除处理
      */
-    void deleteCmsBulletinById(Long id);
+    void deleteCmsBulletinById(Long bulletinId);
+
+    /**
+     * 读取消息
+     */
+    void readBulletin(Long userId, Long id);
 
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsBulletin> queryPagingResultByParam(CmsBulletinQuery query);
+    PagingResult<CmsBulletinVo> queryPagingResult(Long userId, CmsBulletinQueryVo queryVo, Paging paging);
+
+    /**
+     * 查询通知读取状态数量等信息
+     */
+    CmsBulletinStateVo queryCmsBulletinReadState(Long userId, CmsBulletinStateQueryVo stateQueryVo);
 
 }

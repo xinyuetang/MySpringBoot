@@ -66,7 +66,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsDevice> queryPagingResultByParam(CmsDeviceQuery query) {
+    public PagingResult<CmsDevice> queryPagingResult(CmsDeviceQuery query) {
         PagingResult<CmsDevice> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -77,7 +77,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsDevice> cmsDeviceList = cmsDeviceDao.selectListByParam(query);
             pagingResult.setRows(cmsDeviceList);
         }

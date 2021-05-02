@@ -29,6 +29,6 @@ public interface ${classSimpleName}Service {
     /**
      * 分页查询数据列表
      */
-    PagingResult<${classSimpleName}> queryPagingResultByParam(${classSimpleName}Query query);
+    PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query);
 
 }

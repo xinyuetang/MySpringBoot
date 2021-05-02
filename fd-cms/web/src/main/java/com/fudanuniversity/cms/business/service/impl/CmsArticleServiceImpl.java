@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.business.service.impl;
 
-import com.fudanuniversity.cms.business.component.ArticleComponent;
+import com.fudanuniversity.cms.business.component.CmsArticleComponent;
 import com.fudanuniversity.cms.business.service.CmsArticleService;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleAddVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleEditVo;
@@ -39,11 +39,11 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     private CmsArticleDao cmsArticleDao;
 
     @Resource
-    private ArticleComponent articleComponent;
+    private CmsArticleComponent cmsArticleComponent;
 
     @Override
     public CmsArticleVo getArticle(Long id) {
-        CmsArticle article = articleComponent.queryArticle(id);
+        CmsArticle article = cmsArticleComponent.queryArticle(id);
         if (article != null) {
             return convertCmsArticleVo(article);
         }
@@ -67,7 +67,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Override
     public void saveCmsArticle(CmsArticleAddVo articleAddVo) {
         Integer categoryTag = articleAddVo.getCategoryTag();
-        CmsArticleCategory category = articleComponent.queryArticleCategory(categoryTag);
+        CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryTag);
         AssertUtils.notNull(category, "文章分类标签不存在");
         CmsArticle article = new CmsArticle();
         article.setCategoryTag(articleAddVo.getCategoryTag());
@@ -85,14 +85,14 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Override
     public void editCmsArticleBy(CmsArticleEditVo editVo) {
         Long articleId = editVo.getId();
-        CmsArticle article = articleComponent.queryArticle(articleId);
+        CmsArticle article = cmsArticleComponent.queryArticle(articleId);
         if (article == null) {
             throw new BusinessException("当前文章已不存在");
         }
 
         Integer categoryTag = editVo.getCategoryTag();
         if (categoryTag != null) {
-            CmsArticleCategory category = articleComponent.queryArticleCategory(categoryTag);
+            CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryTag);
             AssertUtils.notNull(category, "文章分类标签不存在");
         }
         CmsArticle updater = new CmsArticle();
@@ -110,7 +110,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
      */
     @Override
     public void deleteCmsArticleById(Long id) {
-        CmsArticle article = articleComponent.queryArticle(id);
+        CmsArticle article = cmsArticleComponent.queryArticle(id);
         if (article == null) {
             throw new BusinessException("当前文章已不存在");
         }

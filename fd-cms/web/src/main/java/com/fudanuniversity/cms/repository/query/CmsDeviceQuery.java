@@ -119,4 +119,16 @@ public class CmsDeviceQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsDeviceQuery singletonQuery() {
+        CmsDeviceQuery query = new CmsDeviceQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsDeviceQuery listQuery() {
+        CmsDeviceQuery query = new CmsDeviceQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

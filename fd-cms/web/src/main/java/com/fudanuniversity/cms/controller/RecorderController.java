@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 @RestController
 @RequestMapping(path = "/recorder")
-public class RecorderController {
+public class RecorderController extends BaseController{
 //    @Autowired
 //    RecorderRepository recorderRepository;
 //    @Autowired

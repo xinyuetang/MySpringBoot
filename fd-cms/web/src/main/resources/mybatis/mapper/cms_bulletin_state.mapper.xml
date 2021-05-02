@@ -13,6 +13,13 @@
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
+    <!-- strategy_set_id分组统计数量结果集 -->
+    <resultMap id="CmsBulletinReadStateMap" type="com.fudanuniversity.cms.commons.model.wrapper.TripleTuple">
+        <result column="total" property="left"/>
+        <result column="read" property="middle"/>
+        <result column="unread" property="right"/>
+    </resultMap>
+
     <!-- 字段列表信息 -->
     <sql id="_field_list">
         `id`, `user_id`, `bulletin_id`, `read`, `create_time`,  `modify_time`
@@ -40,6 +47,13 @@
         </if>
         <if test="bulletinId != null">
             AND `bulletin_id` = #{bulletinId}
+        </if>
+        <if test="bulletinIdList != null and bulletinIdList.size() > 0">
+            AND `bulletin_id` IN
+            <foreach collection="bulletinIdList" item="bulletinId"
+                     open="( " separator=" , " close=" )">
+                #{bulletinId}
+            </foreach>
         </if>
         <if test="read != null">
             AND `read` = #{read}
@@ -85,6 +99,15 @@
         </trim>
     </insert>
 
+    <insert id="replace" useGeneratedKeys="true" keyProperty="id">
+        REPLACE INTO
+        `cms_bulletin_state`(`user_id`, `bulletin_id`, `read`, `create_time`, `modify_time`)
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{userId}, #{bulletinId}, #{read}, #{createTime}, #{modifyTime}
+        </trim>
+    </insert>
+
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
             `cms_bulletin_state`(`user_id`, `bulletin_id`, `read`, `create_time`, `modify_time`)
@@ -93,10 +116,10 @@
             (#{data.userId}, #{data.bulletinId}, #{data.read}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `user_id` = VALUES(`user_id`), 
-       `bulletin_id` = VALUES(`bulletin_id`), 
-       `read` = VALUES(`read`), 
-       `create_time` = `create_time`, 
+       `user_id` = VALUES(`user_id`),
+       `bulletin_id` = VALUES(`bulletin_id`),
+       `read` = VALUES(`read`),
+       `create_time` = `create_time`,
        `modify_time` = VALUES(`modify_time`)
     </insert>
 
@@ -147,4 +170,39 @@
             <include refid="_common_where"/>
         </trim>
     </select>
+
+    <select id="queryCmsBulletinReadCount" parameterType="map" resultMap="CmsBulletinReadStateMap">
+        SELECT
+            COUNT(cb.id) 'total',
+            COUNT(cbs.read = 1) 'read',
+            COUNT(NULLIF(cbs.read = 1,1)) 'unread'
+        FROM `cms_bulletin` cb
+        LEFT JOIN `cms_bulletin_state` cbs ON cb.id = cbs.bulletin_id AND cbs.user_id = 1
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <if test="bulletinId != null">
+                AND `cb.id` = #{bulletinId}
+            </if>
+            <if test="eltCreateTime != null">
+                <![CDATA[
+                AND `cb.create_time` <= #{eltCreateTime}
+                ]]>
+            </if>
+            <if test="egtCreateTime != null">
+                <![CDATA[
+                AND `cb.create_time` >= #{egtCreateTime}
+                ]]>
+            </if>
+            <if test="eltModifyTime != null">
+                <![CDATA[
+                AND `cb.modify_time` <= #{eltModifyTime}
+                ]]>
+            </if>
+            <if test="egtModifyTime != null">
+                <![CDATA[
+                AND `cb.modify_time` >= #{egtModifyTime}
+                ]]>
+            </if>
+        </trim>
+    </select>
+    <!--PairTuple<Long, Long> queryCmsBulletinReadCount(CmsBulletinStateQuery query);-->
 </mapper>

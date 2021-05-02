@@ -30,6 +30,6 @@ import ${packagePrefix}.repository.query.${classSimpleName}QueryDto;
     /**
     * 分页查询数据列表
     */
-    PagingResult<${classSimpleName}Dto> queryPagingResultByParam(${classSimpleName}QueryDto queryDto, Paging paging);
+    PagingResult<${classSimpleName}Dto> queryPagingResult(${classSimpleName}QueryDto queryDto, Paging paging);
 
         }

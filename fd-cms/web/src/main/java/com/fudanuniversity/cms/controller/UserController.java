@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.controller;
 
+import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.user.CmsUserAccountLoginVo;
@@ -16,10 +17,7 @@ import com.fudanuniversity.cms.commons.validation.group.Update;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -37,6 +35,9 @@ public class UserController extends BaseController {
     private CmsUserService cmsUserService;
 
     @Resource
+    private CmsUserComponent cmsUserComponent;
+
+    @Resource
     private CmsUserAccountService cmsUserAccountService;
 
     @RequestMapping(path = "/login")
@@ -46,28 +47,39 @@ public class UserController extends BaseController {
             throw new BusinessException("当前状态已登录");
         }
         CmsUserAccount userAccount = cmsUserAccountService.loginAccount(userAccountVo);
+        String stuId = userAccount.getStuId();
+        CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
+        if (cmsUser == null) {
+            throw new BusinessException("当前用户不存在，请联系管理员");
+        }
         LoginUser loginUser = new LoginUser();
-        loginUser.setStuId(userAccount.getStuId());
+        loginUser.setUserId(cmsUser.getId());
+        loginUser.setStuId(stuId);
+        loginUser.setName(cmsUser.getName());
         loginUser.setLoginTime(new Date());
         Webmvc.session().setAttribute(Constants.LoginSessionUserKey, loginUser);
         return JsonResult.buildSuccess();
     }
 
     @PostMapping(path = "/reset")
-    public JsonResult<?> reset(@Valid CmsUserAccountResetPasswordVo resetPasswordVo) {
-        cmsUserAccountService.resetAccountPassword(resetPasswordVo);
+    public JsonResult<?> reset(@Valid @RequestBody CmsUserAccountResetPasswordVo resetPasswordVo) {
+        LoginUser loginUser = getLoginUser();
+        cmsUserAccountService.resetAccountPassword(loginUser.getStuId(), resetPasswordVo);
         return JsonResult.buildSuccess();
     }
 
     @GetMapping(path = "/all")
     public JsonResult<?> getAllUsers(Paging paging) {
+        //当前登录者权限校验
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsUser> allUsers = cmsUserService.getAllUsers(paging);
         return JsonResult.buildSuccess(allUsers);
     }
 
     //添加新用户，stuId是唯一的标识
     @PostMapping(path = "/add")
-    public JsonResult<?> addNewUser(@Valid CmsUserMngVo userAddVo) {
+    public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
         //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
@@ -76,10 +88,9 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-
     @PostMapping(path = "/update")
     @ValidGroup(Update.class)
-    public JsonResult<?> updateUser(@Valid CmsUserMngVo userAddVo) {
+    public JsonResult<?> updateUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
         //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
@@ -88,13 +99,13 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/delete")
-    public JsonResult<?> delete(@NotNull @Min(1L) Long userId) {
+    @PostMapping(path = "/delete")
+    public JsonResult<?> delete(@NotNull @Min(1L) Long id) {
         //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         //删除用户
-        cmsUserService.deleteCmsUserById(userId);
+        cmsUserService.deleteCmsUserById(id);
         return JsonResult.buildSuccess();
     }
 

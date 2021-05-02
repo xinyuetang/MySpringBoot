@@ -140,4 +140,16 @@ public class CmsRecorderQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsRecorderQuery singletonQuery() {
+        CmsRecorderQuery query = new CmsRecorderQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsRecorderQuery listQuery() {
+        CmsRecorderQuery query = new CmsRecorderQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

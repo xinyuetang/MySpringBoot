@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.repository.dao;
 
+import com.fudanuniversity.cms.commons.model.wrapper.TripleTuple;
 import com.fudanuniversity.cms.repository.entity.CmsBulletinState;
 import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
 
@@ -16,6 +17,11 @@ public interface CmsBulletinStateDao {
      * 保存处理
      */
     int insert(CmsBulletinState cmsBulletinState);
+
+    /**
+     * 如果存在主键或唯一键冲突的记录，删除再添加
+     * */
+    int replace(CmsBulletinState cmsBulletinState);
 
     /**
      * 批量upsert
@@ -42,4 +48,8 @@ public interface CmsBulletinStateDao {
      */
     Long selectCountByParam(CmsBulletinStateQuery query);
 
+    /**
+     * 查询总数/已读/未读数量
+     */
+    TripleTuple<Long, Long, Long> queryCmsBulletinReadCount(CmsBulletinStateQuery stateQuery);
 }

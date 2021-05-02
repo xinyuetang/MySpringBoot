@@ -84,4 +84,16 @@ public class CmsBulletinQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsBulletinQuery singletonQuery() {
+        CmsBulletinQuery query = new CmsBulletinQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsBulletinQuery listQuery() {
+        CmsBulletinQuery query = new CmsBulletinQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

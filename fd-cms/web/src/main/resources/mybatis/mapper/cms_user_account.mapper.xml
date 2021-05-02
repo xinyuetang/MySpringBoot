@@ -85,6 +85,15 @@
         </trim>
     </insert>
 
+    <insert id="replace" useGeneratedKeys="true" keyProperty="id">
+        REPLACE INTO
+        `cms_user_account`(`stu_id`, `salt`, `password`, `create_time`, `modify_time`)
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{stuId}, #{salt}, #{password}, #{createTime}, #{modifyTime}
+        </trim>
+    </insert>
+
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
             `cms_user_account`(`stu_id`, `salt`, `password`, `create_time`, `modify_time`)
@@ -123,9 +132,9 @@
         LIMIT 1
     </update>
 
-    <delete id="deleteById">
+    <delete id="deleteByStuId">
         <![CDATA[
-        DELETE FROM `cms_user_account` WHERE `id` = #{id} LIMIT 1
+        DELETE FROM `cms_user_account` WHERE `stu_id` = #{stuId} LIMIT 1
         ]]>
     </delete>
 

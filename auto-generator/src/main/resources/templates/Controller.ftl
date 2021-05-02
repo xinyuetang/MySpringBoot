@@ -58,8 +58,8 @@ public class ${classSimpleName}Controller{
      * 根据条件查询信息列表
      */
     @GetMapping("/paging")
-    public JsonResult<List<${classSimpleName}Dto>> queryPagingResultByParam(@Valid ${classSimpleName}QueryDto queryDto, @Valid Paging paging) {
-        PagingResult<${classSimpleName}Dto> pagingResult = ${classVariableName}Service.queryPagingResultByParam(queryDto, paging);
+    public JsonResult<List<${classSimpleName}Dto>> queryPagingResult(@Valid ${classSimpleName}QueryDto queryDto, @Valid Paging paging) {
+        PagingResult<${classSimpleName}Dto> pagingResult = ${classVariableName}Service.queryPagingResult(queryDto, paging);
         return JsonResult.buildOk(pagingResult);
     }
 }

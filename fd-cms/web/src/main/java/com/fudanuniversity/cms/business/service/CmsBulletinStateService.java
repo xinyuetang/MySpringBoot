@@ -29,6 +29,6 @@ public interface CmsBulletinStateService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsBulletinState> queryPagingResultByParam(CmsBulletinStateQuery query);
+    PagingResult<CmsBulletinState> queryPagingResult(CmsBulletinStateQuery query);
 
 }

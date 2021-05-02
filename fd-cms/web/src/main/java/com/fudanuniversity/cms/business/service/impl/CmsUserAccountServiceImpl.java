@@ -6,7 +6,6 @@ import com.fudanuniversity.cms.business.vo.user.CmsUserAccountResetPasswordVo;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
-import com.fudanuniversity.cms.commons.util.JsonUtils;
 import com.fudanuniversity.cms.repository.dao.CmsUserAccountDao;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.fudanuniversity.cms.repository.query.CmsUserAccountQuery;
@@ -46,11 +45,11 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
     }
 
     @Override
-    public void resetAccountPassword(CmsUserAccountResetPasswordVo resetPasswordVo) {
+    public void resetAccountPassword(String stuId, CmsUserAccountResetPasswordVo resetPasswordVo) {
         if (Objects.equals(resetPasswordVo.getOldPassword(), resetPasswordVo.getNewPassword())) {
             throw new BusinessException("新密码和原密码相同");
         }
-        CmsUserAccount userAccount = queryUserAccount(resetPasswordVo.getStuId());
+        CmsUserAccount userAccount = queryUserAccount(stuId);
         String oldSaltString = userAccount.getSalt() + resetPasswordVo.getOldPassword();
         String oldDigestPassword = DigestUtils.md5Hex(oldSaltString);
         if (!Objects.equals(userAccount.getPassword(), oldDigestPassword)) {
@@ -83,10 +82,8 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
      */
     @Override
     public void saveCmsUserAccount(CmsUserAccount cmsUserAccount) {
-        //TODO 校验与赋值映射
-
-        int affect = cmsUserAccountDao.insert(cmsUserAccount);
-        logger.info("保存CmsUserAccount affect:{}, cmsUserAccount: {}", affect, JsonUtils.toJsonString(cmsUserAccount));
+        int affect = cmsUserAccountDao.replace(cmsUserAccount);
+        logger.info("保存CmsUserAccount affect:{}, cmsUserAccount: {}", affect, cmsUserAccount);
     }
 
     /**
@@ -98,24 +95,23 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
         //TODO 值映射校验与赋值映射
 
         int affect = cmsUserAccountDao.updateById(updater);
-        logger.info("更新CmsUserAccount affect:{}, updater: {}", affect, JsonUtils.toJsonString(updater));
+        logger.info("更新CmsUserAccount affect:{}, updater: {}", affect, updater);
     }
 
     /**
-     * 根据id删除处理
+     * 根据stuId删除处理
      */
     @Override
-    public void deleteCmsUserAccountById(Long id) {
-        //TODO 补充状态检测业务逻辑
-        int affect = cmsUserAccountDao.deleteById(id);
-        logger.info("删除CmsUserAccount affect:{}, id: {}", affect, JsonUtils.toJsonString(id));
+    public void deleteCmsUserAccountByStuId(String stuId) {
+        int affect = cmsUserAccountDao.deleteByStuId(stuId);
+        logger.info("删除CmsUserAccount affect:{}, stuId: {}", affect, stuId);
     }
 
     /**
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsUserAccount> queryPagingResultByParam(CmsUserAccountQuery query) {
+    public PagingResult<CmsUserAccount> queryPagingResult(CmsUserAccountQuery query) {
         PagingResult<CmsUserAccount> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -126,7 +122,7 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsUserAccount> cmsUserAccountList = cmsUserAccountDao.selectListByParam(query);
             pagingResult.setRows(cmsUserAccountList);
         }

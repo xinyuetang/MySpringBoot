@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.enums;
 /**
  * Created by tidu at 2021-05-02 02:29:36
  */
-public enum PlanTypeEnum {
+public enum StudyTypeEnum {
     Academic(0, "学术型"),
     Synthesizing(1, "结合型"),
     Technology(2, "技术型"),
@@ -13,7 +13,7 @@ public enum PlanTypeEnum {
 
     private final String desc;
 
-    PlanTypeEnum(Integer code, String desc) {
+    StudyTypeEnum(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }

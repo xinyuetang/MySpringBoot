@@ -5,15 +5,15 @@ import com.fudanuniversity.cms.repository.entity.deprecated.Device;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(path="/device")
-public class DeviceController {
+@RequestMapping(path = "/device")
+public class DeviceController extends BaseController {
 //    @Autowired
 //    private DeviceRepository deviceRepository;
 //    @Autowired
 //    private UserRepository userRepository;
 
-    @PostMapping(path="/add")
-    public JsonResult<?> addDevice(@RequestBody Device device){
+    @PostMapping(path = "/add")
+    public JsonResult<?> addDevice(@RequestBody Device device) {
 //        //获得发起请求的用户Id
 //        String token  = UserRequest.getToken();
 //        Integer userId = TokenUtil.getUserId(token);
@@ -30,8 +30,9 @@ public class DeviceController {
 //        return  rst.toString();
         return JsonResult.buildSuccess();
     }
+
     @GetMapping(path = "delete")
-    public  JsonResult<?> deleteDevice(@RequestParam Integer id){
+    public JsonResult<?> deleteDevice(@RequestParam Integer id) {
 //        deviceRepository.deleteById(id);
 //        JSONObject rst = new JSONObject();
 //        rst.put("result","success");
@@ -40,7 +41,7 @@ public class DeviceController {
     }
 
     @GetMapping(path = "all")
-    public  JsonResult<?> getAllDevice(){
+    public JsonResult<?> getAllDevice() {
 //        JSONObject result = new JSONObject();
 //
 //        Iterable<Device> devices_type0 = deviceRepository.findAllByType(0);

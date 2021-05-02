@@ -119,4 +119,16 @@ public class CmsPlanAllocationQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsPlanAllocationQuery singletonQuery() {
+        CmsPlanAllocationQuery query = new CmsPlanAllocationQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsPlanAllocationQuery listQuery() {
+        CmsPlanAllocationQuery query = new CmsPlanAllocationQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

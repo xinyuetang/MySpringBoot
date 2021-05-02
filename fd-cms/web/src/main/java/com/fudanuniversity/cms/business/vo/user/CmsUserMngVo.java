@@ -74,13 +74,13 @@ public class CmsUserMngVo implements Serializable {
      * 是否科硕
      */
     //@In({"0", "1"})
-    private Integer isKeshuo;
+    private Integer keshuo;
 
     /**
      * 就读类型
      */
     //@EnumValue(enumClass = UserTypeEnum.class, property = "code")
-    private Integer type;
+    private Integer studyType;
 
     /**
      * 入学时间

@@ -98,4 +98,16 @@ public class CmsSeminarQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsSeminarQuery singletonQuery() {
+        CmsSeminarQuery query = new CmsSeminarQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsSeminarQuery listQuery() {
+        CmsSeminarQuery query = new CmsSeminarQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

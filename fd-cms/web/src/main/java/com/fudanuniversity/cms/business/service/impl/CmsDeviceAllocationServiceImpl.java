@@ -66,7 +66,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsDeviceAllocation> queryPagingResultByParam(CmsDeviceAllocationQuery query) {
+    public PagingResult<CmsDeviceAllocation> queryPagingResult(CmsDeviceAllocationQuery query) {
         PagingResult<CmsDeviceAllocation> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -77,7 +77,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(new SortColumn("create_at", SortMode.DESC));
+            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsDeviceAllocation> cmsDeviceAllocationList = cmsDeviceAllocationDao.selectListByParam(query);
             pagingResult.setRows(cmsDeviceAllocationList);
         }

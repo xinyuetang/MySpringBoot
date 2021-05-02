@@ -105,4 +105,16 @@ public class CmsDeviceAllocationQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtModifyTime;
+
+    public static CmsDeviceAllocationQuery singletonQuery() {
+        CmsDeviceAllocationQuery query = new CmsDeviceAllocationQuery();
+        query.setLimit(1);
+        return query;
+    }
+
+    public static CmsDeviceAllocationQuery listQuery() {
+        CmsDeviceAllocationQuery query = new CmsDeviceAllocationQuery();
+        query.setLimit(MAX_ROWS);
+        return query;
+    }
 }

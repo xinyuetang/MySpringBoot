@@ -29,6 +29,6 @@ public interface CmsRecorderService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsRecorder> queryPagingResultByParam(CmsRecorderQuery query);
+    PagingResult<CmsRecorder> queryPagingResult(CmsRecorderQuery query);
 
 }

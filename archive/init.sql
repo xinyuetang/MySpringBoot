@@ -114,7 +114,7 @@ CREATE TABLE `fd_cms`.`cms_user_account`
     `create_time` datetime    NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `idx_stu_id` (`stu_id`) USING BTREE
+    UNIQUE KEY `uk_stu_id` (`stu_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户帐户';
@@ -245,7 +245,7 @@ CREATE TABLE `fd_cms`.`cms_bulletin_state`
     `create_time` datetime NOT NULL COMMENT '创建时间',
     `modify_time` datetime          DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_user_id_bulletin_id` (`user_id`, `bulletin_id`) USING BTREE
+    UNIQUE KEY `uk_user_id_bulletin_id` (`user_id`, `bulletin_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户通知状态';
