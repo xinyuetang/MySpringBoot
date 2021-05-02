@@ -1,8 +1,8 @@
-package ${packagePrefix}.combi.service;
+package ${packagePrefix}.business.service;
 
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
-import ${packagePrefix}.combi.service.${classSimpleName}Service;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
+import ${packagePrefix}.business.service.${classSimpleName}Service;
 import ${packagePrefix}.test.unit.BaseTest;
 
 import com.alibaba.fastjson.JSON;

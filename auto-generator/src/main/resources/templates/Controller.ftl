@@ -1,11 +1,11 @@
-package ${packagePrefix}.combi.service.impl;
+package ${packagePrefix}.business.service.impl;
 
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import ${packagePrefix}.dto.${classSimpleName}Dto;
 import ${packagePrefix}.dto.${classSimpleName}QueryDto;
-import ${packagePrefix}.combi.service.${classSimpleName}Service;
+import ${packagePrefix}.business.service.${classSimpleName}Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

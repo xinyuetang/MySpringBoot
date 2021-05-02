@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsPlanAllocationMapper">
+
+    <!-- 返回结果集 -->
+    <resultMap id="CmsPlanAllocationMap" type="com.fudanuniversity.cms.repository.entity.CmsPlanAllocation">
+        <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="plan_id" property="planId"/>
+        <result column="plan_start_time" property="planStartTime"/>
+        <result column="plan_end_time" property="planEndTime"/>
+        <result column="spend_days" property="spendDays"/>
+        <result column="delay_days" property="delayDays"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <!-- 字段列表信息 -->
+    <sql id="_field_list">
+        `id`, `user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`,  `modify_time`
+    </sql>
+
+    <!-- 值列表信息 -->
+    <sql id="_value_list">
+        #{id}, #{userId}, #{planId}, #{planStartTime}, #{planEndTime}, #{spendDays}, #{delayDays}, #{remark}, #{createTime},  #{modifyTime}
+    </sql>
+
+    <!-- 普通条件查询 -->
+    <sql id="_common_where">
+        <if test="id != null">
+            AND `id` = #{id}
+        </if>
+        <if test="idList != null and idList.size() > 0">
+            AND `id` IN
+            <foreach collection="idList" item="id"
+                     open="( " separator=" , " close=" )">
+                #{id}
+            </foreach>
+        </if>
+        <if test="userId != null">
+            AND `user_id` = #{userId}
+        </if>
+        <if test="planId != null">
+            AND `plan_id` = #{planId}
+        </if>
+        <if test="planStartTime != null">
+            AND `plan_start_time` = #{planStartTime}
+        </if>
+        <if test="planEndTime != null">
+            AND `plan_end_time` = #{planEndTime}
+        </if>
+        <if test="spendDays != null">
+            AND `spend_days` = #{spendDays}
+        </if>
+        <if test="delayDays != null">
+            AND `delay_days` = #{delayDays}
+        </if>
+        <if test="remark != null">
+            AND `remark` = #{remark}
+        </if>
+        <if test="eltCreateTime != null">
+            <![CDATA[
+            AND `create_time` <= #{eltCreateTime}
+            ]]>
+        </if>
+        <if test="egtCreateTime != null">
+            <![CDATA[
+            AND `create_time` >= #{egtCreateTime}
+            ]]>
+        </if>
+        <if test="eltModifyTime != null">
+            <![CDATA[
+            AND `modify_time` <= #{eltModifyTime}
+            ]]>
+        </if>
+        <if test="egtModifyTime != null">
+            <![CDATA[
+            AND `modify_time` >= #{egtModifyTime}
+            ]]>
+        </if>
+    </sql>
+
+    <!-- 通用排序 -->
+    <sql id="_common_sorts">
+        <if test="sorts != null">
+            ORDER BY
+            <foreach collection="sorts" item="item" separator=",">
+                ${item.columnName} ${item.sortMode.mode}
+            </foreach>
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            `cms_plan_allocation`(`user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`, `modify_time`)
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{userId}, #{planId}, #{planStartTime}, #{planEndTime}, #{spendDays}, #{delayDays}, #{remark}, #{createTime}, #{modifyTime}
+        </trim>
+    </insert>
+
+    <insert id="bulkUpsert" parameterType="list">
+        INSERT INTO
+            `cms_plan_allocation`(`user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`, `modify_time`)
+        VALUES
+        <foreach collection="list" item="data" separator=",">
+            (#{data.userId}, #{data.planId}, #{data.planStartTime}, #{data.planEndTime}, #{data.spendDays}, #{data.delayDays}, #{data.remark}, #{data.createTime}, #{data.modifyTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+       `user_id` = VALUES(`user_id`), 
+       `plan_id` = VALUES(`plan_id`), 
+       `plan_start_time` = VALUES(`plan_start_time`), 
+       `plan_end_time` = VALUES(`plan_end_time`), 
+       `spend_days` = VALUES(`spend_days`), 
+       `delay_days` = VALUES(`delay_days`), 
+       `remark` = VALUES(`remark`), 
+       `create_time` = `create_time`, 
+       `modify_time` = VALUES(`modify_time`)
+    </insert>
+
+    <update id="updateById">
+        UPDATE `cms_plan_allocation`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
+            <if test="planId != null">
+                `plan_id` = #{planId},
+            </if>
+            <if test="planStartTime != null">
+                `plan_start_time` = #{planStartTime},
+            </if>
+            <if test="planEndTime != null">
+                `plan_end_time` = #{planEndTime},
+            </if>
+            <if test="spendDays != null">
+                `spend_days` = #{spendDays},
+            </if>
+            <if test="delayDays != null">
+                `delay_days` = #{delayDays},
+            </if>
+            <if test="remark != null">
+                `remark` = #{remark},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                `modify_time` = #{modifyTime},
+            </if>
+        </trim>
+        WHERE `id` = #{id}
+        LIMIT 1
+    </update>
+
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM `cms_plan_allocation` WHERE `id` = #{id} LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="selectListByParam" parameterType="map" resultMap="CmsPlanAllocationMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `cms_plan_allocation`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM `cms_plan_allocation`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+    </select>
+</mapper>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="${packagePrefix}.inner.mapper.${classSimpleName}Mapper">
+<mapper namespace="${packagePrefix}.repository.mapper.${classSimpleName}Mapper">
 
     <!-- 返回结果集 -->
-    <resultMap id="${classSimpleName}Map" type="${packagePrefix}.inner.entity.${classSimpleName}">
+    <resultMap id="${classSimpleName}Map" type="${packagePrefix}.repository.entity.${classSimpleName}">
     <#list columnList as column>
         <result column="${column.columnName}" property="${column.columnProperty}"/>
     </#list>

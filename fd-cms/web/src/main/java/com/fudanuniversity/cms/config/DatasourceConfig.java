@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * Created by tidu at 2021-04-29 14:47:37
  */
 @Configuration
-@MapperScan(basePackages = "com.fudanuniversity.cms.inner.mapper")
+@MapperScan(basePackages = "com.fudanuniversity.cms.repository.mapper")
 public class DatasourceConfig {
 
     @Bean

@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsDeviceMapper">
+
+    <!-- 返回结果集 -->
+    <resultMap id="CmsDeviceMap" type="com.fudanuniversity.cms.repository.entity.CmsDevice">
+        <result column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="model" property="model"/>
+        <result column="principal" property="principal"/>
+        <result column="name" property="name"/>
+        <result column="inventory" property="inventory"/>
+        <result column="inventory_unit" property="inventoryUnit"/>
+        <result column="date" property="date"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <!-- 字段列表信息 -->
+    <sql id="_field_list">
+        `id`, `type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `date`, `create_time`,  `modify_time`
+    </sql>
+
+    <!-- 值列表信息 -->
+    <sql id="_value_list">
+        #{id}, #{type}, #{model}, #{principal}, #{name}, #{inventory}, #{inventoryUnit}, #{date}, #{createTime},  #{modifyTime}
+    </sql>
+
+    <!-- 普通条件查询 -->
+    <sql id="_common_where">
+        <if test="id != null">
+            AND `id` = #{id}
+        </if>
+        <if test="idList != null and idList.size() > 0">
+            AND `id` IN
+            <foreach collection="idList" item="id"
+                     open="( " separator=" , " close=" )">
+                #{id}
+            </foreach>
+        </if>
+        <if test="type != null">
+            AND `type` = #{type}
+        </if>
+        <if test="model != null">
+            AND `model` = #{model}
+        </if>
+        <if test="principal != null">
+            AND `principal` = #{principal}
+        </if>
+        <if test="name != null">
+            AND `name` = #{name}
+        </if>
+        <if test="inventory != null">
+            AND `inventory` = #{inventory}
+        </if>
+        <if test="inventoryUnit != null">
+            AND `inventory_unit` = #{inventoryUnit}
+        </if>
+        <if test="date != null">
+            AND `date` = #{date}
+        </if>
+        <if test="eltCreateTime != null">
+            <![CDATA[
+            AND `create_time` <= #{eltCreateTime}
+            ]]>
+        </if>
+        <if test="egtCreateTime != null">
+            <![CDATA[
+            AND `create_time` >= #{egtCreateTime}
+            ]]>
+        </if>
+        <if test="eltModifyTime != null">
+            <![CDATA[
+            AND `modify_time` <= #{eltModifyTime}
+            ]]>
+        </if>
+        <if test="egtModifyTime != null">
+            <![CDATA[
+            AND `modify_time` >= #{egtModifyTime}
+            ]]>
+        </if>
+    </sql>
+
+    <!-- 通用排序 -->
+    <sql id="_common_sorts">
+        <if test="sorts != null">
+            ORDER BY
+            <foreach collection="sorts" item="item" separator=",">
+                ${item.columnName} ${item.sortMode.mode}
+            </foreach>
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            `cms_device`(`type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `date`, `create_time`, `modify_time`)
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{type}, #{model}, #{principal}, #{name}, #{inventory}, #{inventoryUnit}, #{date}, #{createTime}, #{modifyTime}
+        </trim>
+    </insert>
+
+    <insert id="bulkUpsert" parameterType="list">
+        INSERT INTO
+            `cms_device`(`type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `date`, `create_time`, `modify_time`)
+        VALUES
+        <foreach collection="list" item="data" separator=",">
+            (#{data.type}, #{data.model}, #{data.principal}, #{data.name}, #{data.inventory}, #{data.inventoryUnit}, #{data.date}, #{data.createTime}, #{data.modifyTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+       `type` = VALUES(`type`), 
+       `model` = VALUES(`model`), 
+       `principal` = VALUES(`principal`), 
+       `name` = VALUES(`name`), 
+       `inventory` = VALUES(`inventory`), 
+       `inventory_unit` = VALUES(`inventory_unit`), 
+       `date` = VALUES(`date`), 
+       `create_time` = `create_time`, 
+       `modify_time` = VALUES(`modify_time`)
+    </insert>
+
+    <update id="updateById">
+        UPDATE `cms_device`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="model != null">
+                `model` = #{model},
+            </if>
+            <if test="principal != null">
+                `principal` = #{principal},
+            </if>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="inventory != null">
+                `inventory` = #{inventory},
+            </if>
+            <if test="inventoryUnit != null">
+                `inventory_unit` = #{inventoryUnit},
+            </if>
+            <if test="date != null">
+                `date` = #{date},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                `modify_time` = #{modifyTime},
+            </if>
+        </trim>
+        WHERE `id` = #{id}
+        LIMIT 1
+    </update>
+
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM `cms_device` WHERE `id` = #{id} LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="selectListByParam" parameterType="map" resultMap="CmsDeviceMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `cms_device`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM `cms_device`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+    </select>
+</mapper>

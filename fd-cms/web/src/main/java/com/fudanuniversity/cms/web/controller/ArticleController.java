@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.web.controller;
 
 import com.fudanuniversity.cms.commons.model.JsonResult;
-import com.fudanuniversity.cms.inner.entity.deprecated.Article;
+import com.fudanuniversity.cms.repository.entity.deprecated.Article;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

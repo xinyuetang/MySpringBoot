@@ -8,15 +8,16 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_user`;
 CREATE TABLE `fd_cms`.`cms_user`
 (
     `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `type`        varchar(32) NOT NULL DEFAULT '' COMMENT '用户类型',
     `stu_id`      varchar(32) NOT NULL DEFAULT '' COMMENT '学号',
-    `role_id`     int         NOT NULL DEFAULT '0' COMMENT '权限身份',
+    `role_id`     int         NOT NULL COMMENT '权限身份',
     `name`        varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
     `telephone`   varchar(32) NOT NULL DEFAULT '' COMMENT '手机',
     `email`       varchar(32) NOT NULL DEFAULT '' COMMENT '邮箱',
     `mentor`      varchar(32) NOT NULL DEFAULT '' COMMENT '导师',
     `leader`      varchar(32) NOT NULL DEFAULT '' COMMENT '汇报人',
-    `type`        tinyint     NOT NULL DEFAULT '0' COMMENT '就读类型',
-    `is_keshuo`   tinyint     NOT NULL DEFAULT '0' COMMENT '论文',
+    `study_type` tinyint     NOT NULL DEFAULT '0' COMMENT '就读类型',
+    `keshuo`   tinyint     NOT NULL DEFAULT '0' COMMENT '是否科硕',
     `enroll_date` date                 DEFAULT NULL COMMENT '入学时间',
     `papers`      longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '论文',
     `patents`     longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT '专利',
@@ -116,7 +117,7 @@ CREATE TABLE `fd_cms`.`cms_user_account`
     UNIQUE KEY `idx_stu_id` (`stu_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户账户';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户帐户';
 
 INSERT INTO `fd_cms`.`cms_user_account`(`stu_id`, `salt`, `password`, `create_time`)
 VALUES ('07175', '07175', MD5('07175123456'), CURRENT_TIMESTAMP),
@@ -186,18 +187,177 @@ VALUES ('07175', '07175', MD5('07175123456'), CURRENT_TIMESTAMP),
        ('20212010115', '20212010115', MD5('20212010115123456'), CURRENT_TIMESTAMP),
        ('20212010122', '20212010122', MD5('20212010122123456'), CURRENT_TIMESTAMP);
 
-DROP TABLE IF EXISTS `fd_cms`.`cms_`;
-CREATE TABLE `fd_cms`.`cms_verification`
+DROP TABLE IF EXISTS `fd_cms`.`cms_article_category`;
+CREATE TABLE `fd_cms`.`cms_article_category`
 (
-    `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`     bigint      NOT NULL COMMENT '用户id',
-    `code`        varchar(32) NOT NULL COMMENT '验证码',
-    `expire_time` datetime    NOT NULL COMMENT '过期时间',
-    `deleted`     tinyint(4)  NOT NULL DEFAULT 0 COMMENT '删除标记',
-    `create_time` datetime    NOT NULL COMMENT '创建时间',
-    `modify_time` datetime             DEFAULT NULL COMMENT '更新时间',
+    `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `tag`         int          NOT NULL COMMENT '标签',
+    `name`        varchar(128) NOT NULL COMMENT '名称',
+    `create_time` datetime     NOT NULL COMMENT '创建时间',
+    `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `idx_user_id` (`user_id`) USING BTREE
+    UNIQUE KEY `idx_tag` (`tag`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户验证码';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='文章分类';
+
+INSERT INTO `fd_cms`.`cms_article_category`(`tag`, `name`, `create_time`)
+VALUES ('0', '推荐论文管理', CURRENT_TIMESTAMP),
+       ('1', '培养方案管理', CURRENT_TIMESTAMP);
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_article`;
+CREATE TABLE `fd_cms`.`cms_article`
+(
+    `id`           bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `category_tag` int          NOT NULL COMMENT '标签',
+    `title`        varchar(128) NOT NULL COMMENT '名称',
+    `content`      longtext     NOT NULL COMMENT '内容',
+    `create_time`  datetime     NOT NULL COMMENT '创建时间',
+    `modify_time`  datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_category_tag` (`category_tag`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='文章';
+
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_bulletin`;
+CREATE TABLE `fd_cms`.`cms_bulletin`
+(
+    `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `title`       varchar(128) NOT NULL COMMENT '名称',
+    `content`     longtext     NOT NULL COMMENT '内容',
+    `create_time` datetime     NOT NULL COMMENT '创建时间',
+    `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_create_time` (`create_time`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='通知';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_bulletin_state`;
+CREATE TABLE `fd_cms`.`cms_bulletin_state`
+(
+    `id`          bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`     bigint   NOT NULL COMMENT '用户id',
+    `bulletin_id` bigint   NOT NULL COMMENT '通知id',
+    `read`        tinyint  NOT NULL DEFAULT 0 COMMENT '是否已读',
+    `create_time` datetime NOT NULL COMMENT '创建时间',
+    `modify_time` datetime          DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_user_id_bulletin_id` (`user_id`, `bulletin_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户通知状态';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_seminar`;
+CREATE TABLE `fd_cms`.`cms_seminar`
+(
+    `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`     bigint       NOT NULL COMMENT '演讲用户id',
+    `theme`       varchar(128) NOT NULL COMMENT '演讲主题',
+    `link`        varchar(256) NOT NULL COMMENT '演讲资源保存链接地址',
+    `date`        date         NOT NULL COMMENT '演讲时间',
+    `create_time` datetime     NOT NULL COMMENT '创建时间',
+    `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_create_time` (`create_time`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='演讲';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_recorder`;
+CREATE TABLE `fd_cms`.`cms_recorder`
+(
+    `id`                 bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `date`               date         NOT NULL COMMENT '演讲时间',
+    `recorder1_id`       bigint       NOT NULL COMMENT '辅读人员1用户id',
+    `recorder1_file`     varchar(128) NOT NULL COMMENT '辅读人员1文件名',
+    `recorder1_content`  longblob COMMENT '辅读人员1记录内容',
+    `recorder2_id`       bigint       NOT NULL COMMENT '辅读人员2用户id',
+    `recorder2_file`     varchar(128) NOT NULL COMMENT '辅读人员2文件名',
+    `recorder2_content`  longblob COMMENT '辅读人员2记录内容',
+    `summarizer_id`      bigint       NOT NULL COMMENT '记录人员用户id',
+    `summarizer_file`    varchar(128) NOT NULL COMMENT '记录人员文件名',
+    `summarizer_content` longblob COMMENT '记录人员记录内容',
+    `create_time`        datetime     NOT NULL COMMENT '创建时间',
+    `modify_time`        datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_date` (`date`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='演讲记录员';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_device`;
+CREATE TABLE `fd_cms`.`cms_device`
+(
+    `id`             bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `type`           bigint       NOT NULL COMMENT '设备类型',
+    `model`          varchar(128) NOT NULL COMMENT '设备型号',
+    `principal`      varchar(32)  NOT NULL COMMENT '负责人姓名',
+    `name`           varchar(256) NOT NULL COMMENT '设备型号',
+    `inventory`      int          NOT NULL COMMENT '库存',
+    `inventory_unit` varchar(32)  NOT NULL COMMENT '库存单位',
+    `date`           date         NOT NULL COMMENT '演讲时间',
+    `create_time`    datetime     NOT NULL COMMENT '创建时间',
+    `modify_time`    datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_create_time` (`create_time`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='设备';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_device_allocation`;
+CREATE TABLE `fd_cms`.`cms_device_allocation`
+(
+    `id`              bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`         bigint      NOT NULL COMMENT '演讲用户id',
+    `device_id`       bigint      NOT NULL COMMENT '设备id',
+    `inventory_usage` int         NOT NULL COMMENT '使用库存',
+    `inventory_unit`  varchar(32) NOT NULL COMMENT '库存单位',
+    `status`          tinyint     NOT NULL DEFAULT 0 COMMENT '状态',
+    `create_time`     datetime    NOT NULL COMMENT '创建时间',
+    `modify_time`     datetime             DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_create_time` (`create_time`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='设备分配';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_plan`;
+CREATE TABLE `fd_cms`.`cms_plan`
+(
+    `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `type`        tinyint     NOT NULL COMMENT '类型',
+    `index`       int         NOT NULL COMMENT '序号',
+    `name`        varchar(32) NOT NULL COMMENT '名称',
+    `spend_days`  int         NOT NULL COMMENT '计划天数',
+    `common` tinyint     NOT NULL COMMENT '是否公共任务',
+    `keshuo` tinyint     NOT NULL COMMENT '是否科硕任务',
+    `create_time` datetime    NOT NULL COMMENT '创建时间',
+    `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_create_time` (`create_time`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_plan_allocation`;
+CREATE TABLE `fd_cms`.`cms_plan_allocation`
+(
+    `id`              bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`         bigint   NOT NULL COMMENT '学生id',
+    `plan_id`         bigint   NOT NULL COMMENT '培养方案id',
+    `plan_start_time` date     NOT NULL COMMENT '培养方案开始时间',
+    `plan_end_time`   date     NOT NULL COMMENT '培养方案到期时间',
+    `spend_days`      int      NOT NULL COMMENT '计划天数',
+    `delay_days`      int      NOT NULL COMMENT '延期天数',
+    `remark`          text COMMENT '备注',
+    `create_time`     datetime NOT NULL COMMENT '创建时间',
+    `modify_time`     datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_user_id` (`user_id`) USING BTREE,
+    KEY `idx_plan_id` (`plan_id`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案分配';

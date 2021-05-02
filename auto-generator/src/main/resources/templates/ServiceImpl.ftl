@@ -1,12 +1,10 @@
-package ${packagePrefix}.combi.service.impl;
+package ${packagePrefix}.business.service.impl;
 
-import ${packagePrefix}.inner.dao.${classSimpleName}Dao;
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
-import ${packagePrefix}.combi.service.${classSimpleName}Service;
-import com.fudanuniversity.cms.commons.model.paging.Paging;
+import ${packagePrefix}.repository.dao.${classSimpleName}Dao;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
+import ${packagePrefix}.business.service.${classSimpleName}Service;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.commons.util.ValueUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

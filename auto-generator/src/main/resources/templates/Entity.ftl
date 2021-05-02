@@ -1,4 +1,4 @@
-package ${packagePrefix}.inner.entity;
+package ${packagePrefix}.repository.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

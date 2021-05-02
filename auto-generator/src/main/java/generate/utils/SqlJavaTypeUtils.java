@@ -37,6 +37,9 @@ public class SqlJavaTypeUtils {
                 || sqlType.startsWith("mediumtext")
                 || sqlType.startsWith("longtext")) {
             return "String";
+        } else if (sqlType.startsWith("blob")
+                || sqlType.startsWith("longblob")) {
+            return "byte[]";
         } else if (sqlType.startsWith("datetime")) {
             return "Date";
         } else if (sqlType.startsWith("image")) {

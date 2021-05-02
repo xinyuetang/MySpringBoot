@@ -1,9 +1,9 @@
-package ${packagePrefix}.inner.dao.impl;
+package ${packagePrefix}.repository.dao.impl;
 
-import ${packagePrefix}.inner.dao.${classSimpleName}Dao;
-import ${packagePrefix}.inner.mapper.${classSimpleName}Mapper;
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
+import ${packagePrefix}.repository.dao.${classSimpleName}Dao;
+import ${packagePrefix}.repository.mapper.${classSimpleName}Mapper;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;

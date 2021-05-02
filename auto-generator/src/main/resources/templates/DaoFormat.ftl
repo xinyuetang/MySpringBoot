@@ -1,7 +1,7 @@
-package ${packagePrefix}.inner.dao;
+package ${packagePrefix}.repository.dao;
 
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
 
 import java.util.List;
 

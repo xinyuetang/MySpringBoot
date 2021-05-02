@@ -1,4 +1,4 @@
-package ${packagePrefix}.inner.query;
+package ${packagePrefix}.repository.query;
 
 import com.fudanuniversity.cms.commons.model.query.BaseQuery;
 import lombok.Data;

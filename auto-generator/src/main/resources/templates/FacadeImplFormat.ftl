@@ -1,15 +1,15 @@
-package ${packagePrefix}.combi.service.impl;
+package ${packagePrefix}.business.service.impl;
 
 import com.fudanuniversity.cms.commons.json.GsonUtils;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.util.ValueUtils;
-import ${packagePrefix}.combi.service.${classSimpleName}Service;
-import ${packagePrefix}.inner.dao.${classSimpleName}Dao;
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
+import ${packagePrefix}.business.service.${classSimpleName}Service;
+import ${packagePrefix}.repository.dao.${classSimpleName}Dao;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
 import ${packagePrefix}.dto.${classSimpleName}Dto;
-import ${packagePrefix}.inner.query.${classSimpleName}QueryDto;
+import ${packagePrefix}.repository.query.${classSimpleName}QueryDto;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

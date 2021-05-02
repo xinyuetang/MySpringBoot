@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.fudanuniversity.cms.inner.mapper.CmsUserMapper">
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsUserMapper">
 
     <!-- 返回结果集 -->
-    <resultMap id="CmsUserMap" type="com.fudanuniversity.cms.inner.entity.CmsUser">
+    <resultMap id="CmsUserMap" type="com.fudanuniversity.cms.repository.entity.CmsUser">
         <result column="id" property="id"/>
+        <result column="type" property="type"/>
         <result column="stu_id" property="stuId"/>
         <result column="role_id" property="roleId"/>
         <result column="name" property="name"/>
@@ -13,8 +14,8 @@
         <result column="email" property="email"/>
         <result column="mentor" property="mentor"/>
         <result column="leader" property="leader"/>
-        <result column="type" property="type"/>
-        <result column="is_keshuo" property="isKeshuo"/>
+        <result column="study_type" property="studyType"/>
+        <result column="keshuo" property="keshuo"/>
         <result column="enroll_date" property="enrollDate"/>
         <result column="papers" property="papers"/>
         <result column="patents" property="patents"/>
@@ -28,12 +29,12 @@
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `type`, `is_keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`,  `modify_time`
+        `id`, `type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{type}, #{isKeshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime},  #{modifyTime}
+        #{id}, #{type}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{studyType}, #{keshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -47,6 +48,9 @@
                      open="( " separator=" , " close=" )">
                 #{id}
             </foreach>
+        </if>
+        <if test="type != null">
+            AND `type` = #{type}
         </if>
         <if test="stuId != null">
             AND `stu_id` = #{stuId}
@@ -69,11 +73,11 @@
         <if test="leader != null">
             AND `leader` = #{leader}
         </if>
-        <if test="type != null">
-            AND `type` = #{type}
+        <if test="studyType != null">
+            AND `study_type` = #{studyType}
         </if>
-        <if test="isKeshuo != null">
-            AND `is_keshuo` = #{isKeshuo}
+        <if test="keshuo != null">
+            AND `keshuo` = #{keshuo}
         </if>
         <if test="enrollDate != null">
             AND `enroll_date` = #{enrollDate}
@@ -130,15 +134,15 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_user`(`stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `type`, `is_keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
+            `cms_user`(`type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{type}, #{isKeshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime}, #{modifyTime}
+            #{type}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{studyType}, #{keshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="replace" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO
+        REPLACE INTO
         `cms_user`(`stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `type`, `is_keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -148,12 +152,13 @@
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_user`(`stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `type`, `is_keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
+            `cms_user`(`type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.stuId}, #{data.roleId}, #{data.name}, #{data.telephone}, #{data.email}, #{data.mentor}, #{data.leader}, #{data.type}, #{data.isKeshuo}, #{data.enrollDate}, #{data.papers}, #{data.patents}, #{data.services}, #{data.projects}, #{data.status}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
+            (#{data.type}, #{data.stuId}, #{data.roleId}, #{data.name}, #{data.telephone}, #{data.email}, #{data.mentor}, #{data.leader}, #{data.studyType}, #{data.keshuo}, #{data.enrollDate}, #{data.papers}, #{data.patents}, #{data.services}, #{data.projects}, #{data.status}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
+       `type` = VALUES(`type`), 
        `stu_id` = VALUES(`stu_id`), 
        `role_id` = VALUES(`role_id`), 
        `name` = VALUES(`name`), 
@@ -161,8 +166,8 @@
        `email` = VALUES(`email`), 
        `mentor` = VALUES(`mentor`), 
        `leader` = VALUES(`leader`), 
-       `type` = VALUES(`type`), 
-       `is_keshuo` = VALUES(`is_keshuo`), 
+       `study_type` = VALUES(`study_type`), 
+       `keshuo` = VALUES(`keshuo`), 
        `enroll_date` = VALUES(`enroll_date`), 
        `papers` = VALUES(`papers`), 
        `patents` = VALUES(`patents`), 
@@ -177,6 +182,9 @@
     <update id="updateById">
         UPDATE `cms_user`
         <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">
+                `type` = #{type},
+            </if>
             <if test="stuId != null">
                 `stu_id` = #{stuId},
             </if>
@@ -198,11 +206,11 @@
             <if test="leader != null">
                 `leader` = #{leader},
             </if>
-            <if test="type != null">
-                `type` = #{type},
+            <if test="studyType != null">
+                `study_type` = #{studyType},
             </if>
-            <if test="isKeshuo != null">
-                `is_keshuo` = #{isKeshuo},
+            <if test="keshuo != null">
+                `keshuo` = #{keshuo},
             </if>
             <if test="enrollDate != null">
                 `enroll_date` = #{enrollDate},

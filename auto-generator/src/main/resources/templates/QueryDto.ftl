@@ -1,4 +1,4 @@
-package ${packagePrefix}.inner.query;
+package ${packagePrefix}.repository.query;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

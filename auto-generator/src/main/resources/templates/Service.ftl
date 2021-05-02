@@ -1,8 +1,8 @@
-package ${packagePrefix}.combi.service;
+package ${packagePrefix}.business.service;
 
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
 
 /**
  * ${classSimpleName}Service

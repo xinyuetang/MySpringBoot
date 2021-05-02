@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsPlanMapper">
+
+    <!-- 返回结果集 -->
+    <resultMap id="CmsPlanMap" type="com.fudanuniversity.cms.repository.entity.CmsPlan">
+        <result column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="index" property="index"/>
+        <result column="name" property="name"/>
+        <result column="spend_days" property="spendDays"/>
+        <result column="common" property="common"/>
+        <result column="keshuo" property="keshuo"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modify_time" property="modifyTime"/>
+    </resultMap>
+
+    <!-- 字段列表信息 -->
+    <sql id="_field_list">
+        `id`, `type`, `index`, `name`, `spend_days`, `common`, `keshuo`, `create_time`,  `modify_time`
+    </sql>
+
+    <!-- 值列表信息 -->
+    <sql id="_value_list">
+        #{id}, #{type}, #{index}, #{name}, #{spendDays}, #{common}, #{keshuo}, #{createTime},  #{modifyTime}
+    </sql>
+
+    <!-- 普通条件查询 -->
+    <sql id="_common_where">
+        <if test="id != null">
+            AND `id` = #{id}
+        </if>
+        <if test="idList != null and idList.size() > 0">
+            AND `id` IN
+            <foreach collection="idList" item="id"
+                     open="( " separator=" , " close=" )">
+                #{id}
+            </foreach>
+        </if>
+        <if test="type != null">
+            AND `type` = #{type}
+        </if>
+        <if test="index != null">
+            AND `index` = #{index}
+        </if>
+        <if test="name != null">
+            AND `name` = #{name}
+        </if>
+        <if test="spendDays != null">
+            AND `spend_days` = #{spendDays}
+        </if>
+        <if test="common != null">
+            AND `common` = #{common}
+        </if>
+        <if test="keshuo != null">
+            AND `keshuo` = #{keshuo}
+        </if>
+        <if test="eltCreateTime != null">
+            <![CDATA[
+            AND `create_time` <= #{eltCreateTime}
+            ]]>
+        </if>
+        <if test="egtCreateTime != null">
+            <![CDATA[
+            AND `create_time` >= #{egtCreateTime}
+            ]]>
+        </if>
+        <if test="eltModifyTime != null">
+            <![CDATA[
+            AND `modify_time` <= #{eltModifyTime}
+            ]]>
+        </if>
+        <if test="egtModifyTime != null">
+            <![CDATA[
+            AND `modify_time` >= #{egtModifyTime}
+            ]]>
+        </if>
+    </sql>
+
+    <!-- 通用排序 -->
+    <sql id="_common_sorts">
+        <if test="sorts != null">
+            ORDER BY
+            <foreach collection="sorts" item="item" separator=",">
+                ${item.columnName} ${item.sortMode.mode}
+            </foreach>
+        </if>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO
+            `cms_plan`(`type`, `index`, `name`, `spend_days`, `common`, `keshuo`, `create_time`, `modify_time`)
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            #{type}, #{index}, #{name}, #{spendDays}, #{common}, #{keshuo}, #{createTime}, #{modifyTime}
+        </trim>
+    </insert>
+
+    <insert id="bulkUpsert" parameterType="list">
+        INSERT INTO
+            `cms_plan`(`type`, `index`, `name`, `spend_days`, `common`, `keshuo`, `create_time`, `modify_time`)
+        VALUES
+        <foreach collection="list" item="data" separator=",">
+            (#{data.type}, #{data.index}, #{data.name}, #{data.spendDays}, #{data.common}, #{data.keshuo}, #{data.createTime}, #{data.modifyTime})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+       `type` = VALUES(`type`), 
+       `index` = VALUES(`index`), 
+       `name` = VALUES(`name`), 
+       `spend_days` = VALUES(`spend_days`), 
+       `common` = VALUES(`common`), 
+       `keshuo` = VALUES(`keshuo`), 
+       `create_time` = `create_time`, 
+       `modify_time` = VALUES(`modify_time`)
+    </insert>
+
+    <update id="updateById">
+        UPDATE `cms_plan`
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="type != null">
+                `type` = #{type},
+            </if>
+            <if test="index != null">
+                `index` = #{index},
+            </if>
+            <if test="name != null">
+                `name` = #{name},
+            </if>
+            <if test="spendDays != null">
+                `spend_days` = #{spendDays},
+            </if>
+            <if test="common != null">
+                `common` = #{common},
+            </if>
+            <if test="keshuo != null">
+                `keshuo` = #{keshuo},
+            </if>
+            <if test="createTime != null">
+                `create_time` = #{createTime},
+            </if>
+            <if test="modifyTime != null">
+                `modify_time` = #{modifyTime},
+            </if>
+        </trim>
+        WHERE `id` = #{id}
+        LIMIT 1
+    </update>
+
+    <delete id="deleteById">
+        <![CDATA[
+        DELETE FROM `cms_plan` WHERE `id` = #{id} LIMIT 1
+        ]]>
+    </delete>
+
+    <select id="selectListByParam" parameterType="map" resultMap="CmsPlanMap">
+        SELECT
+        <include refid="_field_list"/>
+        FROM `cms_plan`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
+        SELECT COUNT(*)
+        FROM `cms_plan`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+    </select>
+</mapper>

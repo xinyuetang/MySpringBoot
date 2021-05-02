@@ -1,7 +1,7 @@
-package ${packagePrefix}.inner.mapper;
+package ${packagePrefix}.repository.mapper;
 
-import ${packagePrefix}.inner.entity.${classSimpleName};
-import ${packagePrefix}.inner.query.${classSimpleName}Query;
+import ${packagePrefix}.repository.entity.${classSimpleName};
+import ${packagePrefix}.repository.query.${classSimpleName}Query;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

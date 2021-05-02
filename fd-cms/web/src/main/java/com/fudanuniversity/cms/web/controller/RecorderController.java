@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.web.controller;
 
 import com.fudanuniversity.cms.commons.model.JsonResult;
-import com.fudanuniversity.cms.inner.entity.deprecated.Recorder;
+import com.fudanuniversity.cms.repository.entity.deprecated.Recorder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 

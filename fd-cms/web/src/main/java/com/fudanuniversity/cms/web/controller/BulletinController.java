@@ -1,8 +1,7 @@
 package com.fudanuniversity.cms.web.controller;
 
 import com.fudanuniversity.cms.commons.model.JsonResult;
-import com.fudanuniversity.cms.inner.entity.deprecated.Bulletin;
-import org.springframework.stereotype.Controller;
+import com.fudanuniversity.cms.repository.entity.deprecated.Bulletin;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

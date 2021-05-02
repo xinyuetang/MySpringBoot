@@ -1,10 +1,10 @@
 package com.fudanuniversity.cms.web.controller;
 
-import com.fudanuniversity.cms.combi.service.CmsUserAccountService;
-import com.fudanuniversity.cms.combi.service.CmsUserService;
-import com.fudanuniversity.cms.combi.vo.CmsUserAccountLoginVo;
-import com.fudanuniversity.cms.combi.vo.CmsUserAccountResetPasswordVo;
-import com.fudanuniversity.cms.combi.vo.CmsUserMngVo;
+import com.fudanuniversity.cms.business.service.CmsUserAccountService;
+import com.fudanuniversity.cms.business.service.CmsUserService;
+import com.fudanuniversity.cms.business.vo.CmsUserAccountLoginVo;
+import com.fudanuniversity.cms.business.vo.CmsUserAccountResetPasswordVo;
+import com.fudanuniversity.cms.business.vo.CmsUserMngVo;
 import com.fudanuniversity.cms.commons.constant.Constants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.JsonResult;
@@ -14,8 +14,8 @@ import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.commons.validation.ValidGroup;
 import com.fudanuniversity.cms.commons.validation.group.Update;
 import com.fudanuniversity.cms.framework.util.Webmvc;
-import com.fudanuniversity.cms.inner.entity.CmsUser;
-import com.fudanuniversity.cms.inner.entity.CmsUserAccount;
+import com.fudanuniversity.cms.repository.entity.CmsUser;
+import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
