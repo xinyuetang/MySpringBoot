@@ -6,7 +6,7 @@ import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.user.CmsUserAccountLoginVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserAccountResetPasswordVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
@@ -42,7 +42,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(path = "/login")
     public JsonResult<?> login(@Valid CmsUserAccountLoginVo userAccountVo) {
-        Object loginUserObj = Webmvc.session().getAttribute(Constants.LoginSessionUserKey);
+        Object loginUserObj = Webmvc.session().getAttribute(CmsConstants.LoginSessionUserKey);
         if (loginUserObj instanceof LoginUser) {
             throw new BusinessException("当前状态已登录");
         }
@@ -57,7 +57,7 @@ public class UserController extends BaseController {
         loginUser.setStuId(stuId);
         loginUser.setName(cmsUser.getName());
         loginUser.setLoginTime(new Date());
-        Webmvc.session().setAttribute(Constants.LoginSessionUserKey, loginUser);
+        Webmvc.session().setAttribute(CmsConstants.LoginSessionUserKey, loginUser);
         return JsonResult.buildSuccess();
     }
 

@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.controller;
 
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.framework.util.Webmvc;
@@ -11,7 +11,7 @@ import com.fudanuniversity.cms.framework.util.Webmvc;
 public abstract class BaseController {
 
     public LoginUser getLoginUser() {
-        Object loginUserObj = Webmvc.session().getAttribute(Constants.LoginSessionUserKey);
+        Object loginUserObj = Webmvc.session().getAttribute(CmsConstants.LoginSessionUserKey);
         if (!(loginUserObj instanceof LoginUser)) {
             throw new BusinessException("请先登录");
         }

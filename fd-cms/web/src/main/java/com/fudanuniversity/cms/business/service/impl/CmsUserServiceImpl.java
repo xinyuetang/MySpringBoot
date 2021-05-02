@@ -4,7 +4,7 @@ import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
@@ -58,7 +58,7 @@ public class CmsUserServiceImpl implements CmsUserService {
         query.setOffset(paging.getOffset());
         query.setLimit(paging.getLimit());
         query.setGtId(0L);
-        query.setSorts(SortColumn.create(Constants.IdColumn, SortMode.ASC));
+        query.setSorts(SortColumn.create(CmsConstants.IdColumn, SortMode.ASC));
 
         List<CmsUser> users = cmsUserDao.selectListByParam(query);
         pagingResult.setRows(users);

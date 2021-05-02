@@ -6,7 +6,7 @@ import com.fudanuniversity.cms.business.vo.article.CmsArticleAddVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleEditVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleQueryVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleVo;
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -140,7 +140,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            query.setSorts(SortColumn.create(Constants.CreatedTimeColumn, SortMode.DESC));
+            query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsArticle> cmsArticleList = cmsArticleDao.selectListByParam(query);
             pagingResult.setRows(cmsArticleList, this::convertCmsArticleVo);
         }

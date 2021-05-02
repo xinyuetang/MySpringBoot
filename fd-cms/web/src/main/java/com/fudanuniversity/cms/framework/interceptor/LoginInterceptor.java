@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.framework.interceptor;
 
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.exception.ErrorCode;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
@@ -21,7 +21,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         HttpSession session = request.getSession();
-        Object loginUserObj = session.getAttribute(Constants.LoginSessionUserKey);
+        Object loginUserObj = session.getAttribute(CmsConstants.LoginSessionUserKey);
         if (!(loginUserObj instanceof LoginUser)) {
             throw new BusinessException(ErrorCode.LoginErrorCode, "请先登录");
         }

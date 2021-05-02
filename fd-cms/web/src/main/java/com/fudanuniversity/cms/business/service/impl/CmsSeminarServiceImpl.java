@@ -5,7 +5,7 @@ import com.fudanuniversity.cms.business.service.CmsSeminarService;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarAddVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarUpdateVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarVo;
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -88,7 +88,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
 
         if (total > 0L) {
             query.setPaging(paging);
-            query.setSorts(SortColumn.create(Constants.CreatedTimeColumn, SortMode.DESC));
+            query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsSeminar> seminars = cmsSeminarDao.selectListByParam(query);
 
             List<Long> userIds = Lists.transform(seminars, CmsSeminar::getUserId);

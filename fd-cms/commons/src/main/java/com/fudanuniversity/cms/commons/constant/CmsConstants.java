@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.constant;
 /**
  * Created by tidu at 2021-04-15 10:02:59
  */
-public final class Constants {
+public final class CmsConstants {
 
     /**
      * 用户登录后写入sessionAttribute的name
@@ -27,6 +27,6 @@ public final class Constants {
      */
     public final static String ModifiedTimeColumn = "modify_time";
 
-    private Constants() {
+    private CmsConstants() {
     }
 }

@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsBulletinComponent;
 import com.fudanuniversity.cms.business.service.CmsBulletinService;
 import com.fudanuniversity.cms.business.vo.bulletin.*;
-import com.fudanuniversity.cms.commons.constant.Constants;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -123,7 +123,7 @@ public class CmsBulletinServiceImpl implements CmsBulletinService {
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            query.setSorts(SortColumn.create(Constants.CreatedTimeColumn, SortMode.DESC));
+            query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsBulletin> bulletins = cmsBulletinDao.selectListByParam(query);
 
             List<Long> bulletinIds = Lists.transform(bulletins, CmsBulletin::getId);
