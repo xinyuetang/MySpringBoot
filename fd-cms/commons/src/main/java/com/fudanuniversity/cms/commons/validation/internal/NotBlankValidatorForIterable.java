@@ -1,8 +1,8 @@
 package com.fudanuniversity.cms.commons.validation.internal;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.constraints.NotBlank;
 
 /**
  * Created by tidu at 2018-08-07 11:04:52

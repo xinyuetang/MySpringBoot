@@ -1,11 +1,11 @@
 package com.fudanuniversity.cms.commons.validation.internal;
 
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.internal.util.logging.Log;
 import org.hibernate.validator.internal.util.logging.LoggerFactory;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.lang.invoke.MethodHandles;
 
 /**

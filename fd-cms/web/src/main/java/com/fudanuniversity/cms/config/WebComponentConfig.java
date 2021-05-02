@@ -1,10 +1,11 @@
 package com.fudanuniversity.cms.config;
 
 import com.fudanuniversity.cms.framework.validation.ControllerValidationPostProcessor;
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import javax.validation.Validator;
 
 /**
  * 配置web组件等
@@ -13,6 +14,12 @@ import javax.validation.Validator;
  */
 @Configuration
 public class WebComponentConfig {
+
+    @Bean
+    public Validator validator() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        return validatorFactory.getValidator();
+    }
 
     /**
      * 为Controller补充方法执行时校验

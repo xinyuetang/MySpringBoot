@@ -38,10 +38,9 @@
         <jackson-bom.version>2.12.3</jackson-bom.version>
 
         <spring.version>5.3.6</spring.version>
-        <!--<jakarta-validation.version>2.0.2</jakarta-validation.version>-->
-        <!--<jakarta-validation.version>3.0.0</jakarta-validation.version>-->
-        <!--<hibernate-validator.version>6.1.7.Final</hibernate-validator.version>-->
-        <!--<hibernate-validator.version>6.2.0.Final</hibernate-validator.version>-->
+        <glassfish-el.version>4.0.1</glassfish-el.version>
+        <jakarta-validation.version>3.0.0</jakarta-validation.version>
+        <hibernate-validator.version>7.0.1.Final</hibernate-validator.version>
         <mysql.version>8.0.24</mysql.version>
         <HikariCP.version>4.0.3</HikariCP.version>
     </properties>
@@ -228,7 +227,12 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>jakarta.el</artifactId>
-                <version>4.0.1</version>
+                <version>${glassfish-el.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.validation</groupId>
+                <artifactId>jakarta.validation-api</artifactId>
+                <version>${jakarta-validation.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>

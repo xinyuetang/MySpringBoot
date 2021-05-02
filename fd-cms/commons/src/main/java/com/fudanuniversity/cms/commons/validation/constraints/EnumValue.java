@@ -1,7 +1,8 @@
 package com.fudanuniversity.cms.commons.validation.constraints;
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
+import jakarta.validation.Constraint;
+import jakarta.validation.Payload;
+
 import java.lang.annotation.*;
 
 import static java.lang.annotation.ElementType.*;
@@ -22,7 +23,7 @@ public @interface EnumValue {
     /**
      * 枚举class
      */
-    Class<? extends Enum<?>>  enumClass();
+    Class<? extends Enum<?>> enumClass();
 
     /**
      * 属性名称，设置property和method中一个

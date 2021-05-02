@@ -1,16 +1,18 @@
 package com.fudanuniversity.cms.business.vo.user;
 
+import com.fudanuniversity.cms.commons.enums.BooleanEnum;
+import com.fudanuniversity.cms.commons.enums.StudyTypeEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
 import com.fudanuniversity.cms.commons.validation.group.Update;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -42,7 +44,7 @@ public class CmsUserMngVo implements Serializable {
     /**
      * 权限身份
      */
-    //@EnumValue(enumClass = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
+    @EnumValue(enumClass = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
     private Integer roleId;
 
     /**
@@ -75,13 +77,13 @@ public class CmsUserMngVo implements Serializable {
     /**
      * 是否科硕
      */
-    //@In({"0", "1"})
+    @EnumValue(enumClass = BooleanEnum.class, property = "code")
     private Integer keshuo;
 
     /**
      * 就读类型
      */
-    //@EnumValue(enumClass = UserTypeEnum.class, property = "code")
+    @EnumValue(enumClass = StudyTypeEnum.class, property = "code")
     private Integer studyType;
 
     /**

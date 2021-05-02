@@ -1,8 +1,9 @@
 package com.fudanuniversity.cms.commons.validation.internal;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-import javax.validation.constraints.Max;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import jakarta.validation.constraints.Max;
+
 import java.math.BigDecimal;
 
 /**

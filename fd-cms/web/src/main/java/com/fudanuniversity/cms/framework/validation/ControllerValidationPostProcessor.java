@@ -1,6 +1,8 @@
 package com.fudanuniversity.cms.framework.validation;
 
 import com.fudanuniversity.cms.framework.aop.InheritedAnnotationMethodPointcut;
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import org.aopalliance.aop.Advice;
 import org.springframework.aop.Pointcut;
 import org.springframework.aop.framework.AbstractAdvisingBeanPostProcessor;
@@ -8,12 +10,7 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.Assert;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 
 /**
  * <pre>
@@ -63,14 +60,7 @@ public class ControllerValidationPostProcessor
 
     public void setValidator(Validator validator) {
         Assert.notNull(validator, "'validator' must not be null");
-        // Unwrap to the native Validator with forExecutables support
-        if (validator instanceof LocalValidatorFactoryBean) {
-            this.validator = ((LocalValidatorFactoryBean) validator).getValidator();
-        } else if (validator instanceof SpringValidatorAdapter) {
-            this.validator = validator.unwrap(Validator.class);
-        } else {
-            this.validator = validator;
-        }
+        this.validator = validator;
     }
 
 

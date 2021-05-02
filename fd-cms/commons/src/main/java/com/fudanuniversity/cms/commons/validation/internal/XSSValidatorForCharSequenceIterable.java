@@ -1,11 +1,10 @@
 package com.fudanuniversity.cms.commons.validation.internal;
 
 import com.fudanuniversity.cms.commons.validation.constraints.XSS;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 
 /**
  * Validate that the string does not contain malicious code.

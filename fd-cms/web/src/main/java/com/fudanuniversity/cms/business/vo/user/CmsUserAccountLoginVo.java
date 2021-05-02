@@ -1,12 +1,12 @@
 package com.fudanuniversity.cms.business.vo.user;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**

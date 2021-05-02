@@ -1,9 +1,9 @@
 package com.fudanuniversity.cms.commons.validation.internal;
 
 import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.Set;
 
 /**

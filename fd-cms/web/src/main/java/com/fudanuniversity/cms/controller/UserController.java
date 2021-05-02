@@ -17,12 +17,12 @@ import com.fudanuniversity.cms.commons.validation.group.Update;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;

@@ -53,14 +53,14 @@
     <!--
         内置支持的校验注解补充增加额外的实现支持(build in)
      -->
-    <constraint-definition annotation="javax.validation.constraints.Min">
+    <constraint-definition annotation="jakarta.validation.constraints.Min">
         <validated-by include-existing-validators="true">
             <value>com.fudanuniversity.cms.commons.validation.internal.MinValidatorForCharSequenceIterable</value>
             <value>com.fudanuniversity.cms.commons.validation.internal.MinValidatorForNumberIterable</value>
         </validated-by>
     </constraint-definition>
 
-    <constraint-definition annotation="javax.validation.constraints.Max">
+    <constraint-definition annotation="jakarta.validation.constraints.Max">
         <validated-by include-existing-validators="true">
             <value>com.fudanuniversity.cms.commons.validation.internal.MaxValidatorForCharSequenceIterable</value>
             <value>com.fudanuniversity.cms.commons.validation.internal.MaxValidatorForNumberIterable</value>
@@ -74,7 +74,7 @@
         </validated-by>
     </constraint-definition>
 
-    <constraint-definition annotation="javax.validation.constraints.NotBlank">
+    <constraint-definition annotation="jakarta.validation.constraints.NotBlank">
         <validated-by include-existing-validators="true">
             <value>com.fudanuniversity.cms.commons.validation.internal.NotBlankValidatorForIterable</value>
         </validated-by>
