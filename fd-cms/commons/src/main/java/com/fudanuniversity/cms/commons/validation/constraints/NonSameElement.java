@@ -2,9 +2,7 @@ package com.fudanuniversity.cms.commons.validation.constraints;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -14,10 +12,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * <p>
  * Created by tidu at 2020-07-21 11:04:03
  */
-@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
-@Retention(RUNTIME)
 @Documented
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+@Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
+@Repeatable(NonSameElement.List.class)
 public @interface NonSameElement {
 
     String message() default "{com.fudanuniversity.cms.commons.validation.constraints.NonSameElement.message}";

@@ -2,9 +2,7 @@ package com.fudanuniversity.cms.commons.validation.constraints;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
-import java.lang.annotation.Documented;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -15,9 +13,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Created by tidu at 2018-07-23 19:27:47
  */
 @Documented
-@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
-@Retention(RUNTIME)
+@Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
+@Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = {})
+@Repeatable(EnumString.List.class)
 public @interface EnumString {
     /**
      * 枚举class

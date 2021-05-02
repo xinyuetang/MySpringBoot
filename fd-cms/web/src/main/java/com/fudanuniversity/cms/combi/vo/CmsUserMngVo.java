@@ -39,13 +39,12 @@ public class CmsUserMngVo implements Serializable {
      * 学号
      */
     @NotEmpty
-    @NotNull
     private String stuId;
 
     /**
      * 权限身份
      */
-    @EnumValue(value = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
+    //@EnumValue(enumClass = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
     private Integer roleId;
 
     /**
@@ -78,13 +77,13 @@ public class CmsUserMngVo implements Serializable {
     /**
      * 是否科硕
      */
-    @In({"0", "1"})
+    //@In({"0", "1"})
     private Integer isKeshuo;
 
     /**
      * 就读类型
      */
-    @EnumValue(value = UserTypeEnum.class, property = "code")
+    //@EnumValue(enumClass = UserTypeEnum.class, property = "code")
     private Integer type;
 
     /**

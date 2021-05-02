@@ -11,6 +11,8 @@ import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import com.fudanuniversity.cms.commons.validation.ValidGroup;
+import com.fudanuniversity.cms.commons.validation.group.Update;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.inner.entity.CmsUser;
 import com.fudanuniversity.cms.inner.entity.CmsUserAccount;
@@ -74,7 +76,9 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
+
     @PostMapping(path = "/update")
+    @ValidGroup(Update.class)
     public JsonResult<?> updateUser(@Valid CmsUserMngVo userAddVo) {
         //当前登录者权限校验
         LoginUser loginUser = getLoginUser();

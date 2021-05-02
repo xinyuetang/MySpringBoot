@@ -34,5 +34,8 @@ public class CmsUserAccountLoginVo implements Serializable {
     @NotEmpty(message = "密码不能为空")
     @Length(min = 6, message = "密码长度不正确")
     private String password;
+
+    //@EnumValue(enumClass = "com.fudanuniversity.cms.commons.enums.DeletedEnum", property = "code")
+    private String deleted;
 }
 

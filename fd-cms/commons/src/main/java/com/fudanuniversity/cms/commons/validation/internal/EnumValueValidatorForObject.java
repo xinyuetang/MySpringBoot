@@ -29,7 +29,12 @@ public class EnumValueValidatorForObject
                     + annotation + ": select one from 'property' or 'method'");
         }
 
-        Class<? extends Enum<?>> enumClass = annotation.value();
+        Class<? extends Enum<?>> enumClass = null;
+        try {
+            enumClass = (Class<? extends Enum<?>>) Class.forName(annotation.enumClass());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         if (property.length() > 0) {
             enumValues = Util.getEnumPropertyValues(enumClass, property);
         } else {

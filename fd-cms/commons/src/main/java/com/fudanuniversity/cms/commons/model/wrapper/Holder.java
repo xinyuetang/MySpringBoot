@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.commons.model.warpper;
+package com.fudanuniversity.cms.commons.model.wrapper;
 
 import java.io.Serializable;
 

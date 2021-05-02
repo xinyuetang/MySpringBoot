@@ -38,11 +38,10 @@
         <jackson-bom.version>2.12.3</jackson-bom.version>
 
         <spring.version>5.3.6</spring.version>
-        <javax-validation.version>2.0.1.Final</javax-validation.version>
-        <jakarta-validation.version>2.0.2</jakarta-validation.version>
+        <!--<jakarta-validation.version>2.0.2</jakarta-validation.version>-->
         <!--<jakarta-validation.version>3.0.0</jakarta-validation.version>-->
         <!--<hibernate-validator.version>6.1.7.Final</hibernate-validator.version>-->
-        <hibernate-validator.version>6.2.0.Final</hibernate-validator.version>
+        <!--<hibernate-validator.version>6.2.0.Final</hibernate-validator.version>-->
         <mysql.version>8.0.24</mysql.version>
         <HikariCP.version>4.0.3</HikariCP.version>
     </properties>
@@ -226,11 +225,6 @@
             </dependency>
 
             <!-- JSR 303 - Bean Validation -->
-            <dependency>
-                <groupId>javax.validation</groupId>
-                <artifactId>validation-api</artifactId>
-                <version>${javax-validation.version}</version>
-            </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
