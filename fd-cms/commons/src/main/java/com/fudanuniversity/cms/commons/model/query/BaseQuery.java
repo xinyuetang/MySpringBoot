@@ -1,5 +1,7 @@
 package com.fudanuniversity.cms.commons.model.query;
 
+import com.fudanuniversity.cms.commons.model.paging.Paging;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -104,9 +106,14 @@ public class BaseQuery implements Serializable {
         return MAX_ROWS;
     }
 
-    public void setPage(int pageNo, int pageSize) {
+    public void setPaging(int pageNo, int pageSize) {
         this.offset = (pageNo - 1) * pageSize;
         this.limit = pageSize;
+    }
+
+    public void setPaging(Paging paging) {
+        this.offset = paging.getOffset();
+        this.limit = paging.getLimit();
     }
 
     public void validateBaseArgument() {

@@ -36,6 +36,15 @@ public class PagingResult<T> extends Paging {
         this.rows = rows;
     }
 
+    /**
+     * rows设置经过function转换过的list
+     */
+    public <S> void setRows(List<S> rows, Function<S, T> function) {
+        if (rows != null && !rows.isEmpty()) {
+            this.rows = rows.stream().map(function).collect(Collectors.toList());
+        }
+    }
+
     public static <T> PagingResult<T> create(BaseQuery query) {
         PagingResult<T> pageResult = new PagingResult<>();
         pageResult.setCursor(query.getCursor());

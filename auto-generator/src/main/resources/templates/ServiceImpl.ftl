@@ -5,6 +5,7 @@ import ${packagePrefix}.repository.entity.${classSimpleName};
 import ${packagePrefix}.repository.query.${classSimpleName}Query;
 import ${packagePrefix}.business.service.${classSimpleName}Service;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
 
         int affect = ${classVariableName}Dao.insert(${classVariableName});
         logger.info("保存${classSimpleName} affect:{}, ${classVariableName}: {}", affect, ${classVariableName});
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -46,6 +48,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
 
         int affect = ${classVariableName}Dao.updateById(updater);
         logger.info("更新${classSimpleName} affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
     }
 
     /**
@@ -56,6 +59,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
         //TODO 补充状态检测业务逻辑
         int affect = ${classVariableName}Dao.deleteById(${id});
         logger.info("删除${classSimpleName} affect:{}, id: {}", affect, id);
+        AssertUtils.state(affect == 1);
     }
 
     /**

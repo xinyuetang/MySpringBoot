@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.business.vo;
+package com.fudanuniversity.cms.business.vo.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

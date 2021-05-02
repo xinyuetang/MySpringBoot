@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.CmsUserAccountResetPasswordVo;
-import com.fudanuniversity.cms.business.vo.CmsUserAccountLoginVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserAccountResetPasswordVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserAccountLoginVo;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.fudanuniversity.cms.repository.query.CmsUserAccountQuery;

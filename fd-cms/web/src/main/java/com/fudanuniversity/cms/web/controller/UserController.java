@@ -2,9 +2,9 @@ package com.fudanuniversity.cms.web.controller;
 
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.CmsUserAccountLoginVo;
-import com.fudanuniversity.cms.business.vo.CmsUserAccountResetPasswordVo;
-import com.fudanuniversity.cms.business.vo.CmsUserMngVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserAccountLoginVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserAccountResetPasswordVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
 import com.fudanuniversity.cms.commons.constant.Constants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.JsonResult;

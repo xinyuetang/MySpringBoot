@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.CmsUserMngVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;

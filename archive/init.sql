@@ -196,7 +196,7 @@ CREATE TABLE `fd_cms`.`cms_article_category`
     `create_time` datetime     NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `idx_tag` (`tag`) USING BTREE
+    UNIQUE KEY `uk_tag` (`tag`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='文章分类';

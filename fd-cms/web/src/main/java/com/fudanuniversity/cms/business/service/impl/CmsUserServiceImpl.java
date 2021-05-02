@@ -1,7 +1,8 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.CmsUserMngVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
 import com.fudanuniversity.cms.commons.constant.Constants;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
@@ -39,6 +40,9 @@ public class CmsUserServiceImpl implements CmsUserService {
     @Resource
     private CmsUserDao cmsUserDao;
 
+    @Resource
+    private CmsUserComponent cmsUserComponent;
+
     @Override
     public PagingResult<CmsUser> getAllUsers(Paging paging) {
         PagingResult<CmsUser> pagingResult = PagingResult.create(paging);
@@ -57,15 +61,9 @@ public class CmsUserServiceImpl implements CmsUserService {
 
     @Override
     public void confirmUserPrivilege(String stuId, UserRoleEnum privilege) {
-        CmsUserQuery query = new CmsUserQuery();
-        query.setStuId(stuId);
-        query.setLimit(1);
-        List<CmsUser> users = cmsUserDao.selectListByParam(query);
-        if (CollectionUtils.isEmpty(users)) {
-            throw new BusinessException("用户[" + stuId + "]不存在");
-        }
-        CmsUser cmsUser = users.get(0);
-        if (Objects.equals(cmsUser.getRoleId(), privilege.getCode())) {
+        CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
+        if (!Objects.equals(cmsUser.getRoleId(), UserRoleEnum.Administrator.getCode())
+                && !Objects.equals(cmsUser.getRoleId(), privilege.getCode())) {
             throw new BusinessException("用户[" + stuId + "]不存在");
         }
     }
