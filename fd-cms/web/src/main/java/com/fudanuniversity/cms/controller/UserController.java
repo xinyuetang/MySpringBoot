@@ -17,6 +17,7 @@ import com.fudanuniversity.cms.commons.validation.group.Update;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
+import com.google.common.collect.Maps;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.Map;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
@@ -40,12 +42,15 @@ public class UserController extends BaseController {
     @Resource
     private CmsUserAccountService cmsUserAccountService;
 
-    @RequestMapping(path = "/login")
+    @RequestMapping(path = "/login") //TODO
+    //@PostMapping(path = "/login")
     public JsonResult<?> login(@Valid CmsUserAccountLoginVo userAccountVo) {
+        /*
+        更换用户登录后替换老用户session
         Object loginUserObj = Webmvc.session().getAttribute(CmsConstants.LoginSessionUserKey);
         if (loginUserObj instanceof LoginUser) {
             throw new BusinessException("当前状态已登录");
-        }
+        }*/
         CmsUserAccount userAccount = cmsUserAccountService.loginAccount(userAccountVo);
         String stuId = userAccount.getStuId();
         CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
@@ -58,7 +63,10 @@ public class UserController extends BaseController {
         loginUser.setName(cmsUser.getName());
         loginUser.setLoginTime(new Date());
         Webmvc.session().setAttribute(CmsConstants.LoginSessionUserKey, loginUser);
-        return JsonResult.buildSuccess();
+        Map<String, Object> welcome = Maps.newLinkedHashMap();
+        welcome.put("stuId", loginUser.getStuId());
+        welcome.put("name", loginUser.getName());
+        return JsonResult.buildSuccess(welcome);
     }
 
     @PostMapping(path = "/reset")

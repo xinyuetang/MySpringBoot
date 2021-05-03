@@ -271,22 +271,25 @@ CREATE TABLE `fd_cms`.`cms_recorder`
 (
     `id`                 bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
     `date`               date         NOT NULL COMMENT '演讲时间',
-    `recorder1_id`       bigint       NOT NULL COMMENT '辅读人员1用户id',
-    `recorder1_file`     varchar(128) NOT NULL COMMENT '辅读人员1文件名',
+    `recorder1_id`       bigint       NOT NULL DEFAULT 0 COMMENT '辅读人员1用户id',
+    `recorder1_file`     varchar(128) NULL COMMENT '辅读人员1文件名',
+    `recorder1_type`     varchar(128) NULL COMMENT '辅读人员1文件类型',
     `recorder1_content`  longblob COMMENT '辅读人员1记录内容',
-    `recorder2_id`       bigint       NOT NULL COMMENT '辅读人员2用户id',
-    `recorder2_file`     varchar(128) NOT NULL COMMENT '辅读人员2文件名',
+    `recorder2_id`       bigint       NOT NULL DEFAULT 0 COMMENT '辅读人员2用户id',
+    `recorder2_file`     varchar(128) NULL COMMENT '辅读人员2文件名',
+    `recorder2_type`     varchar(128) NULL COMMENT '辅读人员2文件类型',
     `recorder2_content`  longblob COMMENT '辅读人员2记录内容',
-    `summarizer_id`      bigint       NOT NULL COMMENT '记录人员用户id',
-    `summarizer_file`    varchar(128) NOT NULL COMMENT '记录人员文件名',
+    `summarizer_id`      bigint       NOT NULL DEFAULT 0 COMMENT '记录人员用户id',
+    `summarizer_file`    varchar(128) NULL COMMENT '记录人员文件名',
+    `summarizer_type`    varchar(128) NULL COMMENT '记录人员文件类型',
     `summarizer_content` longblob COMMENT '记录人员记录内容',
     `create_time`        datetime     NOT NULL COMMENT '创建时间',
-    `modify_time`        datetime DEFAULT NULL COMMENT '更新时间',
+    `modify_time`        datetime              DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_date` (`date`) USING BTREE
+    UNIQUE KEY `uk_date` (`date`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='演讲记录员';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='演讲记录安排';
 
 DROP TABLE IF EXISTS `fd_cms`.`cms_device`;
 CREATE TABLE `fd_cms`.`cms_device`

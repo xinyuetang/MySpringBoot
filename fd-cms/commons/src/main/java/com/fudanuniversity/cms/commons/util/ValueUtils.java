@@ -133,4 +133,8 @@ public final class ValueUtils {
     public static <K, V> Map<K, V> defaultMap(Map<K, V> value, Map<K, V> defaultValue) {
         return value == null ? defaultValue : value;
     }
+
+    public static boolean isLongId(Long id) {
+        return id != null && id > 0L;
+    }
 }

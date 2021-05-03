@@ -9,12 +9,15 @@
         <result column="date" property="date"/>
         <result column="recorder1_id" property="recorder1Id"/>
         <result column="recorder1_file" property="recorder1File"/>
+        <result column="recorder1_type" property="recorder1Type"/>
         <result column="recorder1_content" property="recorder1Content"/>
         <result column="recorder2_id" property="recorder2Id"/>
         <result column="recorder2_file" property="recorder2File"/>
+        <result column="recorder2_type" property="recorder2Type"/>
         <result column="recorder2_content" property="recorder2Content"/>
         <result column="summarizer_id" property="summarizerId"/>
         <result column="summarizer_file" property="summarizerFile"/>
+        <result column="summarizer_type" property="summarizerType"/>
         <result column="summarizer_content" property="summarizerContent"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
@@ -22,12 +25,12 @@
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `date`, `recorder1_id`, `recorder1_file`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_content`, `create_time`,  `modify_time`
+        `id`, `date`, `recorder1_id`, `recorder1_file`, `recorder1_type`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_type`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_type`, `summarizer_content`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{date}, #{recorder1Id}, #{recorder1File}, #{recorder1Content}, #{recorder2Id}, #{recorder2File}, #{recorder2Content}, #{summarizerId}, #{summarizerFile}, #{summarizerContent}, #{createTime},  #{modifyTime}
+        #{id}, #{date}, #{recorder1Id}, #{recorder1File}, #{recorder1Type}, #{recorder1Content}, #{recorder2Id}, #{recorder2File}, #{recorder2Type}, #{recorder2Content}, #{summarizerId}, #{summarizerFile}, #{summarizerType}, #{summarizerContent}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -51,6 +54,9 @@
         <if test="recorder1File != null">
             AND `recorder1_file` = #{recorder1File}
         </if>
+        <if test="recorder1Type != null">
+            AND `recorder1_type` = #{recorder1Type}
+        </if>
         <if test="recorder1Content != null">
             AND `recorder1_content` = #{recorder1Content}
         </if>
@@ -60,6 +66,9 @@
         <if test="recorder2File != null">
             AND `recorder2_file` = #{recorder2File}
         </if>
+        <if test="recorder2Type != null">
+            AND `recorder2_type` = #{recorder2Type}
+        </if>
         <if test="recorder2Content != null">
             AND `recorder2_content` = #{recorder2Content}
         </if>
@@ -68,6 +77,9 @@
         </if>
         <if test="summarizerFile != null">
             AND `summarizer_file` = #{summarizerFile}
+        </if>
+        <if test="summarizerType != null">
+            AND `summarizer_type` = #{summarizerType}
         </if>
         <if test="summarizerContent != null">
             AND `summarizer_content` = #{summarizerContent}
@@ -106,30 +118,33 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_recorder`(`date`, `recorder1_id`, `recorder1_file`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_content`, `create_time`, `modify_time`)
+            `cms_recorder`(`date`, `recorder1_id`, `recorder1_file`, `recorder1_type`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_type`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_type`, `summarizer_content`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{date}, #{recorder1Id}, #{recorder1File}, #{recorder1Content}, #{recorder2Id}, #{recorder2File}, #{recorder2Content}, #{summarizerId}, #{summarizerFile}, #{summarizerContent}, #{createTime}, #{modifyTime}
+            #{date}, #{recorder1Id}, #{recorder1File}, #{recorder1Type}, #{recorder1Content}, #{recorder2Id}, #{recorder2File}, #{recorder2Type}, #{recorder2Content}, #{summarizerId}, #{summarizerFile}, #{summarizerType}, #{summarizerContent}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_recorder`(`date`, `recorder1_id`, `recorder1_file`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_content`, `create_time`, `modify_time`)
+            `cms_recorder`(`date`, `recorder1_id`, `recorder1_file`, `recorder1_type`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_type`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_type`, `summarizer_content`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.date}, #{data.recorder1Id}, #{data.recorder1File}, #{data.recorder1Content}, #{data.recorder2Id}, #{data.recorder2File}, #{data.recorder2Content}, #{data.summarizerId}, #{data.summarizerFile}, #{data.summarizerContent}, #{data.createTime}, #{data.modifyTime})
+            (#{data.date}, #{data.recorder1Id}, #{data.recorder1File}, #{data.recorder1Type}, #{data.recorder1Content}, #{data.recorder2Id}, #{data.recorder2File}, #{data.recorder2Type}, #{data.recorder2Content}, #{data.summarizerId}, #{data.summarizerFile}, #{data.summarizerType}, #{data.summarizerContent}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `date` = VALUES(`date`), 
        `recorder1_id` = VALUES(`recorder1_id`), 
        `recorder1_file` = VALUES(`recorder1_file`), 
+       `recorder1_type` = VALUES(`recorder1_type`), 
        `recorder1_content` = VALUES(`recorder1_content`), 
        `recorder2_id` = VALUES(`recorder2_id`), 
        `recorder2_file` = VALUES(`recorder2_file`), 
+       `recorder2_type` = VALUES(`recorder2_type`), 
        `recorder2_content` = VALUES(`recorder2_content`), 
        `summarizer_id` = VALUES(`summarizer_id`), 
        `summarizer_file` = VALUES(`summarizer_file`), 
+       `summarizer_type` = VALUES(`summarizer_type`), 
        `summarizer_content` = VALUES(`summarizer_content`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
@@ -147,6 +162,9 @@
             <if test="recorder1File != null">
                 `recorder1_file` = #{recorder1File},
             </if>
+            <if test="recorder1Type != null">
+                `recorder1_type` = #{recorder1Type},
+            </if>
             <if test="recorder1Content != null">
                 `recorder1_content` = #{recorder1Content},
             </if>
@@ -156,6 +174,9 @@
             <if test="recorder2File != null">
                 `recorder2_file` = #{recorder2File},
             </if>
+            <if test="recorder2Type != null">
+                `recorder2_type` = #{recorder2Type},
+            </if>
             <if test="recorder2Content != null">
                 `recorder2_content` = #{recorder2Content},
             </if>
@@ -164,6 +185,9 @@
             </if>
             <if test="summarizerFile != null">
                 `summarizer_file` = #{summarizerFile},
+            </if>
+            <if test="summarizerType != null">
+                `summarizer_type` = #{summarizerType},
             </if>
             <if test="summarizerContent != null">
                 `summarizer_content` = #{summarizerContent},

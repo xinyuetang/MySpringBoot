@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Data
 @NoArgsConstructor
@@ -65,6 +65,13 @@ public class CmsRecorderQuery extends BaseQuery {
     private String recorder1File;
 
     /**
+     * 字段备注:辅读人员1文件类型 <p>
+     * 数据库字段长度:(128,0) <p>
+     * 索引字段:不是
+     */
+    private String recorder1Type;
+
+    /**
      * 字段备注:辅读人员1记录内容 <p>
      * 数据库字段长度:(2147483647,0) <p>
      * 索引字段:不是
@@ -86,6 +93,13 @@ public class CmsRecorderQuery extends BaseQuery {
     private String recorder2File;
 
     /**
+     * 字段备注:辅读人员2文件类型 <p>
+     * 数据库字段长度:(128,0) <p>
+     * 索引字段:不是
+     */
+    private String recorder2Type;
+
+    /**
      * 字段备注:辅读人员2记录内容 <p>
      * 数据库字段长度:(2147483647,0) <p>
      * 索引字段:不是
@@ -105,6 +119,13 @@ public class CmsRecorderQuery extends BaseQuery {
      * 索引字段:不是
      */
     private String summarizerFile;
+
+    /**
+     * 字段备注:记录人员文件类型 <p>
+     * 数据库字段长度:(128,0) <p>
+     * 索引字段:不是
+     */
+    private String summarizerType;
 
     /**
      * 字段备注:记录人员记录内容 <p>

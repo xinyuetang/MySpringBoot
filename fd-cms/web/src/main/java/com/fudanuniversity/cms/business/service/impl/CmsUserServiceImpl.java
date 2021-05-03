@@ -69,9 +69,12 @@ public class CmsUserServiceImpl implements CmsUserService {
     @Override
     public void confirmUserPrivilege(String stuId, UserRoleEnum privilege) {
         CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
+        if (cmsUser == null) {
+            throw new BusinessException("用户[" + stuId + "]不存在");
+        }
         if (!Objects.equals(cmsUser.getRoleId(), UserRoleEnum.Administrator.getCode())
                 && !Objects.equals(cmsUser.getRoleId(), privilege.getCode())) {
-            throw new BusinessException("用户[" + stuId + "]不存在");
+            throw new BusinessException("用户没有[" + privilege.getDesc() + "]权限");
         }
     }
 
