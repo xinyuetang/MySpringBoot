@@ -2,7 +2,6 @@ package ${packagePrefix}.dto;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -20,7 +19,6 @@ import lombok.ToString;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class ${classSimpleName}Vo implements Serializable {
 

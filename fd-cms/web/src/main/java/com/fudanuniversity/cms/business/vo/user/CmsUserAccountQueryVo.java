@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.business.vo.user;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -9,12 +8,11 @@ import java.util.Date;
 
 /**
  * 用户帐户
- *
+ * <p>
  * Created by Xinyue.Tang at 2021-05-01
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsUserAccountQueryVo {
 
