@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
-import com.fasterxml.jackson.databind.ser.SerializerFactory;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fudanuniversity.cms.commons.util.JsonUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
 import org.springframework.lang.Nullable;
@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
  * @see RedisHttpSessionConfiguration
  */
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 45 * 100/*TODO 修改会话时间*/, redisNamespace = "fd:cms:session")
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 45 * 100/*TODO 为了方便调试会话时间太大，完成后修改会话时间*/, redisNamespace = "fd:cms:session")
 public class RedisSessionConfig {
 
     /**
@@ -60,7 +60,7 @@ public class RedisSessionConfig {
         return serializer;
     }
 
-    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+    /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
     static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     static final byte[] EMPTY_ARRAY = new byte[0];
@@ -70,15 +70,9 @@ public class RedisSessionConfig {
     }
 
     /**
-     * {@link RedisSerializer} that can read and write JSON using
-     * <a href="https://github.com/FasterXML/jackson-core">Jackson's</a> and
-     * <a href="https://github.com/FasterXML/jackson-databind">Jackson Databind</a> {@link ObjectMapper}.
-     * <p>
-     * This converter can be used to bind to typed beans, or untyped {@link java.util.HashMap HashMap} instances.
-     * <b>Note:</b>Null objects are serialized as empty arrays and vice versa.
+     * 默认的Jackson2JsonRedisSerializer在反序列化失败时会抛出异常，这里简单的做了调整，如果序列化遇到错误直接返回null
      *
-     * @author Thomas Darimont
-     * @since 1.2
+     * @see Jackson2JsonRedisSerializer
      */
     static class DefaultJackson2JsonRedisSerializer<T> implements RedisSerializer<T> {
 
@@ -86,20 +80,10 @@ public class RedisSessionConfig {
 
         private ObjectMapper objectMapper = new ObjectMapper();
 
-        /**
-         * Creates a new {@link org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer} for the given target {@link Class}.
-         *
-         * @param type
-         */
         public DefaultJackson2JsonRedisSerializer(Class<T> type) {
             this.javaType = getJavaType(type);
         }
 
-        /**
-         * Creates a new {@link org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer} for the given target {@link JavaType}.
-         *
-         * @param javaType
-         */
         public DefaultJackson2JsonRedisSerializer(JavaType javaType) {
             this.javaType = javaType;
         }
@@ -119,7 +103,6 @@ public class RedisSessionConfig {
 
         @Override
         public byte[] serialize(@Nullable Object t) throws SerializationException {
-
             if (t == null) {
                 return EMPTY_ARRAY;
             }
@@ -130,40 +113,11 @@ public class RedisSessionConfig {
             }
         }
 
-        /**
-         * Sets the {@code ObjectMapper} for this view. If not set, a default {@link ObjectMapper#ObjectMapper() ObjectMapper}
-         * is used.
-         * <p>
-         * Setting a custom-configured {@code ObjectMapper} is one way to take further control of the JSON serialization
-         * process. For example, an extended {@link SerializerFactory} can be configured that provides custom serializers for
-         * specific types. The other option for refining the serialization process is to use Jackson's provided annotations on
-         * the types to be serialized, in which case a custom-configured ObjectMapper is unnecessary.
-         */
         public void setObjectMapper(ObjectMapper objectMapper) {
-
             Assert.notNull(objectMapper, "'objectMapper' must not be null");
             this.objectMapper = objectMapper;
         }
 
-        /**
-         * Returns the Jackson {@link JavaType} for the specific class.
-         * <p>
-         * Default implementation returns {@link TypeFactory#constructType(java.lang.reflect.Type)}, but this can be
-         * overridden in subclasses, to allow for custom generic collection handling. For instance:
-         *
-         * <pre class="code">
-         * protected JavaType getJavaType(Class&lt;?&gt; clazz) {
-         * 	if (List.class.isAssignableFrom(clazz)) {
-         * 		return TypeFactory.defaultInstance().constructCollectionType(ArrayList.class, MyBean.class);
-         *    } else {
-         * 		return super.getJavaType(clazz);
-         *    }
-         * }
-         * </pre>
-         *
-         * @param clazz the class to return the java type for
-         * @return the java type
-         */
         protected JavaType getJavaType(Class<?> clazz) {
             return TypeFactory.defaultInstance().constructType(clazz);
         }
