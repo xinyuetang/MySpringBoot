@@ -62,7 +62,6 @@ public class RedisSessionConfig {
 
     /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-    static final Charset DEFAULT_CHARSET = StandardCharsets.UTF_8;
     static final byte[] EMPTY_ARRAY = new byte[0];
 
     static boolean isEmpty(@Nullable byte[] data) {
