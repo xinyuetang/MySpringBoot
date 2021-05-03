@@ -41,7 +41,6 @@ public class RecorderController extends BaseController {
     @PostMapping(path = "/add")
     @ResponseBody
     public JsonResult<?> addRecorder(@RequestBody CmsRecorderAddVo addVo) {
-        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Seminar);
         cmsRecorderService.saveCmsRecorder(addVo);
@@ -51,7 +50,6 @@ public class RecorderController extends BaseController {
     @PostMapping(path = "/update")
     @ResponseBody
     public JsonResult<?> updateRecorder(@RequestBody CmsRecorderUpdateVo updateVo) {
-        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Seminar);
         cmsRecorderService.updateCmsRecorderById(updateVo);
@@ -61,7 +59,6 @@ public class RecorderController extends BaseController {
     @PostMapping(path = "/delete")
     @ResponseBody
     public JsonResult<?> deleteRecorder(@NotNull Long id) {
-        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Seminar);
         cmsRecorderService.deleteCmsRecorderById(id);
@@ -80,6 +77,9 @@ public class RecorderController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
+    /**
+     * 下载演讲文件
+     * */
     @GetMapping(path = "/download")
     public ResponseEntity<?> downloadRecorderFile(@Valid CmsRecorderDownloadVo downloadVo) {
         try {

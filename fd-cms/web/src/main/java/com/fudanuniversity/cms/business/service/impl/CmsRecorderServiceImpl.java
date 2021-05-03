@@ -50,14 +50,39 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
      */
     @Override
     public void saveCmsRecorder(CmsRecorderAddVo addVo) {
+        String recorder1StuId = addVo.getRecorder1StuId();
+        String recorder2StuId = addVo.getRecorder2StuId();
+        String summarizerStuId = addVo.getSummarizerStuId();
+        Map<String, CmsUser> userMap = cmsUserComponent
+                .queryUserMap(recorder1StuId, recorder2StuId, summarizerStuId);
+
         CmsRecorder cmsRecorder = new CmsRecorder();
         cmsRecorder.setDate(addVo.getDate());
-        Long recorder1Id = ValueUtils.defaultLong(addVo.getRecorder1Id());
-        cmsRecorder.setRecorder1Id(recorder1Id);
-        Long recorder2Id = ValueUtils.defaultLong(addVo.getRecorder2Id());
-        cmsRecorder.setRecorder2Id(recorder2Id);
-        Long summarizerId = ValueUtils.defaultLong(addVo.getSummarizerId());
-        cmsRecorder.setSummarizerId(summarizerId);
+
+        if (StringUtils.isNotEmpty(recorder1StuId)) {
+            CmsUser recorder1User = userMap.get(recorder1StuId);
+            AssertUtils.notNull(recorder1User, "辅读人员1学号[" + recorder1StuId + "]的用户不存在");
+            cmsRecorder.setRecorder1Id(recorder1User.getId());
+        } else {
+            cmsRecorder.setRecorder1Id(0L);
+        }
+
+        if (StringUtils.isNotEmpty(recorder2StuId)) {
+            CmsUser recorder2User = userMap.get(recorder2StuId);
+            AssertUtils.notNull(recorder2User, "辅读人员2学号[" + recorder2StuId + "]的用户不存在");
+            cmsRecorder.setRecorder2Id(recorder2User.getId());
+        } else {
+            cmsRecorder.setRecorder2Id(0L);
+        }
+
+        if (StringUtils.isNotEmpty(summarizerStuId)) {
+            CmsUser summarizerUser = userMap.get(summarizerStuId);
+            AssertUtils.notNull(summarizerUser, "记录人员学号[" + summarizerStuId + "]的用户不存在");
+            cmsRecorder.setSummarizerId(summarizerUser.getId());
+        } else {
+            cmsRecorder.setSummarizerId(0L);
+        }
+
         cmsRecorder.setCreateTime(new Date());
         int affect = cmsRecorderDao.insert(cmsRecorder);
         logger.info("保存CmsRecorder affect:{}, cmsRecorder: {}", affect, addVo);
@@ -68,11 +93,34 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
      */
     @Override
     public void updateCmsRecorderById(CmsRecorderUpdateVo updateVo) {
+        String recorder1StuId = updateVo.getRecorder1StuId();
+        String recorder2StuId = updateVo.getRecorder2StuId();
+        String summarizerStuId = updateVo.getSummarizerStuId();
+        Map<String, CmsUser> userMap = cmsUserComponent
+                .queryUserMap(recorder1StuId, recorder2StuId, summarizerStuId);
+
         CmsRecorder updater = new CmsRecorder();
         updater.setId(updateVo.getId());
-        updater.setRecorder1Id(updateVo.getRecorder1Id());
-        updater.setRecorder2Id(updateVo.getRecorder2Id());
-        updater.setSummarizerId(updateVo.getSummarizerId());
+
+        if (StringUtils.isNotEmpty(recorder1StuId)) {
+            CmsUser recorder1User = userMap.get(recorder1StuId);
+            AssertUtils.notNull(recorder1User, "辅读人员1学号[" + recorder1StuId + "]的用户不存在");
+            updater.setRecorder1Id(recorder1User.getId());
+        }
+
+        if (StringUtils.isNotEmpty(recorder2StuId)) {
+            CmsUser recorder2User = userMap.get(recorder2StuId);
+            AssertUtils.notNull(recorder2User, "辅读人员2学号[" + recorder2StuId + "]的用户不存在");
+            updater.setRecorder2Id(recorder2User.getId());
+        }
+
+        if (StringUtils.isNotEmpty(summarizerStuId)) {
+            CmsUser summarizerUser = userMap.get(summarizerStuId);
+            AssertUtils.notNull(summarizerUser, "记录人员学号[" + summarizerStuId + "]的用户不存在");
+            updater.setSummarizerId(summarizerUser.getId());
+        }
+
+        updater.setModifyTime(new Date());
         int affect = cmsRecorderDao.updateById(updater);
         logger.info("更新CmsRecorder affect:{}, updater: {}", affect, updater);
     }
@@ -170,7 +218,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
     private CmsRecorder queryCmsRecorder(Long recorderId) {
         CmsRecorderQuery query = CmsRecorderQuery.singletonQuery();
         query.setId(recorderId);
-        List<CmsRecorder> recorders = cmsRecorderDao.selectListByParam(query);
+        List<CmsRecorder> recorders = cmsRecorderDao.selectDetailListByParam(query);
         if (CollectionUtils.isNotEmpty(recorders)) {
             return recorders.get(0);
         }
@@ -199,7 +247,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
-            List<CmsRecorder> cmsRecorderList = cmsRecorderDao.selectListByParam(query);
+            List<CmsRecorder> cmsRecorderList = cmsRecorderDao.selectInfoListByParam(query);
 
             List<Long> userIds = Lists.newArrayList();
             cmsRecorderList.forEach(recorder -> {
@@ -213,7 +261,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                     userIds.add(recorder.getSummarizerId());
                 }
             });
-            Map<Long, CmsUser> userMap = cmsUserComponent.queryUsersMap(userIds);
+            Map<Long, CmsUser> userMap = cmsUserComponent.queryUserMap(userIds);
 
             pagingResult.setRows(cmsRecorderList, recorder -> {
                 CmsRecorderVo recorderVo = new CmsRecorderVo();
@@ -221,24 +269,30 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                 recorderVo.setDate(recorder.getDate());
                 recorderVo.setRecorder1Id(recorder.getRecorder1Id());
                 recorderVo.setRecorder1File(recorder.getRecorder1File());
-                String recorder1FileUrl = buildDownloadUrl(recorder.getId(), "recorder1Id", recorder.getRecorder1Id());
-                recorderVo.setRecorder1FileUrl(recorder1FileUrl);
+                if (StringUtils.isNotEmpty(recorder.getRecorder1Type())) {
+                    String recorder1FileUrl = buildDownloadUrl(recorder.getId(), "recorder1Id", recorder.getRecorder1Id());
+                    recorderVo.setRecorder1FileUrl(recorder1FileUrl);
+                }
                 CmsUser recorder1User = userMap.get(recorder.getRecorder1Id());
                 if (recorder1User != null) {
                     recorderVo.setRecorder1Name(recorder1User.getName());
                 }
                 recorderVo.setRecorder2Id(recorder.getRecorder2Id());
                 recorderVo.setRecorder2File(recorder.getRecorder2File());
-                String recorder2FileUrl = buildDownloadUrl(recorder.getId(), "recorder2Id", recorder.getRecorder2Id());
-                recorderVo.setRecorder2FileUrl(recorder2FileUrl);
+                if (StringUtils.isNotEmpty(recorder.getRecorder2Type())) {
+                    String recorder2FileUrl = buildDownloadUrl(recorder.getId(), "recorder2Id", recorder.getRecorder2Id());
+                    recorderVo.setRecorder2FileUrl(recorder2FileUrl);
+                }
                 CmsUser recorder2User = userMap.get(recorder.getRecorder2Id());
                 if (recorder2User != null) {
                     recorderVo.setRecorder2Name(recorder2User.getName());
                 }
                 recorderVo.setSummarizerId(recorder.getSummarizerId());
                 recorderVo.setSummarizerFile(recorder.getSummarizerFile());
-                String summarizerFileUrl = buildDownloadUrl(recorder.getId(), "summarizerId", recorder.getSummarizerId());
-                recorderVo.setSummarizerFileUrl(summarizerFileUrl);
+                if (StringUtils.isNotEmpty(recorder.getSummarizerType())) {
+                    String summarizerFileUrl = buildDownloadUrl(recorder.getId(), "summarizerId", recorder.getSummarizerId());
+                    recorderVo.setSummarizerFileUrl(summarizerFileUrl);
+                }
                 CmsUser summarizerUser = userMap.get(recorder.getSummarizerId());
                 if (summarizerUser != null) {
                     recorderVo.setSummarizerName(summarizerUser.getName());

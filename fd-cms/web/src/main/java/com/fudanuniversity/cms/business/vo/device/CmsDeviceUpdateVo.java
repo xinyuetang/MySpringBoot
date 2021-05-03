@@ -42,7 +42,7 @@ public class CmsDeviceUpdateVo implements Serializable {
     private String model;
 
     /**
-     * 设备型号
+     * 设备名称
      */
     private String name;
 

@@ -70,12 +70,21 @@ public class CmsRecorderDaoImpl implements CmsRecorderDao {
     }
 
     @Override
-    public List<CmsRecorder> selectListByParam(CmsRecorderQuery query) {
+    public List<CmsRecorder> selectDetailListByParam(CmsRecorderQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 
         validateQueryParameter(query);
 
-        return cmsRecorderMapper.selectListByParam(query);
+        return cmsRecorderMapper.selectDetailListByParam(query);
+    }
+
+    @Override
+    public List<CmsRecorder> selectInfoListByParam(CmsRecorderQuery query) {
+        Assert.notNull(query, "查询参数不能为空");
+
+        validateQueryParameter(query);
+
+        return cmsRecorderMapper.selectInfoListByParam(query);
     }
 
     @Override

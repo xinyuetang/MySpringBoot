@@ -37,7 +37,12 @@ public interface CmsRecorderMapper {
     /**
      * 根据条件查询信息列表
      */
-    List<CmsRecorder> selectListByParam(CmsRecorderQuery query);
+    List<CmsRecorder> selectDetailListByParam(CmsRecorderQuery query);
+
+    /**
+     * 根据条件查询信息列表
+     */
+    List<CmsRecorder> selectInfoListByParam(CmsRecorderQuery query);
 
     /**
      * 根据条件查询信息总数目

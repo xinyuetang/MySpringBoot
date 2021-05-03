@@ -28,28 +28,18 @@ public class CmsRecorderAddVo implements Serializable {
     private Date date;
 
     /**
-     * 辅读人员1用户id
+     * 辅读人员1用户学号
      */
-    private Long recorder1Id;
+    private String recorder1StuId;
 
     /**
-     * 辅读人员2用户id
+     * 辅读人员2用户学号
      */
-    private Long recorder2Id;
+    private String recorder2StuId;
 
     /**
-     * 记录人员用户id
+     * 记录人员用户学号
      */
-    private Long summarizerId;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date modifyTime;
+    private String summarizerStuId;
 }
 

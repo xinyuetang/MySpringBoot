@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * 演讲记录
+ * 演讲记录安排
  * <p>
  * Created by tidu at 2021-05-03
  */

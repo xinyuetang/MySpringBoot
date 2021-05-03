@@ -49,7 +49,7 @@ public class DeviceAllocationController extends BaseController {
     }
 
     /**
-     * 根据条件查询信息列表
+     * 查询用户当前申请的设备列表
      */
     @GetMapping("/paging")
     public JsonResult<?> queryPagingResult(@Valid Paging paging) {

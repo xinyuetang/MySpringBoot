@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.business.vo.recorder;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -31,21 +29,18 @@ public class CmsRecorderUpdateVo implements Serializable {
     private Long id;
 
     /**
-     * 辅读人员1
+     * 辅读人员1用户学号
      */
-    @Min(1L)
-    private Long recorder1Id;
+    private String recorder1StuId;
 
     /**
-     * 辅读人员2
+     * 辅读人员2用户学号
      */
-    @Min(1L)
-    private Long recorder2Id;
+    private String recorder2StuId;
 
     /**
-     * 记录人员文
+     * 记录人员用户学号
      */
-    @Min(1L)
-    private Long summarizerId;
+    private String summarizerStuId;
 }
 

@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.controller;
 import com.fudanuniversity.cms.business.service.CmsSeminarService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarAddVo;
+import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarQueryVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarUpdateVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarVo;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
@@ -44,12 +45,6 @@ public class SeminarController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/list")
-    public JsonResult<?> recentSeminar(Paging paging) {
-        PagingResult<CmsSeminarVo> pagingResult = cmsSeminarService.queryRecentSeminars(paging);
-        return JsonResult.buildSuccess(pagingResult);
-    }
-
     @GetMapping(path = "/delete")
     public JsonResult<?> deleteSeminar(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
@@ -58,4 +53,9 @@ public class SeminarController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
+    @GetMapping(path = "/paging")
+    public JsonResult<?> queryPagingResult(@Valid CmsSeminarQueryVo queryVo, Paging paging) {
+        PagingResult<CmsSeminarVo> pagingResult = cmsSeminarService.queryPagingResult(queryVo, paging);
+        return JsonResult.buildSuccess(pagingResult);
+    }
 }

@@ -31,7 +31,7 @@ public class CmsDeviceAllocationApplyVo implements Serializable {
     private Long deviceId;
 
     /**
-     * 使用库存
+     * 申请使用的库存
      */
     @NotNull
     @Min(1L)

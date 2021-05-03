@@ -40,7 +40,7 @@ public class DeviceController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "delete")
+    @GetMapping(path = "/delete")
     public JsonResult<?> deleteDevice(@NotNull Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
@@ -50,7 +50,7 @@ public class DeviceController extends BaseController {
     /**
      * 查看设备分页列表
      */
-    @GetMapping(path = "paging")
+    @GetMapping(path = "/paging")
     public JsonResult<?> queryPagingResult(CmsDeviceQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);

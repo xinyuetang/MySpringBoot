@@ -157,7 +157,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
             List<CmsDeviceAllocation> deviceAllocations = cmsDeviceAllocationDao.selectListByParam(allocationQuery);
 
             List<Long> allocationUserIds = Lists.transform(deviceAllocations, CmsDeviceAllocation::getUserId);
-            Map<Long, CmsUser> userMap = cmsUserComponent.queryUsersMap(allocationUserIds);
+            Map<Long, CmsUser> userMap = cmsUserComponent.queryUserMap(allocationUserIds);
 
             pagingResult.setRows(deviceAllocations, deviceAllocation -> {
                 CmsDeviceUsageVo deviceUsageVo = new CmsDeviceUsageVo();

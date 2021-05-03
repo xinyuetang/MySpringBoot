@@ -1,12 +1,11 @@
 package com.fudanuniversity.cms.business.service;
 
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarAddVo;
+import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarQueryVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarUpdateVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarVo;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.repository.entity.CmsSeminar;
-import com.fudanuniversity.cms.repository.query.CmsSeminarQuery;
 
 /**
  * CmsSeminarService
@@ -28,7 +27,7 @@ public interface CmsSeminarService {
     /**
      * 查询最近的演讲
      */
-    PagingResult<CmsSeminarVo> queryRecentSeminars(Paging paging);
+    PagingResult<CmsSeminarVo> queryPagingResult(CmsSeminarQueryVo queryVo, Paging paging);
 
     /**
      * 根据id删除处理

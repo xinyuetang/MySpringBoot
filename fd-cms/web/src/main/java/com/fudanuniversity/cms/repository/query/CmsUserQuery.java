@@ -56,6 +56,7 @@ public class CmsUserQuery extends BaseQuery {
      * 索引字段:是
      */
     private String stuId;
+    private List<String> stuIds;
 
     /**
      * 字段备注:权限身份 <p>

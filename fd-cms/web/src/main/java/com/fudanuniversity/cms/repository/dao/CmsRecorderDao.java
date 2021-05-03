@@ -35,7 +35,12 @@ public interface CmsRecorderDao {
     /**
      * 查询数据
      */
-    List<CmsRecorder> selectListByParam(CmsRecorderQuery query);
+    List<CmsRecorder> selectDetailListByParam(CmsRecorderQuery query);
+
+    /**
+     * 查询数据
+     */
+    List<CmsRecorder> selectInfoListByParam(CmsRecorderQuery query);
 
     /**
      * 查询数量

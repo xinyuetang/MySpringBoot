@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsSeminarService;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarAddVo;
+import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarQueryVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarUpdateVo;
 import com.fudanuniversity.cms.business.vo.seminar.CmsSeminarVo;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
@@ -45,18 +46,18 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
     private CmsUserComponent cmsUserComponent;
 
     @Override
-    public void addNewSeminar(CmsSeminarAddVo seminarVo) {
-        String seminarStuId = seminarVo.getStuId();
+    public void addNewSeminar(CmsSeminarAddVo addVo) {
+        String seminarStuId = addVo.getStuId();
         CmsUser seminarUser = cmsUserComponent.queryUser(seminarStuId);
         AssertUtils.notNull(seminarUser, "用户[" + seminarStuId + "]不存在");
         CmsSeminar cmsSeminar = new CmsSeminar();
         cmsSeminar.setUserId(seminarUser.getId());
-        cmsSeminar.setTheme(seminarVo.getTheme());
-        cmsSeminar.setLink(seminarVo.getLink());
-        cmsSeminar.setDate(seminarVo.getDate());
+        cmsSeminar.setTheme(addVo.getTheme());
+        cmsSeminar.setLink(addVo.getLink());
+        cmsSeminar.setDate(addVo.getDate());
         cmsSeminar.setCreateTime(new Date());
         int affect = cmsSeminarDao.insert(cmsSeminar);
-        logger.info("保存CmsSeminar affect:{}, cmsSeminar: {}", affect, seminarVo);
+        logger.info("保存CmsSeminar affect:{}, cmsSeminar: {}", affect, addVo);
     }
 
     @Override
@@ -83,9 +84,14 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
     }
 
     @Override
-    public PagingResult<CmsSeminarVo> queryRecentSeminars(Paging paging) {
+    public PagingResult<CmsSeminarVo> queryPagingResult(CmsSeminarQueryVo queryVo, Paging paging) {
         PagingResult<CmsSeminarVo> pagingResult = PagingResult.create(paging);
+
         CmsSeminarQuery query = new CmsSeminarQuery();
+        query.setId(queryVo.getId());
+        query.setUserId(queryVo.getUserId());
+        query.setTheme(queryVo.getTheme());
+        query.setDate(queryVo.getDate());
         Long total = cmsSeminarDao.selectCountByParam(query);
 
         if (total > 0L) {
@@ -94,7 +100,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
             List<CmsSeminar> seminars = cmsSeminarDao.selectListByParam(query);
 
             List<Long> userIds = Lists.transform(seminars, CmsSeminar::getUserId);
-            Map<Long, CmsUser> userMap = cmsUserComponent.queryUsersMap(userIds);
+            Map<Long, CmsUser> userMap = cmsUserComponent.queryUserMap(userIds);
 
             pagingResult.setRows(seminars, seminar -> {
                 CmsSeminarVo seminarVo = new CmsSeminarVo();

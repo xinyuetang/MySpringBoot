@@ -23,14 +23,22 @@
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
-    <!-- 字段列表信息 -->
-    <sql id="_field_list">
+    <!-- 字段列表信息，包括blob字段 -->
+    <sql id="_detail_field_list">
         `id`, `date`, `recorder1_id`, `recorder1_file`, `recorder1_type`, `recorder1_content`, `recorder2_id`, `recorder2_file`, `recorder2_type`, `recorder2_content`, `summarizer_id`, `summarizer_file`, `summarizer_type`, `summarizer_content`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
-    <sql id="_value_list">
+    <sql id="_detail_value_list">
         #{id}, #{date}, #{recorder1Id}, #{recorder1File}, #{recorder1Type}, #{recorder1Content}, #{recorder2Id}, #{recorder2File}, #{recorder2Type}, #{recorder2Content}, #{summarizerId}, #{summarizerFile}, #{summarizerType}, #{summarizerContent}, #{createTime},  #{modifyTime}
+    </sql>
+
+    <sql id="_info_field_list">
+        `id`, `date`, `recorder1_id`, `recorder1_file`, `recorder1_type`, `recorder2_id`, `recorder2_file`, `recorder2_type`, `summarizer_id`, `summarizer_file`, `summarizer_type`, `create_time`,  `modify_time`
+    </sql>
+
+    <sql id="_info_value_list">
+        #{id}, #{date}, #{recorder1Id}, #{recorder1File}, #{recorder1Type}, #{recorder2Id}, #{recorder2File}, #{recorder2Type} #{summarizerId}, #{summarizerFile}, #{summarizerType}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -133,20 +141,20 @@
             (#{data.date}, #{data.recorder1Id}, #{data.recorder1File}, #{data.recorder1Type}, #{data.recorder1Content}, #{data.recorder2Id}, #{data.recorder2File}, #{data.recorder2Type}, #{data.recorder2Content}, #{data.summarizerId}, #{data.summarizerFile}, #{data.summarizerType}, #{data.summarizerContent}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `date` = VALUES(`date`), 
-       `recorder1_id` = VALUES(`recorder1_id`), 
-       `recorder1_file` = VALUES(`recorder1_file`), 
-       `recorder1_type` = VALUES(`recorder1_type`), 
-       `recorder1_content` = VALUES(`recorder1_content`), 
-       `recorder2_id` = VALUES(`recorder2_id`), 
-       `recorder2_file` = VALUES(`recorder2_file`), 
-       `recorder2_type` = VALUES(`recorder2_type`), 
-       `recorder2_content` = VALUES(`recorder2_content`), 
-       `summarizer_id` = VALUES(`summarizer_id`), 
-       `summarizer_file` = VALUES(`summarizer_file`), 
-       `summarizer_type` = VALUES(`summarizer_type`), 
-       `summarizer_content` = VALUES(`summarizer_content`), 
-       `create_time` = `create_time`, 
+       `date` = VALUES(`date`),
+       `recorder1_id` = VALUES(`recorder1_id`),
+       `recorder1_file` = VALUES(`recorder1_file`),
+       `recorder1_type` = VALUES(`recorder1_type`),
+       `recorder1_content` = VALUES(`recorder1_content`),
+       `recorder2_id` = VALUES(`recorder2_id`),
+       `recorder2_file` = VALUES(`recorder2_file`),
+       `recorder2_type` = VALUES(`recorder2_type`),
+       `recorder2_content` = VALUES(`recorder2_content`),
+       `summarizer_id` = VALUES(`summarizer_id`),
+       `summarizer_file` = VALUES(`summarizer_file`),
+       `summarizer_type` = VALUES(`summarizer_type`),
+       `summarizer_content` = VALUES(`summarizer_content`),
+       `create_time` = `create_time`,
        `modify_time` = VALUES(`modify_time`)
     </insert>
 
@@ -209,9 +217,20 @@
         ]]>
     </delete>
 
-    <select id="selectListByParam" parameterType="map" resultMap="CmsRecorderMap">
+    <select id="selectDetailListByParam" parameterType="map" resultMap="CmsRecorderMap">
         SELECT
-        <include refid="_field_list"/>
+        <include refid="_detail_field_list"/>
+        FROM `cms_recorder`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectInfoListByParam" parameterType="map" resultMap="CmsRecorderMap">
+        SELECT
+        <include refid="_info_field_list"/>
         FROM `cms_recorder`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
