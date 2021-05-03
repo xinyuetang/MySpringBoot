@@ -15,7 +15,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import javax.sql.DataSource;
 
 /**
- * Created by tidu at 2021-04-29 14:47:37
+ * Created by Xinyue.Tang at 2021-04-29 14:47:37
  */
 @Configuration
 @MapperScan(basePackages = "com.fudanuniversity.cms.repository.mapper")

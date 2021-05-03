@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by tidu at 2021-05-01 22:36:27
+ * Created by Xinyue.Tang at 2021-05-01 22:36:27
  */
 public class LoginInterceptor implements HandlerInterceptor {
 

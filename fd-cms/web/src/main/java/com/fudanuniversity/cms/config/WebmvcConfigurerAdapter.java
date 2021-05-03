@@ -19,7 +19,7 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 import java.util.List;
 
 /**
- * Created by tidu at 2021-04-16 10:16:47
+ * Created by Xinyue.Tang at 2021-04-16 10:16:47
  */
 @Configuration
 public class WebmvcConfigurerAdapter extends WebMvcConfigurationSupport {

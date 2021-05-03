@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Created by tidu at 2020-05-14 10:51:35
+ * Created by Xinyue.Tang at 2020-05-14 10:51:35
  */
 public class EnumUtils {
 

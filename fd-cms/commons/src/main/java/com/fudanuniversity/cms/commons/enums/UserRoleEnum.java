@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.enums;
 
 /**
- * Created by tidu at 2021-05-01 18:11:32
+ * Created by Xinyue.Tang at 2021-05-01 18:11:32
  */
 public enum UserRoleEnum {
 

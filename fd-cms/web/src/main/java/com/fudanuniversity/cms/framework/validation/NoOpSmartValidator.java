@@ -9,7 +9,7 @@ import org.springframework.validation.SmartValidator;
  *
  *  spring-webmvc参照配置见{@link ControllerValidationPostProcessor}
  * </pre>
- * Created by tidu at 2018-08-02 17:48:36
+ * Created by Xinyue.Tang at 2018-08-02 17:48:36
  *
  * @see ControllerValidationPostProcessor
  * @see MethodArgumentValidationInterceptor

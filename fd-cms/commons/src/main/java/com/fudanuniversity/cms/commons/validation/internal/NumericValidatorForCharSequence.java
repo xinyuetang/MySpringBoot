@@ -7,7 +7,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import java.math.BigDecimal;
 
 /**
- * Created by tidu at 2018-07-23 19:27:47
+ * Created by Xinyue.Tang at 2018-07-23 19:27:47
  */
 public class NumericValidatorForCharSequence implements ConstraintValidator<Numeric, CharSequence> {
 

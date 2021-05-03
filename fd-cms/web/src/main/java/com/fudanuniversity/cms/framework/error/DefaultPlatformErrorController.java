@@ -22,7 +22,7 @@ import java.util.Map;
  *
  * @see ErrorAttributes
  * @see org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController
- * Created by tidu at 2020-07-10 10:19:04
+ * Created by Xinyue.Tang at 2020-07-10 10:19:04
  */
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")

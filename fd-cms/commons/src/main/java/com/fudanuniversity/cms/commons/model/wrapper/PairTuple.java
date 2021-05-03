@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * 普通的键值对参数封装
  * <p>
- * Created by tidu at 2020-06-24 14:59:35
+ * Created by Xinyue.Tang at 2020-06-24 14:59:35
  */
 public class PairTuple<L, R> implements  Serializable {
 

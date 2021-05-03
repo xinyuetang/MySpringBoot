@@ -8,7 +8,7 @@ import static com.fudanuniversity.cms.commons.exception.ErrorCode.DefaultErrorCo
 /**
  * 平台相关的异常，平台相关的业务或功能抛出的异常继承此类
  * <p>
- * Created by tidu at 2021-04-14 15:23:20
+ * Created by Xinyue.Tang at 2021-04-14 15:23:20
  */
 public class PlatformException extends RuntimeException {
 

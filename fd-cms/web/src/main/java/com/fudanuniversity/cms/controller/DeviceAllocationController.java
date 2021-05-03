@@ -19,7 +19,7 @@ import javax.annotation.Resource;
 /**
  * CmsDeviceAllocationController
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 @RestController
 @RequestMapping("/device/allocation")

@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.enums;
 import java.util.Objects;
 
 /**
- * Created by tidu at 2020-05-26 15:42:24
+ * Created by Xinyue.Tang at 2020-05-26 15:42:24
  */
 public enum BooleanEnum {
     False(0, "是"),

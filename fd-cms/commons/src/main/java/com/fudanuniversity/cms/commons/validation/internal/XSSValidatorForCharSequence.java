@@ -13,7 +13,7 @@ import org.jsoup.safety.Whitelist;
  * <p>
  * //@see org.hibernate.validator.internal.constraintvalidators.SafeHtmlValidator
  * <p>
- * Created by tidu at 2018-07-23 19:27:47
+ * Created by Xinyue.Tang at 2018-07-23 19:27:47
  */
 public class XSSValidatorForCharSequence
         implements ConstraintValidator<XSS, CharSequence> {

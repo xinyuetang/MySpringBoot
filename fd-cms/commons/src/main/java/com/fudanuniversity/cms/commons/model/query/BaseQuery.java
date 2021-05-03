@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by tidu at 2020-06-24 15:12:45
+ * Created by Xinyue.Tang at 2020-06-24 15:12:45
  */
 public class BaseQuery implements Serializable {
 

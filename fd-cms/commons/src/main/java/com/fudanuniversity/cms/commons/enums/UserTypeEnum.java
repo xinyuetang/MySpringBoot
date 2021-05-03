@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.enums;
 
 /**
- * Created by tidu at 2021-05-03 22:12:54
+ * Created by Xinyue.Tang at 2021-05-03 22:12:54
  */
 public enum UserTypeEnum {
 

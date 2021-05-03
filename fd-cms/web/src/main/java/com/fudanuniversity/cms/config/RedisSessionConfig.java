@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * redis存储会话
  * <p>
- * Created by tidu at 2021-05-01 22:01:21
+ * Created by Xinyue.Tang at 2021-05-01 22:01:21
  *
  * @see RedisHttpSessionConfiguration
  */

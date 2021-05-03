@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.exception;
 
 /**
- * Created by tidu at 2021-04-19 13:10:27
+ * Created by Xinyue.Tang at 2021-04-19 13:10:27
  */
 public class ParameterException extends PlatformException {
 

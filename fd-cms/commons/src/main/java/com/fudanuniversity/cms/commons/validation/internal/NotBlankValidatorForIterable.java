@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 import jakarta.validation.constraints.NotBlank;
 
 /**
- * Created by tidu at 2018-08-07 11:04:52
+ * Created by Xinyue.Tang at 2018-08-07 11:04:52
  */
 public class NotBlankValidatorForIterable
         implements ConstraintValidator<NotBlank, Iterable<? extends CharSequence>> {

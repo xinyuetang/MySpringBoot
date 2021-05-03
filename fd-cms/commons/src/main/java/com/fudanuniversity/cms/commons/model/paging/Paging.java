@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 用于分页的参数
  * <p>
- * Created by tidu at 2020-06-24 15:03:11
+ * Created by Xinyue.Tang at 2020-06-24 15:03:11
  */
 public class Paging implements Serializable {
 

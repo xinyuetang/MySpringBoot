@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 /**
  * DefaultHandlerExceptionResolver优先级为Ordered.LOWEST_PRECEDENCE，是最后一个异常处理，这里将spring自带的异常处理类替换掉
  * <p>
- * Created by tidu at 2021-04-16 13:33:36
+ * Created by Xinyue.Tang at 2021-04-16 13:33:36
  */
 public class HandlerPlatformExceptionResolver extends DefaultHandlerExceptionResolver {
 

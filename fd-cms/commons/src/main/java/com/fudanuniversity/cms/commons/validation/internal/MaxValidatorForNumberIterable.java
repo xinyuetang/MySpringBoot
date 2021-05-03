@@ -10,7 +10,7 @@ import java.math.BigInteger;
 /**
  * 补充Max校验的实现，如List<Integer>, Set<Long>
  * <p>
- * Created by tidu at 2018-07-23 19:27:47
+ * Created by Xinyue.Tang at 2018-07-23 19:27:47
  */
 public class MaxValidatorForNumberIterable
         implements ConstraintValidator<Max, Iterable<? extends Number>> {

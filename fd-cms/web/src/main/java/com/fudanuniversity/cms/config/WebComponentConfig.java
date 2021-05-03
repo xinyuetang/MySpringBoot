@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 配置web组件等
  * <p>
- * Created by tidu at 2021-04-19 14:06:43
+ * Created by Xinyue.Tang at 2021-04-19 14:06:43
  */
 @Configuration
 public class WebComponentConfig {

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsDeviceAllocationDao 实现类
  * <p>
- * Created by tidu at 2021-05-04
+ * Created by Xinyue.Tang at 2021-05-04
  */
 @Repository
 public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {

@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.model.query;
 import java.io.Serializable;
 
 /**
- * Created by tidu at 2020-06-24 15:12:45
+ * Created by Xinyue.Tang at 2020-06-24 15:12:45
  */
 public class SortColumn implements Serializable {
 

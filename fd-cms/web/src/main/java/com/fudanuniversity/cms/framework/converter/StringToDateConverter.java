@@ -13,7 +13,7 @@ import java.util.Date;
  *
  * @see <a href="http://docs.spring.io/spring/docs/current/spring-framework-reference/html/validation.html">9.5.3 GenericConverter</a>
  * <p>
- * Created by tidu at 2020-09-04 17:55:44
+ * Created by Xinyue.Tang at 2020-09-04 17:55:44
  */
 public class StringToDateConverter implements Converter<String, Date> {
 

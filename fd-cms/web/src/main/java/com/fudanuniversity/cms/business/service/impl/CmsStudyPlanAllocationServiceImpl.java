@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * CmsStudyPlanAllocationService 实现类
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 @Service
 public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocationService {

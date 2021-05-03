@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 /**
  * 封装内部接口、web、移动端等返回数据
  * <p>
- * Created by tidu at 2020-07-08 16:32:43
+ * Created by Xinyue.Tang at 2020-07-08 16:32:43
  */
 public class JsonResult<V> implements Serializable {
 

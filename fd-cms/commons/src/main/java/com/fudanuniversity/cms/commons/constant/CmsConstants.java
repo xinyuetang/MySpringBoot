@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.constant;
 
 /**
- * Created by tidu at 2021-04-15 10:02:59
+ * Created by Xinyue.Tang at 2021-04-15 10:02:59
  */
 public final class CmsConstants {
 

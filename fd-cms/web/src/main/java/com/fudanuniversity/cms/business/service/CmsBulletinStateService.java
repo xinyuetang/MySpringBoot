@@ -7,7 +7,7 @@ import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
 /**
  * CmsBulletinStateService
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-02
  */
 public interface CmsBulletinStateService {
 

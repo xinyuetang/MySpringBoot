@@ -11,7 +11,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * 检验是否为枚举中的属性值或者某个无参方法返回值
  * <p>
- * Created by tidu at 2018-08-13 12:04:56
+ * Created by Xinyue.Tang at 2018-08-13 12:04:56
  */
 @Documented
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})

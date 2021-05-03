@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.enums;
 
 /**
- * Created by tidu at 2020-05-26 15:42:24
+ * Created by Xinyue.Tang at 2020-05-26 15:42:24
  */
 public enum DeletedEnum {
     Normal(0, "有效"),

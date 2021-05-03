@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by tidu at 2018-07-23 19:27:47
+ * Created by Xinyue.Tang at 2018-07-23 19:27:47
  */
 public class EnumStringValidatorForCharSequence
         implements ConstraintValidator<EnumString, CharSequence> {

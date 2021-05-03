@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 设备分配
  *
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 @Data
 @NoArgsConstructor

@@ -11,7 +11,7 @@ import java.lang.invoke.MethodHandles;
 /**
  * Check that the character sequence length is between min and max.
  * <p>
- * Created by tidu at 2018-07-23 19:27:47
+ * Created by Xinyue.Tang at 2018-07-23 19:27:47
  */
 public class LengthValidatorForCharSequenceIterable
         implements ConstraintValidator<Length, Iterable<? extends CharSequence>> {

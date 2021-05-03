@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * CmsUserAccountMapper接口
  * <p>
- * Created by tidu at 2021-05-01
+ * Created by Xinyue.Tang at 2021-05-01
  */
 @Mapper
 public interface CmsUserAccountMapper {

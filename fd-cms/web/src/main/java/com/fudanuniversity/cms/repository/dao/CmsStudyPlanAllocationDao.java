@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * CmsStudyPlanAllocationDao
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 public interface CmsStudyPlanAllocationDao {
 

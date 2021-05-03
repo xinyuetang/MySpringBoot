@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.enums;
 
 /**
- * Created by tidu at 2021-05-02 16:53:32
+ * Created by Xinyue.Tang at 2021-05-02 16:53:32
  */
 public enum DeviceAllocationStatusEnum {
 

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * CmsRecorderMapper接口
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-02
  */
 @Mapper
 public interface CmsRecorderMapper {

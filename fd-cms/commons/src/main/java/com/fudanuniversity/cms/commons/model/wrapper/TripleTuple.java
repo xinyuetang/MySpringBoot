@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Created by tidu at 2020-06-24 15:00:29
+ * Created by Xinyue.Tang at 2020-06-24 15:00:29
  */
 public class TripleTuple<L, M, R> implements Serializable {
 

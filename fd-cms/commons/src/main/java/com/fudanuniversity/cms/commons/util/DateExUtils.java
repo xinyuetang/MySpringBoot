@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * DateExUtils类命名区别于apache.commons.lang3中的DateUtils
  * <p>
- * Created by tidu at 2020-05-14 15:54:36
+ * Created by Xinyue.Tang at 2020-05-14 15:54:36
  */
 public class DateExUtils {
 

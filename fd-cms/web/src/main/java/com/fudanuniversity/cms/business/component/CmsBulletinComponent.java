@@ -16,7 +16,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Created by tidu at 2021-05-03 00:22:19
+ * Created by Xinyue.Tang at 2021-05-03 00:22:19
  */
 @Component
 public class CmsBulletinComponent {

@@ -8,7 +8,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
- * Created by tidu at 2018-07-23 21:39:01
+ * Created by Xinyue.Tang at 2018-07-23 21:39:01
  */
 public class InheritedAnnotationMethodMatcher extends StaticMethodMatcher {
 

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * CmsUserDao
  * <p>
- * Created by tidu at 2021-05-01
+ * Created by Xinyue.Tang at 2021-05-01
  */
 public interface CmsUserDao {
 

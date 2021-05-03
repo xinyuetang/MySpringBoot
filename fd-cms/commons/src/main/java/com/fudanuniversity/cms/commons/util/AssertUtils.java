@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 /**
  * 简单校验支持，断言失败抛出业务异常
  * <p>
- * Created by tidu at 2021-04-16 16:08:00
+ * Created by Xinyue.Tang at 2021-04-16 16:08:00
  */
 public final class AssertUtils {
 

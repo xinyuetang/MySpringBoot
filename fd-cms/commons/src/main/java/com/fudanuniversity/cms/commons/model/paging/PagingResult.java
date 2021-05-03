@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Created by tidu at 2020-06-24 15:04:45
+ * Created by Xinyue.Tang at 2020-06-24 15:04:45
  */
 public class PagingResult<T> extends Paging {
     private static final long serialVersionUID = 1L;

@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.enums;
 /**
  * 设备类型
  * <p>
- * Created by tidu at 2021-05-02 16:46:38
+ * Created by Xinyue.Tang at 2021-05-02 16:46:38
  */
 public enum DeviceTypeEnum {
 

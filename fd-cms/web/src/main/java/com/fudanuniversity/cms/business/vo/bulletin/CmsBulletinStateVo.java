@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * 用户通知状态
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-02
  */
 @Data
 @NoArgsConstructor

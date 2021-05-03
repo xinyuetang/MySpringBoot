@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 培养方案
  *
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 @Data
 @NoArgsConstructor

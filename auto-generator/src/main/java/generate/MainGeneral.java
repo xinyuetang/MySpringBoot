@@ -62,8 +62,9 @@ public class MainGeneral {
         ClassInfo classInfo = new ClassInfo();
         classInfo.setPackagePrefix(packagePrefix);
         classInfo.setSaveDirPath(System.getProperty("user.home") + "/Downloads/DaoGenerate/");
-        classInfo.setDatetime(DateExUtils.formatDate(new Date()));
-        classInfo.setUser(System.getProperty("user.name"));
+        classInfo.setDatetime(DateExUtils.formatDatetime(new Date()));
+        //classInfo.setUser(System.getProperty("user.name"));
+        classInfo.setUser("Xinyue.Tang");
         classInfo.setQuerySuffix("Query");
         return classInfo;
     }

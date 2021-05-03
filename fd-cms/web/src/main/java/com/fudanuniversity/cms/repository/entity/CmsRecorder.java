@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * 演讲记录安排
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 @Data
 @NoArgsConstructor

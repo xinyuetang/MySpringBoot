@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.enums;
 
 /**
- * Created by tidu at 2021-05-02 02:29:36
+ * Created by Xinyue.Tang at 2021-05-02 02:29:36
  */
 public enum StudyTypeEnum {
     Academic(10, "学术型"),

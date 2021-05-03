@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.exception;
 
 /**
- * Created by tidu at 2021-04-14 15:39:54
+ * Created by Xinyue.Tang at 2021-04-14 15:39:54
  */
 public final class ErrorCode {
     public final static String DefaultErrorCode = "error.default";

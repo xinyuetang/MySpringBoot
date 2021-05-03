@@ -13,7 +13,7 @@ import java.io.Serializable;
 /**
  * 通知
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-02
  */
 @Data
 @NoArgsConstructor

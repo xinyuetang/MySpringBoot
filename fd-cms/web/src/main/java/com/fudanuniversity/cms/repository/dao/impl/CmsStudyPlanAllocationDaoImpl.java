@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanAllocationDao 实现类
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-03
  */
 @Repository
 public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao {

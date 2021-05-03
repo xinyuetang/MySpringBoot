@@ -7,7 +7,7 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 /**
  * CmsBulletinService
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-02
  */
 public interface CmsBulletinService {
 

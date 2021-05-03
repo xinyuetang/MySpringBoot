@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 /**
  * 补充Max校验的实现，如List<String>, Set<String>
  * <p>
- * Created by tidu at 2018-07-23 19:27:47
+ * Created by Xinyue.Tang at 2018-07-23 19:27:47
  */
 public class MaxValidatorForCharSequenceIterable
         implements ConstraintValidator<Max, Iterable<? extends CharSequence>> {

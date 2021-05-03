@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 类名区别于org.apache.commons.beanutils.BeanUtils
  * <p>
- * Created by tidu at 2021-04-14 15:12:43
+ * Created by Xinyue.Tang at 2021-04-14 15:12:43
  */
 public final class BeanExUtils {
 

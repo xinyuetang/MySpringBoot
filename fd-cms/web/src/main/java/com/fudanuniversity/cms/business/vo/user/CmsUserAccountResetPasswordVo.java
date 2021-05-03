@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * 用户帐户
  * <p>
- * Created by tidu at 2021-05-01
+ * Created by Xinyue.Tang at 2021-05-01
  */
 @Data
 @NoArgsConstructor

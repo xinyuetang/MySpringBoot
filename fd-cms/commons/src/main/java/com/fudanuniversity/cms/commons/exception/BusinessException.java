@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.commons.exception;
 
 /**
- * Created by tidu at 2021-04-15 15:19:51
+ * Created by Xinyue.Tang at 2021-04-15 15:19:51
  */
 public class BusinessException extends PlatformException {
 

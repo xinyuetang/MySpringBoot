@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by tidu at 2020-05-15 18:39:42
+ * Created by Xinyue.Tang at 2020-05-15 18:39:42
  */
 public final class UrlUtils {
 

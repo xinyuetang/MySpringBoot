@@ -6,7 +6,7 @@ import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 
 /**
- * Created by tidu at 2021-05-02 01:43:58
+ * Created by Xinyue.Tang at 2021-05-02 01:43:58
  */
 public abstract class BaseController {
 

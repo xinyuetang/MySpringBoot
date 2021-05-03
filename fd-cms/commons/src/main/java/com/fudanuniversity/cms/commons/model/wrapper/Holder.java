@@ -3,7 +3,7 @@ package com.fudanuniversity.cms.commons.model.wrapper;
 import java.io.Serializable;
 
 /**
- * Created by tidu at 2020-07-03 14:15:01
+ * Created by Xinyue.Tang at 2020-07-03 14:15:01
  */
 public class Holder<T> implements Serializable {
 
