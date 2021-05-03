@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsPlanMapper">
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsStudyPlanMapper">
 
     <!-- 返回结果集 -->
-    <resultMap id="CmsPlanMap" type="com.fudanuniversity.cms.repository.entity.CmsPlan">
+    <resultMap id="CmsStudyPlanMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlan">
         <result column="id" property="id"/>
         <result column="common" property="common"/>
         <result column="keshuo" property="keshuo"/>
@@ -90,7 +90,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
+            `cms_study_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #{common}, #{keshuo}, #{studyType}, #{index}, #{name}, #{spendDays}, #{createTime}, #{modifyTime}
@@ -99,7 +99,7 @@
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
+            `cms_study_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
             (#{data.common}, #{data.keshuo}, #{data.studyType}, #{data.index}, #{data.name}, #{data.spendDays}, #{data.createTime}, #{data.modifyTime})
@@ -116,7 +116,7 @@
     </insert>
 
     <update id="updateById">
-        UPDATE `cms_plan`
+        UPDATE `cms_study_plan`
         <trim prefix="SET" suffixOverrides=",">
             <if test="common != null">
                 `common` = #{common},
@@ -149,14 +149,14 @@
 
     <delete id="deleteById">
         <![CDATA[
-        DELETE FROM `cms_plan` WHERE `id` = #{id} LIMIT 1
+        DELETE FROM `cms_study_plan` WHERE `id` = #{id} LIMIT 1
         ]]>
     </delete>
 
-    <select id="selectListByParam" parameterType="map" resultMap="CmsPlanMap">
+    <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanMap">
         SELECT
         <include refid="_field_list"/>
-        FROM `cms_plan`
+        FROM `cms_study_plan`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>
@@ -166,7 +166,7 @@
 
     <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM `cms_plan`
+        FROM `cms_study_plan`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>

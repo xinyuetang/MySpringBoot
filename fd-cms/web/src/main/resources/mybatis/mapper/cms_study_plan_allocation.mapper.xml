@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsPlanAllocationMapper">
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper">
 
     <!-- 返回结果集 -->
-    <resultMap id="CmsPlanAllocationMap" type="com.fudanuniversity.cms.repository.entity.CmsPlanAllocation">
+    <resultMap id="CmsStudyPlanAllocationMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation">
         <result column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="plan_id" property="planId"/>
@@ -94,7 +94,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_plan_allocation`(`user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`, `modify_time`)
+            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #{userId}, #{planId}, #{planStartTime}, #{planEndTime}, #{spendDays}, #{delayDays}, #{remark}, #{createTime}, #{modifyTime}
@@ -103,7 +103,7 @@
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_plan_allocation`(`user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`, `modify_time`)
+            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_start_time`, `plan_end_time`, `spend_days`, `delay_days`, `remark`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
             (#{data.userId}, #{data.planId}, #{data.planStartTime}, #{data.planEndTime}, #{data.spendDays}, #{data.delayDays}, #{data.remark}, #{data.createTime}, #{data.modifyTime})
@@ -121,7 +121,7 @@
     </insert>
 
     <update id="updateById">
-        UPDATE `cms_plan_allocation`
+        UPDATE `cms_study_plan_allocation`
         <trim prefix="SET" suffixOverrides=",">
             <if test="userId != null">
                 `user_id` = #{userId},
@@ -157,14 +157,14 @@
 
     <delete id="deleteById">
         <![CDATA[
-        DELETE FROM `cms_plan_allocation` WHERE `id` = #{id} LIMIT 1
+        DELETE FROM `cms_study_plan_allocation` WHERE `id` = #{id} LIMIT 1
         ]]>
     </delete>
 
-    <select id="selectListByParam" parameterType="map" resultMap="CmsPlanAllocationMap">
+    <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanAllocationMap">
         SELECT
         <include refid="_field_list"/>
-        FROM `cms_plan_allocation`
+        FROM `cms_study_plan_allocation`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>
@@ -174,7 +174,7 @@
 
     <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM `cms_plan_allocation`
+        FROM `cms_study_plan_allocation`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>

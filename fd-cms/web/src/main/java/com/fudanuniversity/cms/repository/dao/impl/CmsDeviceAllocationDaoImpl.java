@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsDeviceAllocationDao 实现类
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Repository
 public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
@@ -88,9 +88,9 @@ public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
     private void validateQueryParameter(CmsDeviceAllocationQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

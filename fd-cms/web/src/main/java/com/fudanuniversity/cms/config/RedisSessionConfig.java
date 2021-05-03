@@ -30,7 +30,7 @@ import java.nio.charset.StandardCharsets;
  * @see RedisHttpSessionConfiguration
  */
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 45, redisNamespace = "fd:cms:session")
+@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 45 * 100/*TODO 修改会话时间*/, redisNamespace = "fd:cms:session")
 public class RedisSessionConfig {
 
     /**

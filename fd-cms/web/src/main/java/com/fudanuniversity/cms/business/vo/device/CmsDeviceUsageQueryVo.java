@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.business.vo.user;
+package com.fudanuniversity.cms.business.vo.device;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * 用户
+ * 设备
  *
  * Created by tidu at 2021-05-03
  */
@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CmsUserQueryVo {
+public class CmsDeviceUsageQueryVo {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,64 +26,34 @@ public class CmsUserQueryVo {
     private Long id;
 
     /**
-     * 用户类型
+     * 设备类型
      */
-    private String type;
+    private Long type;
 
     /**
-     * 学号
+     * 设备型号
      */
-    private String stuId;
+    private String model;
 
     /**
-     * 权限身份
+     * 负责人姓名
      */
-    private Integer roleId;
+    private String principal;
 
     /**
-     * 用户名
+     * 设备型号
      */
     private String name;
 
     /**
-     * 手机
+     * 库存
      */
-    private String telephone;
+    private Integer inventory;
 
     /**
-     * 邮箱
+     * 库存单位
      */
-    private String email;
-
-    /**
-     * 导师
-     */
-    private String mentor;
-
-    /**
-     * 汇报人
-     */
-    private String leader;
-
-    /**
-     * 就读类型
-     */
-    private Integer studyType;
-
-    /**
-     * 是否科硕
-     */
-    private Integer keshuo;
-
-    /**
-     * 入学时间
-     */
-    private Date enrollDate;
-
-    /**
-     * 状态
-     */
-    private Integer status;
+    private String inventoryUnit;
 
     /**
      * 小于等于创建时间

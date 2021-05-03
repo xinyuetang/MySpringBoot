@@ -5,8 +5,8 @@ package com.fudanuniversity.cms.commons.enums;
  */
 public enum DeviceAllocationStatusEnum {
 
-    InUse(0, "使用中"),
-    Returned(1, "已归还"),
+    InUse(10, "使用中"),
+    Returned(20, "已归还"),
     ;
 
     private final Integer code;

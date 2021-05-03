@@ -24,12 +24,6 @@ public class CmsArticleCategoryAddVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * id
-     */
-    @NotNull
-    private Long id;
-
-    /**
      * 标签
      */
     @NotNull

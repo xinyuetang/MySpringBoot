@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * 设备
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Data
 @NoArgsConstructor
@@ -50,7 +50,7 @@ public class CmsDevice implements Serializable {
     private String principal;
 
     /**
-     * 字段备注:设备型号 <p>
+     * 字段备注:设备名称 <p>
      * 数据库字段长度:(256,0) <p>
      * 是否索引:不是
      */
@@ -71,11 +71,11 @@ public class CmsDevice implements Serializable {
     private String inventoryUnit;
 
     /**
-     * 字段备注:演讲时间 <p>
-     * 数据库字段长度:(10,0) <p>
+     * 字段备注:删除状态 <p>
+     * 数据库字段长度:(3,0) <p>
      * 是否索引:不是
      */
-    private Date date;
+    private Integer deleted;
 
     /**
      * 字段备注:创建时间 <p>

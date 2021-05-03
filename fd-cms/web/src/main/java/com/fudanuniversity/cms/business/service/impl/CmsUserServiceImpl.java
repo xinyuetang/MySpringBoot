@@ -4,6 +4,8 @@ import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserQueryVo;
+import com.fudanuniversity.cms.business.vo.user.CmsUserVo;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
@@ -49,22 +51,6 @@ public class CmsUserServiceImpl implements CmsUserService {
 
     @Resource
     private CmsUserAccountService cmsUserAccountService;
-
-    @Override
-    public PagingResult<CmsUser> getAllUsers(Paging paging) {
-        PagingResult<CmsUser> pagingResult = PagingResult.create(paging);
-
-        CmsUserQuery query = new CmsUserQuery();
-        query.setOffset(paging.getOffset());
-        query.setLimit(paging.getLimit());
-        query.setGtId(0L);
-        query.setSorts(SortColumn.create(CmsConstants.IdColumn, SortMode.ASC));
-
-        List<CmsUser> users = cmsUserDao.selectListByParam(query);
-        pagingResult.setRows(users);
-
-        return pagingResult;
-    }
 
     @Override
     public void confirmUserPrivilege(String stuId, UserRoleEnum privilege) {
@@ -199,26 +185,63 @@ public class CmsUserServiceImpl implements CmsUserService {
         cmsUserAccountService.deleteCmsUserAccountByStuId(cmsUser.getStuId());
     }
 
+
     /**
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsUser> queryPagingResult(CmsUserQuery query) {
-        PagingResult<CmsUser> pagingResult = PagingResult.create(query);
+    public PagingResult<CmsUserVo> queryPagingResult(CmsUserQueryVo queryVo, Paging paging) {
+        PagingResult<CmsUserVo> pagingResult = PagingResult.create(paging);
 
-        //TODO 设置参数（分页参数除外）
-
+        CmsUserQuery query = CmsUserQuery.listQuery();
+        query.setId(queryVo.getId());
+        query.setType(queryVo.getType());
+        query.setStuId(queryVo.getStuId());
+        query.setRoleId(queryVo.getRoleId());
+        query.setName(queryVo.getName());
+        query.setTelephone(queryVo.getTelephone());
+        query.setEmail(queryVo.getEmail());
+        query.setMentor(queryVo.getMentor());
+        query.setLeader(queryVo.getLeader());
+        query.setStudyType(queryVo.getStudyType());
+        query.setKeshuo(queryVo.getKeshuo());
+        query.setEnrollDate(queryVo.getEnrollDate());
+        query.setStatus(queryVo.getStatus());
+        query.setEltCreateTime(queryVo.getEltCreateTime());
+        query.setEgtCreateTime(queryVo.getEgtCreateTime());
+        query.setEltModifyTime(queryVo.getEltModifyTime());
+        query.setEgtModifyTime(queryVo.getEgtModifyTime());
         Long count = cmsUserDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
-            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
+            query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsUser> cmsUserList = cmsUserDao.selectListByParam(query);
-            pagingResult.setRows(cmsUserList);
+            pagingResult.setRows(cmsUserList, this::convertCmsUserVo);
         }
 
         return pagingResult;
+    }
+
+    private CmsUserVo convertCmsUserVo(CmsUser cmsUser) {
+        CmsUserVo userVo = new CmsUserVo();
+        userVo.setId(cmsUser.getId());
+        userVo.setType(cmsUser.getType());
+        userVo.setStuId(cmsUser.getStuId());
+        userVo.setRoleId(cmsUser.getRoleId());
+        userVo.setName(cmsUser.getName());
+        userVo.setTelephone(cmsUser.getTelephone());
+        userVo.setEmail(cmsUser.getEmail());
+        userVo.setMentor(cmsUser.getMentor());
+        userVo.setLeader(cmsUser.getLeader());
+        userVo.setStudyType(cmsUser.getStudyType());
+        userVo.setKeshuo(cmsUser.getKeshuo());
+        userVo.setEnrollDate(cmsUser.getEnrollDate());
+        userVo.setStatus(cmsUser.getStatus());
+        userVo.setCreateTime(cmsUser.getCreateTime());
+        userVo.setModifyTime(cmsUser.getModifyTime());
+        return userVo;
     }
 }

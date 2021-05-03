@@ -39,41 +39,6 @@ public final class UrlUtils {
     }
 
     /**
-     * 获取URL地址文件后缀
-     * <p>
-     * http://www.example.com/a/b/c/stuff.zip?u=1 -> zip
-     */
-    public static String getFileExtension(final String urlStr) {
-        try {
-            URL url = new URL(urlStr);
-            return getFileExtension(url);
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException("invalidate url: " + urlStr, e);
-        }
-    }
-
-    public static String getFileExtension(final URL url) {
-        Objects.requireNonNull(url, "url is null");
-        final String file = url.getFile();
-
-        if (file.contains(".")) {
-            final String sub = file.substring(file.lastIndexOf('.') + 1);
-
-            if (sub.length() == 0) {
-                return null;
-            }
-
-            if (sub.contains("?")) {
-                return sub.substring(0, sub.indexOf('?'));
-            }
-
-            return sub;
-        }
-
-        return null;
-    }
-
-    /**
      * Parse a URI String into Name-Value Collection
      * (https://stackoverflow.com/questions/13592236/parse-a-uri-string-into-name-value-collection)
      * <pre>

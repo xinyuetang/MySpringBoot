@@ -35,7 +35,7 @@ public class ArticleController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @PostMapping(path = "/category/list")
+    @GetMapping(path = "/category/list")
     public JsonResult<?> listArticleCategories(@Valid @RequestBody CmsArticleCategoryQueryVo queryVo) {
         cmsArticleCategoryService.listArticleCategories(queryVo);
         return JsonResult.buildSuccess();
@@ -65,7 +65,7 @@ public class ArticleController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/delete")
+    @PostMapping(path = "/delete")
     public JsonResult<?> deleteArticle(@RequestParam @NotNull @Min(1L) Long id) {
         cmsArticleService.deleteCmsArticleById(id);
         return JsonResult.buildSuccess();

@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CmsPlanQuery extends BaseQuery {
+public class CmsStudyPlanAllocationQuery extends BaseQuery {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,39 +44,32 @@ public class CmsPlanQuery extends BaseQuery {
     private List<Long> idList;
 
     /**
-     * 字段备注:是否公共任务 <p>
-     * 数据库字段长度:(3,0) <p>
+     * 字段备注:学生id <p>
+     * 数据库字段长度:(19,0) <p>
      * 索引字段:是
      */
-    private Integer common;
+    private Long userId;
 
     /**
-     * 字段备注:是否科硕任务 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 索引字段:不是
+     * 字段备注:培养方案id <p>
+     * 数据库字段长度:(19,0) <p>
+     * 索引字段:是
      */
-    private Integer keshuo;
+    private Long planId;
 
     /**
-     * 字段备注:就读类型 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 索引字段:不是
-     */
-    private Integer studyType;
-
-    /**
-     * 字段备注:序号 <p>
+     * 字段备注:培养方案开始时间 <p>
      * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private Integer index;
+    private Date planStartTime;
 
     /**
-     * 字段备注:名称 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 字段备注:培养方案到期时间 <p>
+     * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private String name;
+    private Date planEndTime;
 
     /**
      * 字段备注:计划天数 <p>
@@ -84,6 +77,20 @@ public class CmsPlanQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Integer spendDays;
+
+    /**
+     * 字段备注:延期天数 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 索引字段:不是
+     */
+    private Integer delayDays;
+
+    /**
+     * 字段备注:备注 <p>
+     * 数据库字段长度:(16383,0) <p>
+     * 索引字段:不是
+     */
+    private String remark;
 
     /**
      * 字段备注:小于等于创建时间 <p>
@@ -113,14 +120,14 @@ public class CmsPlanQuery extends BaseQuery {
      */
     private Date egtModifyTime;
 
-    public static CmsPlanQuery singletonQuery() {
-        CmsPlanQuery query = new CmsPlanQuery();
+    public static CmsStudyPlanAllocationQuery singletonQuery() {
+        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
         query.setLimit(1);
         return query;
     }
 
-    public static CmsPlanQuery listQuery() {
-        CmsPlanQuery query = new CmsPlanQuery();
+    public static CmsStudyPlanAllocationQuery listQuery() {
+        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
         query.setLimit(MAX_ROWS);
         return query;
     }

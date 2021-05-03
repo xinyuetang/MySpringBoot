@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsDeviceDao 实现类
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Repository
 public class CmsDeviceDaoImpl implements CmsDeviceDao {
@@ -46,10 +46,10 @@ public class CmsDeviceDaoImpl implements CmsDeviceDao {
         Assert.notNull(cmsDevice.getType(), "设备类型必须有值");
         Assert.hasText(cmsDevice.getModel(), "设备型号不能为空");
         Assert.hasText(cmsDevice.getPrincipal(), "负责人姓名不能为空");
-        Assert.hasText(cmsDevice.getName(), "设备型号不能为空");
+        Assert.hasText(cmsDevice.getName(), "设备名称不能为空");
         Assert.notNull(cmsDevice.getInventory(), "库存必须有值");
         Assert.hasText(cmsDevice.getInventoryUnit(), "库存单位不能为空");
-        Assert.notNull(cmsDevice.getDate(), "演讲时间必须有值");
+        Assert.notNull(cmsDevice.getDeleted(), "删除状态必须有值");
         Assert.notNull(cmsDevice.getCreateTime(), "创建时间必须有值");
     }
 
@@ -90,9 +90,9 @@ public class CmsDeviceDaoImpl implements CmsDeviceDao {
     private void validateQueryParameter(CmsDeviceQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

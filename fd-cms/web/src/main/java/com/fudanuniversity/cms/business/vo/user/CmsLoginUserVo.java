@@ -1,19 +1,21 @@
-package com.fudanuniversity.cms.commons.model.web;
+package com.fudanuniversity.cms.business.vo.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by tidu at 2021-05-01 22:41:49
+ * Created by tidu at 2021-05-03 19:07:15
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginUser implements Serializable {
+@ToString
+public class CmsLoginUserVo implements Serializable {
 
     /**
      * 用户id
@@ -21,14 +23,14 @@ public class LoginUser implements Serializable {
     private Long userId;
 
     /**
-     * 用户名
-     */
-    private String name;
-
-    /**
      * 学号
      */
     private String stuId;
+
+    /**
+     * 用户名
+     */
+    private String name;
 
     /**
      *

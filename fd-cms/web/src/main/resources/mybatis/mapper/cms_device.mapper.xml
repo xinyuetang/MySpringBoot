@@ -12,19 +12,19 @@
         <result column="name" property="name"/>
         <result column="inventory" property="inventory"/>
         <result column="inventory_unit" property="inventoryUnit"/>
-        <result column="date" property="date"/>
+        <result column="deleted" property="deleted"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `date`, `create_time`,  `modify_time`
+        `id`, `type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `deleted`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{type}, #{model}, #{principal}, #{name}, #{inventory}, #{inventoryUnit}, #{date}, #{createTime},  #{modifyTime}
+        #{id}, #{type}, #{model}, #{principal}, #{name}, #{inventory}, #{inventoryUnit}, #{deleted}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -57,8 +57,8 @@
         <if test="inventoryUnit != null">
             AND `inventory_unit` = #{inventoryUnit}
         </if>
-        <if test="date != null">
-            AND `date` = #{date}
+        <if test="deleted != null">
+            AND `deleted` = #{deleted}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -94,19 +94,19 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_device`(`type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `date`, `create_time`, `modify_time`)
+            `cms_device`(`type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{type}, #{model}, #{principal}, #{name}, #{inventory}, #{inventoryUnit}, #{date}, #{createTime}, #{modifyTime}
+            #{type}, #{model}, #{principal}, #{name}, #{inventory}, #{inventoryUnit}, #{deleted}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_device`(`type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `date`, `create_time`, `modify_time`)
+            `cms_device`(`type`, `model`, `principal`, `name`, `inventory`, `inventory_unit`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.type}, #{data.model}, #{data.principal}, #{data.name}, #{data.inventory}, #{data.inventoryUnit}, #{data.date}, #{data.createTime}, #{data.modifyTime})
+            (#{data.type}, #{data.model}, #{data.principal}, #{data.name}, #{data.inventory}, #{data.inventoryUnit}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `type` = VALUES(`type`), 
@@ -115,7 +115,7 @@
        `name` = VALUES(`name`), 
        `inventory` = VALUES(`inventory`), 
        `inventory_unit` = VALUES(`inventory_unit`), 
-       `date` = VALUES(`date`), 
+       `deleted` = VALUES(`deleted`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -141,8 +141,8 @@
             <if test="inventoryUnit != null">
                 `inventory_unit` = #{inventoryUnit},
             </if>
-            <if test="date != null">
-                `date` = #{date},
+            <if test="deleted != null">
+                `deleted` = #{deleted},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

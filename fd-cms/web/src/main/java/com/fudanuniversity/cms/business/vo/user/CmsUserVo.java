@@ -1,107 +1,104 @@
 package com.fudanuniversity.cms.business.vo.user;
 
+import java.io.Serializable;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
 
 /**
  * 用户
- *
+ * <p>
  * Created by tidu at 2021-05-03
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CmsUserQueryVo {
+public class CmsUserVo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-    private Long id;
+	private Long id;
 
     /**
      * 用户类型
      */
-    private String type;
+	private String type;
 
     /**
      * 学号
      */
-    private String stuId;
+	private String stuId;
 
     /**
      * 权限身份
      */
-    private Integer roleId;
+	private Integer roleId;
 
     /**
      * 用户名
      */
-    private String name;
+	private String name;
 
     /**
      * 手机
      */
-    private String telephone;
+	private String telephone;
 
     /**
      * 邮箱
      */
-    private String email;
+	private String email;
 
     /**
      * 导师
      */
-    private String mentor;
+	private String mentor;
 
     /**
      * 汇报人
      */
-    private String leader;
+	private String leader;
 
     /**
      * 就读类型
      */
-    private Integer studyType;
+	private Integer studyType;
 
     /**
      * 是否科硕
      */
-    private Integer keshuo;
+	private Integer keshuo;
 
     /**
      * 入学时间
      */
-    private Date enrollDate;
+	private Date enrollDate;
 
     /**
      * 状态
      */
-    private Integer status;
+	private Integer status;
 
     /**
-     * 小于等于创建时间
+     * 删除状态
      */
-    private Date eltCreateTime;
+	private Integer deleted;
 
     /**
-     * 大于等于创建时间
+     * 创建时间
      */
-    private Date egtCreateTime;
+	private Date createTime;
 
     /**
-     * 小于等于更新时间
+     * 更新时间
      */
-    private Date eltModifyTime;
-
-    /**
-     * 大于等于更新时间
-     */
-    private Date egtModifyTime;
+	private Date modifyTime;
 }
+

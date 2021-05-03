@@ -1,5 +1,9 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationApplyVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationReturnVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.repository.dao.CmsDeviceAllocationDao;
 import com.fudanuniversity.cms.repository.entity.CmsDeviceAllocation;
 import com.fudanuniversity.cms.repository.query.CmsDeviceAllocationQuery;
@@ -16,7 +20,7 @@ import java.util.List;
 /**
  * CmsDeviceAllocationService 实现类
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Service
 public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationService {
@@ -36,6 +40,16 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         int affect = cmsDeviceAllocationDao.insert(cmsDeviceAllocation);
         logger.info("保存CmsDeviceAllocation affect:{}, cmsDeviceAllocation: {}", affect, cmsDeviceAllocation);
         AssertUtils.state(affect == 1);
+    }
+
+    @Override
+    public void applyDeviceAllocation(CmsDeviceAllocationApplyVo allocationApplyVo) {
+
+    }
+
+    @Override
+    public void returnDeviceAllocation(CmsDeviceAllocationReturnVo allocationReturnVo) {
+
     }
 
     /**
@@ -62,10 +76,14 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         AssertUtils.state(affect == 1);
     }
 
+    @Override
+    public PagingResult<CmsDeviceAllocationVo> queryPagingResult(Paging paging) {
+        return null;
+    }
+
     /**
      * 分页查询数据列表
      */
-    @Override
     public PagingResult<CmsDeviceAllocation> queryPagingResult(CmsDeviceAllocationQuery query) {
         PagingResult<CmsDeviceAllocation> pagingResult = PagingResult.create(query);
 

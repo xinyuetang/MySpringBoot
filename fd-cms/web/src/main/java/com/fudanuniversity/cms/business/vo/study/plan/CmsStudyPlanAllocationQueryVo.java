@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.business.vo.user;
+package com.fudanuniversity.cms.business.vo.study.plan;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * 用户
+ * 培养方案分配
  *
  * Created by tidu at 2021-05-03
  */
@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CmsUserQueryVo {
+public class CmsStudyPlanAllocationQueryVo {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,64 +26,39 @@ public class CmsUserQueryVo {
     private Long id;
 
     /**
-     * 用户类型
+     * 学生id
      */
-    private String type;
+    private Long userId;
 
     /**
-     * 学号
+     * 培养方案id
      */
-    private String stuId;
+    private Long planId;
 
     /**
-     * 权限身份
+     * 培养方案开始时间
      */
-    private Integer roleId;
+    private Date planStartTime;
 
     /**
-     * 用户名
+     * 培养方案到期时间
      */
-    private String name;
+    private Date planEndTime;
 
     /**
-     * 手机
+     * 计划天数
      */
-    private String telephone;
+    private Integer spendDays;
 
     /**
-     * 邮箱
+     * 延期天数
      */
-    private String email;
+    private Integer delayDays;
 
     /**
-     * 导师
+     * 备注
      */
-    private String mentor;
-
-    /**
-     * 汇报人
-     */
-    private String leader;
-
-    /**
-     * 就读类型
-     */
-    private Integer studyType;
-
-    /**
-     * 是否科硕
-     */
-    private Integer keshuo;
-
-    /**
-     * 入学时间
-     */
-    private Date enrollDate;
-
-    /**
-     * 状态
-     */
-    private Integer status;
+    private String remark;
 
     /**
      * 小于等于创建时间

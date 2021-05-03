@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/demo")
-public class ${classSimpleName}Controller{
+public class ${classSimpleName}Controller extends BaseController {
 
     @Resource
     private ${classSimpleName}Service ${classVariableName}Service;
@@ -33,7 +33,7 @@ public class ${classSimpleName}Controller{
     @PostMapping("/save")
     public JsonResult<?> save${classSimpleName}(@Valid ${classSimpleName}Dto ${classVariableName}Dto) {
         ${classVariableName}Service.save${classSimpleName}(${classVariableName}Dto);
-        return JsonResult.buildOk();
+        return JsonResult.buildSuccess();
     }
 
     /**
@@ -42,7 +42,7 @@ public class ${classSimpleName}Controller{
     @PostMapping("/update")
     public JsonResult<?> update${classSimpleName}ById(@Valid ${classSimpleName}Dto ${classVariableName}Dto) {
         ${classVariableName}Service.update${classSimpleName}ById(${classVariableName}Dto);
-        return JsonResult.buildOk();
+        return JsonResult.buildSuccess();
     }
 
     /**
@@ -51,7 +51,7 @@ public class ${classSimpleName}Controller{
     @PostMapping("/delete")
     public JsonResult<?> delete${classSimpleName}ById(@NotNull ${idType} ${id}) {
         ${classVariableName}Service.delete${classSimpleName}ById(${id});
-        return JsonResult.buildOk();
+        return JsonResult.buildSuccess();
     }
 
     /**
@@ -60,6 +60,6 @@ public class ${classSimpleName}Controller{
     @GetMapping("/paging")
     public JsonResult<List<${classSimpleName}Dto>> queryPagingResult(@Valid ${classSimpleName}QueryDto queryDto, @Valid Paging paging) {
         PagingResult<${classSimpleName}Dto> pagingResult = ${classVariableName}Service.queryPagingResult(queryDto, paging);
-        return JsonResult.buildOk(pagingResult);
+        return JsonResult.buildSuccess(pagingResult);
     }
 }

@@ -1,8 +1,11 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceUsageQueryVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceUsageVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.repository.entity.CmsDevice;
-import com.fudanuniversity.cms.repository.query.CmsDeviceQuery;
 
 /**
  * CmsDeviceService
@@ -29,6 +32,10 @@ public interface CmsDeviceService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsDevice> queryPagingResult(CmsDeviceQuery query);
+    PagingResult<CmsDeviceVo> queryPagingResult(Paging paging);
 
+    /**
+     * 分页查询设备使用情况数据列表
+     */
+    PagingResult<CmsDeviceUsageVo> queryUsagePagingResult(CmsDeviceUsageQueryVo queryVo, Paging paging);
 }

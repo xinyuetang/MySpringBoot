@@ -9,15 +9,15 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 培养方案分配
+ * 培养方案
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CmsPlanAllocation implements Serializable {
+public class CmsStudyPlan implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -29,32 +29,39 @@ public class CmsPlanAllocation implements Serializable {
     private Long id;
 
     /**
-     * 字段备注:学生id <p>
-     * 数据库字段长度:(19,0) <p>
+     * 字段备注:是否公共任务 <p>
+     * 数据库字段长度:(3,0) <p>
      * 是否索引:是
      */
-    private Long userId;
+    private Integer common;
 
     /**
-     * 字段备注:培养方案id <p>
-     * 数据库字段长度:(19,0) <p>
-     * 是否索引:是
+     * 字段备注:是否科硕任务 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 是否索引:不是
      */
-    private Long planId;
+    private Integer keshuo;
 
     /**
-     * 字段备注:培养方案开始时间 <p>
+     * 字段备注:就读类型 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 是否索引:不是
+     */
+    private Integer studyType;
+
+    /**
+     * 字段备注:序号 <p>
      * 数据库字段长度:(10,0) <p>
      * 是否索引:不是
      */
-    private Date planStartTime;
+    private Integer index;
 
     /**
-     * 字段备注:培养方案到期时间 <p>
-     * 数据库字段长度:(10,0) <p>
+     * 字段备注:名称 <p>
+     * 数据库字段长度:(32,0) <p>
      * 是否索引:不是
      */
-    private Date planEndTime;
+    private String name;
 
     /**
      * 字段备注:计划天数 <p>
@@ -62,20 +69,6 @@ public class CmsPlanAllocation implements Serializable {
      * 是否索引:不是
      */
     private Integer spendDays;
-
-    /**
-     * 字段备注:延期天数 <p>
-     * 数据库字段长度:(10,0) <p>
-     * 是否索引:不是
-     */
-    private Integer delayDays;
-
-    /**
-     * 字段备注:备注 <p>
-     * 数据库字段长度:(16383,0) <p>
-     * 是否索引:不是
-     */
-    private String remark;
 
     /**
      * 字段备注:创建时间 <p>

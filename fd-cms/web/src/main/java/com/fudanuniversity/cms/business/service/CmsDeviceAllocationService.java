@@ -1,8 +1,11 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationApplyVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationReturnVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.repository.entity.CmsDeviceAllocation;
-import com.fudanuniversity.cms.repository.query.CmsDeviceAllocationQuery;
 
 /**
  * CmsDeviceAllocationService
@@ -15,6 +18,10 @@ public interface CmsDeviceAllocationService {
      * 保存处理
      */
     void saveCmsDeviceAllocation(CmsDeviceAllocation cmsDeviceAllocation);
+
+    void applyDeviceAllocation(CmsDeviceAllocationApplyVo allocationApplyVo);
+
+    void returnDeviceAllocation(CmsDeviceAllocationReturnVo allocationReturnVo);
 
     /**
      * 根据id更新处理
@@ -29,6 +36,5 @@ public interface CmsDeviceAllocationService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsDeviceAllocation> queryPagingResult(CmsDeviceAllocationQuery query);
-
+    PagingResult<CmsDeviceAllocationVo> queryPagingResult(Paging paging);
 }

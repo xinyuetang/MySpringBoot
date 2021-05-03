@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Data
 @NoArgsConstructor
@@ -65,7 +65,7 @@ public class CmsDeviceQuery extends BaseQuery {
     private String principal;
 
     /**
-     * 字段备注:设备型号 <p>
+     * 字段备注:设备名称 <p>
      * 数据库字段长度:(256,0) <p>
      * 索引字段:不是
      */
@@ -86,11 +86,11 @@ public class CmsDeviceQuery extends BaseQuery {
     private String inventoryUnit;
 
     /**
-     * 字段备注:演讲时间 <p>
-     * 数据库字段长度:(10,0) <p>
+     * 字段备注:删除状态 <p>
+     * 数据库字段长度:(3,0) <p>
      * 索引字段:不是
      */
-    private Date date;
+    private Integer deleted;
 
     /**
      * 字段备注:小于等于创建时间 <p>

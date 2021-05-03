@@ -3,9 +3,7 @@ package com.fudanuniversity.cms.controller;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.user.CmsUserAccountLoginVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserAccountResetPasswordVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
+import com.fudanuniversity.cms.business.vo.user.*;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.JsonResult;
@@ -42,6 +40,18 @@ public class UserController extends BaseController {
     @Resource
     private CmsUserAccountService cmsUserAccountService;
 
+    @RequestMapping(path = "/info")
+    public JsonResult<?> info() {
+        LoginUser loginUser = getLoginUser();
+        CmsLoginUserVo loginUserVo = new CmsLoginUserVo();
+        loginUserVo.setUserId(loginUser.getUserId());
+        loginUserVo.setStuId(loginUser.getStuId());
+        loginUserVo.setName(loginUser.getName());
+        loginUserVo.setRoleId(loginUser.getRoleId());
+        loginUserVo.setLoginTime(loginUser.getLoginTime());
+        return JsonResult.buildSuccess(loginUserVo);
+    }
+
     @RequestMapping(path = "/login") //TODO
     //@PostMapping(path = "/login")
     public JsonResult<?> login(@Valid CmsUserAccountLoginVo userAccountVo) {
@@ -60,6 +70,7 @@ public class UserController extends BaseController {
         LoginUser loginUser = new LoginUser();
         loginUser.setUserId(cmsUser.getId());
         loginUser.setStuId(stuId);
+        loginUser.setRoleId(cmsUser.getRoleId());
         loginUser.setName(cmsUser.getName());
         loginUser.setLoginTime(new Date());
         Webmvc.session().setAttribute(CmsConstants.LoginSessionUserKey, loginUser);
@@ -76,19 +87,17 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/all")
-    public JsonResult<?> getAllUsers(Paging paging) {
-        //当前登录者权限校验
+    @GetMapping(path = "/paging")
+    public JsonResult<?> queryPagingResult(CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        PagingResult<CmsUser> allUsers = cmsUserService.getAllUsers(paging);
+        PagingResult<CmsUserVo> allUsers = cmsUserService.queryPagingResult(queryVo,paging);
         return JsonResult.buildSuccess(allUsers);
     }
 
     //添加新用户，stuId是唯一的标识
     @PostMapping(path = "/add")
     public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
-        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         //添加新用户
@@ -99,7 +108,6 @@ public class UserController extends BaseController {
     @PostMapping(path = "/update")
     @ValidGroup(Update.class)
     public JsonResult<?> updateUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
-        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         //添加新用户
@@ -109,7 +117,6 @@ public class UserController extends BaseController {
 
     @PostMapping(path = "/delete")
     public JsonResult<?> delete(@NotNull @Min(1L) Long id) {
-        //当前登录者权限校验
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         //删除用户

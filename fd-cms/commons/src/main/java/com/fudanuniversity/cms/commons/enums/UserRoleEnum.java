@@ -5,13 +5,13 @@ package com.fudanuniversity.cms.commons.enums;
  */
 public enum UserRoleEnum {
 
-    Administrator(0, "系统管理员"),
-    Seminar(1, "讨论班管理员"),
-    Lab(2, "Lab管理员"),
-    EssayRecommendation(3, "推荐论文管理员"),
-    TrainingScheme(4, "培养方案管理员"),
-    Bulletin(5, "通知论文管理员"),
-    General(6, "普通用户"),
+    General(0, "普通用户"),
+    Administrator(10, "系统管理员"),
+    Seminar(20, "讨论班管理员"),
+    Lab(30, "Lab管理员"),
+    EssayRecommendation(40, "推荐论文管理员"),
+    TrainingScheme(50, "培养方案管理员"),
+    Bulletin(60, "通知论文管理员"),
     ;
 
     private final Integer code;

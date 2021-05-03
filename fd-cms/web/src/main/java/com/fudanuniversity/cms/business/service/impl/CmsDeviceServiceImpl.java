@@ -1,5 +1,9 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceUsageQueryVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceUsageVo;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.repository.dao.CmsDeviceDao;
 import com.fudanuniversity.cms.repository.entity.CmsDevice;
 import com.fudanuniversity.cms.repository.query.CmsDeviceQuery;
@@ -16,7 +20,7 @@ import java.util.List;
 /**
  * CmsDeviceService 实现类
  * <p>
- * Created by tidu at 2021-05-02
+ * Created by tidu at 2021-05-03
  */
 @Service
 public class CmsDeviceServiceImpl implements CmsDeviceService {
@@ -62,10 +66,19 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
         AssertUtils.state(affect == 1);
     }
 
+    @Override
+    public PagingResult<CmsDeviceVo> queryPagingResult(Paging paging) {
+        return null;
+    }
+
+    @Override
+    public PagingResult<CmsDeviceUsageVo> queryUsagePagingResult(CmsDeviceUsageQueryVo queryVo, Paging paging) {
+        return null;
+    }
+
     /**
      * 分页查询数据列表
      */
-    @Override
     public PagingResult<CmsDevice> queryPagingResult(CmsDeviceQuery query) {
         PagingResult<CmsDevice> pagingResult = PagingResult.create(query);
 
