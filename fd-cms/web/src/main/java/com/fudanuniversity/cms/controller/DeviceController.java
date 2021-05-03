@@ -28,6 +28,7 @@ public class DeviceController extends BaseController {
     public JsonResult<?> addNewDevice(@RequestBody CmsDeviceAddVo addVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsDeviceService.saveCmsDevice(addVo);
         return JsonResult.buildSuccess();
     }
 
@@ -35,6 +36,7 @@ public class DeviceController extends BaseController {
     public JsonResult<?> updateDevice(@RequestBody CmsDeviceUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsDeviceService.updateCmsDeviceById(updateVo);
         return JsonResult.buildSuccess();
     }
 
@@ -45,19 +47,25 @@ public class DeviceController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
+    /**
+     * 查看设备分页列表
+     */
     @GetMapping(path = "paging")
-    public JsonResult<?> queryPagingResult(Paging paging) {
+    public JsonResult<?> queryPagingResult(CmsDeviceQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        PagingResult<CmsDeviceVo> pagingResult = cmsDeviceService.queryPagingResult(paging);
+        PagingResult<CmsDeviceVo> pagingResult = cmsDeviceService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
 
+    /**
+     * 查看某一设备使用情况分页列表
+     */
     @GetMapping(path = "/usage/paging")
-    public JsonResult<?> queryUsagePagingResult(CmsDeviceUsageQueryVo queryVo, Paging paging) {
+    public JsonResult<?> queryUsagePagingResult(Long deviceId, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        PagingResult<CmsDeviceUsageVo> pagingResult = cmsDeviceService.queryUsagePagingResult(queryVo, paging);
+        PagingResult<CmsDeviceUsageVo> pagingResult = cmsDeviceService.queryUsagePagingResult(deviceId, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
 }

@@ -4,6 +4,8 @@ import ${packagePrefix}.repository.dao.${classSimpleName}Dao;
 import ${packagePrefix}.repository.entity.${classSimpleName};
 import ${packagePrefix}.repository.query.${classSimpleName}Query;
 import ${packagePrefix}.business.service.${classSimpleName}Service;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
@@ -66,7 +68,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query) {
+    public PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query, Paging paging) {
         PagingResult<${classSimpleName}> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -75,9 +77,9 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
-            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
+            //query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<${classSimpleName}> ${classVariableName}List = ${classVariableName}Dao.selectListByParam(query);
             pagingResult.setRows(${classVariableName}List);
         }

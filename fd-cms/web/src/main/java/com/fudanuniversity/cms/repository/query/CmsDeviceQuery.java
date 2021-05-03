@@ -58,18 +58,18 @@ public class CmsDeviceQuery extends BaseQuery {
     private String model;
 
     /**
-     * 字段备注:负责人姓名 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 索引字段:不是
-     */
-    private String principal;
-
-    /**
      * 字段备注:设备名称 <p>
      * 数据库字段长度:(256,0) <p>
      * 索引字段:不是
      */
     private String name;
+
+    /**
+     * 字段备注:负责人姓名 <p>
+     * 数据库字段长度:(32,0) <p>
+     * 索引字段:不是
+     */
+    private String principal;
 
     /**
      * 字段备注:库存 <p>

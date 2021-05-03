@@ -2,6 +2,7 @@ package com.fudanuniversity.cms.business.vo.device;
 
 import com.fudanuniversity.cms.commons.enums.DeviceTypeEnum;
 import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -35,17 +35,18 @@ public class CmsDeviceAddVo implements Serializable {
     /**
      * 设备型号
      */
+    @NotEmpty
     private String model;
-
-    /**
-     * 负责人姓名
-     */
-    private String principal;
 
     /**
      * 设备型号
      */
     private String name;
+
+    /**
+     * 负责人姓名
+     */
+    private String principal;
 
     /**
      * 库存
@@ -56,7 +57,7 @@ public class CmsDeviceAddVo implements Serializable {
     /**
      * 库存单位
      */
-	@NotNull(message = "库存单位不能为空")
+    @NotNull(message = "库存单位不能为空")
     private String inventoryUnit;
 }
 

@@ -60,6 +60,11 @@ public final class AssertUtils {
         }
     }
 
+    public static void notNull(@Nullable Object object) {
+        if (object == null) {
+            throw new BusinessException(ErrorCode.BusinessErrorMsg);
+        }
+    }
 
     public static void notNull(@Nullable Object object, String message) {
         if (object == null) {

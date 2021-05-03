@@ -14,14 +14,20 @@ import com.fudanuniversity.cms.repository.entity.CmsDeviceAllocation;
  */
 public interface CmsDeviceAllocationService {
 
+    void applyDeviceAllocation(Long userId, CmsDeviceAllocationApplyVo allocationApplyVo);
+
+    void returnDeviceAllocation(Long userId, CmsDeviceAllocationReturnVo allocationReturnVo);
+
+    /**
+     * 分页查询数据列表
+     */
+    PagingResult<CmsDeviceAllocationVo> queryPagingResult(Long userId, Paging paging);
+
     /**
      * 保存处理
      */
     void saveCmsDeviceAllocation(CmsDeviceAllocation cmsDeviceAllocation);
 
-    void applyDeviceAllocation(CmsDeviceAllocationApplyVo allocationApplyVo);
-
-    void returnDeviceAllocation(CmsDeviceAllocationReturnVo allocationReturnVo);
 
     /**
      * 根据id更新处理
@@ -32,9 +38,4 @@ public interface CmsDeviceAllocationService {
      * 根据id删除处理
      */
     void deleteCmsDeviceAllocationById(Long id);
-
-    /**
-     * 分页查询数据列表
-     */
-    PagingResult<CmsDeviceAllocationVo> queryPagingResult(Paging paging);
 }

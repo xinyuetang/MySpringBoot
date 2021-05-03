@@ -91,7 +91,7 @@ public class UserController extends BaseController {
     public JsonResult<?> queryPagingResult(CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        PagingResult<CmsUserVo> allUsers = cmsUserService.queryPagingResult(queryVo,paging);
+        PagingResult<CmsUserVo> allUsers = cmsUserService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(allUsers);
     }
 
@@ -100,7 +100,6 @@ public class UserController extends BaseController {
     public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        //添加新用户
         cmsUserService.saveCmsUser(userAddVo);
         return JsonResult.buildSuccess();
     }
@@ -110,7 +109,6 @@ public class UserController extends BaseController {
     public JsonResult<?> updateUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        //添加新用户
         cmsUserService.updateCmsUserById(userAddVo);
         return JsonResult.buildSuccess();
     }
@@ -119,7 +117,6 @@ public class UserController extends BaseController {
     public JsonResult<?> delete(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        //删除用户
         cmsUserService.deleteCmsUserById(id);
         return JsonResult.buildSuccess();
     }

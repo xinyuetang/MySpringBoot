@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsDeviceDao;
-import com.fudanuniversity.cms.repository.mapper.CmsDeviceMapper;
 import com.fudanuniversity.cms.repository.entity.CmsDevice;
+import com.fudanuniversity.cms.repository.mapper.CmsDeviceMapper;
 import com.fudanuniversity.cms.repository.query.CmsDeviceQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -32,10 +31,10 @@ public class CmsDeviceDaoImpl implements CmsDeviceDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsDevice> cmsDeviceList){
+    public int bulkUpsert(List<CmsDevice> cmsDeviceList) {
         Assert.notEmpty(cmsDeviceList, "保存对象列表不能为空");
 
-        for(CmsDevice cmsDevice : cmsDeviceList){
+        for (CmsDevice cmsDevice : cmsDeviceList) {
             validateEntity(cmsDevice);
         }
 
@@ -45,8 +44,8 @@ public class CmsDeviceDaoImpl implements CmsDeviceDao {
     private void validateEntity(CmsDevice cmsDevice) {
         Assert.notNull(cmsDevice.getType(), "设备类型必须有值");
         Assert.hasText(cmsDevice.getModel(), "设备型号不能为空");
-        Assert.hasText(cmsDevice.getPrincipal(), "负责人姓名不能为空");
         Assert.hasText(cmsDevice.getName(), "设备名称不能为空");
+        Assert.hasText(cmsDevice.getPrincipal(), "负责人姓名不能为空");
         Assert.notNull(cmsDevice.getInventory(), "库存必须有值");
         Assert.hasText(cmsDevice.getInventoryUnit(), "库存单位不能为空");
         Assert.notNull(cmsDevice.getDeleted(), "删除状态必须有值");

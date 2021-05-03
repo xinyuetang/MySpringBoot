@@ -1,11 +1,8 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.device.CmsDeviceUsageQueryVo;
-import com.fudanuniversity.cms.business.vo.device.CmsDeviceUsageVo;
-import com.fudanuniversity.cms.business.vo.device.CmsDeviceVo;
+import com.fudanuniversity.cms.business.vo.device.*;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.repository.entity.CmsDevice;
 
 /**
  * CmsDeviceService
@@ -17,12 +14,12 @@ public interface CmsDeviceService {
     /**
      * 保存处理
      */
-    void saveCmsDevice(CmsDevice cmsDevice);
+    void saveCmsDevice(CmsDeviceAddVo addVo);
 
     /**
      * 根据id更新处理
      */
-    void updateCmsDeviceById(CmsDevice cmsDevice);
+    void updateCmsDeviceById(CmsDeviceUpdateVo updateVo);
 
     /**
      * 根据id删除处理
@@ -32,10 +29,10 @@ public interface CmsDeviceService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsDeviceVo> queryPagingResult(Paging paging);
+    PagingResult<CmsDeviceVo> queryPagingResult(CmsDeviceQueryVo queryVo, Paging paging);
 
     /**
      * 分页查询设备使用情况数据列表
      */
-    PagingResult<CmsDeviceUsageVo> queryUsagePagingResult(CmsDeviceUsageQueryVo queryVo, Paging paging);
+    PagingResult<CmsDeviceUsageVo> queryUsagePagingResult(Long deviceId, Paging paging);
 }

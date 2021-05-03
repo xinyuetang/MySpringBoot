@@ -297,8 +297,8 @@ CREATE TABLE `fd_cms`.`cms_device`
     `id`             bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
     `type`           bigint       NOT NULL COMMENT '设备类型',
     `model`          varchar(128) NOT NULL COMMENT '设备型号',
-    `principal`      varchar(32)  NOT NULL COMMENT '负责人姓名',
     `name`           varchar(256) NOT NULL COMMENT '设备名称',
+    `principal`      varchar(32)  NOT NULL COMMENT '负责人姓名',
     `inventory`      int          NOT NULL COMMENT '库存',
     `inventory_unit` varchar(32)  NOT NULL COMMENT '库存单位',
     `deleted`        tinyint      NOT NULL DEFAULT 0 COMMENT '删除状态',
@@ -322,6 +322,7 @@ CREATE TABLE `fd_cms`.`cms_device_allocation`
     `create_time`     datetime    NOT NULL COMMENT '创建时间',
     `modify_time`     datetime             DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
+    KEY `idx_user_id_device_id` (`user_id`, `device_id`) USING BTREE,
     KEY `idx_create_time` (`create_time`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

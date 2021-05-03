@@ -31,7 +31,7 @@ public class CmsDeviceAllocation implements Serializable {
     /**
      * 字段备注:演讲用户id <p>
      * 数据库字段长度:(19,0) <p>
-     * 是否索引:不是
+     * 是否索引:是
      */
     private Long userId;
 

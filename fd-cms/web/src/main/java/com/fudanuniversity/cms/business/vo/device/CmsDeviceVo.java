@@ -1,11 +1,12 @@
 package com.fudanuniversity.cms.business.vo.device;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -19,51 +20,51 @@ import lombok.ToString;
 @ToString
 public class CmsDeviceVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
+    private Long id;
 
     /**
      * 设备类型
      */
-	private Long type;
+    private Long type;
 
     /**
      * 设备型号
      */
-	private String model;
+    private String model;
+
+    /**
+     * 设备型号
+     */
+    private String name;
 
     /**
      * 负责人姓名
      */
-	private String principal;
-
-    /**
-     * 设备型号
-     */
-	private String name;
+    private String principal;
 
     /**
      * 库存
      */
-	private Integer inventory;
+    private Integer inventory;
 
     /**
      * 库存单位
      */
-	private String inventoryUnit;
+    private String inventoryUnit;
 
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-	private Date modifyTime;
+    private Date modifyTime;
 }
 

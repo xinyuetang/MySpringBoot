@@ -21,11 +21,6 @@ public class CmsDeviceQueryVo {
     private static final long serialVersionUID = 1L;
 
     /**
-     * id
-     */
-    private Long id;
-
-    /**
      * 设备类型
      */
     private Long type;
@@ -36,24 +31,14 @@ public class CmsDeviceQueryVo {
     private String model;
 
     /**
-     * 负责人姓名
-     */
-    private String principal;
-
-    /**
-     * 设备型号
+     * 设备名称
      */
     private String name;
 
     /**
-     * 库存
+     * 负责人姓名
      */
-    private Integer inventory;
-
-    /**
-     * 库存单位
-     */
-    private String inventoryUnit;
+    private String principal;
 
     /**
      * 小于等于创建时间
@@ -64,14 +49,4 @@ public class CmsDeviceQueryVo {
      * 大于等于创建时间
      */
     private Date egtCreateTime;
-
-    /**
-     * 小于等于更新时间
-     */
-    private Date eltModifyTime;
-
-    /**
-     * 大于等于更新时间
-     */
-    private Date egtModifyTime;
 }

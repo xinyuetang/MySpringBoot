@@ -7,6 +7,7 @@ import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,7 +33,8 @@ public class DeviceAllocationController extends BaseController {
      */
     @PostMapping("/apply")
     public JsonResult<?> applyDeviceAllocation(@Valid CmsDeviceAllocationApplyVo allocationApplyVo) {
-        cmsDeviceAllocationService.applyDeviceAllocation(allocationApplyVo);
+        LoginUser loginUser = getLoginUser();
+        cmsDeviceAllocationService.applyDeviceAllocation(loginUser.getUserId(), allocationApplyVo);
         return JsonResult.buildSuccess();
     }
 
@@ -41,7 +43,8 @@ public class DeviceAllocationController extends BaseController {
      */
     @PostMapping("/return")
     public JsonResult<?> returnDeviceAllocation(@Valid CmsDeviceAllocationReturnVo allocationReturnVo) {
-        cmsDeviceAllocationService.returnDeviceAllocation(allocationReturnVo);
+        LoginUser loginUser = getLoginUser();
+        cmsDeviceAllocationService.returnDeviceAllocation(loginUser.getUserId(), allocationReturnVo);
         return JsonResult.buildSuccess();
     }
 
@@ -50,7 +53,9 @@ public class DeviceAllocationController extends BaseController {
      */
     @GetMapping("/paging")
     public JsonResult<?> queryPagingResult(@Valid Paging paging) {
-        PagingResult<CmsDeviceAllocationVo> pagingResult = cmsDeviceAllocationService.queryPagingResult(paging);
+        LoginUser loginUser = getLoginUser();
+        PagingResult<CmsDeviceAllocationVo> pagingResult
+                = cmsDeviceAllocationService.queryPagingResult(loginUser.getUserId(), paging);
         return JsonResult.buildSuccess(pagingResult);
     }
 }

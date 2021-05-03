@@ -84,10 +84,11 @@ public class RecorderController extends BaseController {
     public ResponseEntity<?> downloadRecorderFile(@Valid CmsRecorderDownloadVo downloadVo) {
         try {
             CmsRecorderDownloadResultVo downloadResultVo = cmsRecorderService.downloadRecorderFile(downloadVo);
+            //给前端文件名转码防止乱码问题
+            String encodedFileName = UrlUtils.encode(downloadResultVo.getFileName());
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, downloadResultVo.getFileType())
-                    .header(HttpHeaders.CONTENT_DISPOSITION,
-                            "attachment; filename=\"" + UrlUtils.encode(downloadResultVo.getFileName()) + "\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + encodedFileName + "\"")
                     .body(downloadResultVo.getFileContent());
         } catch (PlatformException ex) {
             //出现PlatformException返回json给前端
