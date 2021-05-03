@@ -95,6 +95,14 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess(allUsers);
     }
 
+    @GetMapping(path = "/detail")
+    public JsonResult<?> queryPagingResult(@NotNull String stuId) {
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        CmsUserDetailVo userDetailVo = cmsUserService.queryUserDetail(stuId);
+        return JsonResult.buildSuccess(userDetailVo);
+    }
+
     //添加新用户，stuId是唯一的标识
     @PostMapping(path = "/add")
     public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserMngVo userAddVo) {

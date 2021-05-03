@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by tidu at 2021-05-04
  */
 @Data
 @NoArgsConstructor
@@ -53,7 +53,7 @@ public class CmsDeviceAllocationQuery extends BaseQuery {
     /**
      * 字段备注:设备id <p>
      * 数据库字段长度:(19,0) <p>
-     * 索引字段:不是
+     * 索引字段:是
      */
     private Long deviceId;
 
@@ -65,13 +65,6 @@ public class CmsDeviceAllocationQuery extends BaseQuery {
     private Integer inventoryUsage;
 
     /**
-     * 字段备注:库存单位 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 索引字段:不是
-     */
-    private String inventoryUnit;
-
-    /**
      * 字段备注:状态 <p>
      * 数据库字段长度:(3,0) <p>
      * 索引字段:不是
@@ -81,14 +74,14 @@ public class CmsDeviceAllocationQuery extends BaseQuery {
     /**
      * 字段备注:小于等于创建时间 <p>
      * 数据库字段长度:(19,0) <p>
-     * 索引字段:是
+     * 索引字段:不是
      */
     private Date eltCreateTime;
 
     /**
      * 字段备注:大于等于创建时间 <p>
      * 数据库字段长度:(19,0) <p>
-     * 索引字段:是
+     * 索引字段:不是
      */
     private Date egtCreateTime;
 

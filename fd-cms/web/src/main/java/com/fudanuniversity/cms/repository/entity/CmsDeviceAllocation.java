@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * 设备分配
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by tidu at 2021-05-04
  */
 @Data
 @NoArgsConstructor
@@ -38,7 +38,7 @@ public class CmsDeviceAllocation implements Serializable {
     /**
      * 字段备注:设备id <p>
      * 数据库字段长度:(19,0) <p>
-     * 是否索引:不是
+     * 是否索引:是
      */
     private Long deviceId;
 
@@ -50,13 +50,6 @@ public class CmsDeviceAllocation implements Serializable {
     private Integer inventoryUsage;
 
     /**
-     * 字段备注:库存单位 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 是否索引:不是
-     */
-    private String inventoryUnit;
-
-    /**
      * 字段备注:状态 <p>
      * 数据库字段长度:(3,0) <p>
      * 是否索引:不是
@@ -66,7 +59,7 @@ public class CmsDeviceAllocation implements Serializable {
     /**
      * 字段备注:创建时间 <p>
      * 数据库字段长度:(19,0) <p>
-     * 是否索引:是
+     * 是否索引:不是
      */
     private Date createTime;
 

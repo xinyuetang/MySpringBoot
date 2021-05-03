@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.component.CmsDeviceComponent;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsDeviceService;
 import com.fudanuniversity.cms.business.vo.device.*;
@@ -18,7 +19,6 @@ import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.query.CmsDeviceAllocationQuery;
 import com.fudanuniversity.cms.repository.query.CmsDeviceQuery;
 import com.google.common.collect.Lists;
-import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -43,6 +43,9 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
 
     @Resource
     private CmsDeviceAllocationDao cmsDeviceAllocationDao;
+
+    @Resource
+    private CmsDeviceComponent cmsDeviceComponent;
 
     @Resource
     private CmsUserComponent cmsUserComponent;
@@ -82,18 +85,6 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
         int affect = cmsDeviceDao.updateById(updater);
         logger.info("更新CmsDevice affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
-    }
-
-    private CmsDevice queryCmsDevice(Long deviceId) {
-        AssertUtils.notNull(deviceId);
-        CmsDeviceQuery query = new CmsDeviceQuery();
-        query.setId(deviceId);
-        query.setDeleted(DeletedEnum.Normal.getCode());
-        List<CmsDevice> devices = cmsDeviceDao.selectListByParam(query);
-        if (CollectionUtils.isNotEmpty(devices)) {
-            return devices.get(0);
-        }
-        return null;
     }
 
     /**
@@ -150,7 +141,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
      */
     @Override
     public PagingResult<CmsDeviceUsageVo> queryUsagePagingResult(Long deviceId, Paging paging) {
-        CmsDevice cmsDevice = queryCmsDevice(deviceId);
+        CmsDevice cmsDevice = cmsDeviceComponent.queryCmsDevice(deviceId);
         AssertUtils.notNull(cmsDevice);
 
         PagingResult<CmsDeviceUsageVo> pagingResult = PagingResult.create(paging);

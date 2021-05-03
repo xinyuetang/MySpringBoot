@@ -161,6 +161,12 @@
         ]]>
     </delete>
 
+    <select id="selectByIdForUpdate" resultMap="CmsDeviceMap">
+        <![CDATA[
+        SELECT * FROM `cms_device` WHERE `id` = #{id} AND `deleted` = 0 LIMIT 1 FOR UPDATE
+        ]]>
+    </select>
+
     <select id="selectListByParam" parameterType="map" resultMap="CmsDeviceMap">
         SELECT
         <include refid="_field_list"/>

@@ -69,6 +69,13 @@ public class CmsDeviceDaoImpl implements CmsDeviceDao {
     }
 
     @Override
+    public CmsDevice selectByIdForUpdate(Long id) {
+        Assert.notNull(id, "查询记录id不能为空");
+
+        return cmsDeviceMapper.selectByIdForUpdate(id);
+    }
+
+    @Override
     public List<CmsDevice> selectListByParam(CmsDeviceQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 

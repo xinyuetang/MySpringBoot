@@ -33,6 +33,11 @@ public interface CmsDeviceDao {
     int deleteById(Long id);
 
     /**
+     * 根据id查询并加锁
+     */
+    CmsDevice selectByIdForUpdate(Long id);
+
+    /**
      * 查询数据
      */
     List<CmsDevice> selectListByParam(CmsDeviceQuery query);

@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
+import com.fudanuniversity.cms.business.vo.user.CmsUserDetailVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserQueryVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserVo;
@@ -55,9 +56,7 @@ public class CmsUserServiceImpl implements CmsUserService {
     @Override
     public void confirmUserPrivilege(String stuId, UserRoleEnum privilege) {
         CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
-        if (cmsUser == null) {
-            throw new BusinessException("用户[" + stuId + "]不存在");
-        }
+        AssertUtils.notNull(cmsUser, "用户[" + stuId + "]不存在");
         if (!Objects.equals(cmsUser.getRoleId(), UserRoleEnum.Administrator.getCode())
                 && !Objects.equals(cmsUser.getRoleId(), privilege.getCode())) {
             throw new BusinessException("用户没有[" + privilege.getDesc() + "]权限");
@@ -244,4 +243,35 @@ public class CmsUserServiceImpl implements CmsUserService {
         userVo.setModifyTime(cmsUser.getModifyTime());
         return userVo;
     }
+
+
+    @Override
+    public CmsUserDetailVo queryUserDetail(String stuId) {
+        AssertUtils.hasText(stuId, "学号/工号不能为空");
+        CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
+        AssertUtils.notNull(cmsUser, "用户[" + stuId + "]不存在");
+
+        CmsUserDetailVo detailVo = new CmsUserDetailVo();
+        detailVo.setId(cmsUser.getId());
+        detailVo.setType(cmsUser.getType());
+        detailVo.setStuId(cmsUser.getStuId());
+        detailVo.setRoleId(cmsUser.getRoleId());
+        detailVo.setName(cmsUser.getName());
+        detailVo.setTelephone(cmsUser.getTelephone());
+        detailVo.setEmail(cmsUser.getEmail());
+        detailVo.setMentor(cmsUser.getMentor());
+        detailVo.setLeader(cmsUser.getLeader());
+        detailVo.setStudyType(cmsUser.getStudyType());
+        detailVo.setKeshuo(cmsUser.getKeshuo());
+        detailVo.setEnrollDate(cmsUser.getEnrollDate());
+        detailVo.setPapers(cmsUser.getPapers());
+        detailVo.setPatents(cmsUser.getPatents());
+        detailVo.setServices(cmsUser.getServices());
+        detailVo.setProjects(cmsUser.getProjects());
+        detailVo.setStatus(cmsUser.getStatus());
+        detailVo.setCreateTime(cmsUser.getCreateTime());
+        detailVo.setModifyTime(cmsUser.getModifyTime());
+        return detailVo;
+    }
+
 }

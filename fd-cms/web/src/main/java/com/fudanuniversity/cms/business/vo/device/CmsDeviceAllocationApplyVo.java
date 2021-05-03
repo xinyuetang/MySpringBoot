@@ -1,5 +1,7 @@
 package com.fudanuniversity.cms.business.vo.device;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,11 +26,15 @@ public class CmsDeviceAllocationApplyVo implements Serializable {
     /**
      * 设备id
      */
+    @NotNull
+    @Min(1L)
     private Long deviceId;
 
     /**
      * 使用库存
      */
+    @NotNull
+    @Min(1L)
     private Integer inventoryUsage;
 }
 

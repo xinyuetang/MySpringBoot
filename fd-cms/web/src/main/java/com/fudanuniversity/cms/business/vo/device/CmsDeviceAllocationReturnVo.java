@@ -22,8 +22,8 @@ public class CmsDeviceAllocationReturnVo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 设备id
+     * 设备分配ID
      */
-    private Long deviceId;
+    private Long allocationId;
 }
 

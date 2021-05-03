@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsDeviceAllocationDao 实现类
  * <p>
- * Created by tidu at 2021-05-03
+ * Created by tidu at 2021-05-04
  */
 @Repository
 public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
@@ -46,7 +46,6 @@ public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
         Assert.notNull(cmsDeviceAllocation.getUserId(), "演讲用户id必须有值");
         Assert.notNull(cmsDeviceAllocation.getDeviceId(), "设备id必须有值");
         Assert.notNull(cmsDeviceAllocation.getInventoryUsage(), "使用库存必须有值");
-        Assert.hasText(cmsDeviceAllocation.getInventoryUnit(), "库存单位不能为空");
         Assert.notNull(cmsDeviceAllocation.getStatus(), "状态必须有值");
         Assert.notNull(cmsDeviceAllocation.getCreateTime(), "创建时间必须有值");
     }
@@ -88,10 +87,11 @@ public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
     private void validateQueryParameter(CmsDeviceAllocationQuery query) {
         query.validateBaseArgument();
 
-        /*if (query.getId() == null
+        if (query.getId() == null
                 && query.getGtId() == null
+               && query.getDeviceId() == null
                && query.getUserId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }*/
+        }
     }
 }

@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.business.component;
 
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
-import com.fudanuniversity.cms.commons.exception.BusinessException;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsUserDao;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
@@ -25,14 +25,15 @@ public class CmsUserComponent {
     private CmsUserDao cmsUserDao;
 
     public CmsUser queryUser(String stuId) {
+        AssertUtils.hasText(stuId, "学号/工号不能为空");
         CmsUserQuery query = CmsUserQuery.singletonQuery();
         query.setStuId(stuId);
         query.setDeleted(DeletedEnum.Normal.getCode());
         List<CmsUser> users = cmsUserDao.selectListByParam(query);
-        if (CollectionUtils.isEmpty(users)) {
-            throw new BusinessException("用户[" + stuId + "]不存在");
+        if (CollectionUtils.isNotEmpty(users)) {
+            return users.get(0);
         }
-        return users.get(0);
+        return null;
     }
 
     public Map<Long, CmsUser> queryUsersMap(List<Long> userIds) {

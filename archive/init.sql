@@ -317,13 +317,12 @@ CREATE TABLE `fd_cms`.`cms_device_allocation`
     `user_id`         bigint      NOT NULL COMMENT '演讲用户id',
     `device_id`       bigint      NOT NULL COMMENT '设备id',
     `inventory_usage` int         NOT NULL COMMENT '使用库存',
-    `inventory_unit`  varchar(32) NOT NULL COMMENT '库存单位',
     `status`          tinyint     NOT NULL DEFAULT 0 COMMENT '状态',
     `create_time`     datetime    NOT NULL COMMENT '创建时间',
     `modify_time`     datetime             DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_user_id_device_id` (`user_id`, `device_id`) USING BTREE,
-    KEY `idx_create_time` (`create_time`) USING BTREE
+    KEY `idx_device_id` (`device_id`) USING BTREE,
+    KEY `idx_user_id_create_time` (`user_id`, `create_time`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='设备分配';
@@ -341,7 +340,7 @@ CREATE TABLE `fd_cms`.`cms_study_plan`
     `create_time` datetime    NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `uk_common_keshuo_study_type_index` (`common`, `keshuo`, `study_type`, `index`) USING BTREE
+    UNIQUE KEY `uk_common_keshuo_study_type_index` (`common`, `keshuo`, `study_type`, `index`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案';
@@ -352,6 +351,7 @@ CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
     `id`              bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
     `user_id`         bigint   NOT NULL COMMENT '学生id',
     `plan_id`         bigint   NOT NULL COMMENT '培养方案id',
+    `plan_index`      bigint   NOT NULL COMMENT '培养方案序号',
     `plan_start_time` date     NOT NULL COMMENT '培养方案开始时间',
     `plan_end_time`   date     NOT NULL COMMENT '培养方案到期时间',
     `spend_days`      int      NOT NULL COMMENT '计划天数',

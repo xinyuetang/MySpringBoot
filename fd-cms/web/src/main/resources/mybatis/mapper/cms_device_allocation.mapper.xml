@@ -9,7 +9,6 @@
         <result column="user_id" property="userId"/>
         <result column="device_id" property="deviceId"/>
         <result column="inventory_usage" property="inventoryUsage"/>
-        <result column="inventory_unit" property="inventoryUnit"/>
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
@@ -17,12 +16,12 @@
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `user_id`, `device_id`, `inventory_usage`, `inventory_unit`, `status`, `create_time`,  `modify_time`
+        `id`, `user_id`, `device_id`, `inventory_usage`, `status`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{userId}, #{deviceId}, #{inventoryUsage}, #{inventoryUnit}, #{status}, #{createTime},  #{modifyTime}
+        #{id}, #{userId}, #{deviceId}, #{inventoryUsage}, #{status}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -45,9 +44,6 @@
         </if>
         <if test="inventoryUsage != null">
             AND `inventory_usage` = #{inventoryUsage}
-        </if>
-        <if test="inventoryUnit != null">
-            AND `inventory_unit` = #{inventoryUnit}
         </if>
         <if test="status != null">
             AND `status` = #{status}
@@ -86,25 +82,24 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_device_allocation`(`user_id`, `device_id`, `inventory_usage`, `inventory_unit`, `status`, `create_time`, `modify_time`)
+            `cms_device_allocation`(`user_id`, `device_id`, `inventory_usage`, `status`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{userId}, #{deviceId}, #{inventoryUsage}, #{inventoryUnit}, #{status}, #{createTime}, #{modifyTime}
+            #{userId}, #{deviceId}, #{inventoryUsage}, #{status}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_device_allocation`(`user_id`, `device_id`, `inventory_usage`, `inventory_unit`, `status`, `create_time`, `modify_time`)
+            `cms_device_allocation`(`user_id`, `device_id`, `inventory_usage`, `status`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.userId}, #{data.deviceId}, #{data.inventoryUsage}, #{data.inventoryUnit}, #{data.status}, #{data.createTime}, #{data.modifyTime})
+            (#{data.userId}, #{data.deviceId}, #{data.inventoryUsage}, #{data.status}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `user_id` = VALUES(`user_id`), 
        `device_id` = VALUES(`device_id`), 
        `inventory_usage` = VALUES(`inventory_usage`), 
-       `inventory_unit` = VALUES(`inventory_unit`), 
        `status` = VALUES(`status`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
@@ -121,9 +116,6 @@
             </if>
             <if test="inventoryUsage != null">
                 `inventory_usage` = #{inventoryUsage},
-            </if>
-            <if test="inventoryUnit != null">
-                `inventory_unit` = #{inventoryUnit},
             </if>
             <if test="status != null">
                 `status` = #{status},

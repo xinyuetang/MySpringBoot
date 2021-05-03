@@ -48,6 +48,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
     public void addNewSeminar(CmsSeminarAddVo seminarVo) {
         String seminarStuId = seminarVo.getStuId();
         CmsUser seminarUser = cmsUserComponent.queryUser(seminarStuId);
+        AssertUtils.notNull(seminarUser, "用户[" + seminarStuId + "]不存在");
         CmsSeminar cmsSeminar = new CmsSeminar();
         cmsSeminar.setUserId(seminarUser.getId());
         cmsSeminar.setTheme(seminarVo.getTheme());
@@ -69,6 +70,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
         String seminarStuId = seminarUpdateVo.getStuId();
         if (StringUtils.isNotEmpty(seminarStuId)) {
             CmsUser seminarUser = cmsUserComponent.queryUser(seminarStuId);
+            AssertUtils.notNull(seminarUser, "用户[" + seminarStuId + "]不存在");
             updater.setUserId(seminarUser.getId());
         }
 

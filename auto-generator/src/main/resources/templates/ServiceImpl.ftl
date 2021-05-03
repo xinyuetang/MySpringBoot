@@ -69,7 +69,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
      */
     @Override
     public PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query, Paging paging) {
-        PagingResult<${classSimpleName}> pagingResult = PagingResult.create(query);
+        PagingResult<${classSimpleName}> pagingResult = PagingResult.create(paging);
 
         //TODO 设置参数（分页参数除外）
 

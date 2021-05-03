@@ -1,11 +1,13 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.user.CmsUserDetailVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserQueryVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserVo;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * CmsUserService
@@ -38,4 +40,9 @@ public interface CmsUserService {
      * 分页查询数据列表
      */
     PagingResult<CmsUserVo> queryPagingResult(CmsUserQueryVo queryVo, Paging paging);
+
+    /**
+     * 查询用户详细信息
+     */
+    CmsUserDetailVo queryUserDetail(@NotNull String stuId);
 }

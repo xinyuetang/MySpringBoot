@@ -34,6 +34,8 @@ public interface CmsDeviceMapper {
      */
     int updateById(CmsDevice cmsDevice);
 
+    CmsDevice selectByIdForUpdate(Long id);
+
     /**
      * 根据条件查询信息列表
      */

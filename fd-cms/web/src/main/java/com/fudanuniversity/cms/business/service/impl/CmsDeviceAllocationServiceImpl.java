@@ -1,23 +1,33 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.component.CmsDeviceComponent;
 import com.fudanuniversity.cms.business.service.CmsDeviceAllocationService;
 import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationApplyVo;
 import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationReturnVo;
 import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationVo;
+import com.fudanuniversity.cms.commons.constant.CmsConstants;
+import com.fudanuniversity.cms.commons.enums.DeviceAllocationStatusEnum;
+import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.model.query.SortColumn;
+import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsDeviceAllocationDao;
+import com.fudanuniversity.cms.repository.dao.CmsDeviceDao;
+import com.fudanuniversity.cms.repository.entity.CmsDevice;
 import com.fudanuniversity.cms.repository.entity.CmsDeviceAllocation;
 import com.fudanuniversity.cms.repository.query.CmsDeviceAllocationQuery;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CmsDeviceAllocationService 实现类
@@ -27,79 +37,119 @@ import java.util.List;
 @Service
 public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CmsDeviceAllocationServiceImpl.class);
+    @Resource
+    private CmsDeviceDao cmsDeviceDao;
 
     @Resource
     private CmsDeviceAllocationDao cmsDeviceAllocationDao;
 
-    /**
-     * 保存处理
-     */
-    @Override
-    public void saveCmsDeviceAllocation(CmsDeviceAllocation cmsDeviceAllocation) {
-        int affect = cmsDeviceAllocationDao.insert(cmsDeviceAllocation);
-        logger.info("保存CmsDeviceAllocation affect:{}, cmsDeviceAllocation: {}", affect, cmsDeviceAllocation);
-        AssertUtils.state(affect == 1);
-    }
+    @Resource
+    private CmsDeviceComponent cmsDeviceComponent;
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void applyDeviceAllocation(Long userId, CmsDeviceAllocationApplyVo allocationApplyVo) {
+        Long deviceId = allocationApplyVo.getDeviceId();
+        Integer inventoryUsage = allocationApplyVo.getInventoryUsage();
+        CmsDevice cmsDevice = cmsDeviceComponent.queryCmsDevice(deviceId);
+        AssertUtils.notNull(cmsDevice, "设备不存在");
+        if (inventoryUsage > cmsDevice.getInventory()) {
+            throw new BusinessException(
+                    String.format("超过设备可申请使用限制 %s%s", cmsDevice.getInventory(), cmsDevice.getInventoryUnit()));
+        }
+        //加锁
+        cmsDevice = cmsDeviceDao.selectByIdForUpdate(deviceId);
+        //减库存
+        changeDeviceInventory(cmsDevice, -inventoryUsage);
+        //添加申请记录
+        CmsDeviceAllocation deviceAllocation = new CmsDeviceAllocation();
+        deviceAllocation.setDeviceId(deviceId);
+        deviceAllocation.setInventoryUsage(inventoryUsage);
+        deviceAllocation.setCreateTime(new Date());
+        deviceAllocation.setStatus(DeviceAllocationStatusEnum.InUse.getCode());
+        int allocationAffect = cmsDeviceAllocationDao.insert(deviceAllocation);
+        AssertUtils.state(allocationAffect == 1);
+    }
 
+    private void changeDeviceInventory(CmsDevice device, Integer inventory) {
+        CmsDevice updater = new CmsDevice();
+        updater.setId(device.getId());
+        int newInventory = device.getInventory() + inventory;
+        updater.setInventory(newInventory);
+        int affect = cmsDeviceDao.updateById(updater);
+        AssertUtils.state(affect == 1);
     }
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void returnDeviceAllocation(Long userId, CmsDeviceAllocationReturnVo allocationReturnVo) {
-
-    }
-
-    /**
-     * 根据id更新处理
-     */
-    @Override
-    public void updateCmsDeviceAllocationById(CmsDeviceAllocation cmsDeviceAllocation) {
+        Long allocationId = allocationReturnVo.getAllocationId();
+        //查询分配记录
+        CmsDeviceAllocation deviceAllocation = queryCmsDeviceAllocation(allocationId);
+        AssertUtils.notNull(deviceAllocation);
+        //查询设备
+        Long deviceId = deviceAllocation.getDeviceId();
+        CmsDevice cmsDevice = cmsDeviceDao.selectByIdForUpdate(deviceId);
+        AssertUtils.notNull(cmsDevice);
+        //将分配使用的库存返还
+        changeDeviceInventory(cmsDevice, deviceAllocation.getInventoryUsage());
+        //更新设备分配状态为已返还
         CmsDeviceAllocation updater = new CmsDeviceAllocation();
-        //TODO 值映射校验与赋值映射
-
+        updater.setId(allocationId);
+        deviceAllocation.setStatus(DeviceAllocationStatusEnum.Returned.getCode());
+        deviceAllocation.setModifyTime(new Date());
         int affect = cmsDeviceAllocationDao.updateById(updater);
-        logger.info("更新CmsDeviceAllocation affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
     }
 
-    /**
-     * 根据id删除处理
-     */
-    @Override
-    public void deleteCmsDeviceAllocationById(Long id) {
-        //TODO 补充状态检测业务逻辑
-        int affect = cmsDeviceAllocationDao.deleteById(id);
-        logger.info("删除CmsDeviceAllocation affect:{}, id: {}", affect, id);
-        AssertUtils.state(affect == 1);
-    }
-
-    @Override
-    public PagingResult<CmsDeviceAllocationVo> queryPagingResult(Long userId, Paging paging) {
+    private CmsDeviceAllocation queryCmsDeviceAllocation(Long allocationId) {
+        CmsDeviceAllocationQuery query = CmsDeviceAllocationQuery.singletonQuery();
+        query.setId(allocationId);
+        List<CmsDeviceAllocation> allocations = cmsDeviceAllocationDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(allocations)) {
+            return allocations.get(0);
+        }
         return null;
     }
 
     /**
-     * 分页查询数据列表
+     * 分页查询个人设备分配的数据列表
      */
-    public PagingResult<CmsDeviceAllocation> queryPagingResult(CmsDeviceAllocationQuery query) {
-        PagingResult<CmsDeviceAllocation> pagingResult = PagingResult.create(query);
+    @Override
+    public PagingResult<CmsDeviceAllocationVo> queryPagingResult(Long userId, Paging paging) {
+        PagingResult<CmsDeviceAllocationVo> pagingResult = PagingResult.create(paging);
 
-        //TODO 设置参数（分页参数除外）
-
+        CmsDeviceAllocationQuery query = CmsDeviceAllocationQuery.listQuery();
+        query.setUserId(userId);
         Long count = cmsDeviceAllocationDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
-            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
-            List<CmsDeviceAllocation> cmsDeviceAllocationList = cmsDeviceAllocationDao.selectListByParam(query);
-            pagingResult.setRows(cmsDeviceAllocationList);
+            query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
+            List<CmsDeviceAllocation> allocationList = cmsDeviceAllocationDao.selectListByParam(query);
+
+            List<Long> deviceIds = Lists.transform(allocationList, CmsDeviceAllocation::getId);
+            Map<Long, CmsDevice> cmsDeviceMap = cmsDeviceComponent.queryCmsDeviceMap(deviceIds);
+
+            pagingResult.setRows(allocationList, allocation -> {
+                CmsDeviceAllocationVo allocationVo = new CmsDeviceAllocationVo();
+                allocationVo.setId(allocation.getId());
+                allocationVo.setDeviceId(allocation.getDeviceId());
+                CmsDevice cmsDevice = cmsDeviceMap.get(allocation.getDeviceId());
+                if (cmsDevice != null) {
+                    allocationVo.setDeviceType(cmsDevice.getType());
+                    allocationVo.setDeviceModel(cmsDevice.getModel());
+                    allocationVo.setDeviceName(cmsDevice.getName());
+                    allocationVo.setInventoryUnit(cmsDevice.getInventoryUnit());
+                }
+                allocationVo.setInventoryUsage(allocation.getInventoryUsage());
+                allocationVo.setStatus(allocation.getStatus());
+                allocationVo.setCreateTime(allocation.getCreateTime());
+                allocationVo.setModifyTime(allocation.getModifyTime());
+                return allocationVo;
+            });
         }
 
         return pagingResult;
