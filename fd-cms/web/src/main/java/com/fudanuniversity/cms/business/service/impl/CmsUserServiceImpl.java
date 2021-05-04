@@ -280,7 +280,6 @@ public class CmsUserServiceImpl implements CmsUserService {
         return userVo;
     }
 
-
     @Override
     public CmsUserDetailVo queryUserDetail(String stuId) {
         AssertUtils.hasText(stuId, "学号/工号不能为空");
@@ -309,5 +308,4 @@ public class CmsUserServiceImpl implements CmsUserService {
         detailVo.setModifyTime(cmsUser.getModifyTime());
         return detailVo;
     }
-
 }

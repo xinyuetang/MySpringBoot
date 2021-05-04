@@ -75,6 +75,7 @@ public class UserController extends BaseController {
         loginUser.setLoginTime(new Date());
         Webmvc.session().setAttribute(CmsConstants.LoginSessionUserKey, loginUser);
         Map<String, Object> welcome = Maps.newLinkedHashMap();
+        welcome.put("userId", loginUser.getUserId());
         welcome.put("stuId", loginUser.getStuId());
         welcome.put("name", loginUser.getName());
         return JsonResult.buildSuccess(welcome);
