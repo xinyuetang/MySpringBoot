@@ -29,7 +29,7 @@ public interface CmsBulletinService {
     /**
      * 读取消息
      */
-    void readBulletin(Long userId, Long id);
+    void readBulletin(Long userId, Long bulletinId);
 
     /**
      * 分页查询数据列表

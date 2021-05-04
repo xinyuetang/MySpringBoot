@@ -44,6 +44,7 @@ public class CmsUserMngVo implements Serializable {
     /**
      * 权限身份
      */
+    @NotNull
     @EnumValue(enumClass = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
     private Integer roleId;
 

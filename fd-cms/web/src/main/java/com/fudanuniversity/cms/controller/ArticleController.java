@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/article")
@@ -30,15 +31,15 @@ public class ArticleController extends BaseController {
     }
 
     @PostMapping(path = "/category/delete")
-    public JsonResult<?> deleteArticleCategoryById(@RequestParam Long id) {
+    public JsonResult<?> deleteArticleCategoryById(@NotNull Long id) {
         cmsArticleCategoryService.deleteArticleCategoryById(id);
         return JsonResult.buildSuccess();
     }
 
     @GetMapping(path = "/category/list")
-    public JsonResult<?> listArticleCategories(@Valid @RequestBody CmsArticleCategoryQueryVo queryVo) {
-        cmsArticleCategoryService.listArticleCategories(queryVo);
-        return JsonResult.buildSuccess();
+    public JsonResult<?> listArticleCategories(@Valid CmsArticleCategoryQueryVo queryVo) {
+        List<CmsArticleCategoryVo> categories = cmsArticleCategoryService.listArticleCategories(queryVo);
+        return JsonResult.buildSuccess(categories);
     }
 
     @GetMapping(path = "/{id}")
@@ -48,7 +49,7 @@ public class ArticleController extends BaseController {
     }
 
     @GetMapping(path = "/paging")
-    public JsonResult<?> getArticle(CmsArticleQueryVo queryVo, Paging paging) {
+    public JsonResult<?> getArticle(@Valid CmsArticleQueryVo queryVo, Paging paging) {
         PagingResult<CmsArticleVo> pagingResult = cmsArticleService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
@@ -66,7 +67,7 @@ public class ArticleController extends BaseController {
     }
 
     @PostMapping(path = "/delete")
-    public JsonResult<?> deleteArticle(@RequestParam @NotNull @Min(1L) Long id) {
+    public JsonResult<?> deleteArticle(@NotNull @Min(1L) Long id) {
         cmsArticleService.deleteCmsArticleById(id);
         return JsonResult.buildSuccess();
     }

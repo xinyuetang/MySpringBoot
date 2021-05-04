@@ -49,7 +49,7 @@ public class BulletinController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/read")
+    @RequestMapping(path = "/read")
     public JsonResult<?> readBulletin(@NotNull Long id) {
         LoginUser loginUser = getLoginUser();
         cmsBulletinService.readBulletin(loginUser.getUserId(), id);
@@ -57,14 +57,14 @@ public class BulletinController extends BaseController {
     }
 
     @GetMapping(path = "/paging")
-    public JsonResult<?> queryPagingResult(CmsBulletinQueryVo queryVo, Paging paging) {
+    public JsonResult<?> queryPagingResult(@Valid CmsBulletinQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         PagingResult<CmsBulletinVo> pagingResult = cmsBulletinService.queryPagingResult(loginUser.getUserId(), queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
 
     @GetMapping(path = "/state")
-    public JsonResult<?> queryCmsBulletinReadState(CmsBulletinStateQueryVo stateQueryVo) {
+    public JsonResult<?> queryCmsBulletinReadState(@Valid CmsBulletinStateQueryVo stateQueryVo) {
         LoginUser loginUser = getLoginUser();
         CmsBulletinStateVo bulletinStateVo = cmsBulletinService.queryCmsBulletinReadState(loginUser.getUserId(), stateQueryVo);
         return JsonResult.buildSuccess(bulletinStateVo);

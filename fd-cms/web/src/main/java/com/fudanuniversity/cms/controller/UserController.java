@@ -18,6 +18,7 @@ import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.google.common.collect.Maps;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,7 +89,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(path = "/paging")
-    public JsonResult<?> queryPagingResult(CmsUserQueryVo queryVo, Paging paging) {
+    public JsonResult<?> queryPagingResult(@Valid CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsUserVo> allUsers = cmsUserService.queryPagingResult(queryVo, paging);
@@ -96,7 +97,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(path = "/detail")
-    public JsonResult<?> queryPagingResult(@NotNull String stuId) {
+    public JsonResult<?> queryUserDetail(@NotEmpty String stuId) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         CmsUserDetailVo userDetailVo = cmsUserService.queryUserDetail(stuId);

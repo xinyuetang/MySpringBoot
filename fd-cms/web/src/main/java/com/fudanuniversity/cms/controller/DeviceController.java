@@ -7,6 +7,8 @@ import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,9 +43,10 @@ public class DeviceController extends BaseController {
     }
 
     @GetMapping(path = "/delete")
-    public JsonResult<?> deleteDevice(@NotNull Long id) {
+    public JsonResult<?> deleteDevice(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsDeviceService.deleteCmsDeviceById(id);
         return JsonResult.buildSuccess();
     }
 
@@ -51,7 +54,7 @@ public class DeviceController extends BaseController {
      * 查看设备分页列表
      */
     @GetMapping(path = "/paging")
-    public JsonResult<?> queryPagingResult(CmsDeviceQueryVo queryVo, Paging paging) {
+    public JsonResult<?> queryPagingResult(@Valid CmsDeviceQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsDeviceVo> pagingResult = cmsDeviceService.queryPagingResult(queryVo, paging);

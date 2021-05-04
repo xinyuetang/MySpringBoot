@@ -196,7 +196,7 @@ CREATE TABLE `fd_cms`.`cms_article_category`
     `create_time` datetime     NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_tag` (`tag`) USING BTREE
+    KEY `idx_tag` (`tag`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='文章分类';
@@ -313,13 +313,13 @@ CREATE TABLE `fd_cms`.`cms_device`
 DROP TABLE IF EXISTS `fd_cms`.`cms_device_allocation`;
 CREATE TABLE `fd_cms`.`cms_device_allocation`
 (
-    `id`              bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`         bigint      NOT NULL COMMENT '演讲用户id',
-    `device_id`       bigint      NOT NULL COMMENT '设备id',
-    `inventory_usage` int         NOT NULL COMMENT '使用库存',
-    `status`          tinyint     NOT NULL DEFAULT 0 COMMENT '状态',
-    `create_time`     datetime    NOT NULL COMMENT '创建时间',
-    `modify_time`     datetime             DEFAULT NULL COMMENT '更新时间',
+    `id`              bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`         bigint   NOT NULL COMMENT '演讲用户id',
+    `device_id`       bigint   NOT NULL COMMENT '设备id',
+    `inventory_usage` int      NOT NULL COMMENT '使用库存',
+    `status`          tinyint  NOT NULL DEFAULT 0 COMMENT '状态',
+    `create_time`     datetime NOT NULL COMMENT '创建时间',
+    `modify_time`     datetime          DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
     KEY `idx_device_id` (`device_id`) USING BTREE,
     KEY `idx_user_id_create_time` (`user_id`, `create_time`) USING BTREE

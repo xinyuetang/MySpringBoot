@@ -52,7 +52,7 @@ public class DeviceAllocationController extends BaseController {
      * 查询用户当前申请的设备列表
      */
     @GetMapping("/paging")
-    public JsonResult<?> queryPagingResult(@Valid Paging paging) {
+    public JsonResult<?> queryPagingResult(Paging paging) {
         LoginUser loginUser = getLoginUser();
         PagingResult<CmsDeviceAllocationVo> pagingResult
                 = cmsDeviceAllocationService.queryPagingResult(loginUser.getUserId(), paging);

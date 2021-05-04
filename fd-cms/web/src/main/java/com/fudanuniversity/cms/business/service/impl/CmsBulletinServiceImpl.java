@@ -88,15 +88,15 @@ public class CmsBulletinServiceImpl implements CmsBulletinService {
     }
 
     @Override
-    public void readBulletin(Long userId, Long id) {
-        CmsBulletinState bulletinState = cmsBulletinComponent.queryCmsBulletinState(userId, id);
+    public void readBulletin(Long userId, Long bulletinId) {
+        CmsBulletinState bulletinState = cmsBulletinComponent.queryCmsBulletinState(userId, bulletinId);
         //存在已读的记录不做操作了
         if (BooleanEnum.isTrue(bulletinState.getRead())) {
             return;
         }
         CmsBulletinState readState = new CmsBulletinState();
         readState.setUserId(userId);
-        readState.setBulletinId(id);
+        readState.setBulletinId(bulletinId);
         readState.setRead(BooleanEnum.True.getCode());
         readState.setCreateTime(new Date());
         cmsBulletinStateDao.replace(readState);

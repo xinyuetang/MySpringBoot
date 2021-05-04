@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.business.vo.recorder;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class CmsRecorderAddVo implements Serializable {
     /**
      * 演讲时间
      */
+    @NotNull
     private Date date;
 
     /**

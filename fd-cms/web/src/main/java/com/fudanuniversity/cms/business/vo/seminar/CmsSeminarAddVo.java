@@ -39,12 +39,12 @@ public class CmsSeminarAddVo implements Serializable {
     /**
      * 演讲资源保存链接地址
      */
-    //TODO
     private String link;
 
     /**
      * 演讲时间
      */
+    @NotNull
     private Date date;
 }
 
