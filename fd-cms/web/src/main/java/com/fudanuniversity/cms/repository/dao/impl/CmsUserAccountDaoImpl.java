@@ -95,10 +95,10 @@ public class CmsUserAccountDaoImpl implements CmsUserAccountDao {
     private void validateQueryParameter(CmsUserAccountQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getStuId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

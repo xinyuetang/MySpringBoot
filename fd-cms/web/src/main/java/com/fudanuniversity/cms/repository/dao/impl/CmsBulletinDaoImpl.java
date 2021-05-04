@@ -85,9 +85,9 @@ public class CmsBulletinDaoImpl implements CmsBulletinDao {
     private void validateQueryParameter(CmsBulletinQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

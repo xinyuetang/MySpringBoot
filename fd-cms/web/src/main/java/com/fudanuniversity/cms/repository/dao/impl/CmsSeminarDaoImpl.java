@@ -87,9 +87,9 @@ public class CmsSeminarDaoImpl implements CmsSeminarDao {
     private void validateQueryParameter(CmsSeminarQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

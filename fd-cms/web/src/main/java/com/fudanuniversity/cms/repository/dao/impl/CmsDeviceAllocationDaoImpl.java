@@ -87,11 +87,11 @@ public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
     private void validateQueryParameter(CmsDeviceAllocationQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getDeviceId() == null
                && query.getUserId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

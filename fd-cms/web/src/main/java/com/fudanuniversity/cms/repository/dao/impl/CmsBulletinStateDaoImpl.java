@@ -104,10 +104,10 @@ public class CmsBulletinStateDaoImpl implements CmsBulletinStateDao {
     private void validateQueryParameter(CmsBulletinStateQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                 && query.getUserId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

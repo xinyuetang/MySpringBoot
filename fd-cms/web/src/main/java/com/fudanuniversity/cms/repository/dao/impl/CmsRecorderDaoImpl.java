@@ -99,10 +99,10 @@ public class CmsRecorderDaoImpl implements CmsRecorderDao {
     private void validateQueryParameter(CmsRecorderQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getDate() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }
