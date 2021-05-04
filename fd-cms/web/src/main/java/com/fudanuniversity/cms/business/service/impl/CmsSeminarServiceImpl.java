@@ -13,6 +13,7 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
+import com.fudanuniversity.cms.commons.util.ValueUtils;
 import com.fudanuniversity.cms.repository.dao.CmsSeminarDao;
 import com.fudanuniversity.cms.repository.entity.CmsSeminar;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
@@ -53,7 +54,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
         CmsSeminar cmsSeminar = new CmsSeminar();
         cmsSeminar.setUserId(seminarUser.getId());
         cmsSeminar.setTheme(addVo.getTheme());
-        cmsSeminar.setLink(addVo.getLink());
+        cmsSeminar.setLink(ValueUtils.defaultString(addVo.getLink()));
         cmsSeminar.setDate(addVo.getDate());
         cmsSeminar.setCreateTime(new Date());
         int affect = cmsSeminarDao.insert(cmsSeminar);

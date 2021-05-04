@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * 用户
- *
+ * <p>
  * Created by Xinyue.Tang at 2021-05-03
  */
 @Data
@@ -24,6 +24,11 @@ public class CmsUserQueryVo {
      * id
      */
     private Long id;
+
+    /**
+     * 模糊搜索学号和姓名，学号为精确搜索，姓名模糊搜索
+     */
+    private String kw;
 
     /**
      * 用户类型

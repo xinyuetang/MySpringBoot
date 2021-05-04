@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -94,7 +94,9 @@ public final class JsonUtils {
         public Date deserialize(JsonParser jsonParser,
                                 DeserializationContext deserializationContext) throws IOException {
             String dateText = jsonParser.getText();
-            if (NumberUtils.isDigits(dateText)) {
+            if (StringUtils.isEmpty(dateText)) {
+                return null;
+            } else if (StringUtils.isNumeric(dateText)) {
                 long timestamp = Long.parseLong(dateText);
                 return new Date(timestamp);
             } else {

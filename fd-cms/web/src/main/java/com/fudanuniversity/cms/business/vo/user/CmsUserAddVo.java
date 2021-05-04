@@ -5,6 +5,7 @@ import com.fudanuniversity.cms.commons.enums.StudyTypeEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.enums.UserTypeEnum;
 import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
+import com.fudanuniversity.cms.commons.validation.constraints.XSS;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -96,21 +97,25 @@ public class CmsUserAddVo implements Serializable {
     /**
      * 论文
      */
+    @XSS(passType = XSS.PassType.RELAXED)
     private String papers;
 
     /**
      * 专利
      */
+    @XSS(passType = XSS.PassType.RELAXED)
     private String patents;
 
     /**
      * 服务
      */
+    @XSS(passType = XSS.PassType.RELAXED)
     private String services;
 
     /**
      * 项目
      */
+    @XSS(passType = XSS.PassType.RELAXED)
     private String projects;
 }
 

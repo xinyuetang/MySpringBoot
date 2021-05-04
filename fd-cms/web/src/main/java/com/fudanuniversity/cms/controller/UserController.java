@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
@@ -86,12 +87,20 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
+    @GetMapping(path = "/list")
+    public JsonResult<?> queryUserList(@Valid CmsUserQueryVo queryVo, Paging paging) {
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        List<CmsUserVo> userList = cmsUserService.queryUserList(queryVo, paging);
+        return JsonResult.buildSuccess(userList);
+    }
+
     @GetMapping(path = "/paging")
     public JsonResult<?> queryPagingResult(@Valid CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        PagingResult<CmsUserVo> allUsers = cmsUserService.queryPagingResult(queryVo, paging);
-        return JsonResult.buildSuccess(allUsers);
+        PagingResult<CmsUserVo> pagingResult = cmsUserService.queryPagingResult(queryVo, paging);
+        return JsonResult.buildSuccess(pagingResult);
     }
 
     @GetMapping(path = "/detail")

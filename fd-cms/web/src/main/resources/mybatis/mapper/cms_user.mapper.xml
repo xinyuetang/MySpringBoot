@@ -63,6 +63,9 @@
                 #{stuId}
             </foreach>
         </if>
+        <if test="kw != null">
+            (`stu_id` = #{kw} OR `name` LIKE CONCAT('%',#{kw},'%'))
+        </if>
         <if test="roleId != null">
             AND `role_id` = #{roleId}
         </if>

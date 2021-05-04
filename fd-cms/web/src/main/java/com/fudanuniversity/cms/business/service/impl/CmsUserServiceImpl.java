@@ -22,7 +22,6 @@ import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,10 +29,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * CmsUserService 实现类
@@ -186,6 +185,38 @@ public class CmsUserServiceImpl implements CmsUserService {
         cmsUserAccountService.deleteCmsUserAccountByStuId(cmsUser.getStuId());
     }
 
+    /**
+     * 查询数据列表
+     */
+    @Override
+    public List<CmsUserVo> queryUserList(CmsUserQueryVo queryVo, Paging paging) {
+        CmsUserQuery query = CmsUserQuery.listQuery();
+        query.setId(queryVo.getId());
+        query.setKw(queryVo.getKw());
+        query.setType(queryVo.getType());
+        query.setStuId(queryVo.getStuId());
+        query.setRoleId(queryVo.getRoleId());
+        query.setName(queryVo.getName());
+        query.setTelephone(queryVo.getTelephone());
+        query.setEmail(queryVo.getEmail());
+        query.setMentor(queryVo.getMentor());
+        query.setLeader(queryVo.getLeader());
+        query.setStudyType(queryVo.getStudyType());
+        query.setKeshuo(queryVo.getKeshuo());
+        query.setEnrollDate(queryVo.getEnrollDate());
+        query.setStatus(queryVo.getStatus());
+        query.setEltCreateTime(queryVo.getEltCreateTime());
+        query.setEgtCreateTime(queryVo.getEgtCreateTime());
+        query.setEltModifyTime(queryVo.getEltModifyTime());
+        query.setEgtModifyTime(queryVo.getEgtModifyTime());
+        query.setOffset(paging.getOffset());
+        query.setLimit(paging.getLimit());
+        query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
+        List<CmsUser> cmsUserList = cmsUserDao.selectListByParam(query);
+
+        return cmsUserList.stream()
+                .map(this::convertCmsUserVo).collect(Collectors.toList());
+    }
 
     /**
      * 分页查询数据列表

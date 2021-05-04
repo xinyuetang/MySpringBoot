@@ -51,6 +51,11 @@ public class CmsUserQuery extends BaseQuery {
     private Integer type;
 
     /**
+     * 模糊搜索学号和姓名，学号为精确搜索，姓名模糊搜索
+     */
+    private String kw;
+
+    /**
      * 字段备注:学号 <p>
      * 数据库字段长度:(32,0) <p>
      * 索引字段:是
