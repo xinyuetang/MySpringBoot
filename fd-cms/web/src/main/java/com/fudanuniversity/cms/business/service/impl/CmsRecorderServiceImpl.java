@@ -10,6 +10,7 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
+import com.fudanuniversity.cms.commons.util.DateExUtils;
 import com.fudanuniversity.cms.commons.util.ValueUtils;
 import com.fudanuniversity.cms.repository.dao.CmsRecorderDao;
 import com.fudanuniversity.cms.repository.entity.CmsRecorder;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * CmsRecorderService 实现类
@@ -50,6 +52,14 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
      */
     @Override
     public void saveCmsRecorder(CmsRecorderAddVo addVo) {
+        Date recorderDate = addVo.getDate();
+        CmsRecorderQuery query = CmsRecorderQuery.singletonQuery();
+        query.setDate(recorderDate);
+        List<CmsRecorder> cmsRecorders = cmsRecorderDao.selectInfoListByParam(query);
+        if (CollectionUtils.isNotEmpty(cmsRecorders)) {
+            throw new BusinessException("[" + DateExUtils.formatDate(recorderDate) + "]当天已经存在演讲记录安排");
+        }
+
         Long recorder1Id = addVo.getRecorder1Id();
         Long recorder2Id = addVo.getRecorder2Id();
         Long summarizerId = addVo.getSummarizerId();
@@ -57,7 +67,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                 .queryUserMap(recorder1Id, recorder2Id, summarizerId);
 
         CmsRecorder cmsRecorder = new CmsRecorder();
-        cmsRecorder.setDate(addVo.getDate());
+        cmsRecorder.setDate(recorderDate);
 
         if (ValueUtils.isLongId(recorder1Id)) {
             CmsUser recorder1User = userMap.get(recorder1Id);
@@ -66,6 +76,8 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         } else {
             cmsRecorder.setRecorder1Id(0L);
         }
+        cmsRecorder.setRecorder1File("");
+        cmsRecorder.setRecorder1Type("");
 
         if (ValueUtils.isLongId(recorder2Id)) {
             CmsUser recorder2User = userMap.get(recorder2Id);
@@ -74,25 +86,40 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         } else {
             cmsRecorder.setRecorder2Id(0L);
         }
+        cmsRecorder.setRecorder2File("");
+        cmsRecorder.setRecorder2Type("");
 
-        if (ValueUtils.isLongId(recorder2Id)) {
+        if (ValueUtils.isLongId(summarizerId)) {
             CmsUser summarizerUser = userMap.get(summarizerId);
             AssertUtils.notNull(summarizerUser, "记录人员[" + summarizerId + "]的用户不存在");
             cmsRecorder.setSummarizerId(summarizerUser.getId());
         } else {
             cmsRecorder.setSummarizerId(0L);
         }
+        cmsRecorder.setSummarizerFile("");
+        cmsRecorder.setSummarizerType("");
 
         cmsRecorder.setCreateTime(new Date());
         int affect = cmsRecorderDao.insert(cmsRecorder);
         logger.info("保存CmsRecorder affect:{}, cmsRecorder: {}", affect, addVo);
     }
 
+    private final static byte[] EMPTY_BYTE = new byte[0];
+
     /**
      * 根据id更新处理
      */
     @Override
     public void updateCmsRecorderById(CmsRecorderUpdateVo updateVo) {
+        Long recorderId = updateVo.getId();
+        CmsRecorderQuery query = CmsRecorderQuery.singletonQuery();
+        query.setId(recorderId);
+        List<CmsRecorder> cmsRecorders = cmsRecorderDao.selectInfoListByParam(query);
+        if (CollectionUtils.isEmpty(cmsRecorders)) {
+            throw new BusinessException("演讲记录安排不存在");
+        }
+        CmsRecorder cmsRecorder = cmsRecorders.get(0);
+
         Long recorder1Id = updateVo.getRecorder1Id();
         Long recorder2Id = updateVo.getRecorder2Id();
         Long summarizerId = updateVo.getSummarizerId();
@@ -100,24 +127,33 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                 .queryUserMap(recorder1Id, recorder2Id, summarizerId);
 
         CmsRecorder updater = new CmsRecorder();
-        updater.setId(updateVo.getId());
+        updater.setId(recorderId);
 
-        if (ValueUtils.isLongId(recorder1Id)) {
+        if (ValueUtils.isLongId(recorder1Id) && !Objects.equals(cmsRecorder.getRecorder1Id(), recorder1Id)) {
             CmsUser recorder1User = userMap.get(recorder1Id);
             AssertUtils.notNull(recorder1User, "辅读人员1[" + recorder1Id + "]的用户不存在");
             updater.setRecorder1Id(recorder1User.getId());
+            updater.setRecorder1File("");
+            updater.setRecorder1Type("");
+            updater.setRecorder1Content(EMPTY_BYTE);
         }
 
-        if (ValueUtils.isLongId(recorder2Id)) {
+        if (ValueUtils.isLongId(recorder2Id) && !Objects.equals(cmsRecorder.getRecorder2Id(), recorder2Id)) {
             CmsUser recorder2User = userMap.get(recorder2Id);
             AssertUtils.notNull(recorder2User, "辅读人员2[" + recorder2Id + "]的用户不存在");
             updater.setRecorder2Id(recorder2User.getId());
+            updater.setRecorder2File("");
+            updater.setRecorder2Type("");
+            updater.setRecorder2Content(EMPTY_BYTE);
         }
 
-        if (ValueUtils.isLongId(summarizerId)) {
+        if (ValueUtils.isLongId(summarizerId) && !Objects.equals(cmsRecorder.getSummarizerId(), summarizerId)) {
             CmsUser summarizerUser = userMap.get(summarizerId);
             AssertUtils.notNull(summarizerUser, "记录人员[" + summarizerId + "]的用户不存在");
             updater.setSummarizerId(summarizerUser.getId());
+            updater.setSummarizerFile("");
+            updater.setSummarizerType("");
+            updater.setSummarizerContent(EMPTY_BYTE);
         }
 
         updater.setModifyTime(new Date());
@@ -137,7 +173,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
     @Override
     public void uploadRecorderFile(Long userId, CmsRecorderUploadVo uploadVo) {
         Long recorderId = uploadVo.getId();
-        CmsRecorder cmsRecorder = queryCmsRecorder(recorderId);
+        CmsRecorder cmsRecorder = queryCmsInfoRecorder(recorderId);
         AssertUtils.notNull(cmsRecorder, "当前演讲记录安排已被删除");
 
         CmsRecorder updater = new CmsRecorder();
@@ -146,17 +182,22 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         //上传文件标识，如果没有任何文件抛出错误
         boolean fileUploaded = false;
 
-        String recorder1File = uploadVo.getRecorder1File();
-        if (StringUtils.isNotEmpty(recorder1File)) {
-            updater.setRecorder1File(recorder1File);
+        MultipartFile recorder1MultipartFile = uploadVo.getRecorder1Content();
+        if (recorder1MultipartFile != null) {
             //每个用户只能上传演讲安排自己的人员文件
             Long recorder1Id = cmsRecorder.getRecorder1Id();
             if (ValueUtils.isLongId(recorder1Id)) {
                 AssertUtils.state(userId.equals(recorder1Id), "无权限上传辅读人员1用户文件");
             }
-            MultipartFile recorder1MultipartFile = uploadVo.getRecorder1Content();
+            updater.setRecorder1Id(userId);
             String contentType = recorder1MultipartFile.getContentType();
             updater.setRecorder1Type(contentType);
+            String recorder1File = uploadVo.getRecorder1File();
+            if (StringUtils.isEmpty(recorder1File)) {
+                updater.setRecorder1File(recorder1MultipartFile.getOriginalFilename());
+            } else {
+                updater.setRecorder1File(recorder1File);
+            }
             try {
                 byte[] bytes = recorder1MultipartFile.getBytes();
                 updater.setRecorder1Content(bytes);
@@ -166,18 +207,23 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
             fileUploaded = true;
         }
 
-        String recorder2File = uploadVo.getRecorder2File();
-        if (StringUtils.isNotEmpty(recorder2File)) {
-            updater.setRecorder2File(recorder2File);
+        MultipartFile recorder2MultipartFile = uploadVo.getRecorder2Content();
+        if (recorder2MultipartFile != null) {
+            String recorder2File = uploadVo.getRecorder2File();
             Long recorder2Id = cmsRecorder.getRecorder2Id();
             if (ValueUtils.isLongId(recorder2Id)) {
                 AssertUtils.state(userId.equals(recorder2Id), "无权限上传辅读人员2用户文件");
             }
-            MultipartFile recorder1MultipartFile = uploadVo.getRecorder1Content();
-            String contentType = recorder1MultipartFile.getContentType();
-            updater.setRecorder1Type(contentType);
+            updater.setRecorder2Id(userId);
+            String contentType = recorder2MultipartFile.getContentType();
+            updater.setRecorder2Type(contentType);
+            if (StringUtils.isEmpty(recorder2File)) {
+                updater.setRecorder2File(recorder2MultipartFile.getOriginalFilename());
+            } else {
+                updater.setRecorder2File(recorder2File);
+            }
             try {
-                byte[] bytes = recorder1MultipartFile.getBytes();
+                byte[] bytes = recorder2MultipartFile.getBytes();
                 updater.setRecorder2Content(bytes);
             } catch (IOException e) {
                 throw new BusinessException("上传文件出了错误，请稍后重试");
@@ -185,19 +231,24 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
             fileUploaded = true;
         }
 
-        String summarizerFile = uploadVo.getSummarizerFile();
-        if (StringUtils.isNotEmpty(summarizerFile)) {
-            updater.setSummarizerFile(summarizerFile);
+        MultipartFile summarizerMultipartFile = uploadVo.getSummarizerContent();
+        if (summarizerMultipartFile != null) {
             //每个用户只能上传演讲安排自己的人员文件
             Long summarizerId = cmsRecorder.getSummarizerId();
             if (ValueUtils.isLongId(summarizerId)) {
                 AssertUtils.state(userId.equals(summarizerId), "无权限上传辅读人员1用户文件");
             }
-            MultipartFile recorder1MultipartFile = uploadVo.getRecorder1Content();
-            String contentType = recorder1MultipartFile.getContentType();
-            updater.setRecorder1Type(contentType);
+            updater.setSummarizerId(userId);
+            String contentType = summarizerMultipartFile.getContentType();
+            updater.setSummarizerType(contentType);
+            String summarizerFile = uploadVo.getSummarizerFile();
+            if (StringUtils.isEmpty(summarizerFile)) {
+                updater.setSummarizerFile(summarizerMultipartFile.getOriginalFilename());
+            } else {
+                updater.setSummarizerFile(summarizerFile);
+            }
             try {
-                byte[] bytes = recorder1MultipartFile.getBytes();
+                byte[] bytes = summarizerMultipartFile.getBytes();
                 updater.setSummarizerContent(bytes);
             } catch (IOException e) {
                 throw new BusinessException("上传文件出了错误，请稍后重试");
@@ -215,7 +266,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         AssertUtils.state(affect == 1);
     }
 
-    private CmsRecorder queryCmsRecorder(Long recorderId) {
+    private CmsRecorder queryCmsDetailRecorder(Long recorderId) {
         CmsRecorderQuery query = CmsRecorderQuery.singletonQuery();
         query.setId(recorderId);
         List<CmsRecorder> recorders = cmsRecorderDao.selectDetailListByParam(query);
@@ -225,6 +276,15 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         return null;
     }
 
+    private CmsRecorder queryCmsInfoRecorder(Long recorderId) {
+        CmsRecorderQuery query = CmsRecorderQuery.singletonQuery();
+        query.setId(recorderId);
+        List<CmsRecorder> recorders = cmsRecorderDao.selectInfoListByParam(query);
+        if (CollectionUtils.isNotEmpty(recorders)) {
+            return recorders.get(0);
+        }
+        return null;
+    }
 
     /**
      * 分页查询数据列表
@@ -316,21 +376,33 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
     @Override
     public CmsRecorderDownloadResultVo downloadRecorderFile(CmsRecorderDownloadVo downloadVo) {
         Long recorderId = downloadVo.getId();
-        CmsRecorder cmsRecorder = queryCmsRecorder(recorderId);
+        CmsRecorder cmsRecorder = queryCmsDetailRecorder(recorderId);
         AssertUtils.notNull(cmsRecorder, "演讲记录安排为空");
         CmsRecorderDownloadResultVo downloadResultVo = new CmsRecorderDownloadResultVo();
         if (ValueUtils.isLongId(downloadVo.getRecorder1Id())) {
+            byte[] recorder1Content = cmsRecorder.getRecorder1Content();
+            if (recorder1Content == null || recorder1Content.length == 0) {
+                throw new BusinessException("无对应辅读人员1下载的文件");
+            }
             downloadResultVo.setFileName(cmsRecorder.getRecorder1File());
             downloadResultVo.setFileType(cmsRecorder.getRecorder1Type());
-            downloadResultVo.setFileContent(cmsRecorder.getRecorder1Content());
+            downloadResultVo.setFileContent(recorder1Content);
         } else if (ValueUtils.isLongId(downloadVo.getRecorder2Id())) {
+            byte[] recorder2Content = cmsRecorder.getRecorder2Content();
+            if (recorder2Content == null || recorder2Content.length == 0) {
+                throw new BusinessException("无对应辅读人员2下载的文件");
+            }
             downloadResultVo.setFileName(cmsRecorder.getRecorder2File());
             downloadResultVo.setFileType(cmsRecorder.getRecorder2Type());
-            downloadResultVo.setFileContent(cmsRecorder.getRecorder2Content());
+            downloadResultVo.setFileContent(recorder2Content);
         } else if (ValueUtils.isLongId(downloadVo.getSummarizerId())) {
+            byte[] summarizerContent = cmsRecorder.getSummarizerContent();
+            if (summarizerContent == null || summarizerContent.length == 0) {
+                throw new BusinessException("无对应记录人员下载的文件");
+            }
             downloadResultVo.setFileName(cmsRecorder.getSummarizerFile());
             downloadResultVo.setFileType(cmsRecorder.getSummarizerType());
-            downloadResultVo.setFileContent(cmsRecorder.getSummarizerContent());
+            downloadResultVo.setFileContent(summarizerContent);
         } else {
             throw new BusinessException("无对应下载的文件");
         }

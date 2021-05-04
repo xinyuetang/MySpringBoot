@@ -360,6 +360,7 @@ CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
     `user_id`         bigint   NOT NULL COMMENT '学生id',
     `plan_id`         bigint   NOT NULL COMMENT '培养方案id',
     `plan_index`      bigint   NOT NULL COMMENT '培养方案序号',
+    `plan_term`       int      NOT NULL COMMENT '培养方案学期',
     `plan_start_time` date     NOT NULL COMMENT '培养方案开始时间',
     `plan_end_time`   date     NOT NULL COMMENT '培养方案到期时间',
     `spend_days`      int      NOT NULL COMMENT '计划天数',

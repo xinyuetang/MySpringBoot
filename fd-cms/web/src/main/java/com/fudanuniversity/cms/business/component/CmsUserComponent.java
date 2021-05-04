@@ -50,7 +50,7 @@ public class CmsUserComponent {
         List<Long> userIds = Arrays.stream(userIdArray)
                 .filter(Objects::nonNull).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(userIds)) {
-            CmsUserQuery query = CmsUserQuery.singletonQuery();
+            CmsUserQuery query = CmsUserQuery.listQuery();
             query.setIdList(userIds);
             query.setDeleted(DeletedEnum.Normal.getCode());
             List<CmsUser> users = cmsUserDao.selectListByParam(query);
