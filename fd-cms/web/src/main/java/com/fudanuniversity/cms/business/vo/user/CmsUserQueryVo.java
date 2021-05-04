@@ -81,6 +81,11 @@ public class CmsUserQueryVo {
     private Integer keshuo;
 
     /**
+     * 入学年份
+     */
+    private Integer enrollYear;
+
+    /**
      * 入学时间
      */
     private Date enrollDate;

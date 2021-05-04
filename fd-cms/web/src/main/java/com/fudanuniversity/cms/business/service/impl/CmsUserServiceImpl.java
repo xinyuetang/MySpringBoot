@@ -203,6 +203,7 @@ public class CmsUserServiceImpl implements CmsUserService {
         query.setLeader(queryVo.getLeader());
         query.setStudyType(queryVo.getStudyType());
         query.setKeshuo(queryVo.getKeshuo());
+        query.setEnrollYear(queryVo.getEnrollYear());
         query.setEnrollDate(queryVo.getEnrollDate());
         query.setStatus(queryVo.getStatus());
         query.setEltCreateTime(queryVo.getEltCreateTime());
@@ -237,6 +238,7 @@ public class CmsUserServiceImpl implements CmsUserService {
         query.setLeader(queryVo.getLeader());
         query.setStudyType(queryVo.getStudyType());
         query.setKeshuo(queryVo.getKeshuo());
+        query.setEnrollYear(queryVo.getEnrollYear());
         query.setEnrollDate(queryVo.getEnrollDate());
         query.setStatus(queryVo.getStatus());
         query.setEltCreateTime(queryVo.getEltCreateTime());
@@ -270,6 +272,7 @@ public class CmsUserServiceImpl implements CmsUserService {
         userVo.setLeader(cmsUser.getLeader());
         userVo.setStudyType(cmsUser.getStudyType());
         userVo.setKeshuo(cmsUser.getKeshuo());
+        userVo.setEnrollYear(cmsUser.getEnrollYear());
         userVo.setEnrollDate(cmsUser.getEnrollDate());
         userVo.setStatus(cmsUser.getStatus());
         userVo.setCreateTime(cmsUser.getCreateTime());

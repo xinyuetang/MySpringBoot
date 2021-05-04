@@ -6,8 +6,8 @@ import java.util.Objects;
  * Created by Xinyue.Tang at 2020-05-26 15:42:24
  */
 public enum BooleanEnum {
-    False(0, "是"),
-    True(1, "否"),
+    False(0, "否"),
+    True(1, "是"),
     ;
 
     private final Integer code;
