@@ -20,7 +20,6 @@ import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.query.CmsSeminarQuery;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -48,37 +47,40 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
 
     @Override
     public void addNewSeminar(CmsSeminarAddVo addVo) {
-        String seminarStuId = addVo.getStuId();
-        CmsUser seminarUser = cmsUserComponent.queryUser(seminarStuId);
-        AssertUtils.notNull(seminarUser, "用户[" + seminarStuId + "]不存在");
+        Long speakerId = addVo.getSpeakerId();
+        CmsUser seminarUser = cmsUserComponent.queryUser(speakerId);
+        AssertUtils.notNull(seminarUser, "用户[" + speakerId + "]不存在");
         CmsSeminar cmsSeminar = new CmsSeminar();
-        cmsSeminar.setUserId(seminarUser.getId());
+        cmsSeminar.setSpeakerId(seminarUser.getId());
+        cmsSeminar.setDate(addVo.getDate());
         cmsSeminar.setTheme(addVo.getTheme());
         cmsSeminar.setLink(ValueUtils.defaultString(addVo.getLink()));
-        cmsSeminar.setDate(addVo.getDate());
+        cmsSeminar.setDescription(addVo.getDescription());
         cmsSeminar.setCreateTime(new Date());
         int affect = cmsSeminarDao.insert(cmsSeminar);
         logger.info("保存CmsSeminar affect:{}, cmsSeminar: {}", affect, addVo);
     }
 
     @Override
-    public void updateSeminarById(CmsSeminarUpdateVo seminarUpdateVo) {
-        Long seminarId = seminarUpdateVo.getId();
+    public void updateSeminarById(CmsSeminarUpdateVo updateVo) {
+        Long seminarId = updateVo.getId();
         checkCmsSeminarExists(seminarId);
 
         CmsSeminar updater = new CmsSeminar();
         updater.setId(seminarId);
 
-        String seminarStuId = seminarUpdateVo.getStuId();
-        if (StringUtils.isNotEmpty(seminarStuId)) {
-            CmsUser seminarUser = cmsUserComponent.queryUser(seminarStuId);
-            AssertUtils.notNull(seminarUser, "用户[" + seminarStuId + "]不存在");
-            updater.setUserId(seminarUser.getId());
+        Long speakerId = updateVo.getSpeakerId();
+        if (speakerId != null) {
+            CmsUser seminarUser = cmsUserComponent.queryUser(speakerId);
+            AssertUtils.notNull(seminarUser, "用户[" + speakerId + "]不存在");
+            updater.setSpeakerId(seminarUser.getId());
         }
 
-        updater.setTheme(seminarUpdateVo.getTheme());
-        updater.setLink(seminarUpdateVo.getLink());
-        updater.setDate(seminarUpdateVo.getDate());
+        updater.setDate(updateVo.getDate());
+        updater.setTheme(updateVo.getTheme());
+        updater.setLink(updateVo.getLink());
+        updater.setDescription(updateVo.getDescription());
+        updater.setModifyTime(new Date());
         int affect = cmsSeminarDao.updateById(updater);
         logger.info("更新CmsSeminar affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
@@ -90,7 +92,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
 
         CmsSeminarQuery query = new CmsSeminarQuery();
         query.setId(queryVo.getId());
-        query.setUserId(queryVo.getUserId());
+        query.setSpeakerId(queryVo.getUserId());
         query.setTheme(queryVo.getTheme());
         query.setDate(queryVo.getDate());
         Long total = cmsSeminarDao.selectCountByParam(query);
@@ -100,21 +102,23 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsSeminar> seminars = cmsSeminarDao.selectListByParam(query);
 
-            List<Long> userIds = Lists.transform(seminars, CmsSeminar::getUserId);
+            List<Long> userIds = Lists.transform(seminars, CmsSeminar::getSpeakerId);
             Map<Long, CmsUser> userMap = cmsUserComponent.queryUserMap(userIds);
 
             pagingResult.setRows(seminars, seminar -> {
                 CmsSeminarVo seminarVo = new CmsSeminarVo();
                 seminarVo.setId(seminar.getId());
-                Long userId = seminar.getUserId();
+                Long userId = seminar.getSpeakerId();
                 seminarVo.setSpeakerId(userId);
                 CmsUser speakerUser = userMap.get(userId);
                 if (speakerUser != null) {
+                    seminarVo.setSpeakerStuId(speakerUser.getStuId());
                     seminarVo.setSpeakerName(speakerUser.getName());
                 }
+                seminarVo.setDate(seminar.getDate());
                 seminarVo.setTheme(seminar.getTheme());
                 seminarVo.setLink(seminar.getLink());
-                seminarVo.setDate(seminar.getDate());
+                seminarVo.setDescription(seminar.getDescription());
                 seminarVo.setCreateTime(seminar.getCreateTime());
                 seminarVo.setModifyTime(seminar.getModifyTime());
                 return seminarVo;

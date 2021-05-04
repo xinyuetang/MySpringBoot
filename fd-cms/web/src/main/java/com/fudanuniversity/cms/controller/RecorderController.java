@@ -30,13 +30,6 @@ public class RecorderController extends BaseController {
     @Resource
     private CmsUserService cmsUserService;
 
-    @PostMapping(path = "/paging")
-    @ResponseBody
-    public JsonResult<?> queryPagingResult(@Valid CmsRecorderQueryVo queryVo, Paging paging) {
-        PagingResult<CmsRecorderVo> pagingResult = cmsRecorderService.queryPagingResult(queryVo, paging);
-        return JsonResult.buildSuccess(pagingResult);
-    }
-
     @PostMapping(path = "/add")
     @ResponseBody
     public JsonResult<?> addRecorder(@Valid @RequestBody CmsRecorderAddVo addVo) {
@@ -74,6 +67,13 @@ public class RecorderController extends BaseController {
         Long userId = loginUser.getUserId();
         cmsRecorderService.uploadRecorderFile(userId, uploadVo);
         return JsonResult.buildSuccess();
+    }
+
+    @GetMapping(path = "/paging")
+    @ResponseBody
+    public JsonResult<?> queryPagingResult(@Valid CmsRecorderQueryVo queryVo, Paging paging) {
+        PagingResult<CmsRecorderVo> pagingResult = cmsRecorderService.queryPagingResult(queryVo, paging);
+        return JsonResult.buildSuccess(pagingResult);
     }
 
     /**

@@ -6,14 +6,10 @@ import com.fudanuniversity.cms.repository.dao.CmsUserDao;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -25,6 +21,18 @@ public class CmsUserComponent {
 
     @Resource
     private CmsUserDao cmsUserDao;
+
+    public CmsUser queryUser(Long userId) {
+        AssertUtils.notNull(userId, "用户id不能为空");
+        CmsUserQuery query = CmsUserQuery.singletonQuery();
+        query.setId(userId);
+        query.setDeleted(DeletedEnum.Normal.getCode());
+        List<CmsUser> users = cmsUserDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(users)) {
+            return users.get(0);
+        }
+        return null;
+    }
 
     public CmsUser queryUser(String stuId) {
         AssertUtils.hasText(stuId, "学号/工号不能为空");
@@ -38,16 +46,16 @@ public class CmsUserComponent {
         return null;
     }
 
-    public Map<String, CmsUser> queryUserMap(String... stuIdArray) {
-        List<String> stuIds = Arrays.stream(stuIdArray)
-                .filter(StringUtils::isNotEmpty).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(stuIds)) {
+    public Map<Long, CmsUser> queryUserMap(Long... userIdArray) {
+        List<Long> userIds = Arrays.stream(userIdArray)
+                .filter(Objects::nonNull).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(userIds)) {
             CmsUserQuery query = CmsUserQuery.singletonQuery();
-            query.setStuIdList(stuIds);
+            query.setIdList(userIds);
             query.setDeleted(DeletedEnum.Normal.getCode());
             List<CmsUser> users = cmsUserDao.selectListByParam(query);
             if (CollectionUtils.isNotEmpty(users)) {
-                return users.stream().collect(Collectors.toMap(CmsUser::getStuId, Function.identity()));
+                return users.stream().collect(Collectors.toMap(CmsUser::getId, Function.identity()));
             }
         }
         return Collections.emptyMap();

@@ -261,10 +261,11 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_seminar`;
 CREATE TABLE `fd_cms`.`cms_seminar`
 (
     `id`          bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`     bigint       NOT NULL COMMENT '演讲用户id',
+    `speaker_id`  bigint       NOT NULL COMMENT '演讲用户id',
+    `date`        date         NOT NULL COMMENT '演讲时间',
     `theme`       varchar(128) NOT NULL COMMENT '演讲主题',
     `link`        varchar(256) NOT NULL COMMENT '演讲资源保存链接地址',
-    `date`        date         NOT NULL COMMENT '演讲时间',
+    `description` longtext COMMENT '介绍与描述',
     `create_time` datetime     NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),

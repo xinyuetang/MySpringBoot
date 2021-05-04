@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-04 20:01:54
  */
 @Data
 @NoArgsConstructor
@@ -45,7 +45,7 @@ public class CmsUserQuery extends BaseQuery {
 
     /**
      * 字段备注:用户类型 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
     private Integer type;

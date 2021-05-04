@@ -6,22 +6,23 @@
     <!-- 返回结果集 -->
     <resultMap id="CmsSeminarMap" type="com.fudanuniversity.cms.repository.entity.CmsSeminar">
         <result column="id" property="id"/>
-        <result column="user_id" property="userId"/>
+        <result column="speaker_id" property="speakerId"/>
+        <result column="date" property="date"/>
         <result column="theme" property="theme"/>
         <result column="link" property="link"/>
-        <result column="date" property="date"/>
+        <result column="description" property="description"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `user_id`, `theme`, `link`, `date`, `create_time`,  `modify_time`
+        `id`, `speaker_id`, `date`, `theme`, `link`, `description`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{userId}, #{theme}, #{link}, #{date}, #{createTime},  #{modifyTime}
+        #{id}, #{speakerId}, #{date}, #{theme}, #{link}, #{description}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -36,8 +37,11 @@
                 #{id}
             </foreach>
         </if>
-        <if test="userId != null">
-            AND `user_id` = #{userId}
+        <if test="speakerId != null">
+            AND `speaker_id` = #{speakerId}
+        </if>
+        <if test="date != null">
+            AND `date` = #{date}
         </if>
         <if test="theme != null">
             AND `theme` = #{theme}
@@ -45,8 +49,8 @@
         <if test="link != null">
             AND `link` = #{link}
         </if>
-        <if test="date != null">
-            AND `date` = #{date}
+        <if test="description != null">
+            AND `description` = #{description}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -82,25 +86,26 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_seminar`(`user_id`, `theme`, `link`, `date`, `create_time`, `modify_time`)
+            `cms_seminar`(`speaker_id`, `date`, `theme`, `link`, `description`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{userId}, #{theme}, #{link}, #{date}, #{createTime}, #{modifyTime}
+            #{speakerId}, #{date}, #{theme}, #{link}, #{description}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_seminar`(`user_id`, `theme`, `link`, `date`, `create_time`, `modify_time`)
+            `cms_seminar`(`speaker_id`, `date`, `theme`, `link`, `description`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.userId}, #{data.theme}, #{data.link}, #{data.date}, #{data.createTime}, #{data.modifyTime})
+            (#{data.speakerId}, #{data.date}, #{data.theme}, #{data.link}, #{data.description}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `user_id` = VALUES(`user_id`), 
+       `speaker_id` = VALUES(`speaker_id`), 
+       `date` = VALUES(`date`), 
        `theme` = VALUES(`theme`), 
        `link` = VALUES(`link`), 
-       `date` = VALUES(`date`), 
+       `description` = VALUES(`description`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -108,8 +113,11 @@
     <update id="updateById">
         UPDATE `cms_seminar`
         <trim prefix="SET" suffixOverrides=",">
-            <if test="userId != null">
-                `user_id` = #{userId},
+            <if test="speakerId != null">
+                `speaker_id` = #{speakerId},
+            </if>
+            <if test="date != null">
+                `date` = #{date},
             </if>
             <if test="theme != null">
                 `theme` = #{theme},
@@ -117,8 +125,8 @@
             <if test="link != null">
                 `link` = #{link},
             </if>
-            <if test="date != null">
-                `date` = #{date},
+            <if test="description != null">
+                `description` = #{description},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

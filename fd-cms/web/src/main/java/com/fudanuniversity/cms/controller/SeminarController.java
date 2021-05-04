@@ -37,15 +37,15 @@ public class SeminarController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/update")
-    public JsonResult<?> addSeminarLink(@Valid @RequestBody CmsSeminarUpdateVo seminarUpdateVo) {
+    @PostMapping(path = "/update")
+    public JsonResult<?> updateSeminar(@Valid @RequestBody CmsSeminarUpdateVo seminarUpdateVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
         cmsSeminarService.updateSeminarById(seminarUpdateVo);
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/delete")
+    @PostMapping(path = "/delete")
     public JsonResult<?> deleteSeminar(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);

@@ -31,8 +31,13 @@ public class CmsSeminarVo implements Serializable {
      * 演讲用户id
      */
     private Long speakerId;
-
+    private String speakerStuId;
     private String speakerName;
+
+    /**
+     * 演讲时间
+     */
+    private Date date;
 
     /**
      * 演讲主题
@@ -45,9 +50,9 @@ public class CmsSeminarVo implements Serializable {
     private String link;
 
     /**
-     * 演讲时间
+     * 介绍与描述
      */
-    private Date date;
+    private String description;
 
     /**
      * 创建时间

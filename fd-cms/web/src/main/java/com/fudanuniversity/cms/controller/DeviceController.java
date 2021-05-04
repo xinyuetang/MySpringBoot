@@ -42,7 +42,7 @@ public class DeviceController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @GetMapping(path = "/delete")
+    @PostMapping(path = "/delete")
     public JsonResult<?> deleteDevice(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);

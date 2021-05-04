@@ -36,6 +36,7 @@ public class CmsRecorderVo implements Serializable {
      * 辅读人员1用户id
      */
     private Long recorder1Id;
+    private String recorder1StuId;
     private String recorder1Name;
 
     /**
@@ -48,6 +49,7 @@ public class CmsRecorderVo implements Serializable {
      * 辅读人员2用户id
      */
     private Long recorder2Id;
+    private String recorder2StuId;
     private String recorder2Name;
 
     /**
@@ -60,6 +62,7 @@ public class CmsRecorderVo implements Serializable {
      * 记录人员用户id
      */
     private Long summarizerId;
+    private String summarizerStuId;
     private String summarizerName;
 
     /**

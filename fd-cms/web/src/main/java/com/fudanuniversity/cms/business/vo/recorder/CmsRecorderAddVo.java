@@ -32,16 +32,16 @@ public class CmsRecorderAddVo implements Serializable {
     /**
      * 辅读人员1用户学号
      */
-    private String recorder1StuId;
+    private Long recorder1Id;
 
     /**
      * 辅读人员2用户学号
      */
-    private String recorder2StuId;
+    private Long recorder2Id;
 
     /**
      * 记录人员用户学号
      */
-    private String summarizerStuId;
+    private Long summarizerId;
 }
 
