@@ -202,8 +202,7 @@ public class DateExUtils {
             return null;
         }
 
-        source = source.trim();
-        //根据字符串长度，简单效率较高
+        //根据字符串长度匹配转换时间
         if (source.length() == DATE_PATTERN.length()) {
             return DateExUtils.parseDate(source);
         } else if (source.length() == DATETIME_PATTERN.length()) {

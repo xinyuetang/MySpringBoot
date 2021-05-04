@@ -2,20 +2,22 @@ package com.fudanuniversity.cms.commons.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import org.apache.commons.lang3.math.NumberUtils;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -54,8 +56,12 @@ public final class JsonUtils {
 
     public static ObjectMapper createGeneralObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
-        //Date类型文本格式化
+        //Date类型默认时间格式
         mapper.setDateFormat(new SimpleDateFormat(DATETIME_PATTERN));
+        //添加自定义Module
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Date.class, new DynamicDateDeserializer());//日期反序列化支持多种日期格式
+        mapper.registerModule(module);
         //JDK新时间序列化时不要带有T字符
         JavaTimeModule javaTimeModule = new JavaTimeModule();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DATETIME_PATTERN);
@@ -72,6 +78,29 @@ public final class JsonUtils {
         //BigDecimal不输出科学计数法的值
         mapper.getFactory().configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
         return mapper;
+    }
+
+    /**
+     * json反序列化java.util.Date支持以下格式
+     * <ul>
+     *   <li>时间戳（毫秒），如：1599235200000</li>
+     *   <li>日期字符串，如：yyyy-MM-dd</li>
+     *   <li>日期时间字符串，如：yyyy-MM-dd HH:mm:ss</li>
+     *   <li>日期时间毫秒字符串，如：yyyy-MM-dd HH:mm:ss.SSS</li>
+     * </ul>
+     */
+    static class DynamicDateDeserializer extends JsonDeserializer<Date> {
+        @Override
+        public Date deserialize(JsonParser jsonParser,
+                                DeserializationContext deserializationContext) throws IOException {
+            String dateText = jsonParser.getText();
+            if (NumberUtils.isDigits(dateText)) {
+                long timestamp = Long.parseLong(dateText);
+                return new Date(timestamp);
+            } else {
+                return DateExUtils.parseDynamicFormat(dateText);
+            }
+        }
     }
 
     public static <T> T parseObject(String json, Type type) {
