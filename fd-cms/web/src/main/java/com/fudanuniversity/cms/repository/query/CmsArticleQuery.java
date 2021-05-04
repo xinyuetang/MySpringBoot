@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-04 14:12:39
  */
 @Data
 @NoArgsConstructor
@@ -44,9 +44,16 @@ public class CmsArticleQuery extends BaseQuery {
     private List<Long> idList;
 
     /**
+     * 字段备注:分类id <p>
+     * 数据库字段长度:(19,0) <p>
+     * 索引字段:是
+     */
+    private Long categoryId;
+
+    /**
      * 字段备注:标签 <p>
      * 数据库字段长度:(10,0) <p>
-     * 索引字段:是
+     * 索引字段:不是
      */
     private Integer categoryTag;
 

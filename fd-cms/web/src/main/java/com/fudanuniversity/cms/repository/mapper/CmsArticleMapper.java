@@ -37,7 +37,12 @@ public interface CmsArticleMapper {
     /**
      * 根据条件查询信息列表
      */
-    List<CmsArticle> selectListByParam(CmsArticleQuery query);
+    List<CmsArticle> selectDetailListByParam(CmsArticleQuery query);
+
+    /**
+     * 根据条件查询信息列表
+     */
+    List<CmsArticle> selectInfoListByParam(CmsArticleQuery query);
 
     /**
      * 根据条件查询信息总数目

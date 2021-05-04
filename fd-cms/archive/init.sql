@@ -209,13 +209,16 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_article`;
 CREATE TABLE `fd_cms`.`cms_article`
 (
     `id`           bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `category_id`  bigint       NOT NULL COMMENT '分类id',
     `category_tag` int          NOT NULL COMMENT '标签',
     `title`        varchar(128) NOT NULL COMMENT '名称',
     `content`      longtext     NOT NULL COMMENT '内容',
     `create_time`  datetime     NOT NULL COMMENT '创建时间',
     `modify_time`  datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_category_tag` (`category_tag`) USING BTREE
+    KEY `idx_category_id` (`category_id`) USING BTREE,
+    KEY `idx_category_tag` (`category_tag`) USING BTREE,
+    KEY `idx_title` (`title`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='文章';

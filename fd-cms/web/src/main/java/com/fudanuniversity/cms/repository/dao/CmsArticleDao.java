@@ -35,7 +35,9 @@ public interface CmsArticleDao {
     /**
      * 查询数据
      */
-    List<CmsArticle> selectListByParam(CmsArticleQuery query);
+    List<CmsArticle> selectDetailListByParam(CmsArticleQuery query);
+
+    List<CmsArticle> selectInfoListByParam(CmsArticleQuery query);
 
     /**
      * 查询数量

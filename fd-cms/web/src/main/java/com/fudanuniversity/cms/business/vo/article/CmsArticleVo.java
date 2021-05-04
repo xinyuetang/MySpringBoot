@@ -1,11 +1,12 @@
 package com.fudanuniversity.cms.business.vo.article;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -19,36 +20,38 @@ import lombok.ToString;
 @ToString
 public class CmsArticleVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
+    private Long id;
 
     /**
      * 标签
      */
-	private Integer categoryTag;
+    private Long categoryId;
+    private Integer categoryTag;
+    private String categoryName;
 
     /**
      * 名称
      */
-	private String title;
+    private String title;
 
     /**
      * 内容
      */
-	private String content;
+    private String content;
 
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-	private Date modifyTime;
+    private Date modifyTime;
 }
 

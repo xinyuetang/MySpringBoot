@@ -27,7 +27,7 @@ public class CmsArticleAddVo implements Serializable {
      * 标签
      */
     @NotNull
-    private Integer categoryTag;
+    private Long categoryId;
 
     /**
      * 名称

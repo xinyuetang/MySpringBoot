@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.repository.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,11 +10,10 @@ import java.util.Date;
 /**
  * 文章
  * <p>
- * Created by Xinyue.Tang at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-04 14:15:26
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsArticle implements Serializable {
 
@@ -29,6 +27,13 @@ public class CmsArticle implements Serializable {
     private Long id;
 
     /**
+     * 字段备注:分类id <p>
+     * 数据库字段长度:(19,0) <p>
+     * 是否索引:是
+     */
+    private Long categoryId;
+
+    /**
      * 字段备注:标签 <p>
      * 数据库字段长度:(10,0) <p>
      * 是否索引:是
@@ -38,7 +43,7 @@ public class CmsArticle implements Serializable {
     /**
      * 字段备注:名称 <p>
      * 数据库字段长度:(128,0) <p>
-     * 是否索引:不是
+     * 是否索引:是
      */
     private String title;
 

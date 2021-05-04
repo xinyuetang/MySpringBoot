@@ -23,6 +23,7 @@ public class CmsArticleQueryVo {
     /**
      * 标签
      */
+    private Long categoryId;
     private Integer categoryTag;
 
     /**

@@ -34,20 +34,26 @@ public class CmsArticleComponent {
         return null;
     }
 
-    public CmsArticleCategory queryArticleCategory(Integer tag) {
-        CmsArticleCategoryQuery query = CmsArticleCategoryQuery.singletonQuery();
+    public List<CmsArticleCategory> queryArticleCategory(Integer tag) {
+        CmsArticleCategoryQuery query = CmsArticleCategoryQuery.listQuery();
         query.setTag(tag);
-        List<CmsArticleCategory> categories = cmsArticleCategoryDao.selectListByParam(query);
-        if (CollectionUtils.isNotEmpty(categories)) {
-            return categories.get(0);
+        return cmsArticleCategoryDao.selectListByParam(query);
+    }
+
+    public CmsArticle queryArticleInfo(Long articleId) {
+        CmsArticleQuery query = CmsArticleQuery.singletonQuery();
+        query.setId(articleId);
+        List<CmsArticle> articles = cmsArticleDao.selectInfoListByParam(query);
+        if (CollectionUtils.isNotEmpty(articles)) {
+            return articles.get(0);
         }
         return null;
     }
 
-    public CmsArticle queryArticle(Long articleId) {
+    public CmsArticle queryArticleDetail(Long articleId) {
         CmsArticleQuery query = CmsArticleQuery.singletonQuery();
         query.setId(articleId);
-        List<CmsArticle> articles = cmsArticleDao.selectListByParam(query);
+        List<CmsArticle> articles = cmsArticleDao.selectDetailListByParam(query);
         if (CollectionUtils.isNotEmpty(articles)) {
             return articles.get(0);
         }

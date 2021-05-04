@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsArticleDao;
-import com.fudanuniversity.cms.repository.mapper.CmsArticleMapper;
 import com.fudanuniversity.cms.repository.entity.CmsArticle;
+import com.fudanuniversity.cms.repository.mapper.CmsArticleMapper;
 import com.fudanuniversity.cms.repository.query.CmsArticleQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * CmsArticleDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-04 14:15:26
  */
 @Repository
 public class CmsArticleDaoImpl implements CmsArticleDao {
@@ -32,10 +31,10 @@ public class CmsArticleDaoImpl implements CmsArticleDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsArticle> cmsArticleList){
+    public int bulkUpsert(List<CmsArticle> cmsArticleList) {
         Assert.notEmpty(cmsArticleList, "保存对象列表不能为空");
 
-        for(CmsArticle cmsArticle : cmsArticleList){
+        for (CmsArticle cmsArticle : cmsArticleList) {
             validateEntity(cmsArticle);
         }
 
@@ -43,6 +42,7 @@ public class CmsArticleDaoImpl implements CmsArticleDao {
     }
 
     private void validateEntity(CmsArticle cmsArticle) {
+        Assert.notNull(cmsArticle.getCategoryId(), "分类id必须有值");
         Assert.notNull(cmsArticle.getCategoryTag(), "标签必须有值");
         Assert.hasText(cmsArticle.getTitle(), "名称不能为空");
         Assert.hasText(cmsArticle.getContent(), "内容不能为空");
@@ -66,12 +66,21 @@ public class CmsArticleDaoImpl implements CmsArticleDao {
     }
 
     @Override
-    public List<CmsArticle> selectListByParam(CmsArticleQuery query) {
+    public List<CmsArticle> selectDetailListByParam(CmsArticleQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 
         validateQueryParameter(query);
 
-        return cmsArticleMapper.selectListByParam(query);
+        return cmsArticleMapper.selectDetailListByParam(query);
+    }
+
+    @Override
+    public List<CmsArticle> selectInfoListByParam(CmsArticleQuery query) {
+        Assert.notNull(query, "查询参数不能为空");
+
+        validateQueryParameter(query);
+
+        return cmsArticleMapper.selectInfoListByParam(query);
     }
 
     @Override
@@ -88,7 +97,9 @@ public class CmsArticleDaoImpl implements CmsArticleDao {
 
         /*if (query.getId() == null
                 && query.getGtId() == null
-               && query.getCategoryTag() == null) {
+               && query.getCategoryId() == null
+               && query.getCategoryTag() == null
+               && query.getTitle() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
         }*/
     }

@@ -6,6 +6,7 @@
     <!-- 返回结果集 -->
     <resultMap id="CmsArticleMap" type="com.fudanuniversity.cms.repository.entity.CmsArticle">
         <result column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
         <result column="category_tag" property="categoryTag"/>
         <result column="title" property="title"/>
         <result column="content" property="content"/>
@@ -14,13 +15,17 @@
     </resultMap>
 
     <!-- 字段列表信息 -->
-    <sql id="_field_list">
-        `id`, `category_tag`, `title`, `content`, `create_time`,  `modify_time`
+    <sql id="_detail_field_list">
+        `id`, `category_id`, `category_tag`, `title`, `content`, `create_time`,  `modify_time`
+    </sql>
+
+    <sql id="_info_field_list">
+        `id`, `category_id`, `category_tag`, `title`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{categoryTag}, #{title}, #{content}, #{createTime},  #{modifyTime}
+        #{id}, #{categoryId}, #{categoryTag}, #{title}, #{content}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -34,6 +39,9 @@
                      open="( " separator=" , " close=" )">
                 #{id}
             </foreach>
+        </if>
+        <if test="categoryId != null">
+            AND `category_id` = #{categoryId}
         </if>
         <if test="categoryTag != null">
             AND `category_tag` = #{categoryTag}
@@ -78,21 +86,22 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_article`(`category_tag`, `title`, `content`, `create_time`, `modify_time`)
+            `cms_article`(`category_id`, `category_tag`, `title`, `content`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{categoryTag}, #{title}, #{content}, #{createTime}, #{modifyTime}
+            #{categoryId}, #{categoryTag}, #{title}, #{content}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_article`(`category_tag`, `title`, `content`, `create_time`, `modify_time`)
+            `cms_article`(`category_id`, `category_tag`, `title`, `content`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.categoryTag}, #{data.title}, #{data.content}, #{data.createTime}, #{data.modifyTime})
+            (#{data.categoryId}, #{data.categoryTag}, #{data.title}, #{data.content}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
+       `category_id` = VALUES(`category_id`), 
        `category_tag` = VALUES(`category_tag`), 
        `title` = VALUES(`title`), 
        `content` = VALUES(`content`), 
@@ -103,6 +112,9 @@
     <update id="updateById">
         UPDATE `cms_article`
         <trim prefix="SET" suffixOverrides=",">
+            <if test="categoryId != null">
+                `category_id` = #{categoryId},
+            </if>
             <if test="categoryTag != null">
                 `category_tag` = #{categoryTag},
             </if>
@@ -129,9 +141,20 @@
         ]]>
     </delete>
 
-    <select id="selectListByParam" parameterType="map" resultMap="CmsArticleMap">
+    <select id="selectDetailListByParam" parameterType="map" resultMap="CmsArticleMap">
         SELECT
-        <include refid="_field_list"/>
+        <include refid="_detail_field_list"/>
+        FROM `cms_article`
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectInfoListByParam" parameterType="map" resultMap="CmsArticleMap">
+        SELECT
+        <include refid="_detail_field_list"/>
         FROM `cms_article`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>

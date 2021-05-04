@@ -6,6 +6,8 @@ import com.fudanuniversity.cms.business.vo.article.CmsArticleCategoryAddVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleCategoryQueryVo;
 import com.fudanuniversity.cms.business.vo.article.CmsArticleCategoryVo;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
+import com.fudanuniversity.cms.commons.model.query.SortColumn;
+import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsArticleCategoryDao;
 import com.fudanuniversity.cms.repository.entity.CmsArticleCategory;
@@ -41,10 +43,6 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
     @Override
     public void addArticleCategory(CmsArticleCategoryAddVo categoryAddVo) {
         Integer tag = categoryAddVo.getTag();
-        CmsArticleCategory exitsCategory = cmsArticleComponent.queryArticleCategory(tag);
-        if (exitsCategory != null) {
-            throw new BusinessException("文章分类tag[" + tag + "]已经存在");
-        }
         CmsArticleCategory category = new CmsArticleCategory();
         category.setTag(tag);
         category.setName(categoryAddVo.getName());
@@ -58,7 +56,7 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
     public void deleteArticleCategoryById(Long id) {
         CmsArticleCategory exitsCategory = cmsArticleComponent.queryArticleCategory(id);
         if (exitsCategory == null) {
-            throw new BusinessException("文章分类不存在");
+            throw new BusinessException("文章分类[" + id + "]不存在");
         }
 
         int affect = cmsArticleCategoryDao.deleteById(id);
@@ -75,8 +73,7 @@ public class CmsArticleCategoryServiceImpl implements CmsArticleCategoryService 
         query.setId(queryVo.getId());
         query.setTag(queryVo.getTag());
         query.setName(queryVo.getName());
-
-        //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
+        query.setSorts(SortColumn.create("tag", SortMode.ASC));
         List<CmsArticleCategory> categories = cmsArticleCategoryDao.selectListByParam(query);
 
         return categories.stream().map(category -> {

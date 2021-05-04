@@ -43,7 +43,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
 
     @Override
     public CmsArticleVo getArticle(Long id) {
-        CmsArticle article = cmsArticleComponent.queryArticle(id);
+        CmsArticle article = cmsArticleComponent.queryArticleDetail(id);
         if (article != null) {
             return convertCmsArticleVo(article);
         }
@@ -53,7 +53,12 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     private CmsArticleVo convertCmsArticleVo(CmsArticle article) {
         CmsArticleVo articleVo = new CmsArticleVo();
         articleVo.setId(article.getId());
+        articleVo.setCategoryId(article.getCategoryId());
         articleVo.setCategoryTag(article.getCategoryTag());
+        CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(article.getCategoryId());
+        if (category != null) {
+            articleVo.setCategoryName(category.getName());
+        }
         articleVo.setTitle(article.getTitle());
         articleVo.setContent(article.getContent());
         articleVo.setCreateTime(article.getCreateTime());
@@ -66,11 +71,12 @@ public class CmsArticleServiceImpl implements CmsArticleService {
      */
     @Override
     public void saveCmsArticle(CmsArticleAddVo articleAddVo) {
-        Integer categoryTag = articleAddVo.getCategoryTag();
-        CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryTag);
-        AssertUtils.notNull(category, "文章分类标签不存在");
+        Long categoryId = articleAddVo.getCategoryId();
+        CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryId);
+        AssertUtils.notNull(category, "文章分类[" + categoryId + "]不存在");
         CmsArticle article = new CmsArticle();
-        article.setCategoryTag(articleAddVo.getCategoryTag());
+        article.setCategoryId(category.getId());
+        article.setCategoryTag(category.getTag());
         article.setTitle(articleAddVo.getTitle());
         article.setContent(articleAddVo.getContent());
         article.setCreateTime(new Date());
@@ -85,18 +91,19 @@ public class CmsArticleServiceImpl implements CmsArticleService {
     @Override
     public void editCmsArticleBy(CmsArticleEditVo editVo) {
         Long articleId = editVo.getId();
-        CmsArticle article = cmsArticleComponent.queryArticle(articleId);
+        CmsArticle article = cmsArticleComponent.queryArticleInfo(articleId);
         if (article == null) {
             throw new BusinessException("当前文章已不存在");
         }
-
-        Integer categoryTag = editVo.getCategoryTag();
-        if (categoryTag != null) {
-            CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryTag);
-            AssertUtils.notNull(category, "文章分类标签不存在");
-        }
         CmsArticle updater = new CmsArticle();
-        updater.setCategoryTag(editVo.getCategoryTag());
+
+        Long categoryId = editVo.getCategoryId();
+        if (categoryId != null) {
+            CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryId);
+            AssertUtils.notNull(category, "文章分类[" + categoryId + "]不存在");
+            updater.setCategoryId(category.getId());
+            updater.setCategoryTag(category.getTag());
+        }
         updater.setTitle(editVo.getTitle());
         updater.setContent(editVo.getContent());
         updater.setModifyTime(new Date());
@@ -110,7 +117,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
      */
     @Override
     public void deleteCmsArticleById(Long id) {
-        CmsArticle article = cmsArticleComponent.queryArticle(id);
+        CmsArticle article = cmsArticleComponent.queryArticleInfo(id);
         if (article == null) {
             throw new BusinessException("当前文章已不存在");
         }
@@ -128,6 +135,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         PagingResult<CmsArticleVo> pagingResult = PagingResult.create(paging);
 
         CmsArticleQuery query = new CmsArticleQuery();
+        queryVo.setCategoryId(queryVo.getCategoryId());
         queryVo.setCategoryTag(queryVo.getCategoryTag());
         queryVo.setTitle(queryVo.getTitle());
         queryVo.setEltCreateTime(queryVo.getEltCreateTime());
@@ -141,7 +149,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             query.setOffset(query.getOffset());
             query.setLimit(query.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
-            List<CmsArticle> cmsArticleList = cmsArticleDao.selectListByParam(query);
+            List<CmsArticle> cmsArticleList = cmsArticleDao.selectInfoListByParam(query);
             pagingResult.setRows(cmsArticleList, this::convertCmsArticleVo);
         }
 
