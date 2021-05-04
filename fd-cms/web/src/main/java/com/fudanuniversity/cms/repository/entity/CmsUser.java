@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.repository.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,11 +10,10 @@ import java.util.Date;
 /**
  * 用户
  * <p>
- * Created by Xinyue.Tang at 2021-05-02
+ * Created by Xinyue.Tang at 2021-05-04 15:34:23
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsUser implements Serializable {
 
@@ -33,7 +31,7 @@ public class CmsUser implements Serializable {
      * 数据库字段长度:(32,0) <p>
      * 是否索引:不是
      */
-    private String type;
+    private Integer type;
 
     /**
      * 字段备注:学号 <p>
@@ -97,6 +95,13 @@ public class CmsUser implements Serializable {
      * 是否索引:不是
      */
     private Integer keshuo;
+
+    /**
+     * 字段备注:入学年份 <p>
+     * 数据库字段长度:(4,0) <p>
+     * 是否索引:是
+     */
+    private Integer enrollYear;
 
     /**
      * 字段备注:入学时间 <p>

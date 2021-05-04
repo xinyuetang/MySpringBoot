@@ -17,7 +17,7 @@ public interface CmsUserMapper {
     /**
      * 保存处理
      */
-    int replace(CmsUser cmsUser);
+    int insert(CmsUser cmsUser);
 
     /**
      * 批量upsert

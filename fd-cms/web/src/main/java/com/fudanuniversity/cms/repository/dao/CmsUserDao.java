@@ -15,7 +15,7 @@ public interface CmsUserDao {
     /**
      * 保存/更新处理
      */
-    int replace(CmsUser cmsUser);
+    int insert(CmsUser cmsUser);
 
     /**
      * 批量upsert

@@ -40,11 +40,13 @@ public class SqlJavaTypeUtils {
         } else if (sqlType.startsWith("blob")
                 || sqlType.startsWith("longblob")) {
             return "byte[]";
-        } else if (sqlType.startsWith("datetime")) {
-            return "Date";
         } else if (sqlType.startsWith("image")) {
             return "Blod";
         } else if (sqlType.startsWith("date")) {
+            return "Date";
+        } else if (sqlType.startsWith("year")) {
+            return "Integer";
+        } else if (sqlType.startsWith("datetime")) {
             return "Date";
         } else if (sqlType.startsWith("timestamp")) {
             return "Date";

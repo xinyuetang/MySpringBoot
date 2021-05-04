@@ -29,17 +29,7 @@ public interface CmsUserAccountService {
     void saveCmsUserAccount(CmsUserAccount cmsUserAccount);
 
     /**
-     * 根据id更新处理
-     */
-    void updateCmsUserAccountById(CmsUserAccount cmsUserAccount);
-
-    /**
      * 根据stuId删除处理
      */
     void deleteCmsUserAccountByStuId(String stuId);
-
-    /**
-     * 分页查询数据列表
-     */
-    PagingResult<CmsUserAccount> queryPagingResult(CmsUserAccountQuery query);
 }

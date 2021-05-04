@@ -44,8 +44,8 @@ public class CmsSeminarDaoImpl implements CmsSeminarDao {
 
     private void validateEntity(CmsSeminar cmsSeminar) {
         Assert.notNull(cmsSeminar.getUserId(), "演讲用户id必须有值");
-        Assert.hasText(cmsSeminar.getTheme(), "演讲主题不能为空");
-        Assert.hasText(cmsSeminar.getLink(), "演讲资源保存链接地址不能为空");
+        Assert.notNull(cmsSeminar.getTheme(), "演讲主题不能为空");
+        Assert.notNull(cmsSeminar.getLink(), "演讲资源保存链接地址不能为空");
         Assert.notNull(cmsSeminar.getDate(), "演讲时间必须有值");
         Assert.notNull(cmsSeminar.getCreateTime(), "创建时间必须有值");
     }

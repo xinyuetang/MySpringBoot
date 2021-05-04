@@ -47,7 +47,7 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
         Assert.notNull(cmsStudyPlan.getKeshuo(), "是否科硕任务必须有值");
         Assert.notNull(cmsStudyPlan.getStudyType(), "就读类型必须有值");
         Assert.notNull(cmsStudyPlan.getIndex(), "序号必须有值");
-        Assert.hasText(cmsStudyPlan.getName(), "名称不能为空");
+        Assert.notNull(cmsStudyPlan.getName(), "名称不能为空");
         Assert.notNull(cmsStudyPlan.getSpendDays(), "计划天数必须有值");
         Assert.notNull(cmsStudyPlan.getCreateTime(), "创建时间必须有值");
     }

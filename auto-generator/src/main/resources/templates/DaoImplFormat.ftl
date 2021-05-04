@@ -46,7 +46,7 @@ public class ${classSimpleName}DaoImpl implements ${classSimpleName}Dao {
 <#list columnList as column>
     <#if (column.allowEmpty == false)>
         <#if (column.javaType == "String")>
-        Assert.hasText(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}不能为空");
+        Assert.notNull(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}不能为空");
         <#else>
         Assert.notNull(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}必须有值");
         </#if>

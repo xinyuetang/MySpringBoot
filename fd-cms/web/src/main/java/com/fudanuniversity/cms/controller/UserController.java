@@ -10,8 +10,6 @@ import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
-import com.fudanuniversity.cms.commons.validation.ValidGroup;
-import com.fudanuniversity.cms.commons.validation.group.Update;
 import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
@@ -106,7 +104,7 @@ public class UserController extends BaseController {
 
     //添加新用户，stuId是唯一的标识
     @PostMapping(path = "/add")
-    public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
+    public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserAddVo userAddVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         cmsUserService.saveCmsUser(userAddVo);
@@ -114,11 +112,10 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(path = "/update")
-    @ValidGroup(Update.class)
-    public JsonResult<?> updateUser(@Valid @RequestBody CmsUserMngVo userAddVo) {
+    public JsonResult<?> updateUser(@Valid @RequestBody CmsUserUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        cmsUserService.updateCmsUserById(userAddVo);
+        cmsUserService.updateCmsUserById(updateVo);
         return JsonResult.buildSuccess();
     }
 

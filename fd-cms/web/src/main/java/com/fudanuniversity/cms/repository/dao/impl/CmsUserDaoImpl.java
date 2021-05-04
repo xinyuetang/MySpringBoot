@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsUserDao;
-import com.fudanuniversity.cms.repository.mapper.CmsUserMapper;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
+import com.fudanuniversity.cms.repository.mapper.CmsUserMapper;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -23,19 +22,19 @@ public class CmsUserDaoImpl implements CmsUserDao {
     private CmsUserMapper cmsUserMapper;
 
     @Override
-    public int replace(CmsUser cmsUser) {
+    public int insert(CmsUser cmsUser) {
         Assert.notNull(cmsUser, "保存对象不能为空");
 
         validateEntity(cmsUser);
 
-        return cmsUserMapper.replace(cmsUser);
+        return cmsUserMapper.insert(cmsUser);
     }
 
     @Override
-    public int bulkUpsert(List<CmsUser> cmsUserList){
+    public int bulkUpsert(List<CmsUser> cmsUserList) {
         Assert.notEmpty(cmsUserList, "保存对象列表不能为空");
 
-        for(CmsUser cmsUser : cmsUserList){
+        for (CmsUser cmsUser : cmsUserList) {
             validateEntity(cmsUser);
         }
 
@@ -43,13 +42,14 @@ public class CmsUserDaoImpl implements CmsUserDao {
     }
 
     private void validateEntity(CmsUser cmsUser) {
-        Assert.hasText(cmsUser.getStuId(), "学号不能为空");
+        Assert.notNull(cmsUser.getType(), "用户类型不能为空");
+        Assert.notNull(cmsUser.getStuId(), "学号不能为空");
         Assert.notNull(cmsUser.getRoleId(), "权限身份必须有值");
-        Assert.hasText(cmsUser.getName(), "用户名不能为空");
-        Assert.hasText(cmsUser.getTelephone(), "手机不能为空");
-        Assert.hasText(cmsUser.getEmail(), "邮箱不能为空");
-        Assert.hasText(cmsUser.getMentor(), "导师不能为空");
-        Assert.hasText(cmsUser.getLeader(), "汇报人不能为空");
+        Assert.notNull(cmsUser.getName(), "用户名不能为空");
+        Assert.notNull(cmsUser.getTelephone(), "手机不能为空");
+        Assert.notNull(cmsUser.getEmail(), "邮箱不能为空");
+        Assert.notNull(cmsUser.getMentor(), "导师不能为空");
+        Assert.notNull(cmsUser.getLeader(), "汇报人不能为空");
         Assert.notNull(cmsUser.getStudyType(), "就读类型必须有值");
         Assert.notNull(cmsUser.getKeshuo(), "论文必须有值");
         Assert.notNull(cmsUser.getStatus(), "状态必须有值");

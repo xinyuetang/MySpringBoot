@@ -48,7 +48,7 @@ public class CmsUserQuery extends BaseQuery {
      * 数据库字段长度:(32,0) <p>
      * 索引字段:不是
      */
-    private String type;
+    private Integer type;
 
     /**
      * 字段备注:学号 <p>
@@ -56,7 +56,7 @@ public class CmsUserQuery extends BaseQuery {
      * 索引字段:是
      */
     private String stuId;
-    private List<String> stuIds;
+    private List<String> stuIdList;
 
     /**
      * 字段备注:权限身份 <p>
@@ -113,6 +113,13 @@ public class CmsUserQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Integer keshuo;
+
+    /**
+     * 字段备注:入学年份 <p>
+     * 数据库字段长度:(4,0) <p>
+     * 索引字段:是
+     */
+    private Integer enrollYear;
 
     /**
      * 字段备注:入学时间 <p>

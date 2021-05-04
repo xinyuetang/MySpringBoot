@@ -3,10 +3,7 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.user.CmsUserDetailVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserQueryVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserVo;
+import com.fudanuniversity.cms.business.vo.user.*;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
@@ -16,13 +13,16 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
+import com.fudanuniversity.cms.commons.util.DateExUtils;
 import com.fudanuniversity.cms.commons.util.JsonUtils;
+import com.fudanuniversity.cms.commons.util.ValueUtils;
 import com.fudanuniversity.cms.repository.dao.CmsUserDao;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -68,30 +69,39 @@ public class CmsUserServiceImpl implements CmsUserService {
      */
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @Override
-    public void saveCmsUser(CmsUserMngVo userAddVo) {
+    public void saveCmsUser(CmsUserAddVo userAddVo) {
         String stuId = userAddVo.getStuId();
         if (StringUtils.isNotEmpty(stuId)) {
             CmsUserQuery query = new CmsUserQuery();
             query.setStuId(stuId);
-            query.setDeleted(DeletedEnum.Normal.getCode());
             query.setLimit(1);
             List<CmsUser> cmsUsers = cmsUserDao.selectListByParam(query);
             if (CollectionUtils.isNotEmpty(cmsUsers)) {
-                throw new BusinessException("学号为[" + stuId + "]用户已存在");
+                CmsUser existsUser = cmsUsers.get(0);
+                if (Objects.equals(DeletedEnum.Normal.getCode(), existsUser.getDeleted())) {
+                    throw new BusinessException("学号为[" + stuId + "]用户已存在");
+                } else {
+                    cmsUserDao.deleteById(existsUser.getId());
+                }
             }
         }
 
         CmsUser cmsUser = new CmsUser();
+        cmsUser.setType(ValueUtils.defaultInteger(userAddVo.getType()));
         cmsUser.setStuId(stuId);
         cmsUser.setRoleId(userAddVo.getRoleId());
         cmsUser.setName(userAddVo.getName());
-        cmsUser.setTelephone(userAddVo.getTelephone());
-        cmsUser.setEmail(userAddVo.getEmail());
-        cmsUser.setMentor(userAddVo.getMentor());
-        cmsUser.setLeader(userAddVo.getLeader());
-        cmsUser.setStudyType(userAddVo.getStudyType());
-        cmsUser.setKeshuo(userAddVo.getKeshuo());
-        cmsUser.setEnrollDate(userAddVo.getEnrollDate());
+        cmsUser.setTelephone(ValueUtils.defaultString(userAddVo.getTelephone()));
+        cmsUser.setEmail(ValueUtils.defaultString(userAddVo.getEmail()));
+        cmsUser.setMentor(ValueUtils.defaultString(userAddVo.getMentor()));
+        cmsUser.setLeader(ValueUtils.defaultString(userAddVo.getLeader()));
+        cmsUser.setStudyType(ValueUtils.defaultInteger(userAddVo.getStudyType()));
+        cmsUser.setKeshuo(ValueUtils.defaultInteger(userAddVo.getKeshuo()));
+        Date enrollDate = userAddVo.getEnrollDate();
+        if (enrollDate != null) {
+            cmsUser.setEnrollDate(enrollDate);
+            cmsUser.setEnrollYear(DateExUtils.getYear(enrollDate));
+        }
         cmsUser.setPapers(userAddVo.getPapers());
         cmsUser.setPatents(userAddVo.getPatents());
         cmsUser.setServices(userAddVo.getServices());
@@ -100,7 +110,7 @@ public class CmsUserServiceImpl implements CmsUserService {
         cmsUser.setDeleted(DeletedEnum.Normal.getCode());
         cmsUser.setCreateTime(new Date());
 
-        int affect = cmsUserDao.replace(cmsUser);
+        int affect = cmsUserDao.insert(cmsUser);
         AssertUtils.state(affect == 1);
         logger.info("保存CmsUser affect:{}, cmsUser: {}", affect, cmsUser);
 
@@ -115,50 +125,42 @@ public class CmsUserServiceImpl implements CmsUserService {
      * 根据id更新处理
      */
     @Override
-    public void updateCmsUserById(CmsUserMngVo userUpdateVo) {
-        Long userId = userUpdateVo.getId();
-        String stuId = userUpdateVo.getStuId();
-        CmsUserQuery existsQuery = new CmsUserQuery();
+    public void updateCmsUserById(CmsUserUpdateVo updateVo) {
+        Long userId = updateVo.getId();
+        CmsUserQuery existsQuery = CmsUserQuery.singletonQuery();
         existsQuery.setId(userId);
         existsQuery.setDeleted(DeletedEnum.Normal.getCode());
         List<CmsUser> updateUsers = cmsUserDao.selectListByParam(existsQuery);
-        CmsUser updateUser = updateUsers.get(0);
         if (CollectionUtils.isEmpty(updateUsers)) {
             throw new BusinessException("更新的用户不存在");
         }
-        CmsUserQuery stuIdQuery = new CmsUserQuery();
-        stuIdQuery.setStuId(stuId);
-        stuIdQuery.setDeleted(DeletedEnum.Normal.getCode());
-        List<CmsUser> stuIdUsers = cmsUserDao.selectListByParam(stuIdQuery);
-        if (CollectionUtils.isNotEmpty(stuIdUsers)) {
-            CmsUser stuIdUser = stuIdUsers.get(0);
-            if (!Objects.equals(userUpdateVo.getId(), stuIdUser.getId())) {
-                throw new BusinessException("学号为[" + stuId + "]用户已存在");
-            }
-        }
+        CmsUser updateUser = updateUsers.get(0);
 
         CmsUser updater = new CmsUser();
-        updater.setId(userId);
-        updater.setStuId(stuId);
-        updater.setRoleId(userUpdateVo.getRoleId());
-        updater.setName(userUpdateVo.getName());
-        updater.setTelephone(userUpdateVo.getTelephone());
-        updater.setEmail(userUpdateVo.getEmail());
-        updater.setMentor(userUpdateVo.getMentor());
-        updater.setLeader(userUpdateVo.getLeader());
-        updater.setStudyType(userUpdateVo.getStudyType());
-        updater.setKeshuo(userUpdateVo.getKeshuo());
-        updater.setEnrollDate(userUpdateVo.getEnrollDate());
-        updater.setPapers(userUpdateVo.getPapers());
-        updater.setPatents(userUpdateVo.getPatents());
-        updater.setServices(userUpdateVo.getServices());
-        updater.setProjects(userUpdateVo.getProjects());
+        updater.setId(updateUser.getId());
+        updater.setType(ValueUtils.defaultInteger(updateVo.getType()));
+        updater.setRoleId(updateVo.getRoleId());
+        updater.setName(updateVo.getName());
+        updater.setTelephone(ValueUtils.defaultString(updateVo.getTelephone()));
+        updater.setEmail(ValueUtils.defaultString(updateVo.getEmail()));
+        updater.setMentor(ValueUtils.defaultString(updateVo.getMentor()));
+        updater.setLeader(ValueUtils.defaultString(updateVo.getLeader()));
+        updater.setStudyType(ValueUtils.defaultInteger(updateVo.getStudyType()));
+        updater.setKeshuo(ValueUtils.defaultInteger(updateVo.getKeshuo()));
+        Date enrollDate = updateVo.getEnrollDate();
+        if (enrollDate != null) {
+            updater.setEnrollDate(enrollDate);
+            updater.setEnrollYear(DateExUtils.getYear(enrollDate));
+        }
+        updater.setPapers(updateVo.getPapers());
+        updater.setPatents(updateVo.getPatents());
+        updater.setServices(updateVo.getServices());
+        updater.setProjects(updateVo.getProjects());
         updater.setStatus(0);
         updater.setDeleted(DeletedEnum.Normal.getCode());
-        updater.setCreateTime(updateUser.getCreateTime());
         updater.setModifyTime(new Date());
 
-        int affect = cmsUserDao.replace(updater);
+        int affect = cmsUserDao.updateById(updater);
         AssertUtils.state(affect == 1);
         logger.info("更新CmsUser affect:{}, updater: {}", affect, updater);
     }

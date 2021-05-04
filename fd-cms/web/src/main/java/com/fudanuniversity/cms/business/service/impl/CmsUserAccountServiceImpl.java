@@ -4,7 +4,6 @@ import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.vo.user.CmsUserAccountLoginVo;
 import com.fudanuniversity.cms.business.vo.user.CmsUserAccountResetPasswordVo;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsUserAccountDao;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
@@ -82,20 +81,9 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
      */
     @Override
     public void saveCmsUserAccount(CmsUserAccount cmsUserAccount) {
+        cmsUserAccount.setCreateTime(new Date());
         int affect = cmsUserAccountDao.replace(cmsUserAccount);
         logger.info("保存CmsUserAccount affect:{}, cmsUserAccount: {}", affect, cmsUserAccount);
-    }
-
-    /**
-     * 根据id更新处理
-     */
-    @Override
-    public void updateCmsUserAccountById(CmsUserAccount cmsUserAccount) {
-        CmsUserAccount updater = new CmsUserAccount();
-        //TODO 值映射校验与赋值映射
-
-        int affect = cmsUserAccountDao.updateById(updater);
-        logger.info("更新CmsUserAccount affect:{}, updater: {}", affect, updater);
     }
 
     /**
@@ -105,28 +93,5 @@ public class CmsUserAccountServiceImpl implements CmsUserAccountService {
     public void deleteCmsUserAccountByStuId(String stuId) {
         int affect = cmsUserAccountDao.deleteByStuId(stuId);
         logger.info("删除CmsUserAccount affect:{}, stuId: {}", affect, stuId);
-    }
-
-    /**
-     * 分页查询数据列表
-     */
-    @Override
-    public PagingResult<CmsUserAccount> queryPagingResult(CmsUserAccountQuery query) {
-        PagingResult<CmsUserAccount> pagingResult = PagingResult.create(query);
-
-        //TODO 设置参数（分页参数除外）
-
-        Long count = cmsUserAccountDao.selectCountByParam(query);
-        pagingResult.setTotal(count);
-
-        if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
-            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
-            List<CmsUserAccount> cmsUserAccountList = cmsUserAccountDao.selectListByParam(query);
-            pagingResult.setRows(cmsUserAccountList);
-        }
-
-        return pagingResult;
     }
 }

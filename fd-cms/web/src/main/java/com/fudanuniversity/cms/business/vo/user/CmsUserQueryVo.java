@@ -28,7 +28,7 @@ public class CmsUserQueryVo {
     /**
      * 用户类型
      */
-    private String type;
+    private Integer type;
 
     /**
      * 学号

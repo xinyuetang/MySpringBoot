@@ -44,7 +44,7 @@ public class CmsArticleCategoryDaoImpl implements CmsArticleCategoryDao {
 
     private void validateEntity(CmsArticleCategory cmsArticleCategory) {
         Assert.notNull(cmsArticleCategory.getTag(), "标签必须有值");
-        Assert.hasText(cmsArticleCategory.getName(), "名称不能为空");
+        Assert.notNull(cmsArticleCategory.getName(), "名称不能为空");
         Assert.notNull(cmsArticleCategory.getCreateTime(), "创建时间必须有值");
     }
 

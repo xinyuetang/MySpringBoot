@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.business.vo.user;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.StudyTypeEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
+import com.fudanuniversity.cms.commons.enums.UserTypeEnum;
 import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
 import com.fudanuniversity.cms.commons.validation.group.Update;
 import jakarta.validation.constraints.Email;
@@ -25,27 +26,28 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class CmsUserMngVo implements Serializable {
+public class CmsUserUpdateVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-    @NotNull(groups = Update.class)//更新时不能为空
+    @NotNull
     private Long id;
 
     /**
-     * 学号
+     * 用户类型
      */
-    @NotEmpty
-    private String stuId;
+    @EnumValue(enumClass = UserTypeEnum.class, property = "code", message = "用户类型参数格式错误")
+    private Integer type;
 
     /**
      * 权限身份
      */
     @NotNull
-    @EnumValue(enumClass = UserRoleEnum.class, property = "code")//roleId必须为RoleEnum某个的code
+    //roleId必须为RoleEnum某个的code
+    @EnumValue(enumClass = UserRoleEnum.class, property = "code", message = "权限身份参数格式错误")
     private Integer roleId;
 
     /**
@@ -62,7 +64,7 @@ public class CmsUserMngVo implements Serializable {
     /**
      * 邮箱
      */
-    @Email
+    @Email(message = "邮箱格式不正确")
     private String email;
 
     /**
@@ -78,13 +80,13 @@ public class CmsUserMngVo implements Serializable {
     /**
      * 是否科硕
      */
-    @EnumValue(enumClass = BooleanEnum.class, property = "code")
+    @EnumValue(enumClass = BooleanEnum.class, property = "code", message = "是否科硕参数格式错误")
     private Integer keshuo;
 
     /**
      * 就读类型
      */
-    @EnumValue(enumClass = StudyTypeEnum.class, property = "code")
+    @EnumValue(enumClass = StudyTypeEnum.class, property = "code", message = "就读类型参数格式错误")
     private Integer studyType;
 
     /**

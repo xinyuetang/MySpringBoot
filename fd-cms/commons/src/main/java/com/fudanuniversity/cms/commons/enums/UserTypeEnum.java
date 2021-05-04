@@ -5,8 +5,8 @@ package com.fudanuniversity.cms.commons.enums;
  */
 public enum UserTypeEnum {
 
-    Teacher(10, "老师"),
-    Student(20, "学生"),
+    Undefined(0, "未定义"),
+    Teacher(10, "学生"),
     ;
 
     private final Integer code;

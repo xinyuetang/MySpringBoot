@@ -4,7 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * DateExUtils类命名区别于apache.commons.lang3中的DateUtils
@@ -162,6 +164,29 @@ public class DateExUtils {
 
     public static String formatDatetimeMilli(Date date) {
         return getDatetimeMilliFormat().format(date);
+    }
+
+    public static Integer getYear(Date date) {
+        if (date == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
+    }
+
+    public static Integer getYear(Date date, TimeZone zone) {
+        if (date == null) {
+            return null;
+        }
+        Calendar calendar;
+        if (zone == null) {
+            calendar = Calendar.getInstance();
+        } else {
+            calendar = Calendar.getInstance(zone);
+        }
+        calendar.setTime(date);
+        return calendar.get(Calendar.YEAR);
     }
 
     /**

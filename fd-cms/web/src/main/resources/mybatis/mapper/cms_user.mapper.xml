@@ -16,6 +16,7 @@
         <result column="leader" property="leader"/>
         <result column="study_type" property="studyType"/>
         <result column="keshuo" property="keshuo"/>
+        <result column="enroll_year" property="enrollYear"/>
         <result column="enroll_date" property="enrollDate"/>
         <result column="papers" property="papers"/>
         <result column="patents" property="patents"/>
@@ -29,12 +30,12 @@
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`,  `modify_time`
+        `id`, `type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_year`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{type}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{studyType}, #{keshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime},  #{modifyTime}
+        #{id}, #{type}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{studyType}, #{keshuo}, #{enrollYear}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -54,6 +55,13 @@
         </if>
         <if test="stuId != null">
             AND `stu_id` = #{stuId}
+        </if>
+        <if test="stuIdList != null and stuIdList.size() > 0">
+            AND `stu_id` IN
+            <foreach collection="stuIdList" item="stuId"
+                     open="( " separator=" , " close=" )">
+                #{stuId}
+            </foreach>
         </if>
         <if test="roleId != null">
             AND `role_id` = #{roleId}
@@ -78,6 +86,9 @@
         </if>
         <if test="keshuo != null">
             AND `keshuo` = #{keshuo}
+        </if>
+        <if test="enrollYear != null">
+            AND `enroll_year` = #{enrollYear}
         </if>
         <if test="enrollDate != null">
             AND `enroll_date` = #{enrollDate}
@@ -134,28 +145,19 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_user`(`type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
+            `cms_user`(`type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_year`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{type}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{studyType}, #{keshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime}, #{modifyTime}
-        </trim>
-    </insert>
-
-    <insert id="replace" useGeneratedKeys="true" keyProperty="id">
-        REPLACE INTO
-        `cms_user`(`stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `type`, `is_keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
-        VALUES
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{type}, #{isKeshuo}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime}, #{modifyTime}
+            #{type}, #{stuId}, #{roleId}, #{name}, #{telephone}, #{email}, #{mentor}, #{leader}, #{studyType}, #{keshuo}, #{enrollYear}, #{enrollDate}, #{papers}, #{patents}, #{services}, #{projects}, #{status}, #{deleted}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_user`(`type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
+            `cms_user`(`type`, `stu_id`, `role_id`, `name`, `telephone`, `email`, `mentor`, `leader`, `study_type`, `keshuo`, `enroll_year`, `enroll_date`, `papers`, `patents`, `services`, `projects`, `status`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.type}, #{data.stuId}, #{data.roleId}, #{data.name}, #{data.telephone}, #{data.email}, #{data.mentor}, #{data.leader}, #{data.studyType}, #{data.keshuo}, #{data.enrollDate}, #{data.papers}, #{data.patents}, #{data.services}, #{data.projects}, #{data.status}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
+            (#{data.type}, #{data.stuId}, #{data.roleId}, #{data.name}, #{data.telephone}, #{data.email}, #{data.mentor}, #{data.leader}, #{data.studyType}, #{data.keshuo}, #{data.enrollYear}, #{data.enrollDate}, #{data.papers}, #{data.patents}, #{data.services}, #{data.projects}, #{data.status}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `type` = VALUES(`type`), 
@@ -168,6 +170,7 @@
        `leader` = VALUES(`leader`), 
        `study_type` = VALUES(`study_type`), 
        `keshuo` = VALUES(`keshuo`), 
+       `enroll_year` = VALUES(`enroll_year`), 
        `enroll_date` = VALUES(`enroll_date`), 
        `papers` = VALUES(`papers`), 
        `patents` = VALUES(`patents`), 
@@ -211,6 +214,9 @@
             </if>
             <if test="keshuo != null">
                 `keshuo` = #{keshuo},
+            </if>
+            <if test="enrollYear != null">
+                `enroll_year` = #{enrollYear},
             </if>
             <if test="enrollDate != null">
                 `enroll_date` = #{enrollDate},

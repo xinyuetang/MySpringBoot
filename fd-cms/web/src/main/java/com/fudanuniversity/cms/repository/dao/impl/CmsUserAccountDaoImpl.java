@@ -52,9 +52,9 @@ public class CmsUserAccountDaoImpl implements CmsUserAccountDao {
     }
 
     private void validateEntity(CmsUserAccount cmsUserAccount) {
-        Assert.hasText(cmsUserAccount.getStuId(), "学号不能为空");
-        Assert.hasText(cmsUserAccount.getSalt(), "盐不能为空");
-        Assert.hasText(cmsUserAccount.getPassword(), "密码不能为空");
+        Assert.notNull(cmsUserAccount.getStuId(), "学号不能为空");
+        Assert.notNull(cmsUserAccount.getSalt(), "盐不能为空");
+        Assert.notNull(cmsUserAccount.getPassword(), "密码不能为空");
         Assert.notNull(cmsUserAccount.getCreateTime(), "创建时间必须有值");
     }
 

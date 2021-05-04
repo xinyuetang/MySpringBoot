@@ -1,9 +1,6 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.user.CmsUserDetailVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserMngVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserQueryVo;
-import com.fudanuniversity.cms.business.vo.user.CmsUserVo;
+import com.fudanuniversity.cms.business.vo.user.*;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -24,12 +21,12 @@ public interface CmsUserService {
     /**
      * 保存处理
      */
-    void saveCmsUser(CmsUserMngVo userAddVo);
+    void saveCmsUser(CmsUserAddVo userAddVo);
 
     /**
      * 根据id更新处理
      */
-    void updateCmsUserById(CmsUserMngVo userUpdateVo);
+    void updateCmsUserById(CmsUserUpdateVo updateVo);
 
     /**
      * 根据id删除处理
