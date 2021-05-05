@@ -386,7 +386,7 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_allocation`;
 CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
 (
     `id`                           bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`                      bigint   NOT NULL COMMENT '学生id',
+    `user_id`                      bigint   NOT NULL COMMENT '用户id',
     `plan_id`                      bigint   NOT NULL COMMENT '培养方案id',
     `plan_stage_id`                bigint   NOT NULL COMMENT '培养方案阶段id',
     `plan_work_id`                 bigint   NOT NULL COMMENT '培养方案任务id',
