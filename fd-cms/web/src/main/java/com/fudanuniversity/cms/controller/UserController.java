@@ -24,6 +24,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
@@ -107,7 +108,10 @@ public class UserController extends BaseController {
     @GetMapping(path = "/detail")
     public JsonResult<?> queryUserDetail(@NotEmpty String stuId) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        //如果是管理员可以查所有的用户，如果是普通用户只可以查自己的数据
+        if (!Objects.equals(stuId, loginUser.getStuId())) {
+            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        }
         CmsUserDetailVo userDetailVo = cmsUserService.queryUserDetail(stuId);
         return JsonResult.buildSuccess(userDetailVo);
     }
