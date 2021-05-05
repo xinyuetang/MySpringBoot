@@ -29,11 +29,15 @@ public interface CmsStudyPlanService {
     /**
      * 根据id删除处理
      */
-    void deleteCmsStudyPlanById(Long id);
+    void deleteCmsStudyPlanById(Long planId);
 
     /**
      * 分页查询数据列表
      */
     PagingResult<CmsStudyPlanVo> queryPagingResult(CmsStudyPlanQueryVo query, Paging paging);
 
+    /**
+     *
+     */
+    CmsStudyPlanOverviewVo overviewCmsStudyPlan(Long planId);
 }

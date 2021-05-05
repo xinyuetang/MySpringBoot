@@ -38,7 +38,7 @@ public class CmsStudyPlanStageAddVo implements Serializable {
      * 花费天数
      */
     @NotNull
-    @Min(1L)
+    @Min(0L)
     private Integer workDays;
 }
 

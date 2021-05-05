@@ -3,8 +3,6 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanStageService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
-import com.fudanuniversity.cms.commons.model.paging.Paging;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
@@ -22,6 +20,7 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * CmsStudyPlanStageService 实现类
@@ -48,10 +47,11 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         CmsStudyPlan cmsStudyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(cmsStudyPlan, "培养计划[" + planId + "]不存在");
 
-        List<CmsStudyPlanStage> planStages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
+        Integer term = addVo.getTerm();
+        List<CmsStudyPlanStage> planStages = cmsStudyPlanComponent.queryStudyPlanStages(planId, term);
         CmsStudyPlanStage studyPlanStage = new CmsStudyPlanStage();
         studyPlanStage.setPlanId(addVo.getPlanId());
-        studyPlanStage.setTerm(addVo.getTerm());
+        studyPlanStage.setTerm(term);
         int index = planStages.size() + 1;
         studyPlanStage.setIndex(index);
         studyPlanStage.setWorkDays(addVo.getWorkDays());
@@ -128,9 +128,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsStudyPlanStageVo> queryPagingResult(CmsStudyPlanStageQueryVo queryVo, Paging paging) {
-        PagingResult<CmsStudyPlanStageVo> pagingResult = PagingResult.create(paging);
-
+    public List<CmsStudyPlanStageVo> queryCmsStudyPlanStageList(CmsStudyPlanStageQueryVo queryVo) {
         CmsStudyPlanStageQuery query = new CmsStudyPlanStageQuery();
         query.setId(queryVo.getId());
         query.setPlanId(queryVo.getPlanId());
@@ -138,27 +136,18 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         query.setIndex(queryVo.getIndex());
         query.setWorkDays(queryVo.getWorkDays());
         query.setPlanId(queryVo.getPlanId());
-        Long count = cmsStudyPlanStageDao.selectCountByParam(query);
-        pagingResult.setTotal(count);
-
-        if (count > 0L) {
-            query.setOffset(paging.getOffset());
-            query.setLimit(paging.getLimit());
-            query.setSorts(SortColumn.create("index", SortMode.DESC));
-            List<CmsStudyPlanStage> cmsStudyPlanStageList = cmsStudyPlanStageDao.selectListByParam(query);
-            pagingResult.setRows(cmsStudyPlanStageList, stage -> {
-                CmsStudyPlanStageVo stageVo = new CmsStudyPlanStageVo();
-                stageVo.setId(stage.getId());
-                stageVo.setPlanId(stage.getPlanId());
-                stageVo.setTerm(stage.getTerm());
-                stageVo.setIndex(stage.getIndex());
-                stageVo.setWorkDays(stage.getWorkDays());
-                stageVo.setCreateTime(stage.getCreateTime());
-                stageVo.setModifyTime(stage.getModifyTime());
-                return stageVo;
-            });
-        }
-
-        return pagingResult;
+        query.setSorts(SortColumn.create("term", SortMode.ASC), SortColumn.create("index", SortMode.ASC));
+        List<CmsStudyPlanStage> cmsStudyPlanStageList = cmsStudyPlanStageDao.selectListByParam(query);
+        return cmsStudyPlanStageList.stream().map(stage -> {
+            CmsStudyPlanStageVo stageVo = new CmsStudyPlanStageVo();
+            stageVo.setId(stage.getId());
+            stageVo.setPlanId(stage.getPlanId());
+            stageVo.setTerm(stage.getTerm());
+            stageVo.setIndex(stage.getIndex());
+            stageVo.setWorkDays(stage.getWorkDays());
+            stageVo.setCreateTime(stage.getCreateTime());
+            stageVo.setModifyTime(stage.getModifyTime());
+            return stageVo;
+        }).collect(Collectors.toList());
     }
 }

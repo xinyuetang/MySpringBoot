@@ -56,7 +56,7 @@
         <if test="sorts != null">
             ORDER BY
             <foreach collection="sorts" item="item" separator=",">
-                ${r"${item.columnName}"} ${r"${item.sortMode.mode}"}
+                ${r"`${item.columnName}`"} ${r"${item.sortMode.mode}"}
             </foreach>
         </if>
     </sql>

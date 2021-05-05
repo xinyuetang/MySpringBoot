@@ -3,8 +3,6 @@ package com.fudanuniversity.cms.controller;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanStageService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.JsonResult;
-import com.fudanuniversity.cms.commons.model.paging.Paging;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -64,9 +62,9 @@ public class CmsStudyPlanStageController extends BaseController {
     /**
      * 根据条件查询信息列表
      */
-    @GetMapping("/paging")
-    public JsonResult<List<CmsStudyPlanStageVo>> queryPagingResult(@Valid CmsStudyPlanStageQueryVo queryVo, @Valid Paging paging) {
-        PagingResult<CmsStudyPlanStageVo> pagingResult = cmsStudyPlanStageService.queryPagingResult(queryVo, paging);
+    @GetMapping("/list")
+    public JsonResult<?> queryCmsStudyPlanStageList(@Valid CmsStudyPlanStageQueryVo queryVo) {
+        List<CmsStudyPlanStageVo> pagingResult = cmsStudyPlanStageService.queryCmsStudyPlanStageList(queryVo);
         return JsonResult.buildSuccess(pagingResult);
     }
 }

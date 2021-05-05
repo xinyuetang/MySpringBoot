@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.commons.model.query;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,6 +66,10 @@ public class BaseQuery implements Serializable {
 
     public void setSorts(List<SortColumn> sorts) {
         this.sorts = sorts;
+    }
+
+    public void setSorts(SortColumn... sorts) {
+        this.sorts = Arrays.asList(sorts);
     }
 
     public void setSorts(SortColumn sort) {

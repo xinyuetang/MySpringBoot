@@ -141,7 +141,7 @@
         <if test="sorts != null">
             ORDER BY
             <foreach collection="sorts" item="item" separator=",">
-                ${item.columnName} ${item.sortMode.mode}
+                `${item.columnName}` ${item.sortMode.mode}
             </foreach>
         </if>
     </sql>

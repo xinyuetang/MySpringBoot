@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 培养方案
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 20:04:58
+ * Created by Xinyue.Tang at 2021-05-05 22:57:02
  */
 @Data
 @NoArgsConstructor
@@ -32,6 +32,13 @@ public class CmsStudyPlan implements Serializable {
      * 是否索引:是
      */
     private Integer enrollYear;
+
+    /**
+     * 字段备注:基准日期 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 是否索引:不是
+     */
+    private Date referenceDate;
 
     /**
      * 字段备注:名称 <p>

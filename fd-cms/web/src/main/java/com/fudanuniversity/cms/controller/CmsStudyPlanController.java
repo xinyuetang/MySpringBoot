@@ -11,7 +11,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * CmsStudyPlanController
@@ -65,8 +64,17 @@ public class CmsStudyPlanController extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/paging")
-    public JsonResult<List<CmsStudyPlanVo>> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
+    public JsonResult<?> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
         PagingResult<CmsStudyPlanVo> pagingResult = cmsStudyPlanService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
+    }
+
+    /**
+     * 预览培养计划
+     */
+    @GetMapping("/overview")
+    public JsonResult<?> overviewCmsStudyPlan(@NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+        CmsStudyPlanOverviewVo overview = cmsStudyPlanService.overviewCmsStudyPlan(id);
+        return JsonResult.buildSuccess(overview);
     }
 }

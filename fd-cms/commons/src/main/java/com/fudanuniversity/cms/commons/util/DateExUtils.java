@@ -166,6 +166,14 @@ public class DateExUtils {
         return getDatetimeMilliFormat().format(date);
     }
 
+    public static Date eval(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        return calendar.getTime();
+    }
+
     public static Integer getYear(Date date) {
         if (date == null) {
             return null;

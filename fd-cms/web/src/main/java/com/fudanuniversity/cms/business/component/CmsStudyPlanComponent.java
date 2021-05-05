@@ -1,5 +1,7 @@
 package com.fudanuniversity.cms.business.component;
 
+import com.fudanuniversity.cms.commons.model.query.SortColumn;
+import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
@@ -71,6 +73,15 @@ public class CmsStudyPlanComponent {
         AssertUtils.notNull(planId);
         CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.listQuery();
         query.setPlanId(planId);
+        query.setSorts(SortColumn.create("term", SortMode.ASC), SortColumn.create("index", SortMode.ASC));
+        return cmsStudyPlanStageDao.selectListByParam(query);
+    }
+
+    public List<CmsStudyPlanStage> queryStudyPlanStages(Long planId, Integer term) {
+        AssertUtils.notNull(planId);
+        CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.listQuery();
+        query.setPlanId(planId);
+        query.setTerm(term);
         return cmsStudyPlanStageDao.selectListByParam(query);
     }
 
@@ -91,6 +102,13 @@ public class CmsStudyPlanComponent {
             return works.get(0);
         }
         return null;
+    }
+
+    public List<CmsStudyPlanWork> queryStudyPlanWorks(List<Long> stageIds) {
+        AssertUtils.notEmpty(stageIds);
+        CmsStudyPlanWorkQuery query = CmsStudyPlanWorkQuery.listQuery();
+        query.setPlanStageIdList(stageIds);
+        return cmsStudyPlanWorkDao.selectListByParam(query);
     }
 
     public List<CmsStudyPlanWork> queryStudyPlanWorks(Long stageId, Integer workType) {

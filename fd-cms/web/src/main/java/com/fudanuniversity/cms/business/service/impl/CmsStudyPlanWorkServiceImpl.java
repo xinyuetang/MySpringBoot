@@ -47,7 +47,7 @@ public class CmsStudyPlanWorkServiceImpl implements CmsStudyPlanWorkService {
         Long planStageId = addVo.getPlanStageId();
         Integer workType = addVo.getWorkType();
         CmsStudyPlanStage planStage = cmsStudyPlanComponent.queryStudyPlanStageById(planStageId);
-        AssertUtils.notNull(planStage);
+        AssertUtils.notNull(planStage, "培养计划阶段[" + planStageId + "]不存在");
 
         List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(planStageId, workType);
         Long planId = planStage.getPlanId();

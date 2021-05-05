@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 19:58:05
+ * Created by Xinyue.Tang at 2021-05-05 22:57:02
  */
 @Repository
 public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
@@ -43,6 +43,8 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
     }
 
     private void validateEntity(CmsStudyPlan cmsStudyPlan) {
+        Assert.notNull(cmsStudyPlan.getEnrollYear(), "入学年份不能为空");
+        Assert.notNull(cmsStudyPlan.getReferenceDate(), "基准日期不能为空");
         Assert.notNull(cmsStudyPlan.getName(), "名称不能为空");
         Assert.notNull(cmsStudyPlan.getCreateTime(), "创建时间不能为空");
     }

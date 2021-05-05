@@ -335,19 +335,20 @@ CREATE TABLE `fd_cms`.`cms_device_allocation`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='设备分配';
 
-DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan`;
-CREATE TABLE `fd_cms`.`cms_study_plan`
+CREATE TABLE `cms_study_plan`
 (
-    `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `enroll_year` year     DEFAULT NULL COMMENT '入学年份',
-    `name`        varchar(32) NOT NULL COMMENT '名称',
-    `create_time` datetime    NOT NULL COMMENT '创建时间',
-    `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
+    `id`             bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `enroll_year`    year        NOT NULL COMMENT '入学年份',
+    `reference_date` date        NOT NULL COMMENT '基准日期',
+    `name`           varchar(32) NOT NULL COMMENT '名称',
+    `create_time`    datetime    NOT NULL COMMENT '创建时间',
+    `modify_time`    datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `uk_enroll_year` (`enroll_year`) USING BTREE
 ) ENGINE = InnoDB
+  AUTO_INCREMENT = 4
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案';;
 
 DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_stage`;
 CREATE TABLE `fd_cms`.`cms_study_plan_stage`

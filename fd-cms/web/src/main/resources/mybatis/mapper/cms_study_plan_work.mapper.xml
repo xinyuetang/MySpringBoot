@@ -43,6 +43,13 @@
         <if test="planStageId != null">
             AND `plan_stage_id` = #{planStageId}
         </if>
+        <if test="planStageIdList != null and planStageIdList.size() > 0">
+            AND `plan_stage_id` IN
+            <foreach collection="planStageIdList" item="planStageId"
+                     open="( " separator=" , " close=" )">
+                #{planStageId}
+            </foreach>
+        </if>
         <if test="workType != null">
             AND `work_type` = #{workType}
         </if>
@@ -79,7 +86,7 @@
         <if test="sorts != null">
             ORDER BY
             <foreach collection="sorts" item="item" separator=",">
-                ${item.columnName} ${item.sortMode.mode}
+                `${item.columnName}` ${item.sortMode.mode}
             </foreach>
         </if>
     </sql>

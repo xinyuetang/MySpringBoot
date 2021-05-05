@@ -7,6 +7,7 @@
     <resultMap id="CmsStudyPlanMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlan">
         <result column="id" property="id"/>
         <result column="enroll_year" property="enrollYear"/>
+        <result column="reference_date" property="referenceDate"/>
         <result column="name" property="name"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
@@ -14,12 +15,12 @@
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `enroll_year`, `name`, `create_time`,  `modify_time`
+        `id`, `enroll_year`, `reference_date`, `name`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{enrollYear}, #{name}, #{createTime},  #{modifyTime}
+        #{id}, #{enrollYear}, #{referenceDate}, #{name}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -36,6 +37,9 @@
         </if>
         <if test="enrollYear != null">
             AND `enroll_year` = #{enrollYear}
+        </if>
+        <if test="referenceDate != null">
+            AND `reference_date` = #{referenceDate}
         </if>
         <if test="name != null">
             AND `name` = #{name}
@@ -67,29 +71,30 @@
         <if test="sorts != null">
             ORDER BY
             <foreach collection="sorts" item="item" separator=",">
-                ${item.columnName} ${item.sortMode.mode}
+                `${item.columnName}` ${item.sortMode.mode}
             </foreach>
         </if>
     </sql>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan`(`enroll_year`, `name`, `create_time`, `modify_time`)
+            `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{enrollYear}, #{name}, #{createTime}, #{modifyTime}
+            #{enrollYear}, #{referenceDate}, #{name}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan`(`enroll_year`, `name`, `create_time`, `modify_time`)
+            `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.enrollYear}, #{data.name}, #{data.createTime}, #{data.modifyTime})
+            (#{data.enrollYear}, #{data.referenceDate}, #{data.name}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `enroll_year` = VALUES(`enroll_year`), 
+       `reference_date` = VALUES(`reference_date`), 
        `name` = VALUES(`name`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
@@ -100,6 +105,9 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="enrollYear != null">
                 `enroll_year` = #{enrollYear},
+            </if>
+            <if test="referenceDate != null">
+                `reference_date` = #{referenceDate},
             </if>
             <if test="name != null">
                 `name` = #{name},

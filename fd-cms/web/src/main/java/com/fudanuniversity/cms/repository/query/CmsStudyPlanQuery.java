@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 19:58:05
+ * Created by Xinyue.Tang at 2021-05-05 22:57:02
  */
 @Data
 @NoArgsConstructor
@@ -49,6 +49,13 @@ public class CmsStudyPlanQuery extends BaseQuery {
      * 索引字段:是
      */
     private Integer enrollYear;
+
+    /**
+     * 字段备注:基准日期 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 索引字段:不是
+     */
+    private Date referenceDate;
 
     /**
      * 字段备注:名称 <p>

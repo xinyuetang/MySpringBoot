@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -26,6 +27,11 @@ public class CmsStudyPlanAddVo implements Serializable {
      */
     @NotNull
     private Integer enrollYear;
+
+    /**
+     * 基准日期
+     */
+    private Date referenceDate;
 
     /**
      * 名称
