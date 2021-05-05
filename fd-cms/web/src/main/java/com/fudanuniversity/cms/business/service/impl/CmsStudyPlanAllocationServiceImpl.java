@@ -1,11 +1,16 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationAddVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
+import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
-import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +21,7 @@ import java.util.List;
 /**
  * CmsStudyPlanAllocationService 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Service
 public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocationService {
@@ -28,21 +33,25 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
 
     /**
      * 保存处理
+     *
+     * @param addVo
      */
     @Override
-    public void saveCmsStudyPlanAllocation(CmsStudyPlanAllocation cmsStudyPlanAllocation) {
+    public void saveCmsStudyPlanAllocation(CmsStudyPlanAllocationAddVo addVo) {
         //TODO 校验与赋值映射
-
-        int affect = cmsStudyPlanAllocationDao.insert(cmsStudyPlanAllocation);
-        logger.info("保存CmsStudyPlanAllocation affect:{}, cmsStudyPlanAllocation: {}", affect, cmsStudyPlanAllocation);
+        CmsStudyPlanAllocation studyPlanAllocation = new CmsStudyPlanAllocation();
+        int affect = cmsStudyPlanAllocationDao.insert(studyPlanAllocation);
+        logger.info("保存CmsStudyPlanAllocation affect:{}, cmsStudyPlanAllocation: {}", affect, addVo);
         AssertUtils.state(affect == 1);
     }
 
     /**
      * 根据id更新处理
+     *
+     * @param updateVo
      */
     @Override
-    public void updateCmsStudyPlanAllocationById(CmsStudyPlanAllocation cmsStudyPlanAllocation) {
+    public void updateCmsStudyPlanAllocationById(CmsStudyPlanAllocationUpdateVo updateVo) {
         CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
         //TODO 值映射校验与赋值映射
 
@@ -66,20 +75,21 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsStudyPlanAllocation> queryPagingResult(CmsStudyPlanAllocationQuery query) {
-        PagingResult<CmsStudyPlanAllocation> pagingResult = PagingResult.create(query);
+    public PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging) {
+        PagingResult<CmsStudyPlanAllocationVo> pagingResult = PagingResult.create(paging);
 
-        //TODO 设置参数（分页参数除外）
-
+        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
         Long count = cmsStudyPlanAllocationDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
-            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
+            //query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsStudyPlanAllocation> cmsStudyPlanAllocationList = cmsStudyPlanAllocationDao.selectListByParam(query);
-            pagingResult.setRows(cmsStudyPlanAllocationList);
+            pagingResult.setRows(cmsStudyPlanAllocationList, allocation -> {
+                return null;
+            });
         }
 
         return pagingResult;

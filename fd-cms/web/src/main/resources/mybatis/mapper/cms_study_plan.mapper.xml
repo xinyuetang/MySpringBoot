@@ -6,24 +6,20 @@
     <!-- 返回结果集 -->
     <resultMap id="CmsStudyPlanMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlan">
         <result column="id" property="id"/>
-        <result column="common" property="common"/>
-        <result column="keshuo" property="keshuo"/>
-        <result column="study_type" property="studyType"/>
-        <result column="index" property="index"/>
+        <result column="enroll_year" property="enrollYear"/>
         <result column="name" property="name"/>
-        <result column="spend_days" property="spendDays"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`,  `modify_time`
+        `id`, `enroll_year`, `name`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{common}, #{keshuo}, #{studyType}, #{index}, #{name}, #{spendDays}, #{createTime},  #{modifyTime}
+        #{id}, #{enrollYear}, #{name}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -38,23 +34,11 @@
                 #{id}
             </foreach>
         </if>
-        <if test="common != null">
-            AND `common` = #{common}
-        </if>
-        <if test="keshuo != null">
-            AND `keshuo` = #{keshuo}
-        </if>
-        <if test="studyType != null">
-            AND `study_type` = #{studyType}
-        </if>
-        <if test="index != null">
-            AND `index` = #{index}
+        <if test="enrollYear != null">
+            AND `enroll_year` = #{enrollYear}
         </if>
         <if test="name != null">
             AND `name` = #{name}
-        </if>
-        <if test="spendDays != null">
-            AND `spend_days` = #{spendDays}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -90,27 +74,23 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
+            `cms_study_plan`(`enroll_year`, `name`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{common}, #{keshuo}, #{studyType}, #{index}, #{name}, #{spendDays}, #{createTime}, #{modifyTime}
+            #{enrollYear}, #{name}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan`(`common`, `keshuo`, `study_type`, `index`, `name`, `spend_days`, `create_time`, `modify_time`)
+            `cms_study_plan`(`enroll_year`, `name`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.common}, #{data.keshuo}, #{data.studyType}, #{data.index}, #{data.name}, #{data.spendDays}, #{data.createTime}, #{data.modifyTime})
+            (#{data.enrollYear}, #{data.name}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `common` = VALUES(`common`), 
-       `keshuo` = VALUES(`keshuo`), 
-       `study_type` = VALUES(`study_type`), 
-       `index` = VALUES(`index`), 
+       `enroll_year` = VALUES(`enroll_year`), 
        `name` = VALUES(`name`), 
-       `spend_days` = VALUES(`spend_days`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -118,23 +98,11 @@
     <update id="updateById">
         UPDATE `cms_study_plan`
         <trim prefix="SET" suffixOverrides=",">
-            <if test="common != null">
-                `common` = #{common},
-            </if>
-            <if test="keshuo != null">
-                `keshuo` = #{keshuo},
-            </if>
-            <if test="studyType != null">
-                `study_type` = #{studyType},
-            </if>
-            <if test="index != null">
-                `index` = #{index},
+            <if test="enrollYear != null">
+                `enroll_year` = #{enrollYear},
             </if>
             <if test="name != null">
                 `name` = #{name},
-            </if>
-            <if test="spendDays != null">
-                `spend_days` = #{spendDays},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

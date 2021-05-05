@@ -6,13 +6,15 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import ${packagePrefix}.dto.${classSimpleName}Dto;
 import ${packagePrefix}.dto.${classSimpleName}QueryDto;
 import ${packagePrefix}.business.service.${classSimpleName}Service;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -49,7 +51,7 @@ public class ${classSimpleName}Controller extends BaseController {
      * 根据id删除处理
      */
     @PostMapping("/delete")
-    public JsonResult<?> delete${classSimpleName}ById(@NotNull ${idType} ${id}) {
+    public JsonResult<?> delete${classSimpleName}ById(@NotNull @Min(1L) ${idType} ${id}) {
         ${classVariableName}Service.delete${classSimpleName}ById(${id});
         return JsonResult.buildSuccess();
     }

@@ -1,10 +1,11 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -15,7 +16,7 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanVo implements Serializable {
+public class CmsStudyPlanUpdateVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

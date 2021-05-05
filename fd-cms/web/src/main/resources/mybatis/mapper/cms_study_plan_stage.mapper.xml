@@ -1,29 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper">
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsStudyPlanStageMapper">
 
     <!-- 返回结果集 -->
-    <resultMap id="CmsStudyPlanAllocationMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation">
+    <resultMap id="CmsStudyPlanStageMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage">
         <result column="id" property="id"/>
-        <result column="user_id" property="userId"/>
         <result column="plan_id" property="planId"/>
-        <result column="plan_stage_id" property="planStageId"/>
-        <result column="plan_work_id" property="planWorkId"/>
-        <result column="plan_work_expect_expire_time" property="planWorkExpectExpireTime"/>
-        <result column="remark" property="remark"/>
+        <result column="term" property="term"/>
+        <result column="expire_date" property="expireDate"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_expect_expire_time`, `remark`, `create_time`,  `modify_time`
+        `id`, `plan_id`, `term`, `expire_date`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkExpectExpireTime}, #{remark}, #{createTime},  #{modifyTime}
+        #{id}, #{planId}, #{term}, #{expireDate}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -38,23 +35,14 @@
                 #{id}
             </foreach>
         </if>
-        <if test="userId != null">
-            AND `user_id` = #{userId}
-        </if>
         <if test="planId != null">
             AND `plan_id` = #{planId}
         </if>
-        <if test="planStageId != null">
-            AND `plan_stage_id` = #{planStageId}
+        <if test="term != null">
+            AND `term` = #{term}
         </if>
-        <if test="planWorkId != null">
-            AND `plan_work_id` = #{planWorkId}
-        </if>
-        <if test="planWorkExpectExpireTime != null">
-            AND `plan_work_expect_expire_time` = #{planWorkExpectExpireTime}
-        </if>
-        <if test="remark != null">
-            AND `remark` = #{remark}
+        <if test="expireDate != null">
+            AND `expire_date` = #{expireDate}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -90,51 +78,39 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_expect_expire_time`, `remark`, `create_time`, `modify_time`)
+            `cms_study_plan_stage`(`plan_id`, `term`, `expire_date`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkExpectExpireTime}, #{remark}, #{createTime}, #{modifyTime}
+            #{planId}, #{term}, #{expireDate}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_expect_expire_time`, `remark`, `create_time`, `modify_time`)
+            `cms_study_plan_stage`(`plan_id`, `term`, `expire_date`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.userId}, #{data.planId}, #{data.planStageId}, #{data.planWorkId}, #{data.planWorkExpectExpireTime}, #{data.remark}, #{data.createTime}, #{data.modifyTime})
+            (#{data.planId}, #{data.term}, #{data.expireDate}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `user_id` = VALUES(`user_id`), 
        `plan_id` = VALUES(`plan_id`), 
-       `plan_stage_id` = VALUES(`plan_stage_id`), 
-       `plan_work_id` = VALUES(`plan_work_id`), 
-       `plan_work_expect_expire_time` = VALUES(`plan_work_expect_expire_time`), 
-       `remark` = VALUES(`remark`), 
+       `term` = VALUES(`term`), 
+       `expire_date` = VALUES(`expire_date`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
 
     <update id="updateById">
-        UPDATE `cms_study_plan_allocation`
+        UPDATE `cms_study_plan_stage`
         <trim prefix="SET" suffixOverrides=",">
-            <if test="userId != null">
-                `user_id` = #{userId},
-            </if>
             <if test="planId != null">
                 `plan_id` = #{planId},
             </if>
-            <if test="planStageId != null">
-                `plan_stage_id` = #{planStageId},
+            <if test="term != null">
+                `term` = #{term},
             </if>
-            <if test="planWorkId != null">
-                `plan_work_id` = #{planWorkId},
-            </if>
-            <if test="planWorkExpectExpireTime != null">
-                `plan_work_expect_expire_time` = #{planWorkExpectExpireTime},
-            </if>
-            <if test="remark != null">
-                `remark` = #{remark},
+            <if test="expireDate != null">
+                `expire_date` = #{expireDate},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},
@@ -149,14 +125,14 @@
 
     <delete id="deleteById">
         <![CDATA[
-        DELETE FROM `cms_study_plan_allocation` WHERE `id` = #{id} LIMIT 1
+        DELETE FROM `cms_study_plan_stage` WHERE `id` = #{id} LIMIT 1
         ]]>
     </delete>
 
-    <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanAllocationMap">
+    <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanStageMap">
         SELECT
         <include refid="_field_list"/>
-        FROM `cms_study_plan_allocation`
+        FROM `cms_study_plan_stage`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>
@@ -166,7 +142,7 @@
 
     <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM `cms_study_plan_allocation`
+        FROM `cms_study_plan_stage`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>

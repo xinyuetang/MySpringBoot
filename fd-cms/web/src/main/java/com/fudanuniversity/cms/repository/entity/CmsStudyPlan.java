@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.repository.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -11,11 +10,10 @@ import java.util.Date;
 /**
  * 培养方案
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsStudyPlan implements Serializable {
 
@@ -29,32 +27,11 @@ public class CmsStudyPlan implements Serializable {
     private Long id;
 
     /**
-     * 字段备注:是否公共任务 <p>
-     * 数据库字段长度:(3,0) <p>
+     * 字段备注:入学年份 <p>
+     * 数据库字段长度:(4,0) <p>
      * 是否索引:是
      */
-    private Integer common;
-
-    /**
-     * 字段备注:是否科硕任务 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 是否索引:不是
-     */
-    private Integer keshuo;
-
-    /**
-     * 字段备注:就读类型 <p>
-     * 数据库字段长度:(3,0) <p>
-     * 是否索引:不是
-     */
-    private Integer studyType;
-
-    /**
-     * 字段备注:序号 <p>
-     * 数据库字段长度:(10,0) <p>
-     * 是否索引:不是
-     */
-    private Integer index;
+    private Integer enrollYear;
 
     /**
      * 字段备注:名称 <p>
@@ -62,13 +39,6 @@ public class CmsStudyPlan implements Serializable {
      * 是否索引:不是
      */
     private String name;
-
-    /**
-     * 字段备注:计划天数 <p>
-     * 数据库字段长度:(10,0) <p>
-     * 是否索引:不是
-     */
-    private Integer spendDays;
 
     /**
      * 字段备注:创建时间 <p>

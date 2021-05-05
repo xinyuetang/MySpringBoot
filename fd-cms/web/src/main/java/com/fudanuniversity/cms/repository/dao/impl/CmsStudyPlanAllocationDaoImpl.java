@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanAllocationDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Repository
 public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao {
@@ -43,12 +43,11 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     }
 
     private void validateEntity(CmsStudyPlanAllocation cmsStudyPlanAllocation) {
-        Assert.notNull(cmsStudyPlanAllocation.getUserId(), "学生id必须有值");
+        Assert.notNull(cmsStudyPlanAllocation.getUserId(), "用户id必须有值");
         Assert.notNull(cmsStudyPlanAllocation.getPlanId(), "培养方案id必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getPlanStartTime(), "培养方案开始时间必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getPlanEndTime(), "培养方案到期时间必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getSpendDays(), "计划天数必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getDelayDays(), "延期天数必须有值");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanStageId(), "培养方案阶段id必须有值");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkId(), "培养方案任务id必须有值");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkExpectExpireTime(), "培养方案任务预计节点日期必须有值");
         Assert.notNull(cmsStudyPlanAllocation.getCreateTime(), "创建时间必须有值");
     }
 
@@ -89,11 +88,11 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     private void validateQueryParameter(CmsStudyPlanAllocationQuery query) {
         query.validateBaseArgument();
 
-        /*if (query.getId() == null
+        if (query.getId() == null
                 && query.getGtId() == null
                && query.getUserId() == null
                && query.getPlanId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }*/
+        }
     }
 }

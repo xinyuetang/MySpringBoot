@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 培养方案分配
+ * 培养方案阶段
  * <p>
  * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocation implements Serializable {
+public class CmsStudyPlanStage implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,13 +27,6 @@ public class CmsStudyPlanAllocation implements Serializable {
     private Long id;
 
     /**
-     * 字段备注:用户id <p>
-     * 数据库字段长度:(19,0) <p>
-     * 是否索引:是
-     */
-    private Long userId;
-
-    /**
      * 字段备注:培养方案id <p>
      * 数据库字段长度:(19,0) <p>
      * 是否索引:是
@@ -41,32 +34,18 @@ public class CmsStudyPlanAllocation implements Serializable {
     private Long planId;
 
     /**
-     * 字段备注:培养方案阶段id <p>
-     * 数据库字段长度:(19,0) <p>
-     * 是否索引:不是
-     */
-    private Long planStageId;
-
-    /**
-     * 字段备注:培养方案任务id <p>
-     * 数据库字段长度:(19,0) <p>
-     * 是否索引:不是
-     */
-    private Long planWorkId;
-
-    /**
-     * 字段备注:培养方案任务预计节点日期 <p>
+     * 字段备注:学期 <p>
      * 数据库字段长度:(10,0) <p>
      * 是否索引:不是
      */
-    private Date planWorkExpectExpireTime;
+    private Integer term;
 
     /**
-     * 字段备注:备注 <p>
-     * 数据库字段长度:(16383,0) <p>
+     * 字段备注:节点日期 <p>
+     * 数据库字段长度:(10,0) <p>
      * 是否索引:不是
      */
-    private String remark;
+    private Date expireDate;
 
     /**
      * 字段备注:创建时间 <p>

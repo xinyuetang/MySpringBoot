@@ -1,5 +1,6 @@
 package ${packagePrefix}.business.service;
 
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import ${packagePrefix}.repository.entity.${classSimpleName};
 import ${packagePrefix}.repository.query.${classSimpleName}Query;
@@ -29,6 +30,6 @@ public interface ${classSimpleName}Service {
     /**
      * 分页查询数据列表
      */
-    PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query);
+    PagingResult<${classSimpleName}> queryPagingResult(${classSimpleName}Query query, Paging paging);
 
 }

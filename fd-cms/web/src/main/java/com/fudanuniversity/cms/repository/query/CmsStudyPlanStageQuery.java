@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CmsStudyPlanQuery extends BaseQuery {
+public class CmsStudyPlanStageQuery extends BaseQuery {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,18 +44,25 @@ public class CmsStudyPlanQuery extends BaseQuery {
     private List<Long> idList;
 
     /**
-     * 字段备注:入学年份 <p>
-     * 数据库字段长度:(4,0) <p>
+     * 字段备注:培养方案id <p>
+     * 数据库字段长度:(19,0) <p>
      * 索引字段:是
      */
-    private Integer enrollYear;
+    private Long planId;
 
     /**
-     * 字段备注:名称 <p>
-     * 数据库字段长度:(32,0) <p>
+     * 字段备注:学期 <p>
+     * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private String name;
+    private Integer term;
+
+    /**
+     * 字段备注:节点日期 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 索引字段:不是
+     */
+    private Date expireDate;
 
     /**
      * 字段备注:小于等于创建时间 <p>
@@ -85,14 +92,14 @@ public class CmsStudyPlanQuery extends BaseQuery {
      */
     private Date egtModifyTime;
 
-    public static CmsStudyPlanQuery singletonQuery() {
-        CmsStudyPlanQuery query = new CmsStudyPlanQuery();
+    public static CmsStudyPlanStageQuery singletonQuery() {
+        CmsStudyPlanStageQuery query = new CmsStudyPlanStageQuery();
         query.setLimit(1);
         return query;
     }
 
-    public static CmsStudyPlanQuery listQuery() {
-        CmsStudyPlanQuery query = new CmsStudyPlanQuery();
+    public static CmsStudyPlanStageQuery listQuery() {
+        CmsStudyPlanStageQuery query = new CmsStudyPlanStageQuery();
         query.setLimit(MAX_ROWS);
         return query;
     }

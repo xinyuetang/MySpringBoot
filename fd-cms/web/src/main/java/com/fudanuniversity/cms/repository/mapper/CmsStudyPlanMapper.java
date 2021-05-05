@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * CmsStudyPlanMapper接口
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Mapper
 public interface CmsStudyPlanMapper {

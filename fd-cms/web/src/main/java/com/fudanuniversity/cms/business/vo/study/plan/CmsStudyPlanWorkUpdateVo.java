@@ -1,21 +1,22 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.io.Serializable;
+import java.util.Date;
+
 
 /**
- * 培养方案分配
+ * 培养方案任务
  * <p>
  * Created by Xinyue.Tang at 2021-05-05 17:59:46
  */
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationVo implements Serializable {
+public class CmsStudyPlanWorkUpdateVo implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -23,11 +24,6 @@ public class CmsStudyPlanAllocationVo implements Serializable {
      * id
      */
 	private Long id;
-
-    /**
-     * 用户id
-     */
-	private Long userId;
 
     /**
      * 培养方案id
@@ -40,24 +36,19 @@ public class CmsStudyPlanAllocationVo implements Serializable {
 	private Long planStageId;
 
     /**
-     * 培养方案任务id
+     * 任务类型
      */
-	private Long planWorkId;
+	private Integer workType;
 
     /**
-     * 培养方案任务预计节点日期
+     * 任务序号
      */
-	private Date planWorkExpectExpireTime;
+	private Integer index;
 
     /**
-     * 备注
+     * 名称
      */
-	private String remark;
-
-    /**
-     * 删除标记
-     */
-	private Long deleted;
+	private String name;
 
     /**
      * 创建时间

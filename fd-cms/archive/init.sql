@@ -392,6 +392,7 @@ CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
     `plan_work_id`                 bigint   NOT NULL COMMENT '培养方案任务id',
     `plan_work_expect_expire_time` date     NOT NULL COMMENT '培养方案任务预计节点日期',
     `remark`                       text COMMENT '备注',
+    `deleted`                      bigint COMMENT '删除标记',
     `create_time`                  datetime NOT NULL COMMENT '创建时间',
     `modify_time`                  datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),

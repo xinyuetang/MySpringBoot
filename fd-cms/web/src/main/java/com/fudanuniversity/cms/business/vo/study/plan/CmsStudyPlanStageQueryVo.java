@@ -7,14 +7,14 @@ import lombok.ToString;
 import java.util.Date;
 
 /**
- * 培养方案分配
+ * 培养方案阶段
  *
  * Created by Xinyue.Tang at 2021-05-05 17:59:46
  */
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationQueryVo {
+public class CmsStudyPlanStageQueryVo {
 
     private static final long serialVersionUID = 1L;
 
@@ -24,39 +24,19 @@ public class CmsStudyPlanAllocationQueryVo {
     private Long id;
 
     /**
-     * 用户id
-     */
-    private Long userId;
-
-    /**
      * 培养方案id
      */
     private Long planId;
 
     /**
-     * 培养方案阶段id
+     * 学期
      */
-    private Long planStageId;
+    private Integer term;
 
     /**
-     * 培养方案任务id
+     * 节点日期
      */
-    private Long planWorkId;
-
-    /**
-     * 培养方案任务预计节点日期
-     */
-    private Date planWorkExpectExpireTime;
-
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 删除标记
-     */
-    private Long deleted;
+    private Date expireDate;
 
     /**
      * 小于等于创建时间

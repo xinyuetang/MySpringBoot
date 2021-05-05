@@ -1,11 +1,16 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.service.CmsStudyPlanService;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAddVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanQueryVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanUpdateVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
+import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
-import com.fudanuniversity.cms.business.service.CmsStudyPlanService;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -16,7 +21,7 @@ import java.util.List;
 /**
  * CmsStudyPlanService 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Service
 public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
@@ -30,9 +35,9 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
      * 保存处理
      */
     @Override
-    public void saveCmsStudyPlan(CmsStudyPlan cmsStudyPlan) {
+    public void saveCmsStudyPlan(CmsStudyPlanAddVo addVo) {
         //TODO 校验与赋值映射
-
+        CmsStudyPlan cmsStudyPlan = new CmsStudyPlan();
         int affect = cmsStudyPlanDao.insert(cmsStudyPlan);
         logger.info("保存CmsStudyPlan affect:{}, cmsStudyPlan: {}", affect, cmsStudyPlan);
         AssertUtils.state(affect == 1);
@@ -42,7 +47,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
      * 根据id更新处理
      */
     @Override
-    public void updateCmsStudyPlanById(CmsStudyPlan cmsStudyPlan) {
+    public void updateCmsStudyPlanById(CmsStudyPlanUpdateVo updateVo) {
         CmsStudyPlan updater = new CmsStudyPlan();
         //TODO 值映射校验与赋值映射
 
@@ -66,20 +71,21 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsStudyPlan> queryPagingResult(CmsStudyPlanQuery query) {
-        PagingResult<CmsStudyPlan> pagingResult = PagingResult.create(query);
+    public PagingResult<CmsStudyPlanVo> queryPagingResult(CmsStudyPlanQueryVo queryVo, Paging paging) {
+        PagingResult<CmsStudyPlanVo> pagingResult = PagingResult.create(paging);
 
-        //TODO 设置参数（分页参数除外）
-
+        CmsStudyPlanQuery query = new CmsStudyPlanQuery();
         Long count = cmsStudyPlanDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
-            //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
+            //query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsStudyPlan> cmsStudyPlanList = cmsStudyPlanDao.selectListByParam(query);
-            pagingResult.setRows(cmsStudyPlanList);
+            pagingResult.setRows(cmsStudyPlanList, plan -> {
+                return null;
+            });
         }
 
         return pagingResult;

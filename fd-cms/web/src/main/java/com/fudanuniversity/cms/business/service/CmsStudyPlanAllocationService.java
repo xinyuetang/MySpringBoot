@@ -1,25 +1,28 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationAddVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
 
 /**
  * CmsStudyPlanAllocationService
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:54:25
  */
 public interface CmsStudyPlanAllocationService {
 
     /**
      * 保存处理
      */
-    void saveCmsStudyPlanAllocation(CmsStudyPlanAllocation cmsStudyPlanAllocation);
+    void saveCmsStudyPlanAllocation(CmsStudyPlanAllocationAddVo addVo);
 
     /**
      * 根据id更新处理
      */
-    void updateCmsStudyPlanAllocationById(CmsStudyPlanAllocation cmsStudyPlanAllocation);
+    void updateCmsStudyPlanAllocationById(CmsStudyPlanAllocationUpdateVo updateVo);
 
     /**
      * 根据id删除处理
@@ -29,6 +32,6 @@ public interface CmsStudyPlanAllocationService {
     /**
      * 分页查询数据列表
      */
-    PagingResult<CmsStudyPlanAllocation> queryPagingResult(CmsStudyPlanAllocationQuery query);
+    PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging);
 
 }

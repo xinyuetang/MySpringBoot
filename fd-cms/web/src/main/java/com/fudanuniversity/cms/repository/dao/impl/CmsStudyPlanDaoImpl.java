@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-03
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Repository
 public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
@@ -43,12 +43,7 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
     }
 
     private void validateEntity(CmsStudyPlan cmsStudyPlan) {
-        Assert.notNull(cmsStudyPlan.getCommon(), "是否公共任务必须有值");
-        Assert.notNull(cmsStudyPlan.getKeshuo(), "是否科硕任务必须有值");
-        Assert.notNull(cmsStudyPlan.getStudyType(), "就读类型必须有值");
-        Assert.notNull(cmsStudyPlan.getIndex(), "序号必须有值");
-        Assert.notNull(cmsStudyPlan.getName(), "名称不能为空");
-        Assert.notNull(cmsStudyPlan.getSpendDays(), "计划天数必须有值");
+        Assert.notNull(cmsStudyPlan.getName(), "名称必须有值");
         Assert.notNull(cmsStudyPlan.getCreateTime(), "创建时间必须有值");
     }
 
@@ -89,10 +84,10 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
     private void validateQueryParameter(CmsStudyPlanQuery query) {
         query.validateBaseArgument();
 
-        /*if (query.getId() == null
+        if (query.getId() == null
                 && query.getGtId() == null
-               && query.getCommon() == null) {
+               && query.getEnrollYear() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }*/
+        }
     }
 }
