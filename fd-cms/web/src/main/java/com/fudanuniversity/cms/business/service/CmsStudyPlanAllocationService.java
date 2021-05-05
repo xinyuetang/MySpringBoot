@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationAddVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationGenerateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
@@ -17,7 +17,7 @@ public interface CmsStudyPlanAllocationService {
     /**
      * 保存处理
      */
-    void saveCmsStudyPlanAllocation(CmsStudyPlanAllocationAddVo addVo);
+    void generateCmsStudyPlanAllocation(CmsStudyPlanAllocationGenerateVo generateVo);
 
     /**
      * 根据id更新处理

@@ -1,21 +1,28 @@
 package com.fudanuniversity.cms.business.component;
 
+import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
+import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanWorkDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
+import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanStageQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanWorkQuery;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -35,6 +42,9 @@ public class CmsStudyPlanComponent {
 
     @Resource
     private CmsStudyPlanWorkDao cmsStudyPlanWorkDao;
+
+    @Resource
+    private CmsStudyPlanAllocationDao cmsStudyPlanAllocationDao;
 
     public CmsStudyPlan queryStudyPlanById(Long planId) {
         AssertUtils.notNull(planId);
@@ -118,5 +128,49 @@ public class CmsStudyPlanComponent {
         query.setPlanStageId(stageId);
         query.setWorkType(workType);
         return cmsStudyPlanWorkDao.selectListByParam(query);
+    }
+
+    public List<CmsStudyPlanAllocation> queryStudyPlanAllocation(List<Long> userIds) {
+        if (CollectionUtils.isNotEmpty(userIds)) {
+            CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+            query.setUserIdList(userIds);
+            query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+            return cmsStudyPlanAllocationDao.selectListByParam(query);
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * <pre>
+     *  将StudyPlan下所有关联的work结构化组织起来
+     *
+     *   泛型描述：Map<stageId, Map<workType, List<CmsStudyPlanWork>>>
+     * </pre>
+     */
+    public Map<Long, Map<Integer, List<CmsStudyPlanWork>>> convertCmsStudyPlanWorkMap(List<CmsStudyPlanWork> planWorks) {
+        Map<Long, Map<Integer, List<CmsStudyPlanWork>>> retMap = Maps.newLinkedHashMap();
+        //所有数据按照PlanStageId，WorkType，Index排序
+        planWorks.sort((o1, o2) -> {
+            int planStageIdComparison = o1.getPlanStageId().compareTo(o2.getPlanStageId());
+            if (planStageIdComparison != 0) {
+                return planStageIdComparison < 0 ? -1 : 1;
+            }
+            int workTypeComparison = o1.getWorkType().compareTo(o2.getWorkType());
+            if (workTypeComparison != 0) {
+                return workTypeComparison < 0 ? -1 : 1;
+            }
+            return o1.getIndex().compareTo(o2.getIndex());
+        });
+        for (CmsStudyPlanWork planWork : planWorks) {
+            Long planStageId = planWork.getPlanStageId();
+            Integer workType = planWork.getWorkType();
+            //如果retMap中planStageId(key)对应的Map(value)为null，则初始化workTypeMap
+            Map<Integer, List<CmsStudyPlanWork>> workTypeMap =
+                    retMap.computeIfAbsent(planStageId, k -> Maps.newLinkedHashMap());
+            //如果workTypeMap中workType(key)对应的List(value)为null，则初始化workList
+            List<CmsStudyPlanWork> workList = workTypeMap.computeIfAbsent(workType, k -> Lists.newArrayList());
+            workList.add(planWork);
+        }
+        return retMap;
     }
 }

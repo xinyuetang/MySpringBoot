@@ -16,7 +16,6 @@ import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -168,7 +167,8 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
             List<CmsStudyPlanStageOverviewVo> retList = Lists.newArrayList();
             List<Long> stageIds = Lists.transform(stages, CmsStudyPlanStage::getId);
             List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(stageIds);
-            Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap = convertCmsStudyPlanWorkMap(planWorks);
+            Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap
+                    = cmsStudyPlanComponent.convertCmsStudyPlanWorkMap(planWorks);
             Date basicDate = studyPlan.getReferenceDate();
             for (CmsStudyPlanStage stage : stages) {
                 CmsStudyPlanStageOverviewVo stageOverviewVo = new CmsStudyPlanStageOverviewVo();
@@ -231,35 +231,4 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return Collections.emptyList();
     }
 
-    /**
-     * <pre>
-     *   泛型描述：Map<stageId, Map<workType, List<CmsStudyPlanWork>>>
-     * </pre>
-     */
-    private Map<Long, Map<Integer, List<CmsStudyPlanWork>>> convertCmsStudyPlanWorkMap(List<CmsStudyPlanWork> planWorks) {
-        Map<Long, Map<Integer, List<CmsStudyPlanWork>>> retMap = Maps.newLinkedHashMap();
-        //所有数据按照PlanStageId，WorkType，Index排序
-        planWorks.sort((o1, o2) -> {
-            int planStageIdComparison = o1.getPlanStageId().compareTo(o2.getPlanStageId());
-            if (planStageIdComparison != 0) {
-                return planStageIdComparison < 0 ? -1 : 1;
-            }
-            int workTypeComparison = o1.getWorkType().compareTo(o2.getWorkType());
-            if (workTypeComparison != 0) {
-                return workTypeComparison < 0 ? -1 : 1;
-            }
-            return o1.getIndex().compareTo(o2.getIndex());
-        });
-        for (CmsStudyPlanWork planWork : planWorks) {
-            Long planStageId = planWork.getPlanStageId();
-            Integer workType = planWork.getWorkType();
-            //如果retMap中planStageId(key)对应的Map(value)为null，则初始化workTypeMap
-            Map<Integer, List<CmsStudyPlanWork>> workTypeMap =
-                    retMap.computeIfAbsent(planStageId, k -> Maps.newLinkedHashMap());
-            //如果workTypeMap中workType(key)对应的List(value)为null，则初始化workList
-            List<CmsStudyPlanWork> workList = workTypeMap.computeIfAbsent(workType, k -> Lists.newArrayList());
-            workList.add(planWork);
-        }
-        return retMap;
-    }
 }

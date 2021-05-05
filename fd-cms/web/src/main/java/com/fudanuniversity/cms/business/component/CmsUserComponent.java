@@ -1,6 +1,7 @@
 package com.fudanuniversity.cms.business.component;
 
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
+import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsUserDao;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
@@ -69,6 +70,27 @@ public class CmsUserComponent {
             List<CmsUser> users = cmsUserDao.selectListByParam(query);
             if (CollectionUtils.isNotEmpty(users)) {
                 return users.stream().collect(Collectors.toMap(CmsUser::getId, Function.identity()));
+            }
+        }
+        return Collections.emptyMap();
+    }
+
+    public Map<Long, CmsUser> queryExitsUserMap(List<Long> userIds) {
+        if (CollectionUtils.isNotEmpty(userIds)) {
+            CmsUserQuery query = CmsUserQuery.listQuery();
+            query.setIdList(userIds);
+            query.setDeleted(DeletedEnum.Normal.getCode());
+            query.setLimit(userIds.size());
+            List<CmsUser> users = cmsUserDao.selectListByParam(query);
+            if (CollectionUtils.isNotEmpty(users)) {
+                Map<Long, CmsUser> retMap
+                        = users.stream().collect(Collectors.toMap(CmsUser::getId, Function.identity()));
+                for (Long userId : userIds) {
+                    if (!retMap.containsKey(userId)) {
+                        throw new BusinessException("用户[" + userId + "]不存在");
+                    }
+                }
+                return retMap;
             }
         }
         return Collections.emptyMap();

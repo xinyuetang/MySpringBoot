@@ -1,13 +1,15 @@
 package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationAddVo;
+import com.fudanuniversity.cms.business.service.CmsUserService;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationGenerateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+
+import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
 /**
  * CmsStudyPlanAllocationController
@@ -28,12 +32,17 @@ public class CmsStudyPlanAllocationController extends BaseController {
     @Resource
     private CmsStudyPlanAllocationService cmsStudyPlanAllocationService;
 
+    @Resource
+    private CmsUserService cmsUserService;
+
     /**
-     * 保存处理
+     * 为学生分配生成培养计划
      */
-    @PostMapping("/save")
-    public JsonResult<?> saveCmsStudyPlanAllocation(@Valid @RequestBody CmsStudyPlanAllocationAddVo addVo) {
-        cmsStudyPlanAllocationService.saveCmsStudyPlanAllocation(addVo);
+    @PostMapping("/generate")
+    public JsonResult<?> generateCmsStudyPlanAllocation(@Valid @RequestBody CmsStudyPlanAllocationGenerateVo generateVo) {
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsStudyPlanAllocationService.generateCmsStudyPlanAllocation(generateVo);
         return JsonResult.buildSuccess();
     }
 

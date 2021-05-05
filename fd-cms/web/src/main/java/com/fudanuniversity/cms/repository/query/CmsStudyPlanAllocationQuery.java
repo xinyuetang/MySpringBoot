@@ -49,6 +49,7 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
      * 索引字段:是
      */
     private Long userId;
+    private List<Long> userIdList;
 
     /**
      * 字段备注:培养方案id <p>
@@ -76,14 +77,28 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
      * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private Date planWorkStart;
+    private Date planWorkStartDate;
 
     /**
      * 字段备注:培养方案任务结束日期 <p>
      * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private Date planWorkEnd;
+    private Date planWorkEndDate;
+
+    /**
+     * 字段备注:培养方案任务延期天数 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 索引字段:不是
+     */
+    private Integer planWorkDelay;
+
+    /**
+     * 字段备注:状态 <p>
+     * 数据库字段长度:(3,0) <p>
+     * 索引字段:不是
+     */
+    private Integer status;
 
     /**
      * 字段备注:备注 <p>
@@ -112,6 +127,13 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
      * 索引字段:不是
      */
     private Date egtCreateTime;
+
+    /**
+     * 字段备注:更新时间 <p>
+     * 数据库字段长度:(19,0) <p>
+     * 索引字段:不是
+     */
+    private Date modifyTime;
 
     /**
      * 字段备注:小于等于更新时间 <p>

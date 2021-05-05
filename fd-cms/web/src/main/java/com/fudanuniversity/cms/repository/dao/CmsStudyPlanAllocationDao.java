@@ -28,6 +28,11 @@ public interface CmsStudyPlanAllocationDao {
     int updateById(CmsStudyPlanAllocation cmsStudyPlanAllocation);
 
     /**
+     * 根据id列表软删除
+     */
+    int markAsDeletedByIds(List<Long> idList);
+
+    /**
      * 根据id删除
      */
     int deleteById(Long id);

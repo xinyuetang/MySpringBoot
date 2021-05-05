@@ -10,8 +10,10 @@
         <result column="plan_id" property="planId"/>
         <result column="plan_stage_id" property="planStageId"/>
         <result column="plan_work_id" property="planWorkId"/>
-        <result column="plan_work_start" property="planWorkStart"/>
-        <result column="plan_work_end" property="planWorkEnd"/>
+        <result column="plan_work_start_date" property="planWorkStartDate"/>
+        <result column="plan_work_end_date" property="planWorkEndDate"/>
+        <result column="plan_work_delay" property="planWorkDelay"/>
+        <result column="status" property="status"/>
         <result column="remark" property="remark"/>
         <result column="deleted" property="deleted"/>
         <result column="create_time" property="createTime"/>
@@ -20,12 +22,12 @@
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start`, `plan_work_end`, `remark`, `deleted`, `create_time`,  `modify_time`
+        `id`, `user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start_date`, `plan_work_end_date`, `plan_work_delay`, `status`, `remark`, `deleted`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkStart}, #{planWorkEnd}, #{remark}, #{deleted}, #{createTime},  #{modifyTime}
+        #{id}, #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkStartDate}, #{planWorkEndDate}, #{planWorkDelay}, #{status}, #{remark}, #{deleted}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -43,6 +45,13 @@
         <if test="userId != null">
             AND `user_id` = #{userId}
         </if>
+        <if test="userIdList != null and userIdList.size() > 0">
+            AND `user_id` IN
+            <foreach collection="userIdList" item="userId"
+                     open="( " separator=" , " close=" )">
+                #{userId}
+            </foreach>
+        </if>
         <if test="planId != null">
             AND `plan_id` = #{planId}
         </if>
@@ -52,11 +61,17 @@
         <if test="planWorkId != null">
             AND `plan_work_id` = #{planWorkId}
         </if>
-        <if test="planWorkStart != null">
-            AND `plan_work_start` = #{planWorkStart}
+        <if test="planWorkStartDate != null">
+            AND `plan_work_start_date` = #{planWorkStartDate}
         </if>
-        <if test="planWorkEnd != null">
-            AND `plan_work_end` = #{planWorkEnd}
+        <if test="planWorkEndDate != null">
+            AND `plan_work_end_date` = #{planWorkEndDate}
+        </if>
+        <if test="planWorkDelay != null">
+            AND `plan_work_delay` = #{planWorkDelay}
+        </if>
+        <if test="status != null">
+            AND `status` = #{status}
         </if>
         <if test="remark != null">
             AND `remark` = #{remark}
@@ -98,31 +113,33 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start`, `plan_work_end`, `remark`, `deleted`, `create_time`, `modify_time`)
+        `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start_date`, `plan_work_end_date`, `plan_work_delay`, `status`, `remark`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkStart}, #{planWorkEnd}, #{remark}, #{deleted}, #{createTime}, #{modifyTime}
+            #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkStartDate}, #{planWorkEndDate}, #{planWorkDelay}, #{status}, #{remark}, #{deleted}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start`, `plan_work_end`, `remark`, `deleted`, `create_time`, `modify_time`)
+        `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start_date`, `plan_work_end_date`, `plan_work_delay`, `status`, `remark`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.userId}, #{data.planId}, #{data.planStageId}, #{data.planWorkId}, #{data.planWorkStart}, #{data.planWorkEnd}, #{data.remark}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
+            (#{data.userId}, #{data.planId}, #{data.planStageId}, #{data.planWorkId}, #{data.planWorkStartDate}, #{data.planWorkEndDate}, #{data.planWorkDelay}, #{data.status}, #{data.remark}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `user_id` = VALUES(`user_id`), 
-       `plan_id` = VALUES(`plan_id`), 
-       `plan_stage_id` = VALUES(`plan_stage_id`), 
-       `plan_work_id` = VALUES(`plan_work_id`), 
-       `plan_work_start` = VALUES(`plan_work_start`), 
-       `plan_work_end` = VALUES(`plan_work_end`), 
-       `remark` = VALUES(`remark`), 
-       `deleted` = VALUES(`deleted`), 
-       `create_time` = `create_time`, 
-       `modify_time` = VALUES(`modify_time`)
+        `user_id` = VALUES(`user_id`),
+        `plan_id` = VALUES(`plan_id`),
+        `plan_stage_id` = VALUES(`plan_stage_id`),
+        `plan_work_id` = VALUES(`plan_work_id`),
+        `plan_work_start_date` = VALUES(`plan_work_start_date`),
+        `plan_work_end_date` = VALUES(`plan_work_end_date`),
+        `plan_work_delay` = VALUES(`plan_work_delay`),
+        `status` = VALUES(`status`),
+        `remark` = VALUES(`remark`),
+        `deleted` = VALUES(`deleted`),
+        `create_time` = `create_time`,
+        `modify_time` = VALUES(`modify_time`)
     </insert>
 
     <update id="updateById">
@@ -140,11 +157,17 @@
             <if test="planWorkId != null">
                 `plan_work_id` = #{planWorkId},
             </if>
-            <if test="planWorkStart != null">
-                `plan_work_start` = #{planWorkStart},
+            <if test="planWorkStartDate != null">
+                `plan_work_start_date` = #{planWorkStartDate},
             </if>
-            <if test="planWorkEnd != null">
-                `plan_work_end` = #{planWorkEnd},
+            <if test="planWorkEndDate != null">
+                `plan_work_end_date` = #{planWorkEndDate},
+            </if>
+            <if test="planWorkDelay != null">
+                `plan_work_delay` = #{planWorkDelay},
+            </if>
+            <if test="status != null">
+                `status` = #{status},
             </if>
             <if test="remark != null">
                 `remark` = #{remark},
@@ -168,6 +191,18 @@
         DELETE FROM `cms_study_plan_allocation` WHERE `id` = #{id} LIMIT 1
         ]]>
     </delete>
+
+    <update id="markAsDeletedByQuery" parameterType="map" >
+        UPDATE `cms_study_plan_allocation`
+        SET
+            `deleted` = `id`,
+            `modify_time` = #{modifyTime}
+        WHERE `id` IN
+            <foreach collection="idList" item="id"
+                     open="( " separator=" , " close=" )">
+                #{id}
+            </foreach>
+    </update>
 
     <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanAllocationMap">
         SELECT

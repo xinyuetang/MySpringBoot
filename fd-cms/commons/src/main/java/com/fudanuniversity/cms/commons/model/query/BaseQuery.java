@@ -17,7 +17,7 @@ public class BaseQuery implements Serializable {
     /**
      * 最大条数
      */
-    public static final int MAX_ROWS = 2000;
+    public static final int MAX_ROWS = 8000;
 
     /**
      * 最小条数
