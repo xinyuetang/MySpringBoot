@@ -3,10 +3,7 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationGenerateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
@@ -216,5 +213,10 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         }
 
         return pagingResult;
+    }
+
+    @Override
+    public CmsStudyPlanAllocationInfoVo queryUserCmsStudyPlanAllocation(Long userId) {
+        return null;
     }
 }

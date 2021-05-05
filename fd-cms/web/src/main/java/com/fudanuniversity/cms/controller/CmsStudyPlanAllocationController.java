@@ -2,10 +2,7 @@ package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationGenerateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -36,7 +33,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
     private CmsUserService cmsUserService;
 
     /**
-     * 为学生分配生成培养计划
+     * 管理员为学生分配生成培养计划
      */
     @PostMapping("/generate")
     public JsonResult<?> generateCmsStudyPlanAllocation(@Valid @RequestBody CmsStudyPlanAllocationGenerateVo generateVo) {
@@ -68,8 +65,21 @@ public class CmsStudyPlanAllocationController extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/paging")
-    public JsonResult<List<CmsStudyPlanAllocationVo>> queryPagingResult(@Valid CmsStudyPlanAllocationQueryVo queryVo, @Valid Paging paging) {
-        PagingResult<CmsStudyPlanAllocationVo> pagingResult = cmsStudyPlanAllocationService.queryPagingResult(queryVo, paging);
+    public JsonResult<?> queryPagingResult(
+            @Valid CmsStudyPlanAllocationQueryVo queryVo, @Valid Paging paging) {
+        PagingResult<CmsStudyPlanAllocationVo> pagingResult =
+                cmsStudyPlanAllocationService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
+    }
+
+    /**
+     * 用户查询自己的培养计划
+     */
+    @GetMapping("/info")
+    public JsonResult<?> queryUserCmsStudyPlanAllocation() {
+        LoginUser loginUser = getLoginUser();
+        CmsStudyPlanAllocationInfoVo infoVo =
+                cmsStudyPlanAllocationService.queryUserCmsStudyPlanAllocation(loginUser.getUserId());
+        return JsonResult.buildSuccess(infoVo);
     }
 }

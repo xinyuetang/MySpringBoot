@@ -1,9 +1,6 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationGenerateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUpdateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 
@@ -34,4 +31,8 @@ public interface CmsStudyPlanAllocationService {
      */
     PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging);
 
+    /**
+     * 用户查询自己的培养计划
+     */
+    CmsStudyPlanAllocationInfoVo queryUserCmsStudyPlanAllocation(Long userId);
 }
