@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:50:00
+ * Created by Xinyue.Tang at 2021-05-05 19:58:05
  */
 @Data
 @NoArgsConstructor

@@ -1,22 +1,27 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanStageService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageAddVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageUpdateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.model.query.SortColumn;
+import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
+import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanStageQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * CmsStudyPlanStageService 实现类
@@ -31,42 +36,92 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
     @Resource
     private CmsStudyPlanStageDao cmsStudyPlanStageDao;
 
+    @Resource
+    private CmsStudyPlanComponent cmsStudyPlanComponent;
+
     /**
      * 保存处理
      */
     @Override
     public void saveCmsStudyPlanStage(CmsStudyPlanStageAddVo addVo) {
-        //TODO 校验与赋值映射
+        Long planId = addVo.getPlanId();
+        CmsStudyPlan cmsStudyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
+        AssertUtils.notNull(cmsStudyPlan, "培养计划[" + planId + "]不存在");
+
+        List<CmsStudyPlanStage> planStages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
         CmsStudyPlanStage studyPlanStage = new CmsStudyPlanStage();
+        studyPlanStage.setPlanId(addVo.getPlanId());
+        studyPlanStage.setTerm(addVo.getTerm());
+        int index = planStages.size() + 1;
+        studyPlanStage.setIndex(index);
+        studyPlanStage.setWorkDays(addVo.getWorkDays());
+        studyPlanStage.setCreateTime(new Date());
         int affect = cmsStudyPlanStageDao.insert(studyPlanStage);
         logger.info("保存CmsStudyPlanStage affect:{}, cmsStudyPlanStage: {}", affect, addVo);
         AssertUtils.state(affect == 1);
     }
 
-    /**
-     * 根据id更新处理
-     *
-     * @param updateVo
-     */
     @Override
     public void updateCmsStudyPlanStageById(CmsStudyPlanStageUpdateVo updateVo) {
+        Long stageId = updateVo.getId();
+        AssertUtils.notNull(stageId);
+        CmsStudyPlanStage stage = cmsStudyPlanComponent.queryStudyPlanStageById(stageId);
+        AssertUtils.notNull(stage, "培养计划阶段[" + stageId + "]不存在");
         CmsStudyPlanStage updater = new CmsStudyPlanStage();
-        //TODO 值映射校验与赋值映射
-
+        updater.setId(stageId);
+        updater.setWorkDays(updater.getWorkDays());
+        updater.setModifyTime(new Date());
         int affect = cmsStudyPlanStageDao.updateById(updater);
         logger.info("更新CmsStudyPlanStage affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void editCmsStudyPlanStages(List<CmsStudyPlanStageEditVo> editVoList) {
+        for (int i = 0; i < editVoList.size(); i++) {
+            CmsStudyPlanStageEditVo updateVo = editVoList.get(i);
+            CmsStudyPlanStage updater = new CmsStudyPlanStage();
+            updater.setId(updateVo.getId());
+            updater.setTerm(updateVo.getTerm());
+            updater.setIndex(i + 1);
+            updater.setWorkDays(updateVo.getWorkDays());
+            updater.setModifyTime(new Date());
+            int affect = cmsStudyPlanStageDao.updateById(updater);
+            logger.info("更新CmsStudyPlanStage affect:{}, updater: {}", affect, updater);
+            AssertUtils.state(affect == 1);
+        }
     }
 
     /**
      * 根据id删除处理
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteCmsStudyPlanStageById(Long id) {
-        //TODO 补充状态检测业务逻辑
-        int affect = cmsStudyPlanStageDao.deleteById(id);
-        logger.info("删除CmsStudyPlanStage affect:{}, id: {}", affect, id);
-        AssertUtils.state(affect == 1);
+        AssertUtils.notNull(id);
+        CmsStudyPlanStage stage = cmsStudyPlanComponent.queryStudyPlanStageById(id);
+        AssertUtils.notNull(stage, "培养计划阶段[" + stage + "]不存在");
+        int delAffect = cmsStudyPlanStageDao.deleteById(id);
+        logger.info("删除CmsStudyPlanStage affect:{}, id: {}", delAffect, id);
+        AssertUtils.state(delAffect == 1);
+
+        //删除一个阶段后，在同一个其他plan下的stage需要更新index
+        Long planId = stage.getPlanId();
+        List<CmsStudyPlanStage> planStageList = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
+        for (int i = 0; i < planStageList.size(); i++) {
+            CmsStudyPlanStage planStage = planStageList.get(i);
+            Integer stageIndex = planStage.getIndex();
+            if (!Objects.equals(stageIndex, i + 1)) {
+                CmsStudyPlanStage updater = new CmsStudyPlanStage();
+                updater.setId(planStage.getId());
+                updater.setIndex(i + 1);
+                updater.setModifyTime(new Date());
+                int updateAffect = cmsStudyPlanStageDao.updateById(updater);
+                logger.info("更新CmsStudyPlanStage affect:{}, updater: {}", updateAffect, updater);
+                AssertUtils.state(updateAffect == 1);
+            }
+        }
     }
 
     /**
@@ -77,16 +132,30 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         PagingResult<CmsStudyPlanStageVo> pagingResult = PagingResult.create(paging);
 
         CmsStudyPlanStageQuery query = new CmsStudyPlanStageQuery();
+        query.setId(queryVo.getId());
+        query.setPlanId(queryVo.getPlanId());
+        query.setTerm(queryVo.getTerm());
+        query.setIndex(queryVo.getIndex());
+        query.setWorkDays(queryVo.getWorkDays());
+        query.setPlanId(queryVo.getPlanId());
         Long count = cmsStudyPlanStageDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
             query.setOffset(paging.getOffset());
             query.setLimit(paging.getLimit());
-            //query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
+            query.setSorts(SortColumn.create("index", SortMode.DESC));
             List<CmsStudyPlanStage> cmsStudyPlanStageList = cmsStudyPlanStageDao.selectListByParam(query);
             pagingResult.setRows(cmsStudyPlanStageList, stage -> {
-                return null;
+                CmsStudyPlanStageVo stageVo = new CmsStudyPlanStageVo();
+                stageVo.setId(stage.getId());
+                stageVo.setPlanId(stage.getPlanId());
+                stageVo.setTerm(stage.getTerm());
+                stageVo.setIndex(stage.getIndex());
+                stageVo.setWorkDays(stage.getWorkDays());
+                stageVo.setCreateTime(stage.getCreateTime());
+                stageVo.setModifyTime(stage.getModifyTime());
+                return stageVo;
             });
         }
 

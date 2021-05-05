@@ -4,8 +4,8 @@ import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkAddVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkQueryVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkUpdateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkVo;
-import com.fudanuniversity.cms.commons.model.paging.Paging;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+
+import java.util.List;
 
 /**
  * CmsStudyPlanWorkService
@@ -16,13 +16,11 @@ public interface CmsStudyPlanWorkService {
 
     /**
      * 保存处理
-     * @param addVo
      */
     void saveCmsStudyPlanWork(CmsStudyPlanWorkAddVo addVo);
 
     /**
      * 根据id更新处理
-     * @param updateVo
      */
     void updateCmsStudyPlanWorkById(CmsStudyPlanWorkUpdateVo updateVo);
 
@@ -33,8 +31,7 @@ public interface CmsStudyPlanWorkService {
 
     /**
      * 分页查询数据列表
-     * @return
      */
-    PagingResult<CmsStudyPlanWorkVo> queryPagingResult(CmsStudyPlanWorkQueryVo queryVo, Paging paging);
+    List<CmsStudyPlanWorkVo> queryCmsStudyPlanWorkList(CmsStudyPlanWorkQueryVo queryVo);
 
 }

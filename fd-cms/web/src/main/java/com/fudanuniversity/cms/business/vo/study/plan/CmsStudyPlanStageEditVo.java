@@ -17,15 +17,16 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanStageAddVo implements Serializable {
+public class CmsStudyPlanStageEditVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 培养方案id
+     * id
      */
     @NotNull
-    private Long planId;
+    @Min(1L)
+    private Long id;
 
     /**
      * 学期
@@ -38,7 +39,7 @@ public class CmsStudyPlanStageAddVo implements Serializable {
      * 花费天数
      */
     @NotNull
-    @Min(1L)
+    @Min(0L)
     private Integer workDays;
 }
 

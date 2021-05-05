@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanStageDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:50:00
+ * Created by Xinyue.Tang at 2021-05-05 19:58:05
  */
 @Repository
 public class CmsStudyPlanStageDaoImpl implements CmsStudyPlanStageDao {
@@ -43,17 +43,18 @@ public class CmsStudyPlanStageDaoImpl implements CmsStudyPlanStageDao {
     }
 
     private void validateEntity(CmsStudyPlanStage cmsStudyPlanStage) {
-        Assert.notNull(cmsStudyPlanStage.getPlanId(), "培养方案id必须有值");
-        Assert.notNull(cmsStudyPlanStage.getTerm(), "学期必须有值");
-        Assert.notNull(cmsStudyPlanStage.getExpireDate(), "节点日期必须有值");
-        Assert.notNull(cmsStudyPlanStage.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsStudyPlanStage.getPlanId(), "培养方案id不能为空");
+        Assert.notNull(cmsStudyPlanStage.getTerm(), "学期不能为空");
+        Assert.notNull(cmsStudyPlanStage.getIndex(), "阶段序号不能为空");
+        Assert.notNull(cmsStudyPlanStage.getWorkDays(), "花费天数不能为空");
+        Assert.notNull(cmsStudyPlanStage.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsStudyPlanStage cmsStudyPlanStage) {
         Assert.notNull(cmsStudyPlanStage, "更新对象不能为空");
         Assert.notNull(cmsStudyPlanStage.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsStudyPlanStage.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsStudyPlanStage.getModifyTime(), "更新时间不能为空");
 
         return cmsStudyPlanStageMapper.updateById(cmsStudyPlanStage);
     }
@@ -86,10 +87,10 @@ public class CmsStudyPlanStageDaoImpl implements CmsStudyPlanStageDao {
     private void validateQueryParameter(CmsStudyPlanStageQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getPlanId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

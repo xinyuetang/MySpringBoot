@@ -8,19 +8,20 @@
         <result column="id" property="id"/>
         <result column="plan_id" property="planId"/>
         <result column="term" property="term"/>
-        <result column="expire_date" property="expireDate"/>
+        <result column="index" property="index"/>
+        <result column="work_days" property="workDays"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `plan_id`, `term`, `expire_date`, `create_time`,  `modify_time`
+        `id`, `plan_id`, `term`, `index`, `work_days`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{planId}, #{term}, #{expireDate}, #{createTime},  #{modifyTime}
+        #{id}, #{planId}, #{term}, #{index}, #{workDays}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -41,8 +42,11 @@
         <if test="term != null">
             AND `term` = #{term}
         </if>
-        <if test="expireDate != null">
-            AND `expire_date` = #{expireDate}
+        <if test="index != null">
+            AND `index` = #{index}
+        </if>
+        <if test="workDays != null">
+            AND `work_days` = #{workDays}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -78,24 +82,25 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan_stage`(`plan_id`, `term`, `expire_date`, `create_time`, `modify_time`)
+            `cms_study_plan_stage`(`plan_id`, `term`, `index`, `work_days`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{planId}, #{term}, #{expireDate}, #{createTime}, #{modifyTime}
+            #{planId}, #{term}, #{index}, #{workDays}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan_stage`(`plan_id`, `term`, `expire_date`, `create_time`, `modify_time`)
+            `cms_study_plan_stage`(`plan_id`, `term`, `index`, `work_days`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.planId}, #{data.term}, #{data.expireDate}, #{data.createTime}, #{data.modifyTime})
+            (#{data.planId}, #{data.term}, #{data.index}, #{data.workDays}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `plan_id` = VALUES(`plan_id`), 
        `term` = VALUES(`term`), 
-       `expire_date` = VALUES(`expire_date`), 
+       `index` = VALUES(`index`), 
+       `work_days` = VALUES(`work_days`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -109,8 +114,11 @@
             <if test="term != null">
                 `term` = #{term},
             </if>
-            <if test="expireDate != null">
-                `expire_date` = #{expireDate},
+            <if test="index != null">
+                `index` = #{index},
+            </if>
+            <if test="workDays != null">
+                `work_days` = #{workDays},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

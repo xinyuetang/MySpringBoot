@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,35 +10,27 @@ import java.io.Serializable;
 
 
 /**
- * 培养方案阶段
+ * 培养方案
  * <p>
  * Created by Xinyue.Tang at 2021-05-05 17:59:46
  */
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanStageAddVo implements Serializable {
+public class CmsStudyPlanFullVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * 培养方案id
+     * 入学年份
      */
     @NotNull
-    private Long planId;
+    private Integer enrollYear;
 
     /**
-     * 学期
+     * 名称
      */
-    @NotNull
-    @Min(1L)
-    private Integer term;
-
-    /**
-     * 花费天数
-     */
-    @NotNull
-    @Min(1L)
-    private Integer workDays;
+    @NotEmpty
+    private String name;
 }
 

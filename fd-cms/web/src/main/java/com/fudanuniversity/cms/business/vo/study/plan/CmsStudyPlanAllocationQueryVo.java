@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * 培养方案分配
  *
- * Created by Xinyue.Tang at 2021-05-05 17:59:46
+ * Created by Xinyue.Tang at 2021-05-05 20:04:58
  */
 @Data
 @NoArgsConstructor
@@ -44,9 +44,14 @@ public class CmsStudyPlanAllocationQueryVo {
     private Long planWorkId;
 
     /**
-     * 培养方案任务预计节点日期
+     * 培养方案任务预计开始日期
      */
-    private Date planWorkExpectExpireTime;
+    private Date planWorkExpectStartTime;
+
+    /**
+     * 培养方案任务预计截止日期
+     */
+    private Date planWorkExpectEndTime;
 
     /**
      * 备注

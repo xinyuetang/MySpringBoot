@@ -45,14 +45,14 @@ public class CmsBulletinDaoImpl implements CmsBulletinDao {
     private void validateEntity(CmsBulletin cmsBulletin) {
         Assert.notNull(cmsBulletin.getTitle(), "名称不能为空");
         Assert.notNull(cmsBulletin.getContent(), "内容不能为空");
-        Assert.notNull(cmsBulletin.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsBulletin.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsBulletin cmsBulletin) {
         Assert.notNull(cmsBulletin, "更新对象不能为空");
         Assert.notNull(cmsBulletin.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsBulletin.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsBulletin.getModifyTime(), "更新时间不能为空");
 
         return cmsBulletinMapper.updateById(cmsBulletin);
     }

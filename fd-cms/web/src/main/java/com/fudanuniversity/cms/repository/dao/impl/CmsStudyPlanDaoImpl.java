@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:50:00
+ * Created by Xinyue.Tang at 2021-05-05 19:58:05
  */
 @Repository
 public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
@@ -43,15 +43,15 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
     }
 
     private void validateEntity(CmsStudyPlan cmsStudyPlan) {
-        Assert.notNull(cmsStudyPlan.getName(), "名称必须有值");
-        Assert.notNull(cmsStudyPlan.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsStudyPlan.getName(), "名称不能为空");
+        Assert.notNull(cmsStudyPlan.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsStudyPlan cmsStudyPlan) {
         Assert.notNull(cmsStudyPlan, "更新对象不能为空");
         Assert.notNull(cmsStudyPlan.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsStudyPlan.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsStudyPlan.getModifyTime(), "更新时间不能为空");
 
         return cmsStudyPlanMapper.updateById(cmsStudyPlan);
     }
@@ -84,10 +84,10 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
     private void validateQueryParameter(CmsStudyPlanQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getEnrollYear() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

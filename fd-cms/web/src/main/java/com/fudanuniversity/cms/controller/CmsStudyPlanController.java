@@ -1,20 +1,14 @@
 package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAddVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanUpdateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -35,8 +29,17 @@ public class CmsStudyPlanController extends BaseController {
      * 保存处理
      */
     @PostMapping("/save")
-    public JsonResult<?> saveCmsStudyPlan(@Valid CmsStudyPlanAddVo addVo) {
+    public JsonResult<?> saveCmsStudyPlan(@Valid @RequestBody CmsStudyPlanAddVo addVo) {
         cmsStudyPlanService.saveCmsStudyPlan(addVo);
+        return JsonResult.buildSuccess();
+    }
+
+    /**
+     * 创建一个完整的培养计划
+     */
+    @PostMapping("/create")
+    public JsonResult<?> saveCmsStudyPlan(@Valid @RequestBody CmsStudyPlanFullVo fullVo) {
+        cmsStudyPlanService.createFullCmsStudyPlan(fullVo);
         return JsonResult.buildSuccess();
     }
 
@@ -44,7 +47,7 @@ public class CmsStudyPlanController extends BaseController {
      * 根据id更新处理
      */
     @PostMapping("/update")
-    public JsonResult<?> updateCmsStudyPlanById(@Valid CmsStudyPlanUpdateVo updateVo) {
+    public JsonResult<?> updateCmsStudyPlanById(@Valid @RequestBody CmsStudyPlanUpdateVo updateVo) {
         cmsStudyPlanService.updateCmsStudyPlanById(updateVo);
         return JsonResult.buildSuccess();
     }

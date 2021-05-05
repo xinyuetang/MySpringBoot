@@ -1,11 +1,12 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -18,31 +19,18 @@ import java.util.Date;
 @ToString
 public class CmsStudyPlanAddVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-	private Long id;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 入学年份
      */
-	private Integer enrollYear;
+    @NotNull
+    private Integer enrollYear;
 
     /**
      * 名称
      */
-	private String name;
-
-    /**
-     * 创建时间
-     */
-	private Date createTime;
-
-    /**
-     * 更新时间
-     */
-	private Date modifyTime;
+    @NotEmpty
+    private String name;
 }
 

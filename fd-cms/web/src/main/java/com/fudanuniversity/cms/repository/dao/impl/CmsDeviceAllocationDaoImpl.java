@@ -43,18 +43,18 @@ public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
     }
 
     private void validateEntity(CmsDeviceAllocation cmsDeviceAllocation) {
-        Assert.notNull(cmsDeviceAllocation.getUserId(), "演讲用户id必须有值");
-        Assert.notNull(cmsDeviceAllocation.getDeviceId(), "设备id必须有值");
-        Assert.notNull(cmsDeviceAllocation.getInventoryUsage(), "使用库存必须有值");
-        Assert.notNull(cmsDeviceAllocation.getStatus(), "状态必须有值");
-        Assert.notNull(cmsDeviceAllocation.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsDeviceAllocation.getUserId(), "演讲用户id不能为空");
+        Assert.notNull(cmsDeviceAllocation.getDeviceId(), "设备id不能为空");
+        Assert.notNull(cmsDeviceAllocation.getInventoryUsage(), "使用库存不能为空");
+        Assert.notNull(cmsDeviceAllocation.getStatus(), "状态不能为空");
+        Assert.notNull(cmsDeviceAllocation.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsDeviceAllocation cmsDeviceAllocation) {
         Assert.notNull(cmsDeviceAllocation, "更新对象不能为空");
         Assert.notNull(cmsDeviceAllocation.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsDeviceAllocation.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsDeviceAllocation.getModifyTime(), "更新时间不能为空");
 
         return cmsDeviceAllocationMapper.updateById(cmsDeviceAllocation);
     }

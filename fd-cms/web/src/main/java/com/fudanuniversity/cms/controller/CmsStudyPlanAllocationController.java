@@ -11,10 +11,7 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -35,7 +32,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
      * 保存处理
      */
     @PostMapping("/save")
-    public JsonResult<?> saveCmsStudyPlanAllocation(@Valid CmsStudyPlanAllocationAddVo addVo) {
+    public JsonResult<?> saveCmsStudyPlanAllocation(@Valid @RequestBody CmsStudyPlanAllocationAddVo addVo) {
         cmsStudyPlanAllocationService.saveCmsStudyPlanAllocation(addVo);
         return JsonResult.buildSuccess();
     }
@@ -44,7 +41,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
      * 根据id更新处理
      */
     @PostMapping("/update")
-    public JsonResult<?> updateCmsStudyPlanAllocationById(@Valid CmsStudyPlanAllocationUpdateVo updateVo) {
+    public JsonResult<?> updateCmsStudyPlanAllocationById(@Valid @RequestBody CmsStudyPlanAllocationUpdateVo updateVo) {
         cmsStudyPlanAllocationService.updateCmsStudyPlanAllocationById(updateVo);
         return JsonResult.buildSuccess();
     }

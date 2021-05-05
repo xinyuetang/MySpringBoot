@@ -44,24 +44,24 @@ public class CmsUserDaoImpl implements CmsUserDao {
     private void validateEntity(CmsUser cmsUser) {
         Assert.notNull(cmsUser.getType(), "用户类型不能为空");
         Assert.notNull(cmsUser.getStuId(), "学号不能为空");
-        Assert.notNull(cmsUser.getRoleId(), "权限身份必须有值");
+        Assert.notNull(cmsUser.getRoleId(), "权限身份不能为空");
         Assert.notNull(cmsUser.getName(), "用户名不能为空");
         Assert.notNull(cmsUser.getTelephone(), "手机不能为空");
         Assert.notNull(cmsUser.getEmail(), "邮箱不能为空");
         Assert.notNull(cmsUser.getMentor(), "导师不能为空");
         Assert.notNull(cmsUser.getLeader(), "汇报人不能为空");
-        Assert.notNull(cmsUser.getStudyType(), "就读类型必须有值");
-        Assert.notNull(cmsUser.getKeshuo(), "论文必须有值");
-        Assert.notNull(cmsUser.getStatus(), "状态必须有值");
-        Assert.notNull(cmsUser.getDeleted(), "删除状态必须有值");
-        Assert.notNull(cmsUser.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsUser.getStudyType(), "就读类型不能为空");
+        Assert.notNull(cmsUser.getKeshuo(), "论文不能为空");
+        Assert.notNull(cmsUser.getStatus(), "状态不能为空");
+        Assert.notNull(cmsUser.getDeleted(), "删除状态不能为空");
+        Assert.notNull(cmsUser.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsUser cmsUser) {
         Assert.notNull(cmsUser, "更新对象不能为空");
         Assert.notNull(cmsUser.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsUser.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsUser.getModifyTime(), "更新时间不能为空");
 
         return cmsUserMapper.updateById(cmsUser);
     }

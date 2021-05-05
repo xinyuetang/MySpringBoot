@@ -42,18 +42,18 @@ public class CmsArticleDaoImpl implements CmsArticleDao {
     }
 
     private void validateEntity(CmsArticle cmsArticle) {
-        Assert.notNull(cmsArticle.getCategoryId(), "分类id必须有值");
-        Assert.notNull(cmsArticle.getCategoryTag(), "标签必须有值");
+        Assert.notNull(cmsArticle.getCategoryId(), "分类id不能为空");
+        Assert.notNull(cmsArticle.getCategoryTag(), "标签不能为空");
         Assert.notNull(cmsArticle.getTitle(), "名称不能为空");
         Assert.notNull(cmsArticle.getContent(), "内容不能为空");
-        Assert.notNull(cmsArticle.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsArticle.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsArticle cmsArticle) {
         Assert.notNull(cmsArticle, "更新对象不能为空");
         Assert.notNull(cmsArticle.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsArticle.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsArticle.getModifyTime(), "更新时间不能为空");
 
         return cmsArticleMapper.updateById(cmsArticle);
     }

@@ -31,7 +31,7 @@ public class ${classSimpleName}Test extends BaseTest {
         <#--<#if (column.javaType == "String")>-->
 //        po.set${column.columnProperty?cap_first}("");
         <#--<#else>-->
-        <#--Assert.notNull(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}必须有值");-->
+        <#--Assert.notNull(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}不能为空");-->
         <#--</#if>-->
         </#if>
         </#list>

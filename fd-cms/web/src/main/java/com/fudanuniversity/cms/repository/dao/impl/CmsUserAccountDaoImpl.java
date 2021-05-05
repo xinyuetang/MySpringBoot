@@ -55,14 +55,14 @@ public class CmsUserAccountDaoImpl implements CmsUserAccountDao {
         Assert.notNull(cmsUserAccount.getStuId(), "学号不能为空");
         Assert.notNull(cmsUserAccount.getSalt(), "盐不能为空");
         Assert.notNull(cmsUserAccount.getPassword(), "密码不能为空");
-        Assert.notNull(cmsUserAccount.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsUserAccount.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsUserAccount cmsUserAccount) {
         Assert.notNull(cmsUserAccount, "更新对象不能为空");
         Assert.notNull(cmsUserAccount.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsUserAccount.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsUserAccount.getModifyTime(), "更新时间不能为空");
 
         return cmsUserAccountMapper.updateById(cmsUserAccount);
     }

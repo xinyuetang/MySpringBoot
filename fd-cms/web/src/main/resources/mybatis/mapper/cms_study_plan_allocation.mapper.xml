@@ -10,20 +10,22 @@
         <result column="plan_id" property="planId"/>
         <result column="plan_stage_id" property="planStageId"/>
         <result column="plan_work_id" property="planWorkId"/>
-        <result column="plan_work_expect_expire_time" property="planWorkExpectExpireTime"/>
+        <result column="plan_work_start" property="planWorkStart"/>
+        <result column="plan_work_end" property="planWorkEnd"/>
         <result column="remark" property="remark"/>
+        <result column="deleted" property="deleted"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_expect_expire_time`, `remark`, `create_time`,  `modify_time`
+        `id`, `user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start`, `plan_work_end`, `remark`, `deleted`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkExpectExpireTime}, #{remark}, #{createTime},  #{modifyTime}
+        #{id}, #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkStart}, #{planWorkEnd}, #{remark}, #{deleted}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -50,11 +52,17 @@
         <if test="planWorkId != null">
             AND `plan_work_id` = #{planWorkId}
         </if>
-        <if test="planWorkExpectExpireTime != null">
-            AND `plan_work_expect_expire_time` = #{planWorkExpectExpireTime}
+        <if test="planWorkStart != null">
+            AND `plan_work_start` = #{planWorkStart}
+        </if>
+        <if test="planWorkEnd != null">
+            AND `plan_work_end` = #{planWorkEnd}
         </if>
         <if test="remark != null">
             AND `remark` = #{remark}
+        </if>
+        <if test="deleted != null">
+            AND `deleted` = #{deleted}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -90,27 +98,29 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_expect_expire_time`, `remark`, `create_time`, `modify_time`)
+            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start`, `plan_work_end`, `remark`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkExpectExpireTime}, #{remark}, #{createTime}, #{modifyTime}
+            #{userId}, #{planId}, #{planStageId}, #{planWorkId}, #{planWorkStart}, #{planWorkEnd}, #{remark}, #{deleted}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_expect_expire_time`, `remark`, `create_time`, `modify_time`)
+            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`, `plan_work_start`, `plan_work_end`, `remark`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.userId}, #{data.planId}, #{data.planStageId}, #{data.planWorkId}, #{data.planWorkExpectExpireTime}, #{data.remark}, #{data.createTime}, #{data.modifyTime})
+            (#{data.userId}, #{data.planId}, #{data.planStageId}, #{data.planWorkId}, #{data.planWorkStart}, #{data.planWorkEnd}, #{data.remark}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `user_id` = VALUES(`user_id`), 
        `plan_id` = VALUES(`plan_id`), 
        `plan_stage_id` = VALUES(`plan_stage_id`), 
        `plan_work_id` = VALUES(`plan_work_id`), 
-       `plan_work_expect_expire_time` = VALUES(`plan_work_expect_expire_time`), 
+       `plan_work_start` = VALUES(`plan_work_start`), 
+       `plan_work_end` = VALUES(`plan_work_end`), 
        `remark` = VALUES(`remark`), 
+       `deleted` = VALUES(`deleted`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -130,11 +140,17 @@
             <if test="planWorkId != null">
                 `plan_work_id` = #{planWorkId},
             </if>
-            <if test="planWorkExpectExpireTime != null">
-                `plan_work_expect_expire_time` = #{planWorkExpectExpireTime},
+            <if test="planWorkStart != null">
+                `plan_work_start` = #{planWorkStart},
+            </if>
+            <if test="planWorkEnd != null">
+                `plan_work_end` = #{planWorkEnd},
             </if>
             <if test="remark != null">
                 `remark` = #{remark},
+            </if>
+            <if test="deleted != null">
+                `deleted` = #{deleted},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

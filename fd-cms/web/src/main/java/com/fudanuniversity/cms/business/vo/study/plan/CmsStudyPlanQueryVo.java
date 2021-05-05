@@ -32,24 +32,4 @@ public class CmsStudyPlanQueryVo {
      * 名称
      */
     private String name;
-
-    /**
-     * 小于等于创建时间
-     */
-    private Date eltCreateTime;
-
-    /**
-     * 大于等于创建时间
-     */
-    private Date egtCreateTime;
-
-    /**
-     * 小于等于更新时间
-     */
-    private Date eltModifyTime;
-
-    /**
-     * 大于等于更新时间
-     */
-    private Date egtModifyTime;
 }

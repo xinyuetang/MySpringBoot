@@ -138,6 +138,12 @@ public final class AssertUtils {
         }
     }
 
+    public static void notEmpty(@Nullable Collection<?> collection) {
+        if (CollectionUtils.isEmpty(collection)) {
+            throw new BusinessException(ErrorCode.BusinessErrorMsg);
+        }
+    }
+
     public static void notEmpty(@Nullable Collection<?> collection, String message) {
         if (CollectionUtils.isEmpty(collection)) {
             throw new BusinessException(message);

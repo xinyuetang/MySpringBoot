@@ -10,7 +10,7 @@ import lombok.ToString;
 /**
  * 培养方案阶段
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:59:46
+ * Created by Xinyue.Tang at 2021-05-05 20:04:58
  */
 @Data
 @NoArgsConstructor
@@ -35,9 +35,14 @@ public class CmsStudyPlanStageVo implements Serializable {
 	private Integer term;
 
     /**
-     * 节点日期
+     * 阶段序号
      */
-	private Date expireDate;
+	private Integer index;
+
+    /**
+     * 花费天数
+     */
+	private Integer workDays;
 
     /**
      * 创建时间

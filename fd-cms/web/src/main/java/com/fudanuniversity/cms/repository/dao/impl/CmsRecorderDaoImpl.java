@@ -43,18 +43,18 @@ public class CmsRecorderDaoImpl implements CmsRecorderDao {
     }
 
     private void validateEntity(CmsRecorder cmsRecorder) {
-        Assert.notNull(cmsRecorder.getDate(), "演讲时间必须有值");
-        Assert.notNull(cmsRecorder.getRecorder1Id(), "辅读人员1用户id必须有值");
-        Assert.notNull(cmsRecorder.getRecorder2Id(), "辅读人员2用户id必须有值");
-        Assert.notNull(cmsRecorder.getSummarizerId(), "记录人员用户id必须有值");
-        Assert.notNull(cmsRecorder.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsRecorder.getDate(), "演讲时间不能为空");
+        Assert.notNull(cmsRecorder.getRecorder1Id(), "辅读人员1用户id不能为空");
+        Assert.notNull(cmsRecorder.getRecorder2Id(), "辅读人员2用户id不能为空");
+        Assert.notNull(cmsRecorder.getSummarizerId(), "记录人员用户id不能为空");
+        Assert.notNull(cmsRecorder.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsRecorder cmsRecorder) {
         Assert.notNull(cmsRecorder, "更新对象不能为空");
         Assert.notNull(cmsRecorder.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsRecorder.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsRecorder.getModifyTime(), "更新时间不能为空");
 
         return cmsRecorderMapper.updateById(cmsRecorder);
     }

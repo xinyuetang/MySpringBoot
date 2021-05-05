@@ -43,6 +43,7 @@ public class CmsRecorderVo implements Serializable {
      * 辅读人员1文件名
      */
     private String recorder1File;
+    private String recorder1Type;
     private String recorder1FileUrl;
 
     /**
@@ -56,6 +57,7 @@ public class CmsRecorderVo implements Serializable {
      * 辅读人员2文件名
      */
     private String recorder2File;
+    private String recorder2Type;
     private String recorder2FileUrl;
 
     /**
@@ -69,6 +71,7 @@ public class CmsRecorderVo implements Serializable {
      * 记录人员文件名
      */
     private String summarizerFile;
+    private String summarizerType;
     private String summarizerFileUrl;
 
     /**

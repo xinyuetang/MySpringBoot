@@ -4,12 +4,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
-
 /**
  * 培养方案阶段
- *
- * Created by Xinyue.Tang at 2021-05-05 17:59:46
+ * <p>
+ * Created by Xinyue.Tang at 2021-05-05 20:04:58
  */
 @Data
 @NoArgsConstructor
@@ -34,27 +32,12 @@ public class CmsStudyPlanStageQueryVo {
     private Integer term;
 
     /**
-     * 节点日期
+     * 阶段序号
      */
-    private Date expireDate;
+    private Integer index;
 
     /**
-     * 小于等于创建时间
+     * 花费天数
      */
-    private Date eltCreateTime;
-
-    /**
-     * 大于等于创建时间
-     */
-    private Date egtCreateTime;
-
-    /**
-     * 小于等于更新时间
-     */
-    private Date eltModifyTime;
-
-    /**
-     * 大于等于更新时间
-     */
-    private Date egtModifyTime;
+    private Integer workDays;
 }

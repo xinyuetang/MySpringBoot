@@ -1,11 +1,15 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
+import com.fudanuniversity.cms.commons.enums.StudyPlanWorkTypeEnum;
+import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -18,46 +22,26 @@ import java.util.Date;
 @ToString
 public class CmsStudyPlanWorkAddVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
-
-    /**
-     * id
-     */
-	private Long id;
-
-    /**
-     * 培养方案id
-     */
-	private Long planId;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 培养方案阶段id
      */
-	private Long planStageId;
+    @NotNull
+    @Min(1L)
+    private Long planStageId;
 
     /**
      * 任务类型
      */
-	private Integer workType;
-
-    /**
-     * 任务序号
-     */
-	private Integer index;
+    @NotNull
+    @EnumValue(enumClass = StudyPlanWorkTypeEnum.class, property = "code")
+    private Integer workType;
 
     /**
      * 名称
      */
-	private String name;
-
-    /**
-     * 创建时间
-     */
-	private Date createTime;
-
-    /**
-     * 更新时间
-     */
-	private Date modifyTime;
+    @NotEmpty
+    private String name;
 }
 

@@ -329,8 +329,9 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                 recorderVo.setDate(recorder.getDate());
                 recorderVo.setRecorder1Id(recorder.getRecorder1Id());
                 recorderVo.setRecorder1File(recorder.getRecorder1File());
+                recorderVo.setRecorder1Type(recorder.getRecorder1Type());
                 if (StringUtils.isNotEmpty(recorder.getRecorder1Type())) {
-                    String recorder1FileUrl = buildDownloadUrl(recorder.getId(), "recorder1Id", recorder.getRecorder1Id());
+                    String recorder1FileUrl = buildDownloadUrl(recorder.getId(), "recorder1");
                     recorderVo.setRecorder1FileUrl(recorder1FileUrl);
                 }
                 CmsUser recorder1User = userMap.get(recorder.getRecorder1Id());
@@ -340,8 +341,9 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                 }
                 recorderVo.setRecorder2Id(recorder.getRecorder2Id());
                 recorderVo.setRecorder2File(recorder.getRecorder2File());
+                recorderVo.setRecorder2Type(recorder.getRecorder2Type());
                 if (StringUtils.isNotEmpty(recorder.getRecorder2Type())) {
-                    String recorder2FileUrl = buildDownloadUrl(recorder.getId(), "recorder2Id", recorder.getRecorder2Id());
+                    String recorder2FileUrl = buildDownloadUrl(recorder.getId(), "recorder2");
                     recorderVo.setRecorder2FileUrl(recorder2FileUrl);
                 }
                 CmsUser recorder2User = userMap.get(recorder.getRecorder2Id());
@@ -351,8 +353,9 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
                 }
                 recorderVo.setSummarizerId(recorder.getSummarizerId());
                 recorderVo.setSummarizerFile(recorder.getSummarizerFile());
+                recorderVo.setSummarizerType(recorder.getSummarizerType());
                 if (StringUtils.isNotEmpty(recorder.getSummarizerType())) {
-                    String summarizerFileUrl = buildDownloadUrl(recorder.getId(), "summarizerId", recorder.getSummarizerId());
+                    String summarizerFileUrl = buildDownloadUrl(recorder.getId(), "summarizer");
                     recorderVo.setSummarizerFileUrl(summarizerFileUrl);
                 }
                 CmsUser summarizerUser = userMap.get(recorder.getSummarizerId());
@@ -369,8 +372,8 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         return pagingResult;
     }
 
-    private String buildDownloadUrl(Long recorderId, String recorderUserParam, Long recorderUserId) {
-        return "/recorder/download?id=" + recorderId + "&" + recorderUserParam + "=" + recorderUserId;
+    private String buildDownloadUrl(Long recorderId, String recorderUser) {
+        return "/recorder/download?id=" + recorderId + "&user=" + recorderUser;
     }
 
     @Override
@@ -378,8 +381,10 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         Long recorderId = downloadVo.getId();
         CmsRecorder cmsRecorder = queryCmsDetailRecorder(recorderId);
         AssertUtils.notNull(cmsRecorder, "演讲记录安排为空");
+
         CmsRecorderDownloadResultVo downloadResultVo = new CmsRecorderDownloadResultVo();
-        if (ValueUtils.isLongId(downloadVo.getRecorder1Id())) {
+        String user = downloadVo.getUser();
+        if (Objects.equals("recorder1", user)) {
             byte[] recorder1Content = cmsRecorder.getRecorder1Content();
             if (recorder1Content == null || recorder1Content.length == 0) {
                 throw new BusinessException("无对应辅读人员1下载的文件");
@@ -387,7 +392,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
             downloadResultVo.setFileName(cmsRecorder.getRecorder1File());
             downloadResultVo.setFileType(cmsRecorder.getRecorder1Type());
             downloadResultVo.setFileContent(recorder1Content);
-        } else if (ValueUtils.isLongId(downloadVo.getRecorder2Id())) {
+        } else if (Objects.equals("recorder2", user)) {
             byte[] recorder2Content = cmsRecorder.getRecorder2Content();
             if (recorder2Content == null || recorder2Content.length == 0) {
                 throw new BusinessException("无对应辅读人员2下载的文件");
@@ -395,7 +400,7 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
             downloadResultVo.setFileName(cmsRecorder.getRecorder2File());
             downloadResultVo.setFileType(cmsRecorder.getRecorder2Type());
             downloadResultVo.setFileContent(recorder2Content);
-        } else if (ValueUtils.isLongId(downloadVo.getSummarizerId())) {
+        } else if (Objects.equals("summarizer", user)) {
             byte[] summarizerContent = cmsRecorder.getSummarizerContent();
             if (summarizerContent == null || summarizerContent.length == 0) {
                 throw new BusinessException("无对应记录人员下载的文件");

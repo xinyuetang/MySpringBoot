@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanAllocationDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:50:00
+ * Created by Xinyue.Tang at 2021-05-05 20:47:04
  */
 @Repository
 public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao {
@@ -43,19 +43,20 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     }
 
     private void validateEntity(CmsStudyPlanAllocation cmsStudyPlanAllocation) {
-        Assert.notNull(cmsStudyPlanAllocation.getUserId(), "用户id必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getPlanId(), "培养方案id必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getPlanStageId(), "培养方案阶段id必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkId(), "培养方案任务id必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkExpectExpireTime(), "培养方案任务预计节点日期必须有值");
-        Assert.notNull(cmsStudyPlanAllocation.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsStudyPlanAllocation.getUserId(), "用户id不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanId(), "培养方案id不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanStageId(), "培养方案阶段id不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkId(), "培养方案任务id不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkStart(), "培养方案任务开始日期不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getPlanWorkEnd(), "培养方案任务结束日期不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsStudyPlanAllocation cmsStudyPlanAllocation) {
         Assert.notNull(cmsStudyPlanAllocation, "更新对象不能为空");
         Assert.notNull(cmsStudyPlanAllocation.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsStudyPlanAllocation.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsStudyPlanAllocation.getModifyTime(), "更新时间不能为空");
 
         return cmsStudyPlanAllocationMapper.updateById(cmsStudyPlanAllocation);
     }
@@ -88,11 +89,11 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     private void validateQueryParameter(CmsStudyPlanAllocationQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getUserId() == null
                && query.getPlanId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

@@ -1,6 +1,6 @@
 package com.fudanuniversity.cms.business.vo.recorder;
 
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,19 +32,7 @@ public class CmsRecorderDownloadVo implements Serializable {
     /**
      * 辅读人员1
      */
-    @Min(1L)
-    private Long recorder1Id;
-
-    /**
-     * 辅读人员2
-     */
-    @Min(1L)
-    private Long recorder2Id;
-
-    /**
-     * 记录人员文
-     */
-    @Min(1L)
-    private Long summarizerId;
+    @NotEmpty
+    private String user;
 }
 

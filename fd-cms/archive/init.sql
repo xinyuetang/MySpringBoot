@@ -355,11 +355,12 @@ CREATE TABLE `fd_cms`.`cms_study_plan_stage`
     `id`          bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
     `plan_id`     bigint   NOT NULL COMMENT '培养方案id',
     `term`        int      NOT NULL COMMENT '学期',
-    `expire_date` date     NOT NULL COMMENT '节点日期',
+    `index`       int      NOT NULL COMMENT '阶段序号',
+    `work_days`   int      NOT NULL COMMENT '花费天数',
     `create_time` datetime NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_plan_id_expire_date` (`plan_id`, `expire_date`) USING BTREE
+    UNIQUE KEY `uk_plan_id_term_index` (`plan_id`, `term`, `index`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案阶段';
@@ -385,16 +386,17 @@ CREATE TABLE `fd_cms`.`cms_study_plan_work`
 DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_allocation`;
 CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
 (
-    `id`                           bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`                      bigint   NOT NULL COMMENT '用户id',
-    `plan_id`                      bigint   NOT NULL COMMENT '培养方案id',
-    `plan_stage_id`                bigint   NOT NULL COMMENT '培养方案阶段id',
-    `plan_work_id`                 bigint   NOT NULL COMMENT '培养方案任务id',
-    `plan_work_expect_expire_time` date     NOT NULL COMMENT '培养方案任务预计节点日期',
-    `remark`                       text COMMENT '备注',
-    `deleted`                      bigint COMMENT '删除标记',
-    `create_time`                  datetime NOT NULL COMMENT '创建时间',
-    `modify_time`                  datetime DEFAULT NULL COMMENT '更新时间',
+    `id`              bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`         bigint   NOT NULL COMMENT '用户id',
+    `plan_id`         bigint   NOT NULL COMMENT '培养方案id',
+    `plan_stage_id`   bigint   NOT NULL COMMENT '培养方案阶段id',
+    `plan_work_id`    bigint   NOT NULL COMMENT '培养方案任务id',
+    `plan_work_start` date     NOT NULL COMMENT '培养方案任务开始日期',
+    `plan_work_end`   date     NOT NULL COMMENT '培养方案任务结束日期',
+    `remark`          text COMMENT '备注',
+    `deleted`         bigint COMMENT '删除标记',
+    `create_time`     datetime NOT NULL COMMENT '创建时间',
+    `modify_time`     datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
     KEY `idx_user_id` (`user_id`) USING BTREE,
     KEY `idx_plan_id` (`plan_id`) USING BTREE,

@@ -1,11 +1,12 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -18,46 +19,18 @@ import java.util.Date;
 @ToString
 public class CmsStudyPlanWorkUpdateVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
-
-    /**
-     * 培养方案id
-     */
-	private Long planId;
-
-    /**
-     * 培养方案阶段id
-     */
-	private Long planStageId;
-
-    /**
-     * 任务类型
-     */
-	private Integer workType;
-
-    /**
-     * 任务序号
-     */
-	private Integer index;
+    @NotNull
+    @Min(1L)
+    private Long id;
 
     /**
      * 名称
      */
-	private String name;
-
-    /**
-     * 创建时间
-     */
-	private Date createTime;
-
-    /**
-     * 更新时间
-     */
-	private Date modifyTime;
+    private String name;
 }
 

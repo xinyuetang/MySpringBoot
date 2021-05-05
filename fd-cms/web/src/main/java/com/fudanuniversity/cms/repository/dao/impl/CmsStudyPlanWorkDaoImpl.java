@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * CmsStudyPlanWorkDao 实现类
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:50:00
+ * Created by Xinyue.Tang at 2021-05-05 19:58:05
  */
 @Repository
 public class CmsStudyPlanWorkDaoImpl implements CmsStudyPlanWorkDao {
@@ -43,19 +43,19 @@ public class CmsStudyPlanWorkDaoImpl implements CmsStudyPlanWorkDao {
     }
 
     private void validateEntity(CmsStudyPlanWork cmsStudyPlanWork) {
-        Assert.notNull(cmsStudyPlanWork.getPlanId(), "培养方案id必须有值");
-        Assert.notNull(cmsStudyPlanWork.getPlanStageId(), "培养方案阶段id必须有值");
-        Assert.notNull(cmsStudyPlanWork.getWorkType(), "任务类型必须有值");
-        Assert.notNull(cmsStudyPlanWork.getIndex(), "任务序号必须有值");
-        Assert.notNull(cmsStudyPlanWork.getName(), "名称必须有值");
-        Assert.notNull(cmsStudyPlanWork.getCreateTime(), "创建时间必须有值");
+        Assert.notNull(cmsStudyPlanWork.getPlanId(), "培养方案id不能为空");
+        Assert.notNull(cmsStudyPlanWork.getPlanStageId(), "培养方案阶段id不能为空");
+        Assert.notNull(cmsStudyPlanWork.getWorkType(), "任务类型不能为空");
+        Assert.notNull(cmsStudyPlanWork.getIndex(), "任务序号不能为空");
+        Assert.notNull(cmsStudyPlanWork.getName(), "名称不能为空");
+        Assert.notNull(cmsStudyPlanWork.getCreateTime(), "创建时间不能为空");
     }
 
     @Override
     public int updateById(CmsStudyPlanWork cmsStudyPlanWork) {
         Assert.notNull(cmsStudyPlanWork, "更新对象不能为空");
         Assert.notNull(cmsStudyPlanWork.getId(), "更新对象id不能为空");
-        Assert.notNull(cmsStudyPlanWork.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(cmsStudyPlanWork.getModifyTime(), "更新时间不能为空");
 
         return cmsStudyPlanWorkMapper.updateById(cmsStudyPlanWork);
     }
@@ -88,11 +88,11 @@ public class CmsStudyPlanWorkDaoImpl implements CmsStudyPlanWorkDao {
     private void validateQueryParameter(CmsStudyPlanWorkQuery query) {
         query.validateBaseArgument();
 
-        if (query.getId() == null
+        /*if (query.getId() == null
                 && query.getGtId() == null
                && query.getPlanStageId() == null
                && query.getPlanId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        }*/
     }
 }

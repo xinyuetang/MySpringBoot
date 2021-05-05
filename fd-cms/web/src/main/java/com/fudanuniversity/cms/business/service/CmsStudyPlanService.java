@@ -1,9 +1,6 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAddVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanUpdateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 
@@ -18,6 +15,11 @@ public interface CmsStudyPlanService {
      * 保存处理
      */
     void saveCmsStudyPlan(CmsStudyPlanAddVo cmsStudyPlan);
+
+    /**
+     * 创建一个完整的培养计划
+     */
+    void createFullCmsStudyPlan(CmsStudyPlanFullVo fullVo);
 
     /**
      * 根据id更新处理

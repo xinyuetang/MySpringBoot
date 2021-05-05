@@ -45,7 +45,7 @@ public class ${classSimpleName}DaoImpl implements ${classSimpleName}Dao {
     private void validateEntity(${classSimpleName} ${classVariableName}) {
 <#list columnList as column>
     <#if (column.allowEmpty == false)>
-        Assert.notNull(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}必须有值");
+        Assert.notNull(${classVariableName}.get${column.columnProperty?cap_first}(), "${column.columnComment}不能为空");
     </#if>
 </#list>
     }
@@ -54,7 +54,7 @@ public class ${classSimpleName}DaoImpl implements ${classSimpleName}Dao {
     public int updateById(${classSimpleName} ${classVariableName}) {
         Assert.notNull(${classVariableName}, "更新对象不能为空");
         Assert.notNull(${classVariableName}.getId(), "更新对象id不能为空");
-        Assert.notNull(${classVariableName}.getModifyTime(), "更新时间必须有值");
+        Assert.notNull(${classVariableName}.getModifyTime(), "更新时间不能为空");
 
         return ${classVariableName}Mapper.updateById(${classVariableName});
     }

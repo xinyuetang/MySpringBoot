@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 17:50:00
+ * Created by Xinyue.Tang at 2021-05-05 20:47:04
  */
 @Data
 @NoArgsConstructor
@@ -72,11 +72,18 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
     private Long planWorkId;
 
     /**
-     * 字段备注:培养方案任务预计节点日期 <p>
+     * 字段备注:培养方案任务开始日期 <p>
      * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private Date planWorkExpectExpireTime;
+    private Date planWorkStart;
+
+    /**
+     * 字段备注:培养方案任务结束日期 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 索引字段:不是
+     */
+    private Date planWorkEnd;
 
     /**
      * 字段备注:备注 <p>
@@ -84,6 +91,13 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
      * 索引字段:不是
      */
     private String remark;
+
+    /**
+     * 字段备注:删除标记 <p>
+     * 数据库字段长度:(19,0) <p>
+     * 索引字段:不是
+     */
+    private Long deleted;
 
     /**
      * 字段备注:小于等于创建时间 <p>
