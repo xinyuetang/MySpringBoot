@@ -339,38 +339,65 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan`;
 CREATE TABLE `fd_cms`.`cms_study_plan`
 (
     `id`          bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `common`      tinyint     NOT NULL COMMENT '是否公共任务',
-    `keshuo`      tinyint     NOT NULL COMMENT '是否科硕任务',
-    `study_type`  tinyint     NOT NULL COMMENT '就读类型',
-    `index`       int         NOT NULL COMMENT '序号',
+    `enroll_year` year     DEFAULT NULL COMMENT '入学年份',
     `name`        varchar(32) NOT NULL COMMENT '名称',
-    `spend_days`  int         NOT NULL COMMENT '计划天数',
     `create_time` datetime    NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_common_keshuo_study_type_index` (`common`, `keshuo`, `study_type`, `index`) USING BTREE
+    UNIQUE KEY `uk_enroll_year` (`enroll_year`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案';
 
+DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_stage`;
+CREATE TABLE `fd_cms`.`cms_study_plan_stage`
+(
+    `id`          bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `plan_id`     bigint   NOT NULL COMMENT '培养方案id',
+    `term`        int      NOT NULL COMMENT '学期',
+    `expire_date` date     NOT NULL COMMENT '节点日期',
+    `create_time` datetime NOT NULL COMMENT '创建时间',
+    `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uk_plan_id_expire_date` (`plan_id`, `expire_date`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案阶段';
+
+DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_work`;
+CREATE TABLE `fd_cms`.`cms_study_plan_work`
+(
+    `id`            bigint       NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `plan_id`       bigint       NOT NULL COMMENT '培养方案id',
+    `plan_stage_id` bigint       NOT NULL COMMENT '培养方案阶段id',
+    `work_type`     int          NOT NULL COMMENT '任务类型',
+    `index`         int          NOT NULL COMMENT '任务序号',
+    `name`          varchar(256) NOT NULL COMMENT '名称',
+    `create_time`   datetime     NOT NULL COMMENT '创建时间',
+    `modify_time`   datetime DEFAULT NULL COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `uk_plan_id` (`plan_id`) USING BTREE,
+    UNIQUE KEY `uk_item_id_work_type_index` (`plan_stage_id`, `work_type`, `index`) USING BTREE
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案任务';
+
 DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_allocation`;
 CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
 (
-    `id`              bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`         bigint   NOT NULL COMMENT '学生id',
-    `plan_id`         bigint   NOT NULL COMMENT '培养方案id',
-    `plan_index`      bigint   NOT NULL COMMENT '培养方案序号',
-    `plan_term`       int      NOT NULL COMMENT '培养方案学期',
-    `plan_start_time` date     NOT NULL COMMENT '培养方案开始时间',
-    `plan_end_time`   date     NOT NULL COMMENT '培养方案到期时间',
-    `spend_days`      int      NOT NULL COMMENT '计划天数',
-    `delay_days`      int      NOT NULL COMMENT '延期天数',
-    `remark`          text COMMENT '备注',
-    `create_time`     datetime NOT NULL COMMENT '创建时间',
-    `modify_time`     datetime DEFAULT NULL COMMENT '更新时间',
+    `id`                           bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
+    `user_id`                      bigint   NOT NULL COMMENT '学生id',
+    `plan_id`                      bigint   NOT NULL COMMENT '培养方案id',
+    `plan_stage_id`                bigint   NOT NULL COMMENT '培养方案阶段id',
+    `plan_work_id`                 bigint   NOT NULL COMMENT '培养方案任务id',
+    `plan_work_expect_expire_time` date     NOT NULL COMMENT '培养方案任务预计节点日期',
+    `remark`                       text COMMENT '备注',
+    `create_time`                  datetime NOT NULL COMMENT '创建时间',
+    `modify_time`                  datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
     KEY `idx_user_id` (`user_id`) USING BTREE,
-    KEY `idx_plan_id` (`plan_id`) USING BTREE
+    KEY `idx_plan_id` (`plan_id`) USING BTREE,
+    UNIQUE KEY `uk_uid_pid_stage_id_work_id` (`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案分配';
