@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -36,10 +37,9 @@ public class CmsStudyPlanStageEditVo implements Serializable {
     private Integer term;
 
     /**
-     * 花费天数
+     * 节点日期
      */
     @NotNull
-    @Min(0L)
-    private Integer workDays;
+    private Date endDate;
 }
 

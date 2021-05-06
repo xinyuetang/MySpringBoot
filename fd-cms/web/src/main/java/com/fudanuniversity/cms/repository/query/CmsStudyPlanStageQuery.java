@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 19:58:05
+ * Created by Xinyue.Tang at 2021-05-06 18:54:51
  */
 @Data
 @NoArgsConstructor
@@ -65,11 +65,11 @@ public class CmsStudyPlanStageQuery extends BaseQuery {
     private Integer index;
 
     /**
-     * 字段备注:花费天数 <p>
+     * 字段备注:节点日期 <p>
      * 数据库字段长度:(10,0) <p>
      * 索引字段:不是
      */
-    private Integer workDays;
+    private Date endDate;
 
     /**
      * 字段备注:小于等于创建时间 <p>

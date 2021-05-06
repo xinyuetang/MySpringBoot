@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Date;
+
 /**
  * 培养方案阶段
  * <p>
@@ -37,7 +39,7 @@ public class CmsStudyPlanStageQueryVo {
     private Integer index;
 
     /**
-     * 花费天数
+     * 节点日期
      */
-    private Integer workDays;
+    private Date endDate;
 }

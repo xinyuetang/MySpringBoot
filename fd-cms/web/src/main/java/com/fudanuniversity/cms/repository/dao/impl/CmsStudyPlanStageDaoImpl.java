@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
-import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanStageMapper;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
+import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanStageMapper;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanStageQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -32,10 +31,10 @@ public class CmsStudyPlanStageDaoImpl implements CmsStudyPlanStageDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsStudyPlanStage> cmsStudyPlanStageList){
+    public int bulkUpsert(List<CmsStudyPlanStage> cmsStudyPlanStageList) {
         Assert.notEmpty(cmsStudyPlanStageList, "保存对象列表不能为空");
 
-        for(CmsStudyPlanStage cmsStudyPlanStage : cmsStudyPlanStageList){
+        for (CmsStudyPlanStage cmsStudyPlanStage : cmsStudyPlanStageList) {
             validateEntity(cmsStudyPlanStage);
         }
 
@@ -46,7 +45,7 @@ public class CmsStudyPlanStageDaoImpl implements CmsStudyPlanStageDao {
         Assert.notNull(cmsStudyPlanStage.getPlanId(), "培养方案id不能为空");
         Assert.notNull(cmsStudyPlanStage.getTerm(), "学期不能为空");
         Assert.notNull(cmsStudyPlanStage.getIndex(), "阶段序号不能为空");
-        Assert.notNull(cmsStudyPlanStage.getWorkDays(), "花费天数不能为空");
+        Assert.notNull(cmsStudyPlanStage.getEndDate(), "节点日期不能为空");
         Assert.notNull(cmsStudyPlanStage.getCreateTime(), "创建时间不能为空");
     }
 

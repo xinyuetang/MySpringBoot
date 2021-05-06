@@ -18,7 +18,6 @@ import com.fudanuniversity.cms.repository.entity.*;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -150,7 +149,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         CmsStudyPlanOverviewVo overviewVo = createCmsStudyPlanOverviewVo(studyPlan);
 
         List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
-        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(studyPlan, stages);
+        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(stages);
         overviewVo.setStages(stageOverviewList);
 
         return overviewVo;
@@ -165,7 +164,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         CmsUser cmsUser = cmsUserComponent.queryUser(userId);
         AssertUtils.notNull(cmsUser);
         List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
-        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(cmsUser, studyPlan, stages);
+        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(cmsUser, stages);
         overviewVo.setStages(stageOverviewList);
         return overviewVo;
     }
@@ -181,25 +180,20 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return overviewVo;
     }
 
-    private List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(
-            CmsStudyPlan studyPlan, List<CmsStudyPlanStage> stages) {
+    private List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(List<CmsStudyPlanStage> stages) {
         if (CollectionUtils.isNotEmpty(stages)) {
             List<CmsStudyPlanStageOverviewVo> retList = Lists.newArrayList();
             List<Long> stageIds = Lists.transform(stages, CmsStudyPlanStage::getId);
             List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(stageIds);
             Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap
                     = cmsStudyPlanComponent.convertCmsStudyPlanWorkMap(planWorks);
-            Date basicDate = studyPlan.getReferenceDate();
             for (CmsStudyPlanStage stage : stages) {
                 CmsStudyPlanStageOverviewVo stageOverviewVo = new CmsStudyPlanStageOverviewVo();
                 stageOverviewVo.setId(stage.getId());
                 stageOverviewVo.setPlanId(stage.getPlanId());
                 stageOverviewVo.setTerm(stage.getTerm());
                 stageOverviewVo.setIndex(stage.getIndex());
-                Integer workDays = stage.getWorkDays();
-                stageOverviewVo.setWorkDays(workDays);
-                basicDate = DateUtils.addDays(basicDate, workDays);
-                stageOverviewVo.setDeadline(basicDate);
+                stageOverviewVo.setEndDate(stage.getEndDate());
                 stageOverviewVo.setCreateTime(stage.getCreateTime());
                 stageOverviewVo.setModifyTime(stage.getModifyTime());
                 //任务
@@ -233,19 +227,17 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     }
 
     //用户培养计划任务会有任务的进度信息
-    private List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(
-            CmsUser cmsUser, CmsStudyPlan studyPlan, List<CmsStudyPlanStage> stages) {
+    private List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(CmsUser cmsUser, List<CmsStudyPlanStage> stages) {
         if (CollectionUtils.isNotEmpty(stages)) {
             List<CmsStudyPlanStageOverviewVo> retList = Lists.newArrayList();
             List<Long> stageIds = Lists.transform(stages, CmsStudyPlanStage::getId);
             List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(stageIds);
             Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap
                     = cmsStudyPlanComponent.convertCmsStudyPlanWorkMap(planWorks);
-            Date basicDate = studyPlan.getReferenceDate();
             Map<Long, CmsStudyPlanAllocation> allocationMap
                     = cmsStudyPlanComponent.queryUserStudyPlanAllocationMap(cmsUser.getId());
             for (CmsStudyPlanStage stage : stages) {
-                CmsStudyPlanStageOverviewVo stageOverviewVo = convertCmsStudyPlanStageOverviewVo(stage, basicDate);
+                CmsStudyPlanStageOverviewVo stageOverviewVo = convertCmsStudyPlanStageOverviewVo(stage);
                 //任务
                 Long stageId = stage.getId();
                 Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
@@ -280,16 +272,13 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return Collections.emptyList();
     }
 
-    private CmsStudyPlanStageOverviewVo convertCmsStudyPlanStageOverviewVo(CmsStudyPlanStage stage, Date basicDate) {
+    private CmsStudyPlanStageOverviewVo convertCmsStudyPlanStageOverviewVo(CmsStudyPlanStage stage) {
         CmsStudyPlanStageOverviewVo stageOverviewVo = new CmsStudyPlanStageOverviewVo();
         stageOverviewVo.setId(stage.getId());
         stageOverviewVo.setPlanId(stage.getPlanId());
         stageOverviewVo.setTerm(stage.getTerm());
         stageOverviewVo.setIndex(stage.getIndex());
-        Integer workDays = stage.getWorkDays();
-        stageOverviewVo.setWorkDays(workDays);
-        basicDate = DateUtils.addDays(basicDate, workDays);
-        stageOverviewVo.setDeadline(basicDate);
+        stageOverviewVo.setEndDate(stage.getEndDate());
         stageOverviewVo.setCreateTime(stage.getCreateTime());
         stageOverviewVo.setModifyTime(stage.getModifyTime());
         return stageOverviewVo;

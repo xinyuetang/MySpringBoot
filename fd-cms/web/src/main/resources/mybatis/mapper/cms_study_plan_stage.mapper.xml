@@ -9,19 +9,19 @@
         <result column="plan_id" property="planId"/>
         <result column="term" property="term"/>
         <result column="index" property="index"/>
-        <result column="work_days" property="workDays"/>
+        <result column="end_date" property="endDate"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `plan_id`, `term`, `index`, `work_days`, `create_time`,  `modify_time`
+        `id`, `plan_id`, `term`, `index`, `end_date`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{planId}, #{term}, #{index}, #{workDays}, #{createTime},  #{modifyTime}
+        #{id}, #{planId}, #{term}, #{index}, #{endDate}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -45,8 +45,8 @@
         <if test="index != null">
             AND `index` = #{index}
         </if>
-        <if test="workDays != null">
-            AND `work_days` = #{workDays}
+        <if test="endDate != null">
+            AND `end_date` = #{endDate}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -82,25 +82,25 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan_stage`(`plan_id`, `term`, `index`, `work_days`, `create_time`, `modify_time`)
+            `cms_study_plan_stage`(`plan_id`, `term`, `index`, `end_date`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{planId}, #{term}, #{index}, #{workDays}, #{createTime}, #{modifyTime}
+            #{planId}, #{term}, #{index}, #{endDate}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan_stage`(`plan_id`, `term`, `index`, `work_days`, `create_time`, `modify_time`)
+            `cms_study_plan_stage`(`plan_id`, `term`, `index`, `end_date`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.planId}, #{data.term}, #{data.index}, #{data.workDays}, #{data.createTime}, #{data.modifyTime})
+            (#{data.planId}, #{data.term}, #{data.index}, #{data.endDate}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
        `plan_id` = VALUES(`plan_id`), 
        `term` = VALUES(`term`), 
        `index` = VALUES(`index`), 
-       `work_days` = VALUES(`work_days`), 
+       `end_date` = VALUES(`end_date`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
@@ -117,8 +117,8 @@
             <if test="index != null">
                 `index` = #{index},
             </if>
-            <if test="workDays != null">
-                `work_days` = #{workDays},
+            <if test="endDate != null">
+                `end_date` = #{endDate},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},

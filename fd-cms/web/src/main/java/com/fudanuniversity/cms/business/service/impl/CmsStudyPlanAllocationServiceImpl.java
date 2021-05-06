@@ -6,6 +6,7 @@ import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
+import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
 import com.fudanuniversity.cms.commons.enums.StudyPlanWorkTypeEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -20,7 +21,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -79,12 +79,11 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
                 = cmsStudyPlanComponent.convertCmsStudyPlanWorkMap(planWorks);
         //Key:stageId, Value: PairTuple，存储每个阶段开始与结束时间
         Map<Long, PairTuple<Date, Date>> stageDateMap = Maps.newLinkedHashMap();
-        Date basicDate = studyPlan.getReferenceDate();
+        Date startDate = studyPlan.getReferenceDate();
         for (CmsStudyPlanStage stage : planStages) {
-            Integer workDays = stage.getWorkDays();
-            Date startDate = basicDate;
-            basicDate = DateUtils.addDays(basicDate, workDays);
-            stageDateMap.put(stage.getId(), PairTuple.create(startDate, basicDate));
+            Date endDate = stage.getEndDate();
+            stageDateMap.put(stage.getId(), PairTuple.create(startDate, endDate));
+            startDate = endDate;
         }
 
         //userIds可能较多分段处理
@@ -220,7 +219,28 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
             //query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsStudyPlanAllocation> cmsStudyPlanAllocationList = cmsStudyPlanAllocationDao.selectListByParam(query);
             pagingResult.setRows(cmsStudyPlanAllocationList, allocation -> {
-                return null;
+                CmsStudyPlanAllocationVo allocationVo = new CmsStudyPlanAllocationVo();
+                allocationVo.setId(allocation.getId());
+                allocationVo.setUserId(allocation.getUserId());
+                allocationVo.setPlanId(allocation.getPlanId());
+                allocationVo.setPlanStageId(allocation.getPlanStageId());
+                allocationVo.setPlanWorkId(allocation.getPlanWorkId());
+                allocationVo.setPlanWorkStartDate(allocation.getPlanWorkStartDate());
+                Date planWorkEndDate = allocation.getPlanWorkEndDate();
+                allocationVo.setPlanWorkEndDate(planWorkEndDate);
+                Integer planWorkDelay = allocation.getPlanWorkDelay();
+                allocationVo.setPlanWorkDelay(planWorkDelay);
+                Integer finished = allocation.getFinished();
+                allocationVo.setFinished(finished);
+                Date finishedDate = allocation.getFinishedDate();
+                allocationVo.setFinishedDate(finishedDate);
+                StudyPlanAllocationStatusEnum statusEnum = StudyPlanAllocationStatusEnum
+                        .eval(planWorkEndDate, planWorkDelay, finished, finishedDate);
+                allocationVo.setStatus(statusEnum.getCode());
+                allocationVo.setRemark(allocation.getRemark());
+                allocationVo.setCreateTime(allocation.getCreateTime());
+                allocationVo.setModifyTime(allocation.getModifyTime());
+                return allocationVo;
             });
         }
 

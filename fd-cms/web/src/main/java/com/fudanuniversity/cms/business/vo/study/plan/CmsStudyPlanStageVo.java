@@ -1,10 +1,11 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -17,41 +18,41 @@ import lombok.ToString;
 @ToString
 public class CmsStudyPlanStageVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
+    private Long id;
 
     /**
      * 培养方案id
      */
-	private Long planId;
+    private Long planId;
 
     /**
      * 学期
      */
-	private Integer term;
+    private Integer term;
 
     /**
      * 阶段序号
      */
-	private Integer index;
+    private Integer index;
 
     /**
-     * 花费天数
+     * 节点日期
      */
-	private Integer workDays;
+    private Date endDate;
 
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-	private Date modifyTime;
+    private Date modifyTime;
 }
 

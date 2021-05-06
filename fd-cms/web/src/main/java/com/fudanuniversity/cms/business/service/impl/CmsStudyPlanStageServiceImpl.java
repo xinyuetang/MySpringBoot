@@ -54,7 +54,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         studyPlanStage.setTerm(term);
         int index = planStages.size() + 1;
         studyPlanStage.setIndex(index);
-        studyPlanStage.setWorkDays(addVo.getWorkDays());
+        studyPlanStage.setEndDate(addVo.getEndDate());
         studyPlanStage.setCreateTime(new Date());
         int affect = cmsStudyPlanStageDao.insert(studyPlanStage);
         logger.info("保存CmsStudyPlanStage affect:{}, cmsStudyPlanStage: {}", affect, addVo);
@@ -69,7 +69,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         AssertUtils.notNull(stage, "培养计划阶段[" + stageId + "]不存在");
         CmsStudyPlanStage updater = new CmsStudyPlanStage();
         updater.setId(stageId);
-        updater.setWorkDays(updater.getWorkDays());
+        updater.setEndDate(updater.getEndDate());
         updater.setModifyTime(new Date());
         int affect = cmsStudyPlanStageDao.updateById(updater);
         logger.info("更新CmsStudyPlanStage affect:{}, updater: {}", affect, updater);
@@ -85,7 +85,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
             updater.setId(updateVo.getId());
             updater.setTerm(updateVo.getTerm());
             updater.setIndex(i + 1);
-            updater.setWorkDays(updateVo.getWorkDays());
+            updater.setEndDate(updateVo.getEndDate());
             updater.setModifyTime(new Date());
             int affect = cmsStudyPlanStageDao.updateById(updater);
             logger.info("更新CmsStudyPlanStage affect:{}, updater: {}", affect, updater);
@@ -134,7 +134,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         query.setPlanId(queryVo.getPlanId());
         query.setTerm(queryVo.getTerm());
         query.setIndex(queryVo.getIndex());
-        query.setWorkDays(queryVo.getWorkDays());
+        query.setEndDate(queryVo.getEndDate());
         query.setPlanId(queryVo.getPlanId());
         query.setSorts(SortColumn.create("term", SortMode.ASC), SortColumn.create("index", SortMode.ASC));
         List<CmsStudyPlanStage> cmsStudyPlanStageList = cmsStudyPlanStageDao.selectListByParam(query);
@@ -144,7 +144,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
             stageVo.setPlanId(stage.getPlanId());
             stageVo.setTerm(stage.getTerm());
             stageVo.setIndex(stage.getIndex());
-            stageVo.setWorkDays(stage.getWorkDays());
+            stageVo.setEndDate(stage.getEndDate());
             stageVo.setCreateTime(stage.getCreateTime());
             stageVo.setModifyTime(stage.getModifyTime());
             return stageVo;

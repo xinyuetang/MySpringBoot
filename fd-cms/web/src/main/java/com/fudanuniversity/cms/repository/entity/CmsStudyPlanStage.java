@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 培养方案阶段
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 20:04:58
+ * Created by Xinyue.Tang at 2021-05-06 18:54:51
  */
 @Data
 @NoArgsConstructor
@@ -48,11 +48,11 @@ public class CmsStudyPlanStage implements Serializable {
     private Integer index;
 
     /**
-     * 字段备注:花费天数 <p>
+     * 字段备注:节点日期 <p>
      * 数据库字段长度:(10,0) <p>
      * 是否索引:不是
      */
-    private Integer workDays;
+    private Date endDate;
 
     /**
      * 字段备注:创建时间 <p>

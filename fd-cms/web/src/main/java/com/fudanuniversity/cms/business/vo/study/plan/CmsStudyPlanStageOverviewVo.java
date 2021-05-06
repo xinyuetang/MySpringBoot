@@ -42,14 +42,9 @@ public class CmsStudyPlanStageOverviewVo implements Serializable {
     private Integer index;
 
     /**
-     * 花费天数
+     * 节点日期
      */
-    private Integer workDays;
-
-    /**
-     * 节点时间
-     */
-    private Date deadline;
+    private Date endDate;
 
     /**
      * 创建时间

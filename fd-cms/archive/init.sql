@@ -335,6 +335,7 @@ CREATE TABLE `fd_cms`.`cms_device_allocation`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='设备分配';
 
+DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan`;
 CREATE TABLE `cms_study_plan`
 (
     `id`             bigint      NOT NULL AUTO_INCREMENT COMMENT 'id',
@@ -357,7 +358,7 @@ CREATE TABLE `fd_cms`.`cms_study_plan_stage`
     `plan_id`     bigint   NOT NULL COMMENT '培养方案id',
     `term`        int      NOT NULL COMMENT '学期',
     `index`       int      NOT NULL COMMENT '阶段序号',
-    `work_days`   int      NOT NULL COMMENT '花费天数',
+    `end_date`    date     NOT NULL COMMENT '节点日期',
     `create_time` datetime NOT NULL COMMENT '创建时间',
     `modify_time` datetime DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -395,8 +396,8 @@ CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
     `plan_work_start_date` date     NOT NULL COMMENT '培养方案任务开始日期',
     `plan_work_end_date`   date     NOT NULL COMMENT '培养方案任务结束日期',
     `plan_work_delay`      int      NOT NULL DEFAULT 0 COMMENT '培养方案任务延期天数',
-    `finished`               tinyint  NOT NULL DEFAULT 0 COMMENT '是否完成',
-    `finished_date`          date              DEFAULT NULL COMMENT '任务完成日期',
+    `finished`             tinyint  NOT NULL DEFAULT 0 COMMENT '是否完成',
+    `finished_date`        date              DEFAULT NULL COMMENT '任务完成日期',
     `remark`               text COMMENT '备注',
     `deleted`              bigint   NOT NULL DEFAULT 0 COMMENT '删除标记',
     `create_time`          datetime NOT NULL COMMENT '创建时间',
