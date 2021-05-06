@@ -159,7 +159,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         allocation.setPlanWorkEndDate(tuple.getRight());
         allocation.setPlanWorkDelay(0);
         allocation.setStatus(StudyPlanAllocationStatusEnum.Underway.getCode());
-        //allocation.setRemark();
+        allocation.setRemark("");
         allocation.setDeleted(DeletedEnum.Normal.getCode().longValue());
         Date current = new Date();
         allocation.setCreateTime(current);
@@ -171,10 +171,15 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
      * 根据id更新处理
      */
     @Override
-    public void updateCmsStudyPlanAllocationById(CmsStudyPlanAllocationUpdateVo updateVo) {
-        CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
-        //TODO 值映射校验与赋值映射
+    public void changeCmsStudyPlanAllocationStatus(Long userId, CmsStudyPlanAllocationStatusVo statusVo) {
+        Long id = statusVo.getId();
+        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryStudyPlanAllocation(id,userId);
+        AssertUtils.notNull(allocation, "培养计划安排[" + id + "]不存在");
 
+        CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
+        updater.setId(id);
+        updater.setStatus(statusVo.getStatus());
+        updater.setRemark(updater.getRemark());
         int affect = cmsStudyPlanAllocationDao.updateById(updater);
         logger.info("更新CmsStudyPlanAllocation affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);

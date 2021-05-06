@@ -13,7 +13,6 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
@@ -44,15 +43,6 @@ public class CmsStudyPlanAllocationController extends BaseController {
     }
 
     /**
-     * 根据id更新处理
-     */
-    @PostMapping("/update")
-    public JsonResult<?> updateCmsStudyPlanAllocationById(@Valid @RequestBody CmsStudyPlanAllocationUpdateVo updateVo) {
-        cmsStudyPlanAllocationService.updateCmsStudyPlanAllocationById(updateVo);
-        return JsonResult.buildSuccess();
-    }
-
-    /**
      * 根据id删除处理
      */
     @PostMapping("/delete")
@@ -70,6 +60,17 @@ public class CmsStudyPlanAllocationController extends BaseController {
         PagingResult<CmsStudyPlanAllocationVo> pagingResult =
                 cmsStudyPlanAllocationService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
+    }
+
+    /**
+     * 学生点击完成任务
+     */
+    @PostMapping("/status")
+    public JsonResult<?> changeCmsStudyPlanAllocationStatus(
+            @Valid @RequestBody CmsStudyPlanAllocationStatusVo statusVo) {
+        LoginUser loginUser = getLoginUser();
+        cmsStudyPlanAllocationService.changeCmsStudyPlanAllocationStatus(loginUser.getUserId(), statusVo);
+        return JsonResult.buildSuccess();
     }
 
     /**

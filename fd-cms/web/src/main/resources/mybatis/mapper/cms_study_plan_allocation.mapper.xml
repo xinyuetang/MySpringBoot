@@ -134,9 +134,9 @@
         `plan_work_id` = VALUES(`plan_work_id`),
         `plan_work_start_date` = VALUES(`plan_work_start_date`),
         `plan_work_end_date` = VALUES(`plan_work_end_date`),
-        `plan_work_delay` = VALUES(`plan_work_delay`),
-        `status` = VALUES(`status`),
-        `remark` = VALUES(`remark`),
+        `plan_work_delay` = IF(`deleted` > 0, VALUES(`plan_work_delay`), `plan_work_delay`),
+        `status` = IF(`deleted` > 0, VALUES(`status`), `status`),
+        `remark` = IF(`deleted` > 0, VALUES(`remark`), `remark`),
         `deleted` = VALUES(`deleted`),
         `create_time` = `create_time`,
         `modify_time` = VALUES(`modify_time`)

@@ -140,6 +140,18 @@ public class CmsStudyPlanComponent {
         return Collections.emptyList();
     }
 
+    public CmsStudyPlanAllocation queryStudyPlanAllocation(Long allocationId, Long userId) {
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
+        query.setId(allocationId);
+        query.setUserId(userId);
+        query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(allocations)) {
+            return allocations.get(0);
+        }
+        return null;
+    }
+
     /**
      * <pre>
      *  将StudyPlan下所有关联的work结构化组织起来

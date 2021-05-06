@@ -19,7 +19,7 @@ public interface CmsStudyPlanAllocationService {
     /**
      * 根据id更新处理
      */
-    void updateCmsStudyPlanAllocationById(CmsStudyPlanAllocationUpdateVo updateVo);
+    void changeCmsStudyPlanAllocationStatus(Long userId, CmsStudyPlanAllocationStatusVo statusVo);
 
     /**
      * 根据id删除处理
