@@ -246,25 +246,29 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
                 List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks, allocationMap);
                 stageOverviewVo.setCommonWorks(commonWorkOverviewVoList);
                 //科硕任务
+                List<CmsStudyPlanWorkOverviewVo> keshuoWorkOverviewVoList = Collections.emptyList();
                 if (BooleanEnum.isTrue(cmsUser.getKeshuo())) {
                     List<CmsStudyPlanWork> keshuoWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Keshuo.getCode());
-                    List<CmsStudyPlanWorkOverviewVo> keshuoWorkOverviewVoList = convertWorkOverviewVo(keshuoWorks, allocationMap);
-                    stageOverviewVo.setKeshuoWorks(keshuoWorkOverviewVoList);
+                    keshuoWorkOverviewVoList = convertWorkOverviewVo(keshuoWorks, allocationMap);
                 }
+                stageOverviewVo.setKeshuoWorks(keshuoWorkOverviewVoList);
                 StudyPlanWorkTypeEnum workTypeEnum = StudyPlanWorkTypeEnum.studyTypeOf(cmsUser.getStudyType());
+                List<CmsStudyPlanWorkOverviewVo> academicWorkOverviewVoList = Collections.emptyList();
+                List<CmsStudyPlanWorkOverviewVo> synthesizingWorkOverviewVoList = Collections.emptyList();
+                List<CmsStudyPlanWorkOverviewVo> technologyWorkOverviewVoList = Collections.emptyList();
                 if (Objects.equals(StudyPlanWorkTypeEnum.Academic, workTypeEnum)) {//学术型任务
                     List<CmsStudyPlanWork> academicWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Academic.getCode());
-                    List<CmsStudyPlanWorkOverviewVo> academicWorkOverviewVoList = convertWorkOverviewVo(academicWorks);
-                    stageOverviewVo.setAcademicWorks(academicWorkOverviewVoList);
+                    academicWorkOverviewVoList = convertWorkOverviewVo(academicWorks);
                 } else if (Objects.equals(StudyPlanWorkTypeEnum.Synthesizing, workTypeEnum)) {//结合型任务
                     List<CmsStudyPlanWork> synthesizingWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Synthesizing.getCode());
-                    List<CmsStudyPlanWorkOverviewVo> synthesizingWorkOverviewVoList = convertWorkOverviewVo(synthesizingWorks, allocationMap);
-                    stageOverviewVo.setSynthesizingWorks(synthesizingWorkOverviewVoList);
+                    synthesizingWorkOverviewVoList = convertWorkOverviewVo(synthesizingWorks, allocationMap);
                 } else if (Objects.equals(StudyPlanWorkTypeEnum.Technology, workTypeEnum)) {//技术型公共任务
                     List<CmsStudyPlanWork> technologyWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Technology.getCode());
-                    List<CmsStudyPlanWorkOverviewVo> technologyWorkOverviewVoList = convertWorkOverviewVo(technologyWorks, allocationMap);
-                    stageOverviewVo.setTechnologyWorks(technologyWorkOverviewVoList);
+                    technologyWorkOverviewVoList = convertWorkOverviewVo(technologyWorks, allocationMap);
                 }
+                stageOverviewVo.setAcademicWorks(academicWorkOverviewVoList);
+                stageOverviewVo.setSynthesizingWorks(synthesizingWorkOverviewVoList);
+                stageOverviewVo.setTechnologyWorks(technologyWorkOverviewVoList);
                 retList.add(stageOverviewVo);
             }
             return retList;
