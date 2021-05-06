@@ -2,6 +2,7 @@ package com.fudanuniversity.cms.repository.mapper;
 
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -43,6 +44,11 @@ public interface CmsStudyPlanAllocationMapper {
      * 根据条件查询信息列表
      */
     List<CmsStudyPlanAllocation> selectListByParam(CmsStudyPlanAllocationQuery query);
+
+    /**
+     *
+     */
+    List<CmsStudyPlanInfo> selectInfoByParam(CmsStudyPlanAllocationQuery query);
 
     /**
      * 根据条件查询信息总数目

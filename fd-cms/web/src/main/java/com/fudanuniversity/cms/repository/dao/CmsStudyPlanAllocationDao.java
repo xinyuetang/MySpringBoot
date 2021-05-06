@@ -2,6 +2,7 @@ package com.fudanuniversity.cms.repository.dao;
 
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 
 import java.util.List;
 
@@ -43,8 +44,12 @@ public interface CmsStudyPlanAllocationDao {
     List<CmsStudyPlanAllocation> selectListByParam(CmsStudyPlanAllocationQuery query);
 
     /**
+     * 查询数据
+     */
+    List<CmsStudyPlanInfo> selectInfoByParam(CmsStudyPlanAllocationQuery query);
+
+    /**
      * 查询数量
      */
     Long selectCountByParam(CmsStudyPlanAllocationQuery query);
-
 }

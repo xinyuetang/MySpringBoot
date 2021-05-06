@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.business.vo.study.plan;
+package com.fudanuniversity.cms.repository.query;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,32 +6,18 @@ import lombok.ToString;
 
 import java.io.Serializable;
 
-
 /**
- * 培养方案分配
- * <p>
- * Created by Xinyue.Tang at 2021-05-05 20:04:58
+ * Created by Xinyue.Tang at 2021-05-06 13:34:10
  */
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationInfoVo implements Serializable {
+public class CmsStudyPlanInfo implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * 用户id
-     */
-    private Long userId;
-
-    /**
-     * 培养方案id
-     */
     private Long planId;
 
-    /**
-     * 总数
-     */
+    private Long userId;
+
     private Long total;
 
     private Long underway;
@@ -46,4 +32,3 @@ public class CmsStudyPlanAllocationInfoVo implements Serializable {
 
     private Long overtimeFinished;
 }
-

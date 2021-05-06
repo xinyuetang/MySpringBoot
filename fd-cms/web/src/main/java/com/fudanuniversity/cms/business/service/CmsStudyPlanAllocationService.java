@@ -12,19 +12,19 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 public interface CmsStudyPlanAllocationService {
 
     /**
-     * 保存处理
+     * 管理员生成培养计划
      */
-    void generateCmsStudyPlanAllocation(CmsStudyPlanAllocationGenerateVo generateVo);
+    void generateUserAllocations(CmsStudyPlanAllocationGenerateVo generateVo);
 
     /**
-     * 根据id更新处理
+     * 管理员更新培养计划状态
      */
-    void changeCmsStudyPlanAllocationStatus(Long userId, CmsStudyPlanAllocationStatusVo statusVo);
+    void editAllocation(CmsStudyPlanAllocationEditVo editVo);
 
     /**
      * 根据id删除处理
      */
-    void deleteCmsStudyPlanAllocationById(Long id);
+    void deleteAllocationById(Long id);
 
     /**
      * 分页查询数据列表
@@ -32,7 +32,12 @@ public interface CmsStudyPlanAllocationService {
     PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging);
 
     /**
-     * 用户查询自己的培养计划
+     * 用户更新培养计划状态
      */
-    CmsStudyPlanAllocationInfoVo queryUserCmsStudyPlanAllocation(Long userId);
+    void editUserAllocation(Long userId, CmsStudyPlanAllocationUserEditVo userEditVo);
+
+    /**
+     * 用户查询自己的培养计划信息
+     */
+    CmsStudyPlanAllocationInfoVo queryUserAllocationInfo(Long userId, Long planId);
 }

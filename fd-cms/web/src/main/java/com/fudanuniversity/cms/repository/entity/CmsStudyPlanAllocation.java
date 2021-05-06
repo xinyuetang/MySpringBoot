@@ -10,7 +10,7 @@ import java.util.Date;
 /**
  * 培养方案分配
  * <p>
- * Created by Xinyue.Tang at 2021-05-06 02:15:15
+ * Created by Xinyue.Tang at 2021-05-06 16:50:31
  */
 @Data
 @NoArgsConstructor
@@ -76,11 +76,18 @@ public class CmsStudyPlanAllocation implements Serializable {
     private Integer planWorkDelay;
 
     /**
-     * 字段备注:状态 <p>
+     * 字段备注:是否完成 <p>
      * 数据库字段长度:(3,0) <p>
      * 是否索引:不是
      */
-    private Integer status;
+    private Integer finished;
+
+    /**
+     * 字段备注:任务完成日期 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 是否索引:不是
+     */
+    private Date finishedDate;
 
     /**
      * 字段备注:备注 <p>

@@ -1,10 +1,11 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -17,61 +18,75 @@ import lombok.ToString;
 @ToString
 public class CmsStudyPlanAllocationVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
+    private Long id;
 
     /**
      * 用户id
      */
-	private Long userId;
+    private Long userId;
 
     /**
      * 培养方案id
      */
-	private Long planId;
+    private Long planId;
 
     /**
      * 培养方案阶段id
      */
-	private Long planStageId;
+    private Long planStageId;
 
     /**
      * 培养方案任务id
      */
-	private Long planWorkId;
+    private Long planWorkId;
 
     /**
-     * 培养方案任务预计开始日期
+     * 培养方案任务开始日期
      */
-	private Date planWorkExpectStartTime;
+    private Date planWorkStartDate;
 
     /**
-     * 培养方案任务预计截止日期
+     * 培养方案任务结束日期
      */
-	private Date planWorkExpectEndTime;
+    private Date planWorkEndDate;
+
+    /**
+     * 培养方案任务延期天数
+     */
+    private Integer planWorkDelay;
+
+    /**
+     * 是否完成
+     */
+    private Integer finished;
+
+    /**
+     * 任务完成日期
+     */
+    private Date finishedDate;
+
+    /**
+     * 任务状态
+     * */
+    private Integer status;
 
     /**
      * 备注
      */
-	private String remark;
-
-    /**
-     * 删除标记
-     */
-	private Long deleted;
+    private String remark;
 
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-	private Date modifyTime;
+    private Date modifyTime;
 }
-

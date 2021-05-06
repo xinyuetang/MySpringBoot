@@ -395,14 +395,14 @@ CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
     `plan_work_start_date` date     NOT NULL COMMENT '培养方案任务开始日期',
     `plan_work_end_date`   date     NOT NULL COMMENT '培养方案任务结束日期',
     `plan_work_delay`      int      NOT NULL DEFAULT 0 COMMENT '培养方案任务延期天数',
-    `status`               tinyint  NOT NULL DEFAULT 0 COMMENT '状态',
+    `finished`               tinyint  NOT NULL DEFAULT 0 COMMENT '是否完成',
+    `finished_date`          date              DEFAULT NULL COMMENT '任务完成日期',
     `remark`               text COMMENT '备注',
     `deleted`              bigint   NOT NULL DEFAULT 0 COMMENT '删除标记',
     `create_time`          datetime NOT NULL COMMENT '创建时间',
     `modify_time`          datetime          DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_user_id` (`user_id`) USING BTREE,
-    KEY `idx_plan_id` (`plan_id`) USING BTREE,
+    KEY `idx_plan_id` (`plan_id`, `user_id`, `deleted`) USING BTREE,
     UNIQUE KEY `uk_uid_pid_stage_id_work_id` (`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4

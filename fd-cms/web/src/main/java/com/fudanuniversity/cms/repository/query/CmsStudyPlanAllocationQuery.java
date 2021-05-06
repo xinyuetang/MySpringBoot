@@ -94,11 +94,18 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
     private Integer planWorkDelay;
 
     /**
-     * 字段备注:状态 <p>
+     * 字段备注:是否完成 <p>
      * 数据库字段长度:(3,0) <p>
      * 索引字段:不是
      */
-    private Integer status;
+    private Integer finished;
+
+    /**
+     * 字段备注:任务完成日期 <p>
+     * 数据库字段长度:(10,0) <p>
+     * 索引字段:不是
+     */
+    private Date finishedDate;
 
     /**
      * 字段备注:备注 <p>

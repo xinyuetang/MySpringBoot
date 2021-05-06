@@ -6,15 +6,16 @@ import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
-import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
 import com.fudanuniversity.cms.commons.enums.StudyPlanWorkTypeEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.wrapper.PairTuple;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
+import com.fudanuniversity.cms.commons.util.DateExUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
 import com.fudanuniversity.cms.repository.entity.*;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
@@ -55,7 +56,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
      * 为学生分配生成培养计划
      */
     @Override
-    public void generateCmsStudyPlanAllocation(CmsStudyPlanAllocationGenerateVo generateVo) {
+    public void generateUserAllocations(CmsStudyPlanAllocationGenerateVo generateVo) {
         Long planId = generateVo.getPlanId();
         CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
@@ -90,7 +91,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         List<List<Long>> partitions = Lists.partition(userIds, 10);
         partitions.forEach(partition -> {
             //TODO 最好开启一个新的内置事务操作
-            List<CmsStudyPlanAllocation> userAllocationList = cmsStudyPlanComponent.queryStudyPlanAllocation(userIds);
+            List<CmsStudyPlanAllocation> userAllocationList = cmsStudyPlanComponent.queryStudyPlanAllocationByUserIds(userIds);
             /*  新的培养计划可能删除了部分任务CmsStudyPlanWork，但是先前已经有部分用户生成了培养计划，
                 再次为同一个用户生成任务培养计划，需要删除用户中对应已不存在的任务，
                 仍然存在的任务出发更新（参照MySQL语法：ON DUPLICATE KEY UPDATE）*/
@@ -158,7 +159,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         allocation.setPlanWorkStartDate(tuple.getLeft());
         allocation.setPlanWorkEndDate(tuple.getRight());
         allocation.setPlanWorkDelay(0);
-        allocation.setStatus(StudyPlanAllocationStatusEnum.Underway.getCode());
+        allocation.setFinished(BooleanEnum.False.getCode());
         allocation.setRemark("");
         allocation.setDeleted(DeletedEnum.Normal.getCode().longValue());
         Date current = new Date();
@@ -167,38 +168,44 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         return allocation;
     }
 
-    /**
-     * 根据id更新处理
-     */
     @Override
-    public void changeCmsStudyPlanAllocationStatus(Long userId, CmsStudyPlanAllocationStatusVo statusVo) {
-        Long id = statusVo.getId();
-        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryStudyPlanAllocation(id,userId);
-        AssertUtils.notNull(allocation, "培养计划安排[" + id + "]不存在");
+    public void editAllocation(CmsStudyPlanAllocationEditVo editVo) {
+        Long allocationId = editVo.getId();
+        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryStudyPlanAllocationById(allocationId);
+        AssertUtils.notNull(allocation, "培养计划安排[" + allocationId + "]不存在");
 
         CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
-        updater.setId(id);
-        updater.setStatus(statusVo.getStatus());
+        updater.setId(allocationId);
+        Integer finished = editVo.getFinished();
+        Date current = new Date();
+        if (finished == null) {
+            updater.setFinishedDate(allocation.getFinishedDate());//finished为null不更新完成日期
+        } else {
+            updater.setFinished(finished);
+            if (BooleanEnum.isTrue(finished)) {
+                updater.setFinishedDate(current);
+            }
+        }
+        Date delayDate = editVo.getDelayDate();
+        if (delayDate != null) {
+            Date planWorkEndDate = allocation.getPlanWorkEndDate();
+            int delayDays = DateExUtils.evalCrossDays(planWorkEndDate, delayDate);
+            updater.setPlanWorkDelay(delayDays);
+        }
         updater.setRemark(updater.getRemark());
+        updater.setModifyTime(new Date());
         int affect = cmsStudyPlanAllocationDao.updateById(updater);
         logger.info("更新CmsStudyPlanAllocation affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
     }
 
-    /**
-     * 根据id删除处理
-     */
     @Override
-    public void deleteCmsStudyPlanAllocationById(Long id) {
-        //TODO 补充状态检测业务逻辑
+    public void deleteAllocationById(Long id) {
         int affect = cmsStudyPlanAllocationDao.deleteById(id);
         logger.info("删除CmsStudyPlanAllocation affect:{}, id: {}", affect, id);
         AssertUtils.state(affect == 1);
     }
 
-    /**
-     * 分页查询数据列表
-     */
     @Override
     public PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging) {
         PagingResult<CmsStudyPlanAllocationVo> pagingResult = PagingResult.create(paging);
@@ -221,7 +228,52 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
     }
 
     @Override
-    public CmsStudyPlanAllocationInfoVo queryUserCmsStudyPlanAllocation(Long userId) {
-        return null;
+    public void editUserAllocation(Long userId, CmsStudyPlanAllocationUserEditVo userEditVo) {
+        Long allocationId = userEditVo.getId();
+        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryUserStudyPlanAllocation(userId, allocationId);
+        AssertUtils.notNull(allocation, "培养计划安排[" + allocationId + "]不存在");
+
+        CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
+        updater.setId(allocationId);
+        Integer finished = userEditVo.getFinished();
+        Date current = new Date();
+        if (finished == null) {
+            updater.setFinishedDate(allocation.getFinishedDate());//finished为null不更新完成日期
+        } else {
+            updater.setFinished(finished);
+            if (BooleanEnum.isTrue(finished)) {
+                updater.setFinishedDate(current);
+            }
+        }
+        updater.setRemark(updater.getRemark());
+        updater.setModifyTime(current);
+        int affect = cmsStudyPlanAllocationDao.updateById(updater);
+        logger.info("更新CmsStudyPlanAllocation affect:{}, updater: {}", affect, updater);
+        AssertUtils.state(affect == 1);
+    }
+
+    @Override
+    public CmsStudyPlanAllocationInfoVo queryUserAllocationInfo(Long userId, Long planId) {
+        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
+        AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
+
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
+        List<CmsStudyPlanInfo> infoList = cmsStudyPlanAllocationDao.selectInfoByParam(query);
+        CmsStudyPlanInfo planInfo = null;
+        if (CollectionUtils.isNotEmpty(infoList)) {
+            planInfo = infoList.get(0);
+        }
+
+        CmsStudyPlanAllocationInfoVo allocationInfoVo = new CmsStudyPlanAllocationInfoVo();
+        allocationInfoVo.setUserId(userId);
+        allocationInfoVo.setPlanId(planId);
+        allocationInfoVo.setTotal(planInfo == null ? 0 : planInfo.getTotal());
+        allocationInfoVo.setUnderway(planInfo == null ? 0 : planInfo.getUnderway());
+        allocationInfoVo.setDelayUnfinished(planInfo == null ? 0 : planInfo.getDelayUnfinished());
+        allocationInfoVo.setOvertimeUnfinished(planInfo == null ? 0 : planInfo.getOvertimeUnfinished());
+        allocationInfoVo.setNormalFinished(planInfo == null ? 0 : planInfo.getNormalFinished());
+        allocationInfoVo.setDelayFinished(planInfo == null ? 0 : planInfo.getDelayFinished());
+        allocationInfoVo.setOvertimeUnfinished(planInfo == null ? 0 : planInfo.getOvertimeUnfinished());
+        return allocationInfoVo;
     }
 }

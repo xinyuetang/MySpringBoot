@@ -54,14 +54,19 @@ public class CmsStudyPlanAllocationQueryVo {
     private Date planWorkExpectEndTime;
 
     /**
+     * 是否完成
+     */
+    private Integer finished;
+
+    /**
+     * 任务完成日期
+     */
+    private Date finishedDate;
+
+    /**
      * 备注
      */
     private String remark;
-
-    /**
-     * 删除标记
-     */
-    private Long deleted;
 
     /**
      * 小于等于创建时间

@@ -28,6 +28,6 @@ public enum BooleanEnum {
     }
 
     public static boolean isTrue(Integer code) {
-        return code != null && Objects.equals(code, True.getCode());
+        return Objects.equals(code, True.getCode());
     }
 }

@@ -18,46 +18,50 @@ import java.util.Date;
 @ToString
 public class CmsStudyPlanWorkOverviewVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
+    private Long id;
 
     /**
      * 培养方案id
      */
-	private Long planId;
+    private Long planId;
 
     /**
      * 培养方案阶段id
      */
-	private Long planStageId;
+    private Long planStageId;
 
     /**
      * 任务类型
      */
-	private Integer workType;
+    private Integer workType;
 
     /**
      * 任务序号
      */
-	private Integer index;
+    private Integer index;
 
     /**
      * 名称
      */
-	private String name;
+    private String name;
 
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-	private Date modifyTime;
-}
+    private Date modifyTime;
 
+    /**
+     *
+     */
+    private CmsStudyPlanAllocationVo allocation;
+}

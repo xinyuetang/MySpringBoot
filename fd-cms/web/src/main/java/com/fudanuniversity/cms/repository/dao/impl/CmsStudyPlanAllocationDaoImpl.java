@@ -4,6 +4,7 @@ import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
 import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -51,7 +52,7 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
         Assert.notNull(cmsStudyPlanAllocation.getPlanWorkStartDate(), "培养方案任务开始日期不能为空");
         Assert.notNull(cmsStudyPlanAllocation.getPlanWorkEndDate(), "培养方案任务结束日期不能为空");
         Assert.notNull(cmsStudyPlanAllocation.getPlanWorkDelay(), "培养方案任务延期天数不能为空");
-        Assert.notNull(cmsStudyPlanAllocation.getStatus(), "状态不能为空");
+        Assert.notNull(cmsStudyPlanAllocation.getFinished(), "是否完成不能为空");
         Assert.notNull(cmsStudyPlanAllocation.getDeleted(), "删除标记不能为空");
         Assert.notNull(cmsStudyPlanAllocation.getCreateTime(), "创建时间不能为空");
     }
@@ -91,6 +92,15 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
         validateQueryParameter(query);
 
         return cmsStudyPlanAllocationMapper.selectListByParam(query);
+    }
+
+    @Override
+    public List<CmsStudyPlanInfo> selectInfoByParam(CmsStudyPlanAllocationQuery query) {
+        Assert.notNull(query, "查询参数不能为空");
+
+        validateQueryParameter(query);
+
+        return cmsStudyPlanAllocationMapper.selectInfoByParam(query);
     }
 
     @Override

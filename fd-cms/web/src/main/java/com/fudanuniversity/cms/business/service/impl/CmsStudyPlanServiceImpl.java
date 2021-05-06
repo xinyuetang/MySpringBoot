@@ -1,8 +1,11 @@
 package com.fudanuniversity.cms.business.service.impl;
 
 import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
+import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
+import com.fudanuniversity.cms.commons.enums.BooleanEnum;
+import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
 import com.fudanuniversity.cms.commons.enums.StudyPlanWorkTypeEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -11,9 +14,7 @@ import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.commons.util.DateExUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork;
+import com.fudanuniversity.cms.repository.entity.*;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
 import com.google.common.collect.Lists;
 import org.apache.commons.collections4.CollectionUtils;
@@ -25,10 +26,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * CmsStudyPlanService 实现类
@@ -45,6 +43,9 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
 
     @Resource
     private CmsStudyPlanComponent cmsStudyPlanComponent;
+
+    @Resource
+    private CmsUserComponent cmsUserComponent;
 
     /**
      * 保存处理
@@ -142,10 +143,34 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     }
 
     @Override
-    public CmsStudyPlanOverviewVo overviewCmsStudyPlan(Long planId) {
+    public CmsStudyPlanOverviewVo queryCmsStudyPlanOverview(Long planId) {
         CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
 
+        CmsStudyPlanOverviewVo overviewVo = createCmsStudyPlanOverviewVo(studyPlan);
+
+        List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
+        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(studyPlan, stages);
+        overviewVo.setStages(stageOverviewList);
+
+        return overviewVo;
+    }
+
+    @Override
+    public CmsStudyPlanOverviewVo queryUserCmsStudyPlanOverview(Long userId, Long planId) {
+        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
+        AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
+
+        CmsStudyPlanOverviewVo overviewVo = createCmsStudyPlanOverviewVo(studyPlan);
+        CmsUser cmsUser = cmsUserComponent.queryUser(userId);
+        AssertUtils.notNull(cmsUser);
+        List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
+        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(cmsUser, studyPlan, stages);
+        overviewVo.setStages(stageOverviewList);
+        return overviewVo;
+    }
+
+    private CmsStudyPlanOverviewVo createCmsStudyPlanOverviewVo(CmsStudyPlan studyPlan) {
         CmsStudyPlanOverviewVo overviewVo = new CmsStudyPlanOverviewVo();
         overviewVo.setId(studyPlan.getId());
         overviewVo.setName(studyPlan.getName());
@@ -153,11 +178,6 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         overviewVo.setReferenceDate(studyPlan.getReferenceDate());
         overviewVo.setCreateTime(studyPlan.getCreateTime());
         overviewVo.setModifyTime(studyPlan.getModifyTime());
-
-        List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
-        List<CmsStudyPlanStageOverviewVo> stageOverviewList = convertStageOverviewVoList(studyPlan, stages);
-        overviewVo.setStages(stageOverviewList);
-
         return overviewVo;
     }
 
@@ -185,22 +205,23 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
                 //任务
                 Long stageId = stage.getId();
                 Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
+                //公共任务
                 List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
                 List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks);
                 stageOverviewVo.setCommonWorks(commonWorkOverviewVoList);
-
+                //科硕任务
                 List<CmsStudyPlanWork> keshuoWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Keshuo.getCode());
                 List<CmsStudyPlanWorkOverviewVo> keshuoWorkOverviewVoList = convertWorkOverviewVo(keshuoWorks);
                 stageOverviewVo.setKeshuoWorks(keshuoWorkOverviewVoList);
-
+                //学术型任务
                 List<CmsStudyPlanWork> academicWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Academic.getCode());
                 List<CmsStudyPlanWorkOverviewVo> academicWorkOverviewVoList = convertWorkOverviewVo(academicWorks);
                 stageOverviewVo.setAcademicWorks(academicWorkOverviewVoList);
-
+                //结合型任务
                 List<CmsStudyPlanWork> synthesizingWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Synthesizing.getCode());
                 List<CmsStudyPlanWorkOverviewVo> synthesizingWorkOverviewVoList = convertWorkOverviewVo(synthesizingWorks);
                 stageOverviewVo.setSynthesizingWorks(synthesizingWorkOverviewVoList);
-
+                //技术型公共任务
                 List<CmsStudyPlanWork> technologyWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Technology.getCode());
                 List<CmsStudyPlanWorkOverviewVo> technologyWorkOverviewVoList = convertWorkOverviewVo(technologyWorks);
                 stageOverviewVo.setTechnologyWorks(technologyWorkOverviewVoList);
@@ -211,10 +232,78 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return Collections.emptyList();
     }
 
-    private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(List<CmsStudyPlanWork> commonWorks) {
-        if (CollectionUtils.isNotEmpty(commonWorks)) {
+    //用户培养计划任务会有任务的进度信息
+    private List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(
+            CmsUser cmsUser, CmsStudyPlan studyPlan, List<CmsStudyPlanStage> stages) {
+        if (CollectionUtils.isNotEmpty(stages)) {
+            List<CmsStudyPlanStageOverviewVo> retList = Lists.newArrayList();
+            List<Long> stageIds = Lists.transform(stages, CmsStudyPlanStage::getId);
+            List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(stageIds);
+            Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap
+                    = cmsStudyPlanComponent.convertCmsStudyPlanWorkMap(planWorks);
+            Date basicDate = studyPlan.getReferenceDate();
+            Map<Long, CmsStudyPlanAllocation> allocationMap
+                    = cmsStudyPlanComponent.queryUserStudyPlanAllocationMap(cmsUser.getId());
+            for (CmsStudyPlanStage stage : stages) {
+                CmsStudyPlanStageOverviewVo stageOverviewVo = convertCmsStudyPlanStageOverviewVo(stage, basicDate);
+                //任务
+                Long stageId = stage.getId();
+                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
+                //公共任务
+                List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
+                List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks, allocationMap);
+                stageOverviewVo.setCommonWorks(commonWorkOverviewVoList);
+                //科硕任务
+                if (BooleanEnum.isTrue(cmsUser.getKeshuo())) {
+                    List<CmsStudyPlanWork> keshuoWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Keshuo.getCode());
+                    List<CmsStudyPlanWorkOverviewVo> keshuoWorkOverviewVoList = convertWorkOverviewVo(keshuoWorks, allocationMap);
+                    stageOverviewVo.setKeshuoWorks(keshuoWorkOverviewVoList);
+                }
+                StudyPlanWorkTypeEnum workTypeEnum = StudyPlanWorkTypeEnum.studyTypeOf(cmsUser.getStudyType());
+                if (Objects.equals(StudyPlanWorkTypeEnum.Academic, workTypeEnum)) {//学术型任务
+                    List<CmsStudyPlanWork> academicWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Academic.getCode());
+                    List<CmsStudyPlanWorkOverviewVo> academicWorkOverviewVoList = convertWorkOverviewVo(academicWorks);
+                    stageOverviewVo.setAcademicWorks(academicWorkOverviewVoList);
+                } else if (Objects.equals(StudyPlanWorkTypeEnum.Synthesizing, workTypeEnum)) {//结合型任务
+                    List<CmsStudyPlanWork> synthesizingWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Synthesizing.getCode());
+                    List<CmsStudyPlanWorkOverviewVo> synthesizingWorkOverviewVoList = convertWorkOverviewVo(synthesizingWorks, allocationMap);
+                    stageOverviewVo.setSynthesizingWorks(synthesizingWorkOverviewVoList);
+                } else if (Objects.equals(StudyPlanWorkTypeEnum.Technology, workTypeEnum)) {//技术型公共任务
+                    List<CmsStudyPlanWork> technologyWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Technology.getCode());
+                    List<CmsStudyPlanWorkOverviewVo> technologyWorkOverviewVoList = convertWorkOverviewVo(technologyWorks, allocationMap);
+                    stageOverviewVo.setTechnologyWorks(technologyWorkOverviewVoList);
+                }
+                retList.add(stageOverviewVo);
+            }
+            return retList;
+        }
+        return Collections.emptyList();
+    }
+
+    private CmsStudyPlanStageOverviewVo convertCmsStudyPlanStageOverviewVo(CmsStudyPlanStage stage, Date basicDate) {
+        CmsStudyPlanStageOverviewVo stageOverviewVo = new CmsStudyPlanStageOverviewVo();
+        stageOverviewVo.setId(stage.getId());
+        stageOverviewVo.setPlanId(stage.getPlanId());
+        stageOverviewVo.setTerm(stage.getTerm());
+        stageOverviewVo.setIndex(stage.getIndex());
+        Integer workDays = stage.getWorkDays();
+        stageOverviewVo.setWorkDays(workDays);
+        basicDate = DateUtils.addDays(basicDate, workDays);
+        stageOverviewVo.setDeadline(basicDate);
+        stageOverviewVo.setCreateTime(stage.getCreateTime());
+        stageOverviewVo.setModifyTime(stage.getModifyTime());
+        return stageOverviewVo;
+    }
+
+    private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(List<CmsStudyPlanWork> stageWorks) {
+        return convertWorkOverviewVo(stageWorks, Collections.emptyMap());
+    }
+
+    private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(
+            List<CmsStudyPlanWork> stageWorks, Map<Long, CmsStudyPlanAllocation> allocationMap) {
+        if (CollectionUtils.isNotEmpty(stageWorks)) {
             List<CmsStudyPlanWorkOverviewVo> workOverviewVoList = Lists.newArrayList();
-            commonWorks.forEach(commonWork -> {
+            stageWorks.forEach(commonWork -> {
                 CmsStudyPlanWorkOverviewVo workOverviewVo = new CmsStudyPlanWorkOverviewVo();
                 workOverviewVo.setId(commonWork.getId());
                 workOverviewVo.setPlanId(commonWork.getPlanId());
@@ -224,6 +313,11 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
                 workOverviewVo.setName(commonWork.getName());
                 workOverviewVo.setCreateTime(commonWork.getCreateTime());
                 workOverviewVo.setModifyTime(commonWork.getModifyTime());
+                CmsStudyPlanAllocation allocation = allocationMap.get(commonWork.getId());
+                if (allocation != null) {
+                    CmsStudyPlanAllocationVo allocationVo = convertCmsStudyPlanAllocationVo(allocation);
+                    workOverviewVo.setAllocation(allocationVo);
+                }
                 workOverviewVoList.add(workOverviewVo);
             });
             return workOverviewVoList;
@@ -231,4 +325,29 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return Collections.emptyList();
     }
 
+    private CmsStudyPlanAllocationVo convertCmsStudyPlanAllocationVo(CmsStudyPlanAllocation allocation) {
+        CmsStudyPlanAllocationVo allocationVo = new CmsStudyPlanAllocationVo();
+        allocationVo.setId(allocation.getId());
+        allocationVo.setUserId(allocation.getUserId());
+        allocationVo.setPlanId(allocation.getPlanId());
+        allocationVo.setPlanStageId(allocation.getPlanStageId());
+        allocationVo.setPlanWorkId(allocation.getPlanWorkId());
+        Date planWorkStartDate = allocation.getPlanWorkStartDate();
+        allocationVo.setPlanWorkStartDate(planWorkStartDate);
+        Date planWorkEndDate = allocation.getPlanWorkEndDate();
+        allocationVo.setPlanWorkEndDate(planWorkEndDate);
+        Integer planWorkDelay = allocation.getPlanWorkDelay();
+        allocationVo.setPlanWorkDelay(planWorkDelay);
+        Integer finished = allocation.getFinished();
+        allocationVo.setFinished(finished);
+        Date finishedDate = allocation.getFinishedDate();
+        allocationVo.setFinishedDate(finishedDate);
+        StudyPlanAllocationStatusEnum statusEnum = StudyPlanAllocationStatusEnum
+                .eval(planWorkEndDate, planWorkDelay, finished, finishedDate);
+        allocationVo.setStatus(statusEnum.getCode());
+        allocationVo.setRemark(allocation.getRemark());
+        allocationVo.setCreateTime(allocation.getCreateTime());
+        allocationVo.setModifyTime(allocation.getModifyTime());
+        return allocationVo;
+    }
 }

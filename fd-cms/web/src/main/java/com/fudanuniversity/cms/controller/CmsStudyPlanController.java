@@ -7,12 +7,14 @@ import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import com.fudanuniversity.cms.commons.util.ValueUtils;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Objects;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
@@ -87,13 +89,29 @@ public class CmsStudyPlanController extends BaseController {
     }
 
     /**
-     * 预览培养计划
+     * 管理员预览培养计划
      */
     @GetMapping("/overview")
-    public JsonResult<?> overviewCmsStudyPlan(@NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+    public JsonResult<?> queryCmsStudyPlanOverview(@NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        CmsStudyPlanOverviewVo overview = cmsStudyPlanService.overviewCmsStudyPlan(id);
+        CmsStudyPlanOverviewVo overview = cmsStudyPlanService.queryCmsStudyPlanOverview(id);
+        return JsonResult.buildSuccess(overview);
+    }
+
+    /**
+     * 管理员或用户预览用户分配的培养计划
+     */
+    @GetMapping("/user/overview")
+    public JsonResult<?> queryUserCmsStudyPlanOverview(
+            Long userId,
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+        LoginUser loginUser = getLoginUser();
+        userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
+        if (!Objects.equals(userId, loginUser.getUserId())) {//至允许userId对应的本人和管理员查看指定用户分配的培养计划
+            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        }
+        CmsStudyPlanOverviewVo overview = cmsStudyPlanService.queryUserCmsStudyPlanOverview(userId, id);
         return JsonResult.buildSuccess(overview);
     }
 }

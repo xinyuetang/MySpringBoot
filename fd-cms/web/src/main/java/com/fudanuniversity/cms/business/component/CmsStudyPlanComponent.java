@@ -130,7 +130,7 @@ public class CmsStudyPlanComponent {
         return cmsStudyPlanWorkDao.selectListByParam(query);
     }
 
-    public List<CmsStudyPlanAllocation> queryStudyPlanAllocation(List<Long> userIds) {
+    public List<CmsStudyPlanAllocation> queryStudyPlanAllocationByUserIds(List<Long> userIds) {
         if (CollectionUtils.isNotEmpty(userIds)) {
             CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
             query.setUserIdList(userIds);
@@ -140,7 +140,18 @@ public class CmsStudyPlanComponent {
         return Collections.emptyList();
     }
 
-    public CmsStudyPlanAllocation queryStudyPlanAllocation(Long allocationId, Long userId) {
+    public CmsStudyPlanAllocation queryStudyPlanAllocationById(Long allocationId) {
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
+        query.setId(allocationId);
+        query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(allocations)) {
+            return allocations.get(0);
+        }
+        return null;
+    }
+
+    public CmsStudyPlanAllocation queryUserStudyPlanAllocation(Long userId, Long allocationId) {
         CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
         query.setId(allocationId);
         query.setUserId(userId);
@@ -150,6 +161,17 @@ public class CmsStudyPlanComponent {
             return allocations.get(0);
         }
         return null;
+    }
+
+    /**
+     * Key: workId
+     */
+    public Map<Long, CmsStudyPlanAllocation> queryUserStudyPlanAllocationMap(Long userId) {
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+        query.setUserId(userId);
+        query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        return allocations.stream().collect(Collectors.toMap(CmsStudyPlanAllocation::getPlanWorkId, Function.identity()));
     }
 
     /**
