@@ -9,10 +9,7 @@ import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -32,7 +29,7 @@ public class DeviceAllocationController extends BaseController {
      * 申请设备
      */
     @PostMapping("/apply")
-    public JsonResult<?> applyDeviceAllocation(@Valid CmsDeviceAllocationApplyVo allocationApplyVo) {
+    public JsonResult<?> applyDeviceAllocation(@Valid @RequestBody CmsDeviceAllocationApplyVo allocationApplyVo) {
         LoginUser loginUser = getLoginUser();
         cmsDeviceAllocationService.applyDeviceAllocation(loginUser.getUserId(), allocationApplyVo);
         return JsonResult.buildSuccess();
@@ -42,7 +39,7 @@ public class DeviceAllocationController extends BaseController {
      * 返还设备
      */
     @PostMapping("/return")
-    public JsonResult<?> returnDeviceAllocation(@Valid CmsDeviceAllocationReturnVo allocationReturnVo) {
+    public JsonResult<?> returnDeviceAllocation(@Valid @RequestBody CmsDeviceAllocationReturnVo allocationReturnVo) {
         LoginUser loginUser = getLoginUser();
         cmsDeviceAllocationService.returnDeviceAllocation(loginUser.getUserId(), allocationReturnVo);
         return JsonResult.buildSuccess();

@@ -9,11 +9,11 @@ import java.util.Date;
  */
 public enum StudyPlanAllocationStatusEnum {
 
-    Underway(10, "进行中"),
+    unfinished(10, "进行中"),
     DelayUnfinished(20, "延期未完成"),
     OvertimeUnfinished(30, "超期未完成"),
 
-    NormalFinished(40, "已完成"),
+    finished(40, "已完成"),
     DelayFinished(50, "延期完成"),
     OvertimeFinished(60, "超期完成"),
     ;
@@ -50,18 +50,18 @@ public enum StudyPlanAllocationStatusEnum {
         if (BooleanEnum.isTrue(finished)) {
             if (finishedDate != null) {//一般不可能为空
                 if (finishedDate.compareTo(planWorkEndDate) <= 0) {
-                    return NormalFinished;
+                    return StudyPlanAllocationStatusEnum.finished;
                 } else if (finishedDate.compareTo(delayDate) <= 0) {
                     return DelayFinished;
                 } else {
                     return OvertimeFinished;
                 }
             } else {//一般不可能为空
-                return NormalFinished;
+                return StudyPlanAllocationStatusEnum.finished;
             }
         } else {
             if (current.compareTo(planWorkEndDate) <= 0) {
-                return Underway;
+                return unfinished;
             } else if (current.compareTo(delayDate) <= 0) {
                 return DelayUnfinished;
             } else {

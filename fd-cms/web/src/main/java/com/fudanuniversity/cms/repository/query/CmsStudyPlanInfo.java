@@ -20,13 +20,17 @@ public class CmsStudyPlanInfo implements Serializable {
 
     private Long total;
 
-    private Long underway;
+    private Long unfinished;
+
+    private Long regularUnfinished;
 
     private Long delayUnfinished;
 
     private Long overtimeUnfinished;
 
-    private Long normalFinished;
+    private Long finished;
+
+    private Long regularFinished;
 
     private Long delayFinished;
 
