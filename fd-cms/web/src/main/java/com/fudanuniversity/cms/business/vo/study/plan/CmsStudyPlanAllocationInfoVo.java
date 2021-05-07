@@ -1,10 +1,11 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import java.io.Serializable;
-import java.util.Date;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -15,43 +16,45 @@ import lombok.ToString;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationVo implements Serializable {
+public class CmsStudyPlanAllocationInfoVo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * id
      */
-	private Long id;
+    private Long id;
 
     /**
      * 用户id
      */
-	private Long userId;
+    private Long userId;
+    private String userStuId;
+    private String userName;
 
     /**
      * 培养方案id
      */
-	private Long planId;
+    private Long planId;
 
     /**
      * 培养方案版本
      */
-	private Long planVersion;
+    private Long planVersion;
 
     /**
-     * 删除标记
+     *
      */
-	private Long deleted;
+    private CmsStudyPlanItemInfoVo info;
 
     /**
      * 创建时间
      */
-	private Date createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-	private Date modifyTime;
+    private Date modifyTime;
 }
 

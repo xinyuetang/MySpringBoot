@@ -1,30 +1,26 @@
 package com.fudanuniversity.cms.business.component;
 
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanOverviewVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageOverviewVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkOverviewVo;
+import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
+import com.fudanuniversity.cms.commons.enums.StudyPlanItemStatusEnum;
+import com.fudanuniversity.cms.commons.enums.StudyPlanWorkTypeEnum;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanWorkDao;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanStageQuery;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanWorkQuery;
+import com.fudanuniversity.cms.repository.dao.*;
+import com.fudanuniversity.cms.repository.entity.*;
+import com.fudanuniversity.cms.repository.query.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -44,11 +40,14 @@ public class CmsStudyPlanComponent {
     private CmsStudyPlanWorkDao cmsStudyPlanWorkDao;
 
     @Resource
+    private CmsStudyPlanAllocationDao cmsStudyPlanAllocationDao;
+
+    @Resource
     private CmsStudyPlanItemDao cmsStudyPlanItemDao;
 
     /**
      * 每次变更培养计划的信息版本则增加
-     * */
+     */
     public int increaseStudyPlanVersion(Long planId) {
         AssertUtils.notNull(planId);
         CmsStudyPlanQuery query = CmsStudyPlanQuery.singletonQuery();
@@ -91,6 +90,13 @@ public class CmsStudyPlanComponent {
         return null;
     }
 
+    public List<CmsStudyPlanStage> queryStudyPlanStagesById(List<Long> stageIds) {
+        AssertUtils.notEmpty(stageIds);
+        CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.singletonQuery();
+        query.setIdList(stageIds);
+        return cmsStudyPlanStageDao.selectListByParam(query);
+    }
+
     public List<CmsStudyPlanStage> queryStudyPlanStageByPlanId(Long planId) {
         AssertUtils.notNull(planId);
         CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.listQuery();
@@ -105,14 +111,6 @@ public class CmsStudyPlanComponent {
         query.setPlanId(planId);
         query.setTerm(term);
         return cmsStudyPlanStageDao.selectListByParam(query);
-    }
-
-    public Map<Long, CmsStudyPlanStage> queryStudyPlanStageMapByPlanId(List<Long> stageIds) {
-        AssertUtils.notEmpty(stageIds);
-        CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.listQuery();
-        query.setIdList(stageIds);
-        List<CmsStudyPlanStage> stages = cmsStudyPlanStageDao.selectListByParam(query);
-        return stages.stream().collect(Collectors.toMap(CmsStudyPlanStage::getId, Function.identity()));
     }
 
     public CmsStudyPlanWork queryStudyPlanWorkById(Long workId) {
@@ -163,9 +161,21 @@ public class CmsStudyPlanComponent {
         return null;
     }
 
-    public CmsStudyPlanItem queryUserStudyPlanAllocation(Long userId, Long allocationId) {
+    public CmsStudyPlanAllocation queryUserStudyPlanAllocation(Long userId, Long planId) {
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
+        query.setUserId(userId);
+        query.setPlanId(planId);
+        query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(allocations)) {
+            return allocations.get(0);
+        }
+        return null;
+    }
+
+    public CmsStudyPlanItem queryUserStudyPlanItem(Long userId, Long itemId) {
         CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
-        query.setId(allocationId);
+        query.setId(itemId);
         query.setUserId(userId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
         List<CmsStudyPlanItem> allocations = cmsStudyPlanItemDao.selectListByParam(query);
@@ -218,5 +228,166 @@ public class CmsStudyPlanComponent {
             workList.add(planWork);
         }
         return retMap;
+    }
+
+    public List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(List<CmsStudyPlanStage> stages) {
+        if (CollectionUtils.isNotEmpty(stages)) {
+            List<CmsStudyPlanStageOverviewVo> retList = Lists.newArrayList();
+            List<Long> stageIds = Lists.transform(stages, CmsStudyPlanStage::getId);
+            List<CmsStudyPlanWork> planWorks = queryStudyPlanWorks(stageIds);
+            Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap = convertCmsStudyPlanWorkMap(planWorks);
+            for (CmsStudyPlanStage stage : stages) {
+                CmsStudyPlanStageOverviewVo stageOverviewVo = new CmsStudyPlanStageOverviewVo();
+                stageOverviewVo.setId(stage.getId());
+                stageOverviewVo.setPlanId(stage.getPlanId());
+                stageOverviewVo.setTerm(stage.getTerm());
+                stageOverviewVo.setIndex(stage.getIndex());
+                stageOverviewVo.setEndDate(stage.getEndDate());
+                stageOverviewVo.setCreateTime(stage.getCreateTime());
+                stageOverviewVo.setModifyTime(stage.getModifyTime());
+                //任务
+                Long stageId = stage.getId();
+                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
+                //公共任务
+                List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
+                List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks);
+                stageOverviewVo.setCommonWorks(commonWorkOverviewVoList);
+                //科硕任务
+                List<CmsStudyPlanWork> keshuoWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Keshuo.getCode());
+                List<CmsStudyPlanWorkOverviewVo> keshuoWorkOverviewVoList = convertWorkOverviewVo(keshuoWorks);
+                stageOverviewVo.setKeshuoWorks(keshuoWorkOverviewVoList);
+                //学术型任务
+                List<CmsStudyPlanWork> academicWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Academic.getCode());
+                List<CmsStudyPlanWorkOverviewVo> academicWorkOverviewVoList = convertWorkOverviewVo(academicWorks);
+                stageOverviewVo.setAcademicWorks(academicWorkOverviewVoList);
+                //结合型任务
+                List<CmsStudyPlanWork> synthesizingWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Synthesizing.getCode());
+                List<CmsStudyPlanWorkOverviewVo> synthesizingWorkOverviewVoList = convertWorkOverviewVo(synthesizingWorks);
+                stageOverviewVo.setSynthesizingWorks(synthesizingWorkOverviewVoList);
+                //技术型公共任务
+                List<CmsStudyPlanWork> technologyWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Technology.getCode());
+                List<CmsStudyPlanWorkOverviewVo> technologyWorkOverviewVoList = convertWorkOverviewVo(technologyWorks);
+                stageOverviewVo.setTechnologyWorks(technologyWorkOverviewVoList);
+                retList.add(stageOverviewVo);
+            }
+            return retList;
+        }
+        return Collections.emptyList();
+    }
+
+    //用户培养计划任务会有任务的进度信息
+    public List<CmsStudyPlanStageOverviewVo> convertStageOverviewVoList(CmsUser cmsUser, List<CmsStudyPlanStage> stages) {
+        if (CollectionUtils.isNotEmpty(stages)) {
+            List<CmsStudyPlanStageOverviewVo> retList = Lists.newArrayList();
+            List<Long> stageIds = Lists.transform(stages, CmsStudyPlanStage::getId);
+            List<CmsStudyPlanWork> planWorks = queryStudyPlanWorks(stageIds);
+            Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap = convertCmsStudyPlanWorkMap(planWorks);
+            Map<Long, CmsStudyPlanItem> allocationMap = queryUserStudyPlanAllocationMap(cmsUser.getId());
+            for (CmsStudyPlanStage stage : stages) {
+                CmsStudyPlanStageOverviewVo stageOverviewVo = convertCmsStudyPlanStageOverviewVo(stage);
+                //任务
+                Long stageId = stage.getId();
+                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
+                //公共任务
+                List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
+                List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks, allocationMap);
+                stageOverviewVo.setCommonWorks(commonWorkOverviewVoList);
+                //科硕任务
+                List<CmsStudyPlanWorkOverviewVo> keshuoWorkOverviewVoList = Collections.emptyList();
+                if (BooleanEnum.isTrue(cmsUser.getKeshuo())) {
+                    List<CmsStudyPlanWork> keshuoWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Keshuo.getCode());
+                    keshuoWorkOverviewVoList = convertWorkOverviewVo(keshuoWorks, allocationMap);
+                }
+                stageOverviewVo.setKeshuoWorks(keshuoWorkOverviewVoList);
+                StudyPlanWorkTypeEnum workTypeEnum = StudyPlanWorkTypeEnum.studyTypeOf(cmsUser.getStudyType());
+                List<CmsStudyPlanWorkOverviewVo> academicWorkOverviewVoList = Collections.emptyList();
+                List<CmsStudyPlanWorkOverviewVo> synthesizingWorkOverviewVoList = Collections.emptyList();
+                List<CmsStudyPlanWorkOverviewVo> technologyWorkOverviewVoList = Collections.emptyList();
+                if (Objects.equals(StudyPlanWorkTypeEnum.Academic, workTypeEnum)) {//学术型任务
+                    List<CmsStudyPlanWork> academicWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Academic.getCode());
+                    academicWorkOverviewVoList = convertWorkOverviewVo(academicWorks);
+                } else if (Objects.equals(StudyPlanWorkTypeEnum.Synthesizing, workTypeEnum)) {//结合型任务
+                    List<CmsStudyPlanWork> synthesizingWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Synthesizing.getCode());
+                    synthesizingWorkOverviewVoList = convertWorkOverviewVo(synthesizingWorks, allocationMap);
+                } else if (Objects.equals(StudyPlanWorkTypeEnum.Technology, workTypeEnum)) {//技术型公共任务
+                    List<CmsStudyPlanWork> technologyWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Technology.getCode());
+                    technologyWorkOverviewVoList = convertWorkOverviewVo(technologyWorks, allocationMap);
+                }
+                stageOverviewVo.setAcademicWorks(academicWorkOverviewVoList);
+                stageOverviewVo.setSynthesizingWorks(synthesizingWorkOverviewVoList);
+                stageOverviewVo.setTechnologyWorks(technologyWorkOverviewVoList);
+                retList.add(stageOverviewVo);
+            }
+            return retList;
+        }
+        return Collections.emptyList();
+    }
+
+    private CmsStudyPlanStageOverviewVo convertCmsStudyPlanStageOverviewVo(CmsStudyPlanStage stage) {
+        CmsStudyPlanStageOverviewVo stageOverviewVo = new CmsStudyPlanStageOverviewVo();
+        stageOverviewVo.setId(stage.getId());
+        stageOverviewVo.setPlanId(stage.getPlanId());
+        stageOverviewVo.setTerm(stage.getTerm());
+        stageOverviewVo.setIndex(stage.getIndex());
+        stageOverviewVo.setEndDate(stage.getEndDate());
+        stageOverviewVo.setCreateTime(stage.getCreateTime());
+        stageOverviewVo.setModifyTime(stage.getModifyTime());
+        return stageOverviewVo;
+    }
+
+    private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(List<CmsStudyPlanWork> stageWorks) {
+        return convertWorkOverviewVo(stageWorks, Collections.emptyMap());
+    }
+
+    private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(
+            List<CmsStudyPlanWork> stageWorks, Map<Long, CmsStudyPlanItem> allocationMap) {
+        if (CollectionUtils.isNotEmpty(stageWorks)) {
+            List<CmsStudyPlanWorkOverviewVo> workOverviewVoList = Lists.newArrayList();
+            stageWorks.forEach(commonWork -> {
+                CmsStudyPlanWorkOverviewVo workOverviewVo = new CmsStudyPlanWorkOverviewVo();
+                workOverviewVo.setId(commonWork.getId());
+                workOverviewVo.setPlanId(commonWork.getPlanId());
+                workOverviewVo.setPlanStageId(commonWork.getPlanStageId());
+                workOverviewVo.setWorkType(commonWork.getWorkType());
+                workOverviewVo.setIndex(commonWork.getIndex());
+                workOverviewVo.setName(commonWork.getName());
+                workOverviewVo.setCreateTime(commonWork.getCreateTime());
+                workOverviewVo.setModifyTime(commonWork.getModifyTime());
+                CmsStudyPlanItem allocation = allocationMap.get(commonWork.getId());
+                if (allocation != null) {
+                    CmsStudyPlanItemVo allocationVo = convertCmsStudyPlanAllocationVo(allocation);
+                    workOverviewVo.setAllocation(allocationVo);
+                }
+                workOverviewVoList.add(workOverviewVo);
+            });
+            return workOverviewVoList;
+        }
+        return Collections.emptyList();
+    }
+
+    private CmsStudyPlanItemVo convertCmsStudyPlanAllocationVo(CmsStudyPlanItem allocation) {
+        CmsStudyPlanItemVo allocationVo = new CmsStudyPlanItemVo();
+        allocationVo.setId(allocation.getId());
+        allocationVo.setUserId(allocation.getUserId());
+        allocationVo.setPlanId(allocation.getPlanId());
+        allocationVo.setPlanStageId(allocation.getPlanStageId());
+        allocationVo.setPlanWorkId(allocation.getPlanWorkId());
+        Date planWorkStartDate = allocation.getPlanWorkStartDate();
+        allocationVo.setPlanWorkStartDate(planWorkStartDate);
+        Date planWorkEndDate = allocation.getPlanWorkEndDate();
+        allocationVo.setPlanWorkEndDate(planWorkEndDate);
+        Integer planWorkDelay = allocation.getPlanWorkDelay();
+        allocationVo.setPlanWorkDelay(planWorkDelay);
+        Integer finished = allocation.getFinished();
+        allocationVo.setFinished(finished);
+        Date finishedDate = allocation.getFinishedDate();
+        allocationVo.setFinishedDate(finishedDate);
+        StudyPlanItemStatusEnum statusEnum = StudyPlanItemStatusEnum
+                .eval(planWorkEndDate, planWorkDelay, finished, finishedDate);
+        allocationVo.setStatus(statusEnum.getCode());
+        allocationVo.setRemark(allocation.getRemark());
+        allocationVo.setCreateTime(allocation.getCreateTime());
+        allocationVo.setModifyTime(allocation.getModifyTime());
+        return allocationVo;
     }
 }

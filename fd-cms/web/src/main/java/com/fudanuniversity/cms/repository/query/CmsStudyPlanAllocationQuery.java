@@ -86,6 +86,11 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
     private Date egtCreateTime;
 
     /**
+     * 更新时间
+     */
+    private Date modifyTime;
+
+    /**
      * 字段备注:小于等于更新时间 <p>
      * 数据库字段长度:(19,0) <p>
      * 索引字段:不是

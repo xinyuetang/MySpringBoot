@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsStudyPlanWorkMapper">
+<mapper namespace="com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper">
 
     <!-- 返回结果集 -->
-    <resultMap id="CmsStudyPlanWorkMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork">
+    <resultMap id="CmsStudyPlanAllocationMap" type="com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation">
         <result column="id" property="id"/>
+        <result column="user_id" property="userId"/>
         <result column="plan_id" property="planId"/>
-        <result column="plan_stage_id" property="planStageId"/>
-        <result column="work_type" property="workType"/>
-        <result column="index" property="index"/>
-        <result column="name" property="name"/>
+        <result column="plan_version" property="planVersion"/>
+        <result column="deleted" property="deleted"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `plan_id`, `plan_stage_id`, `work_type`, `index`, `name`, `create_time`,  `modify_time`
+        `id`, `user_id`, `plan_id`, `plan_version`, `deleted`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{planId}, #{planStageId}, #{workType}, #{index}, #{name}, #{createTime},  #{modifyTime}
+        #{id}, #{userId}, #{planId}, #{planVersion}, #{deleted}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -37,27 +36,17 @@
                 #{id}
             </foreach>
         </if>
+        <if test="userId != null">
+            AND `user_id` = #{userId}
+        </if>
         <if test="planId != null">
             AND `plan_id` = #{planId}
         </if>
-        <if test="planStageId != null">
-            AND `plan_stage_id` = #{planStageId}
+        <if test="planVersion != null">
+            AND `plan_version` = #{planVersion}
         </if>
-        <if test="planStageIdList != null and planStageIdList.size() > 0">
-            AND `plan_stage_id` IN
-            <foreach collection="planStageIdList" item="planStageId"
-                     open="( " separator=" , " close=" )">
-                #{planStageId}
-            </foreach>
-        </if>
-        <if test="workType != null">
-            AND `work_type` = #{workType}
-        </if>
-        <if test="index != null">
-            AND `index` = #{index}
-        </if>
-        <if test="name != null">
-            AND `name` = #{name}
+        <if test="deleted != null">
+            AND `deleted` = #{deleted}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -93,47 +82,43 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan_work`(`plan_id`, `plan_stage_id`, `work_type`, `index`, `name`, `create_time`, `modify_time`)
+            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_version`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{planId}, #{planStageId}, #{workType}, #{index}, #{name}, #{createTime}, #{modifyTime}
+            #{userId}, #{planId}, #{planVersion}, #{deleted}, #{createTime}, #{modifyTime}
         </trim>
     </insert>
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan_work`(`plan_id`, `plan_stage_id`, `work_type`, `index`, `name`, `create_time`, `modify_time`)
+            `cms_study_plan_allocation`(`user_id`, `plan_id`, `plan_version`, `deleted`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.planId}, #{data.planStageId}, #{data.workType}, #{data.index}, #{data.name}, #{data.createTime}, #{data.modifyTime})
+            (#{data.userId}, #{data.planId}, #{data.planVersion}, #{data.deleted}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
+       `user_id` = VALUES(`user_id`), 
        `plan_id` = VALUES(`plan_id`), 
-       `plan_stage_id` = VALUES(`plan_stage_id`), 
-       `work_type` = VALUES(`work_type`), 
-       `index` = VALUES(`index`), 
-       `name` = VALUES(`name`), 
+       `plan_version` = VALUES(`plan_version`), 
+       `deleted` = VALUES(`deleted`), 
        `create_time` = `create_time`, 
        `modify_time` = VALUES(`modify_time`)
     </insert>
 
     <update id="updateById">
-        UPDATE `cms_study_plan_work`
+        UPDATE `cms_study_plan_allocation`
         <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">
+                `user_id` = #{userId},
+            </if>
             <if test="planId != null">
                 `plan_id` = #{planId},
             </if>
-            <if test="planStageId != null">
-                `plan_stage_id` = #{planStageId},
+            <if test="planVersion != null">
+                `plan_version` = #{planVersion},
             </if>
-            <if test="workType != null">
-                `work_type` = #{workType},
-            </if>
-            <if test="index != null">
-                `index` = #{index},
-            </if>
-            <if test="name != null">
-                `name` = #{name},
+            <if test="deleted != null">
+                `deleted` = #{deleted},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},
@@ -148,20 +133,45 @@
 
     <delete id="deleteById">
         <![CDATA[
-        DELETE FROM `cms_study_plan_work` WHERE `id` = #{id} LIMIT 1
+        DELETE FROM `cms_study_plan_allocation` WHERE `id` = #{id} LIMIT 1
         ]]>
     </delete>
 
-    <delete id="deleteByPlanId">
+    <update id="deleteByQuery" parameterType="map" >
         <![CDATA[
-        DELETE FROM `cms_study_plan_work` WHERE `plan_id` = #{planId}
+        UPDATE `cms_study_plan_allocation`
+        SET
+        `deleted` = `id`,
+        `modify_time` = #{modifyTime}
         ]]>
-    </delete>
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <if test="idList != null and idList.size() > 0">
+                AND `id` IN
+                <foreach collection="idList" item="id"
+                         open="( " separator=" , " close=" )">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="userId != null">
+                AND `user_id` = #{userId}
+            </if>
+            <if test="userIdList != null and userIdList.size() > 0">
+                AND `user_id` IN
+                <foreach collection="userIdList" item="userId"
+                         open="( " separator=" , " close=" )">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="planId != null">
+                AND `plan_id` = #{planId}
+            </if>
+        </trim>
+    </update>
 
-    <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanWorkMap">
+    <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanAllocationMap">
         SELECT
         <include refid="_field_list"/>
-        FROM `cms_study_plan_work`
+        FROM `cms_study_plan_allocation`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>
@@ -171,7 +181,7 @@
 
     <select id="selectCountByParam" parameterType="map" resultType="java.lang.Long">
         SELECT COUNT(*)
-        FROM `cms_study_plan_work`
+        FROM `cms_study_plan_allocation`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
         </trim>

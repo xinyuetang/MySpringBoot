@@ -1,7 +1,5 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,16 +19,6 @@ public class CmsStudyPlanFullVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 入学年份
-     */
-    @NotNull
-    private Integer enrollYear;
 
-    /**
-     * 名称
-     */
-    @NotEmpty
-    private String name;
 }
 

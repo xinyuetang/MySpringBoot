@@ -57,6 +57,7 @@ public class CmsStudyPlanItemQuery extends BaseQuery {
      * 索引字段:是
      */
     private Long planId;
+    private List<Long> planIdList;
 
     /**
      * 字段备注:培养方案阶段id <p>

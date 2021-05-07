@@ -39,10 +39,11 @@ public interface CmsStudyPlanService {
     /**
      *
      */
-    CmsStudyPlanOverviewVo queryCmsStudyPlanOverview(Long planId);
+    void assignCmsStudyPlan(CmsStudyPlanAssignVo assignVo);
 
     /**
      *
      */
-    CmsStudyPlanOverviewVo queryUserCmsStudyPlanOverview(Long userId, Long planId);
+    CmsStudyPlanOverviewVo queryCmsStudyPlanOverview(Long planId);
+
 }

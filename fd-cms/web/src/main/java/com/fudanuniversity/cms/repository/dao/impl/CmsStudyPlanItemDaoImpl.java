@@ -3,8 +3,8 @@ package com.fudanuniversity.cms.repository.dao.impl;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
 import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanItemMapper;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemInfo;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
@@ -67,7 +67,14 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
     }
 
     @Override
-    public int markAsDeletedByIds(List<Long> idList) {
+    public int deleteById(Long id) {
+        Assert.notNull(id, "删除记录id不能为空");
+
+        return cmsStudyPlanItemMapper.deleteById(id);
+    }
+
+    @Override
+    public int deleteByIds(List<Long> idList) {
         if (CollectionUtils.isEmpty(idList)) {
             return 0;
         }
@@ -75,15 +82,31 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
         CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
         query.setIdList(idList);
         query.setModifyTime(new Date());
-        return cmsStudyPlanItemMapper.markAsDeletedByQuery(query);
+        return cmsStudyPlanItemMapper.deleteByQuery(query);
     }
 
     @Override
-    public int deleteById(Long id) {
-        Assert.notNull(id, "删除记录id不能为空");
+    public int deleteByPlanId(Long planId) {
+        Assert.notNull(planId, "planId不能为空");
 
-        return cmsStudyPlanItemMapper.deleteById(id);
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
+        query.setPlanId(planId);
+        query.setModifyTime(new Date());
+        return cmsStudyPlanItemMapper.deleteByQuery(query);
     }
+
+    @Override
+    public int deleteByPlanId(Long planId, Long userId) {
+        Assert.notNull(planId, "planId不能为空");
+        Assert.notNull(userId, "userId不能为空");
+
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
+        query.setPlanId(planId);
+        query.setUserId(userId);
+        query.setModifyTime(new Date());
+        return cmsStudyPlanItemMapper.deleteByQuery(query);
+    }
+
 
     @Override
     public List<CmsStudyPlanItem> selectListByParam(CmsStudyPlanItemQuery query) {
@@ -95,7 +118,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
     }
 
     @Override
-    public List<CmsStudyPlanInfo> selectInfoByParam(CmsStudyPlanItemQuery query) {
+    public List<CmsStudyPlanItemInfo> selectInfoByParam(CmsStudyPlanItemQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 
         validateQueryParameter(query);

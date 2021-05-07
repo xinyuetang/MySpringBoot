@@ -55,8 +55,6 @@ public class DeviceController extends BaseController {
      */
     @GetMapping(path = "/paging")
     public JsonResult<?> queryPagingResult(@Valid CmsDeviceQueryVo queryVo, Paging paging) {
-        LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsDeviceVo> pagingResult = cmsDeviceService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
@@ -66,8 +64,6 @@ public class DeviceController extends BaseController {
      */
     @GetMapping(path = "/usage/paging")
     public JsonResult<?> queryUsagePagingResult(Long deviceId, Paging paging) {
-        LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsDeviceUsageVo> pagingResult = cmsDeviceService.queryUsagePagingResult(deviceId, paging);
         return JsonResult.buildSuccess(pagingResult);
     }

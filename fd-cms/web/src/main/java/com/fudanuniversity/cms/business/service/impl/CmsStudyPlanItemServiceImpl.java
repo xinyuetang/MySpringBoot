@@ -1,37 +1,27 @@
 package com.fudanuniversity.cms.business.service.impl;
 
 import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
-import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanItemService;
-import com.fudanuniversity.cms.business.vo.study.plan.*;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemEditVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemQueryVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemUserEditVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemVo;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
-import com.fudanuniversity.cms.commons.enums.DeletedEnum;
-import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
-import com.fudanuniversity.cms.commons.enums.StudyPlanWorkTypeEnum;
+import com.fudanuniversity.cms.commons.enums.StudyPlanItemStatusEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.commons.model.wrapper.PairTuple;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.commons.util.DateExUtils;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
-import com.fudanuniversity.cms.repository.entity.*;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
+import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.collections4.MapUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * CmsStudyPlanAllocationService 实现类
@@ -48,11 +38,6 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
 
     @Resource
     private CmsStudyPlanComponent cmsStudyPlanComponent;
-
-    @Resource
-    private CmsUserComponent cmsUserComponent;
-
-
 
     @Override
     public void editStudyPlanItem(CmsStudyPlanItemEditVo editVo) {
@@ -121,7 +106,7 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
                 allocationVo.setFinished(finished);
                 Date finishedDate = allocation.getFinishedDate();
                 allocationVo.setFinishedDate(finishedDate);
-                StudyPlanAllocationStatusEnum statusEnum = StudyPlanAllocationStatusEnum
+                StudyPlanItemStatusEnum statusEnum = StudyPlanItemStatusEnum
                         .eval(planWorkEndDate, planWorkDelay, finished, finishedDate);
                 allocationVo.setStatus(statusEnum.getCode());
                 allocationVo.setRemark(allocation.getRemark());
@@ -136,12 +121,12 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
 
     @Override
     public void editUserStudyPlanItem(Long userId, CmsStudyPlanItemUserEditVo userEditVo) {
-        Long allocationId = userEditVo.getId();
-        CmsStudyPlanItem allocation = cmsStudyPlanComponent.queryUserStudyPlanAllocation(userId, allocationId);
-        AssertUtils.notNull(allocation, "培养计划安排[" + allocationId + "]不存在");
+        Long itemId = userEditVo.getId();
+        CmsStudyPlanItem allocation = cmsStudyPlanComponent.queryUserStudyPlanItem(userId, itemId);
+        AssertUtils.notNull(allocation, "培养计划项目[" + itemId + "]不存在");
 
         CmsStudyPlanItem updater = new CmsStudyPlanItem();
-        updater.setId(allocationId);
+        updater.setId(itemId);
         Integer finished = userEditVo.getFinished();
         Date current = new Date();
         if (finished == null) {
@@ -157,32 +142,5 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
         int affect = cmsStudyPlanItemDao.updateById(updater);
         logger.info("更新CmsStudyPlanAllocation affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
-    }
-
-    @Override
-    public CmsStudyPlanItemInfoVo queryUserStudyPlanItemInfo(Long userId, Long planId) {
-        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
-        AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
-
-        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
-        List<CmsStudyPlanInfo> infoList = cmsStudyPlanItemDao.selectInfoByParam(query);
-        CmsStudyPlanInfo planInfo = null;
-        if (CollectionUtils.isNotEmpty(infoList)) {
-            planInfo = infoList.get(0);
-        }
-
-        CmsStudyPlanItemInfoVo allocationInfoVo = new CmsStudyPlanItemInfoVo();
-        allocationInfoVo.setUserId(userId);
-        allocationInfoVo.setPlanId(planId);
-        allocationInfoVo.setTotal(planInfo == null ? 0 : planInfo.getTotal());
-        allocationInfoVo.setUnfinished(planInfo == null ? 0 : planInfo.getUnfinished());
-        allocationInfoVo.setRegularUnfinished(planInfo == null ? 0 : planInfo.getRegularUnfinished());
-        allocationInfoVo.setDelayUnfinished(planInfo == null ? 0 : planInfo.getDelayUnfinished());
-        allocationInfoVo.setOvertimeUnfinished(planInfo == null ? 0 : planInfo.getOvertimeUnfinished());
-        allocationInfoVo.setFinished(planInfo == null ? 0 : planInfo.getFinished());
-        allocationInfoVo.setRegularFinished(planInfo == null ? 0 : planInfo.getRegularFinished());
-        allocationInfoVo.setDelayFinished(planInfo == null ? 0 : planInfo.getDelayFinished());
-        allocationInfoVo.setOvertimeUnfinished(planInfo == null ? 0 : planInfo.getOvertimeUnfinished());
-        return allocationInfoVo;
     }
 }

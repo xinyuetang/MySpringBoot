@@ -26,7 +26,7 @@ public class CmsDeviceAllocationQueryVo {
     private Long id;
 
     /**
-     * 演讲用户id
+     * 用户id
      */
     private Long userId;
 

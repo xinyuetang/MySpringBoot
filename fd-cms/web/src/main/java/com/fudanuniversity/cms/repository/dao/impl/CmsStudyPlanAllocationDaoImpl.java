@@ -1,14 +1,14 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
-import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
+import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,10 +32,10 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     }
 
     @Override
-    public int bulkUpsert(List<CmsStudyPlanAllocation> cmsStudyPlanAllocationList){
+    public int bulkUpsert(List<CmsStudyPlanAllocation> cmsStudyPlanAllocationList) {
         Assert.notEmpty(cmsStudyPlanAllocationList, "保存对象列表不能为空");
 
-        for(CmsStudyPlanAllocation cmsStudyPlanAllocation : cmsStudyPlanAllocationList){
+        for (CmsStudyPlanAllocation cmsStudyPlanAllocation : cmsStudyPlanAllocationList) {
             validateEntity(cmsStudyPlanAllocation);
         }
 
@@ -67,6 +67,28 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     }
 
     @Override
+    public int deleteByPlanId(Long planId) {
+        Assert.notNull(planId, "planId不能为空");
+
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+        query.setPlanId(planId);
+        query.setModifyTime(new Date());
+        return cmsStudyPlanAllocationMapper.deleteByQuery(query);
+    }
+
+    @Override
+    public int deleteByPlanId(Long planId, Long userId) {
+        Assert.notNull(planId, "planId不能为空");
+        Assert.notNull(userId, "userId不能为空");
+
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+        query.setPlanId(planId);
+        query.setUserId(userId);
+        query.setModifyTime(new Date());
+        return cmsStudyPlanAllocationMapper.deleteByQuery(query);
+    }
+
+    @Override
     public List<CmsStudyPlanAllocation> selectListByParam(CmsStudyPlanAllocationQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 
@@ -89,8 +111,8 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
 
         if (query.getId() == null
                 && query.getGtId() == null
-               && query.getUserId() == null
-               && query.getPlanId() == null) {
+                && query.getUserId() == null
+                && query.getPlanId() == null) {
             throw new UnsupportedOperationException("请通过索引查询！");
         }
     }

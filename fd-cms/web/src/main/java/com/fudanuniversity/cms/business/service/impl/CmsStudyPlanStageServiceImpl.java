@@ -10,6 +10,7 @@ import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanStageQuery;
+import com.google.common.collect.Lists;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,13 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
      * 保存处理
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveCmsStudyPlanStage(CmsStudyPlanStageAddVo addVo) {
         Long planId = addVo.getPlanId();
         CmsStudyPlan cmsStudyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(cmsStudyPlan, "培养计划[" + planId + "]不存在");
 
+        cmsStudyPlanComponent.increaseStudyPlanVersion(cmsStudyPlan.getId());
         Integer term = addVo.getTerm();
         List<CmsStudyPlanStage> planStages = cmsStudyPlanComponent.queryStudyPlanStages(planId, term);
         CmsStudyPlanStage studyPlanStage = new CmsStudyPlanStage();
@@ -62,10 +65,13 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateCmsStudyPlanStageById(CmsStudyPlanStageUpdateVo updateVo) {
         Long stageId = updateVo.getId();
         AssertUtils.notNull(stageId);
         CmsStudyPlanStage stage = cmsStudyPlanComponent.queryStudyPlanStageById(stageId);
+
+        cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getId());
         AssertUtils.notNull(stage, "培养计划阶段[" + stageId + "]不存在");
         CmsStudyPlanStage updater = new CmsStudyPlanStage();
         updater.setId(stageId);
@@ -79,6 +85,20 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void editCmsStudyPlanStages(List<CmsStudyPlanStageEditVo> editVoList) {
+        AssertUtils.notEmpty(editVoList, "培养计划阶段列表不能为空");
+        List<Long> stageIds = Lists.transform(editVoList, CmsStudyPlanStageEditVo::getId);
+        List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStagesById(stageIds);
+        AssertUtils.notEmpty(stages, "培养计划阶段列表不能为空");
+        Long planId = null;
+        for (CmsStudyPlanStage stage : stages) {
+            if (planId == null) {
+                planId = stage.getPlanId();
+            } else {
+                AssertUtils.state(planId.equals(stage.getPlanId()), "必须为同一个培养计划阶段");
+            }
+        }
+
+        cmsStudyPlanComponent.increaseStudyPlanVersion(planId);
         for (int i = 0; i < editVoList.size(); i++) {
             CmsStudyPlanStageEditVo updateVo = editVoList.get(i);
             CmsStudyPlanStage updater = new CmsStudyPlanStage();
@@ -106,6 +126,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         logger.info("删除CmsStudyPlanStage affect:{}, id: {}", delAffect, id);
         AssertUtils.state(delAffect == 1);
 
+        cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getPlanId());
         //删除一个阶段后，在同一个其他plan下的stage需要更新index
         Long planId = stage.getPlanId();
         List<CmsStudyPlanStage> planStageList = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);

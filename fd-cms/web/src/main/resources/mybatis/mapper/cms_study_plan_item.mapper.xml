@@ -21,7 +21,7 @@
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
-    <resultMap id="CmsStudyPlanInfoMap" type="com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo">
+    <resultMap id="CmsStudyPlanInfoMap" type="com.fudanuniversity.cms.repository.query.CmsStudyPlanItemInfo">
         <result column="user_id" property="userId"/>
         <result column="plan_id" property="planId"/>
         <result column="total" property="total"/>
@@ -67,6 +67,13 @@
         </if>
         <if test="planId != null">
             AND `plan_id` = #{planId}
+        </if>
+        <if test="planIdList != null and planIdList.size() > 0">
+            AND `plan_id` IN
+            <foreach collection="planIdList" item="planId"
+                     open="( " separator=" , " close=" )">
+                #{planId}
+            </foreach>
         </if>
         <if test="planStageId != null">
             AND `plan_stage_id` = #{planStageId}
@@ -210,16 +217,35 @@
         ]]>
     </delete>
 
-    <update id="markAsDeletedByQuery" parameterType="map" >
+    <update id="deleteByQuery" parameterType="map" >
+        <![CDATA[
         UPDATE `cms_study_plan_item`
         SET
-            `deleted` = `id`,
-            `modify_time` = #{modifyTime}
-        WHERE `id` IN
-            <foreach collection="idList" item="id"
-                     open="( " separator=" , " close=" )">
-                #{id}
-            </foreach>
+        `deleted` = `id`,
+        `modify_time` = #{modifyTime}
+        ]]>
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            <if test="idList != null and idList.size() > 0">
+                AND `id` IN
+                <foreach collection="idList" item="id"
+                         open="( " separator=" , " close=" )">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="userId != null">
+                AND `user_id` = #{userId}
+            </if>
+            <if test="userIdList != null and userIdList.size() > 0">
+                AND `user_id` IN
+                <foreach collection="userIdList" item="userId"
+                         open="( " separator=" , " close=" )">
+                    #{userId}
+                </foreach>
+            </if>
+            <if test="planId != null">
+                AND `plan_id` = #{planId}
+            </if>
+        </trim>
     </update>
 
     <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanAllocationMap">

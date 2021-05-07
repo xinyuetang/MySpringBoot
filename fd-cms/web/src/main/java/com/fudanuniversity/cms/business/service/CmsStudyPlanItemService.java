@@ -4,6 +4,8 @@ import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 
+import java.util.List;
+
 /**
  * CmsStudyPlanAllocationService
  * <p>
@@ -30,9 +32,4 @@ public interface CmsStudyPlanItemService {
      * 用户更新培养计划状态
      */
     void editUserStudyPlanItem(Long userId, CmsStudyPlanItemUserEditVo userEditVo);
-
-    /**
-     * 用户查询自己的培养计划信息
-     */
-    CmsStudyPlanItemInfoVo queryUserStudyPlanItemInfo(Long userId, Long planId);
 }

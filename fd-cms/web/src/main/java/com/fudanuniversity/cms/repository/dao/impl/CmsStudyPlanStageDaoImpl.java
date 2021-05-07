@@ -66,6 +66,13 @@ public class CmsStudyPlanStageDaoImpl implements CmsStudyPlanStageDao {
     }
 
     @Override
+    public int deleteByPlanId(Long planId) {
+        Assert.notNull(planId, "planId不能为空");
+
+        return cmsStudyPlanStageMapper.deleteByPlanId(planId);
+    }
+
+    @Override
     public List<CmsStudyPlanStage> selectListByParam(CmsStudyPlanStageQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 

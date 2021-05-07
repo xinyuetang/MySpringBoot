@@ -133,7 +133,13 @@
 
     <delete id="deleteById">
         <![CDATA[
-        DELETE FROM `cms_study_plan_stage` WHERE `id` = #{id} LIMIT 1
+        DELETE FROM `cms_study_plan_stage` WHERE `plan_id` = #{id} LIMIT 1
+        ]]>
+    </delete>
+
+    <delete id="deleteByPlanId">
+        <![CDATA[
+        DELETE FROM `cms_study_plan_stage` WHERE `id` = #{planId}
         ]]>
     </delete>
 

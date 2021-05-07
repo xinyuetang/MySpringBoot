@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanVo implements Serializable {
+public class CmsStudyPlanDetailVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -42,11 +42,6 @@ public class CmsStudyPlanVo implements Serializable {
     private String name;
 
     /**
-     * version
-     */
-    private Long version;
-
-    /**
      * 创建时间
      */
     private Date createTime;
@@ -57,7 +52,7 @@ public class CmsStudyPlanVo implements Serializable {
     private Date modifyTime;
 
     /**
-     * 阶段
+     *
      */
     private List<CmsStudyPlanStageOverviewVo> stages;
 }

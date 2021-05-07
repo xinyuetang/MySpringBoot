@@ -30,6 +30,11 @@ public interface CmsStudyPlanAllocationMapper {
     int deleteById(Long id);
 
     /**
+     * 删除处理
+     */
+    int deleteByQuery(CmsStudyPlanAllocationQuery query);
+
+    /**
      * 更新处理
      */
     int updateById(CmsStudyPlanAllocation cmsStudyPlanAllocation);
@@ -43,5 +48,4 @@ public interface CmsStudyPlanAllocationMapper {
      * 根据条件查询信息总数目
      */
     Long selectCountByParam(CmsStudyPlanAllocationQuery query);
-
 }

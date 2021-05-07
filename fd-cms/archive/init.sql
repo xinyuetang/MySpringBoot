@@ -322,7 +322,7 @@ DROP TABLE IF EXISTS `fd_cms`.`cms_device_allocation`;
 CREATE TABLE `fd_cms`.`cms_device_allocation`
 (
     `id`              bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
-    `user_id`         bigint   NOT NULL COMMENT '演讲用户id',
+    `user_id`         bigint   NOT NULL COMMENT '用户id',
     `device_id`       bigint   NOT NULL COMMENT '设备id',
     `inventory_usage` int      NOT NULL COMMENT '使用库存',
     `status`          tinyint  NOT NULL DEFAULT 0 COMMENT '状态',

@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.business.service;
 
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemGenerateVo;
-import com.fudanuniversity.cms.commons.model.paging.Paging;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfoVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationOverviewVo;
+
+import java.util.List;
 
 /**
  * CmsStudyPlanAllocationService
@@ -14,18 +13,23 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 public interface CmsStudyPlanAllocationService {
 
     /**
-     * 管理员生成培养计划
+     *
      */
-    void generateUserAllocations(CmsStudyPlanItemGenerateVo generateVo);
+    List<CmsStudyPlanAllocationInfoVo> queryAllocationInfoList(Long planId);
+
 
     /**
-     * 根据id删除处理
+     *
      */
-    void deleteCmsStudyPlanAllocationById(Long id);
+    void deleteCmsStudyPlanAllocationById(Long id, Long userId);
 
     /**
-     * 分页查询数据列表
+     *
      */
-    PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging);
+    CmsStudyPlanAllocationInfoVo queryAllocationInfo(Long planId, Long userId);
 
+    /**
+     *
+     */
+    CmsStudyPlanAllocationOverviewVo queryUserAllocationOverview(Long userId, Long planId);
 }

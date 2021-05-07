@@ -44,7 +44,7 @@ public class CmsDeviceAllocationQuery extends BaseQuery {
     private List<Long> idList;
 
     /**
-     * 字段备注:演讲用户id <p>
+     * 字段备注:用户id <p>
      * 数据库字段长度:(19,0) <p>
      * 索引字段:是
      */

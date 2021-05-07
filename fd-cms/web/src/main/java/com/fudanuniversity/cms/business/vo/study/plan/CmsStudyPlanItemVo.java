@@ -72,7 +72,7 @@ public class CmsStudyPlanItemVo implements Serializable {
 
     /**
      * 任务状态
-     * */
+     */
     private Integer status;
 
     /**

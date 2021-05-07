@@ -1,5 +1,8 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,18 +19,21 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanItemGenerateVo implements Serializable {
+public class CmsStudyPlanAssignVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 培养方案id
      */
+    @NotNull(message = "培养计划id不能为空")
+    @Min(1L)
     private Long planId;
 
     /**
      * 用户id
      */
+    @NotEmpty
     private List<Long> userIds;
 }
 

@@ -28,6 +28,7 @@ public class CmsDeviceUsageVo implements Serializable {
     private Long id;
 
     private Long userId;
+    private String userStuId;
     private String userName;
 
     /**

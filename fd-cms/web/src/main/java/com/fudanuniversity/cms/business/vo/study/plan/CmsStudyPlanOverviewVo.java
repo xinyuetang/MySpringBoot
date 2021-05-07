@@ -42,6 +42,11 @@ public class CmsStudyPlanOverviewVo implements Serializable {
     private String name;
 
     /**
+     * 版本
+     */
+    private Long planVersion;
+
+    /**
      * 创建时间
      */
     private Date createTime;

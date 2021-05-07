@@ -2,7 +2,7 @@ package com.fudanuniversity.cms.repository.mapper;
 
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public interface CmsStudyPlanItemMapper {
     /**
      * 软删除
      */
-    int markAsDeletedByQuery(CmsStudyPlanItemQuery query);
+    int deleteByQuery(CmsStudyPlanItemQuery query);
 
     /**
      * 更新处理
@@ -48,7 +48,7 @@ public interface CmsStudyPlanItemMapper {
     /**
      *
      */
-    List<CmsStudyPlanInfo> selectInfoByParam(CmsStudyPlanItemQuery query);
+    List<CmsStudyPlanItemInfo> selectInfoByParam(CmsStudyPlanItemQuery query);
 
     /**
      * 根据条件查询信息总数目

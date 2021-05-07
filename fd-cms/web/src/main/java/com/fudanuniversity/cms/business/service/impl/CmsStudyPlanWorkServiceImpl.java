@@ -16,6 +16,8 @@ import com.fudanuniversity.cms.repository.query.CmsStudyPlanWorkQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -43,12 +45,14 @@ public class CmsStudyPlanWorkServiceImpl implements CmsStudyPlanWorkService {
      * 保存处理
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveCmsStudyPlanWork(CmsStudyPlanWorkAddVo addVo) {
         Long planStageId = addVo.getPlanStageId();
         Integer workType = addVo.getWorkType();
         CmsStudyPlanStage planStage = cmsStudyPlanComponent.queryStudyPlanStageById(planStageId);
         AssertUtils.notNull(planStage, "培养计划阶段[" + planStageId + "]不存在");
 
+        cmsStudyPlanComponent.increaseStudyPlanVersion(planStage.getPlanId());
         List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(planStageId, workType);
         Long planId = planStage.getPlanId();
         CmsStudyPlanWork studyPlanWork = new CmsStudyPlanWork();
@@ -68,11 +72,13 @@ public class CmsStudyPlanWorkServiceImpl implements CmsStudyPlanWorkService {
      * 根据id更新处理
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void updateCmsStudyPlanWorkById(CmsStudyPlanWorkUpdateVo updateVo) {
         Long workId = updateVo.getId();
         CmsStudyPlanWork planWork = cmsStudyPlanComponent.queryStudyPlanWorkById(workId);
         AssertUtils.notNull(planWork, "培养计划阶段任务[" + workId + "]不存在");
 
+        cmsStudyPlanComponent.increaseStudyPlanVersion(planWork.getPlanId());
         CmsStudyPlanWork updater = new CmsStudyPlanWork();
         updater.setId(updateVo.getId());
         updater.setName(updateVo.getName());
@@ -86,6 +92,7 @@ public class CmsStudyPlanWorkServiceImpl implements CmsStudyPlanWorkService {
      * 根据id删除处理
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void deleteCmsStudyPlanWorkById(Long workId) {
         AssertUtils.notNull(workId);
         CmsStudyPlanWork delPlanWork = cmsStudyPlanComponent.queryStudyPlanWorkById(workId);
@@ -94,6 +101,7 @@ public class CmsStudyPlanWorkServiceImpl implements CmsStudyPlanWorkService {
         logger.info("删除CmsStudyPlanWork affect:{}, id: {}", affect, workId);
         AssertUtils.state(affect == 1);
 
+        cmsStudyPlanComponent.increaseStudyPlanVersion(delPlanWork.getPlanId());
         //删除一个阶段后，在同一个其他stage下的work需要更新index
         Long stageId = delPlanWork.getPlanStageId();
         Integer workType = delPlanWork.getWorkType();

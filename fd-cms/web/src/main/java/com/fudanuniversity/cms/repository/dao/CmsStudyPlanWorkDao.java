@@ -33,6 +33,11 @@ public interface CmsStudyPlanWorkDao {
     int deleteById(Long id);
 
     /**
+     * 根据planId除
+     */
+    int deleteByPlanId(Long planId);
+
+    /**
      * 查询数据
      */
     List<CmsStudyPlanWork> selectListByParam(CmsStudyPlanWorkQuery query);

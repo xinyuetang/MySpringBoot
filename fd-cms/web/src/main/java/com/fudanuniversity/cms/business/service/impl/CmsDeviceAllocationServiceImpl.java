@@ -63,6 +63,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         changeDeviceInventory(cmsDevice, -inventoryUsage);
         //添加申请记录
         CmsDeviceAllocation deviceAllocation = new CmsDeviceAllocation();
+        deviceAllocation.setUserId(userId);
         deviceAllocation.setDeviceId(deviceId);
         deviceAllocation.setInventoryUsage(inventoryUsage);
         deviceAllocation.setCreateTime(new Date());

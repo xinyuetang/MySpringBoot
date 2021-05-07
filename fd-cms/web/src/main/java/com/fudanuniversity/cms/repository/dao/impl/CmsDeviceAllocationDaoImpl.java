@@ -43,7 +43,7 @@ public class CmsDeviceAllocationDaoImpl implements CmsDeviceAllocationDao {
     }
 
     private void validateEntity(CmsDeviceAllocation cmsDeviceAllocation) {
-        Assert.notNull(cmsDeviceAllocation.getUserId(), "演讲用户id不能为空");
+        Assert.notNull(cmsDeviceAllocation.getUserId(), "用户id不能为空");
         Assert.notNull(cmsDeviceAllocation.getDeviceId(), "设备id不能为空");
         Assert.notNull(cmsDeviceAllocation.getInventoryUsage(), "使用库存不能为空");
         Assert.notNull(cmsDeviceAllocation.getStatus(), "状态不能为空");

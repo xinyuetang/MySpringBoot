@@ -165,6 +165,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
                 deviceUsageVo.setUserId(deviceAllocation.getUserId());
                 CmsUser allocationUser = userMap.get(deviceAllocation.getUserId());
                 if (allocationUser != null) {
+                    deviceUsageVo.setUserStuId(allocationUser.getStuId());
                     deviceUsageVo.setUserName(allocationUser.getName());
                 }
                 deviceUsageVo.setType(cmsDevice.getType());

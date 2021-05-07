@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanWorkDao;
-import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanWorkMapper;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork;
+import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanWorkMapper;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanWorkQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -32,10 +31,10 @@ public class CmsStudyPlanWorkDaoImpl implements CmsStudyPlanWorkDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsStudyPlanWork> cmsStudyPlanWorkList){
+    public int bulkUpsert(List<CmsStudyPlanWork> cmsStudyPlanWorkList) {
         Assert.notEmpty(cmsStudyPlanWorkList, "保存对象列表不能为空");
 
-        for(CmsStudyPlanWork cmsStudyPlanWork : cmsStudyPlanWorkList){
+        for (CmsStudyPlanWork cmsStudyPlanWork : cmsStudyPlanWorkList) {
             validateEntity(cmsStudyPlanWork);
         }
 
@@ -65,6 +64,13 @@ public class CmsStudyPlanWorkDaoImpl implements CmsStudyPlanWorkDao {
         Assert.notNull(id, "删除记录id不能为空");
 
         return cmsStudyPlanWorkMapper.deleteById(id);
+    }
+
+    @Override
+    public int deleteByPlanId(Long planId) {
+        Assert.notNull(planId, "planId不能为空");
+
+        return cmsStudyPlanWorkMapper.deleteByPlanId(planId);
     }
 
     @Override

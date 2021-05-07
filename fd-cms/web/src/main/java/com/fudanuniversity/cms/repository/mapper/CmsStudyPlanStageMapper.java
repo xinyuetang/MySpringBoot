@@ -30,6 +30,11 @@ public interface CmsStudyPlanStageMapper {
     int deleteById(Long id);
 
     /**
+     *
+     */
+    int deleteByPlanId(Long planId);
+
+    /**
      * 更新处理
      */
     int updateById(CmsStudyPlanStage cmsStudyPlanStage);

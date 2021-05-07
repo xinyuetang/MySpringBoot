@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanInfo implements Serializable {
+public class CmsStudyPlanItemInfo implements Serializable {
 
     private Long planId;
 

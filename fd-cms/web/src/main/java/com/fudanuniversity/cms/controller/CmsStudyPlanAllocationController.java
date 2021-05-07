@@ -2,19 +2,22 @@ package com.fudanuniversity.cms.controller;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationQueryVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemGenerateVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfoVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationOverviewVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanOverviewVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
-import com.fudanuniversity.cms.commons.model.paging.Paging;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
-import jakarta.validation.Valid;
+import com.fudanuniversity.cms.commons.util.ValueUtils;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
@@ -24,7 +27,7 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * Created by Xinyue.Tang at 2021-05-07 11:39:06
  */
 @RestController
-@RequestMapping("/study/plan/allocation/generate")
+@RequestMapping("/study/plan/allocation")
 public class CmsStudyPlanAllocationController extends BaseController {
 
     @Resource
@@ -33,33 +36,60 @@ public class CmsStudyPlanAllocationController extends BaseController {
     @Resource
     private CmsUserService cmsUserService;
 
+
     /**
-     * 管理员为学生分配生成培养计划
+     * 管理员查询培养计划任务完成情况
      */
-    @PostMapping("/generate")
-    public JsonResult<?> generateAllocations(@Valid @RequestBody CmsStudyPlanItemGenerateVo generateVo) {
+    @GetMapping("/info/list")
+    public JsonResult<?> queryAllocationInfoList(
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanAllocationService.generateUserAllocations(generateVo);
-        return JsonResult.buildSuccess();
+        List<CmsStudyPlanAllocationInfoVo> infoVoList = cmsStudyPlanAllocationService.queryAllocationInfoList(id);
+        return JsonResult.buildSuccess(infoVoList);
     }
+
 
     /**
      * 根据id删除处理
      */
     @PostMapping("/delete")
-    public JsonResult<?> deleteCmsStudyPlanAllocationById(@NotNull @Min(1L) Long id) {
-        cmsStudyPlanAllocationService.deleteCmsStudyPlanAllocationById(id);
+    public JsonResult<?> deleteCmsStudyPlanAllocationById(@NotNull @Min(1L) Long id, @NotNull @Min(1L) Long userId) {
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsStudyPlanAllocationService.deleteCmsStudyPlanAllocationById(id, userId);
         return JsonResult.buildSuccess();
     }
 
     /**
-     * 根据条件查询信息列表
+     * 管理员或用户查看培养计划任务完成情况
      */
-    @GetMapping("/paging")
-    public JsonResult<?> queryPagingResult(
-            @Valid CmsStudyPlanAllocationQueryVo queryVo, @Valid Paging paging) {
-        PagingResult<CmsStudyPlanAllocationVo> pagingResult = cmsStudyPlanAllocationService.queryPagingResult(queryVo, paging);
-        return JsonResult.buildSuccess(pagingResult);
+    @GetMapping("/info")
+    public JsonResult<?> queryAllocationInfo(
+            Long userId,
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+        LoginUser loginUser = getLoginUser();
+        userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
+        if (!Objects.equals(userId, loginUser.getUserId())) {//至允许userId对应的本人和管理员查看指定用户分配的培养计划
+            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        }
+        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(id, userId);
+        return JsonResult.buildSuccess(allocationInfoVo);
+    }
+
+    /**
+     * 管理员或用户预览用户分配的培养计划
+     */
+    @GetMapping("/overview")
+    public JsonResult<?> queryUserCmsStudyPlanOverview(
+            Long userId,
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+        LoginUser loginUser = getLoginUser();
+        userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
+        if (!Objects.equals(userId, loginUser.getUserId())) {//至允许userId对应的本人和管理员查看指定用户分配的培养计划
+            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        }
+        CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, id);
+        return JsonResult.buildSuccess(overview);
     }
 }

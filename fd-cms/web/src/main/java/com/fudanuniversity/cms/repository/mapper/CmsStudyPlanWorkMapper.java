@@ -30,6 +30,11 @@ public interface CmsStudyPlanWorkMapper {
     int deleteById(Long id);
 
     /**
+     * 删除处理
+     */
+    int deleteByPlanId(Long planId);
+
+    /**
      * 更新处理
      */
     int updateById(CmsStudyPlanWork cmsStudyPlanWork);
