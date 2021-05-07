@@ -3,7 +3,6 @@ package com.fudanuniversity.cms.controller;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanItemService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemEditVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemGenerateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemInfoVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemUserEditVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
@@ -34,17 +33,6 @@ public class CmsStudyPlanItemController extends BaseController {
     private CmsUserService cmsUserService;
 
     /**
-     * 管理员为学生分配生成培养计划
-     */
-    @PostMapping("/generate")
-    public JsonResult<?> generateAllocations(@Valid @RequestBody CmsStudyPlanItemGenerateVo generateVo) {
-        LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanItemService.generateUserAllocations(generateVo);
-        return JsonResult.buildSuccess();
-    }
-
-    /**
      * 管理员变更培养计划分配状态
      */
     @PostMapping("/edit")
@@ -52,7 +40,7 @@ public class CmsStudyPlanItemController extends BaseController {
             @Valid @RequestBody CmsStudyPlanItemEditVo editVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanItemService.editAllocation(editVo);
+        cmsStudyPlanItemService.editStudyPlanItem(editVo);
         return JsonResult.buildSuccess();
     }
 
@@ -63,7 +51,7 @@ public class CmsStudyPlanItemController extends BaseController {
     public JsonResult<?> changeUserCmsStudyPlanAllocationStatus(
             @Valid @RequestBody CmsStudyPlanItemUserEditVo userEditVo) {
         LoginUser loginUser = getLoginUser();
-        cmsStudyPlanItemService.editUserAllocation(loginUser.getUserId(), userEditVo);
+        cmsStudyPlanItemService.editUserStudyPlanItem(loginUser.getUserId(), userEditVo);
         return JsonResult.buildSuccess();
     }
 
@@ -78,7 +66,7 @@ public class CmsStudyPlanItemController extends BaseController {
             cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         }
         CmsStudyPlanItemInfoVo infoVo =
-                cmsStudyPlanItemService.queryUserAllocationInfo(userId, planId);
+                cmsStudyPlanItemService.queryUserStudyPlanItemInfo(userId, planId);
         return JsonResult.buildSuccess(infoVo);
     }
 }

@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
-import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanMapper;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
+import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanMapper;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -32,10 +31,10 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsStudyPlan> cmsStudyPlanList){
+    public int bulkUpsert(List<CmsStudyPlan> cmsStudyPlanList) {
         Assert.notEmpty(cmsStudyPlanList, "保存对象列表不能为空");
 
-        for(CmsStudyPlan cmsStudyPlan : cmsStudyPlanList){
+        for (CmsStudyPlan cmsStudyPlan : cmsStudyPlanList) {
             validateEntity(cmsStudyPlan);
         }
 
@@ -46,6 +45,7 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
         Assert.notNull(cmsStudyPlan.getEnrollYear(), "入学年份不能为空");
         Assert.notNull(cmsStudyPlan.getReferenceDate(), "基准日期不能为空");
         Assert.notNull(cmsStudyPlan.getName(), "名称不能为空");
+        Assert.notNull(cmsStudyPlan.getVersion(), "版本不能为空");
         Assert.notNull(cmsStudyPlan.getCreateTime(), "创建时间不能为空");
     }
 
@@ -63,6 +63,13 @@ public class CmsStudyPlanDaoImpl implements CmsStudyPlanDao {
         Assert.notNull(id, "删除记录id不能为空");
 
         return cmsStudyPlanMapper.deleteById(id);
+    }
+
+    @Override
+    public int increaseVersionById(Long id) {
+        Assert.notNull(id, "删除记录id不能为空");
+
+        return cmsStudyPlanMapper.increaseVersionById(id);
     }
 
     @Override

@@ -33,6 +33,11 @@ public interface CmsStudyPlanDao {
     int deleteById(Long id);
 
     /**
+     * 更新版本
+     */
+    int increaseVersionById(Long id);
+
+    /**
      * 查询数据
      */
     List<CmsStudyPlan> selectListByParam(CmsStudyPlanQuery query);

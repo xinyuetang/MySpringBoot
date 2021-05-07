@@ -35,6 +35,11 @@ public interface CmsStudyPlanMapper {
     int updateById(CmsStudyPlan cmsStudyPlan);
 
     /**
+     *
+     */
+    int increaseVersionById(Long id);
+
+    /**
      * 根据条件查询信息列表
      */
     List<CmsStudyPlan> selectListByParam(CmsStudyPlanQuery query);

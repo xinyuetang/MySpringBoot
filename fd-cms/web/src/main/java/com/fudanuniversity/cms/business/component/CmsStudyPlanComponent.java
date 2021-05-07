@@ -4,8 +4,8 @@ import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
+import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanWorkDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
@@ -45,6 +45,18 @@ public class CmsStudyPlanComponent {
 
     @Resource
     private CmsStudyPlanItemDao cmsStudyPlanItemDao;
+
+    /**
+     * 每次变更培养计划的信息版本则增加
+     * */
+    public int increaseStudyPlanVersion(Long planId) {
+        AssertUtils.notNull(planId);
+        CmsStudyPlanQuery query = CmsStudyPlanQuery.singletonQuery();
+        query.setId(planId);
+        int affect = cmsStudyPlanDao.increaseVersionById(planId);
+        AssertUtils.state(affect == 1);
+        return affect;
+    }
 
     public CmsStudyPlan queryStudyPlanById(Long planId) {
         AssertUtils.notNull(planId);

@@ -76,6 +76,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         updater.setId(device.getId());
         int newInventory = device.getInventory() + inventory;
         updater.setInventory(newInventory);
+        updater.setModifyTime(new Date());
         int affect = cmsDeviceDao.updateById(updater);
         AssertUtils.state(affect == 1);
     }

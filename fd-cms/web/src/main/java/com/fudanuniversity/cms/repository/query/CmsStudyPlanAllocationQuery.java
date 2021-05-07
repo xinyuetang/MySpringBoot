@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * 查询对象
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 22:57:02
+ * Created by Xinyue.Tang at 2021-05-07 11:39:06
  */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CmsStudyPlanQuery extends BaseQuery {
+public class CmsStudyPlanAllocationQuery extends BaseQuery {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,32 +44,32 @@ public class CmsStudyPlanQuery extends BaseQuery {
     private List<Long> idList;
 
     /**
-     * 字段备注:入学年份 <p>
-     * 数据库字段长度:(4,0) <p>
+     * 字段备注:用户id <p>
+     * 数据库字段长度:(19,0) <p>
      * 索引字段:是
      */
-    private Integer enrollYear;
+    private Long userId;
 
     /**
-     * 字段备注:基准日期 <p>
-     * 数据库字段长度:(10,0) <p>
-     * 索引字段:不是
+     * 字段备注:培养方案id <p>
+     * 数据库字段长度:(19,0) <p>
+     * 索引字段:是
      */
-    private Date referenceDate;
+    private Long planId;
 
     /**
-     * 字段备注:名称 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 索引字段:不是
-     */
-    private String name;
-
-    /**
-     * 字段备注:版本 <p>
+     * 字段备注:培养方案版本 <p>
      * 数据库字段长度:(19,0) <p>
      * 索引字段:不是
      */
-    private Long version;
+    private Long planVersion;
+
+    /**
+     * 字段备注:删除标记 <p>
+     * 数据库字段长度:(19,0) <p>
+     * 索引字段:不是
+     */
+    private Long deleted;
 
     /**
      * 字段备注:小于等于创建时间 <p>
@@ -99,14 +99,14 @@ public class CmsStudyPlanQuery extends BaseQuery {
      */
     private Date egtModifyTime;
 
-    public static CmsStudyPlanQuery singletonQuery() {
-        CmsStudyPlanQuery query = new CmsStudyPlanQuery();
+    public static CmsStudyPlanAllocationQuery singletonQuery() {
+        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
         query.setLimit(1);
         return query;
     }
 
-    public static CmsStudyPlanQuery listQuery() {
-        CmsStudyPlanQuery query = new CmsStudyPlanQuery();
+    public static CmsStudyPlanAllocationQuery listQuery() {
+        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
         query.setLimit(MAX_ROWS);
         return query;
     }

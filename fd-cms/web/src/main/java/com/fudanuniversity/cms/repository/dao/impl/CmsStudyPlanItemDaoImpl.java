@@ -2,7 +2,7 @@ package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
-import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanAllocationMapper;
+import com.fudanuniversity.cms.repository.mapper.CmsStudyPlanItemMapper;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -22,7 +22,7 @@ import java.util.List;
 public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
 
     @Resource
-    private CmsStudyPlanAllocationMapper cmsStudyPlanAllocationMapper;
+    private CmsStudyPlanItemMapper cmsStudyPlanItemMapper;
 
     @Override
     public int insert(CmsStudyPlanItem cmsStudyPlanItem) {
@@ -30,7 +30,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
 
         validateEntity(cmsStudyPlanItem);
 
-        return cmsStudyPlanAllocationMapper.insert(cmsStudyPlanItem);
+        return cmsStudyPlanItemMapper.insert(cmsStudyPlanItem);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
             validateEntity(cmsStudyPlanItem);
         }
 
-        return cmsStudyPlanAllocationMapper.bulkUpsert(cmsStudyPlanItemList);
+        return cmsStudyPlanItemMapper.bulkUpsert(cmsStudyPlanItemList);
     }
 
     private void validateEntity(CmsStudyPlanItem cmsStudyPlanItem) {
@@ -63,7 +63,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
         Assert.notNull(cmsStudyPlanItem.getId(), "更新对象id不能为空");
         Assert.notNull(cmsStudyPlanItem.getModifyTime(), "更新时间不能为空");
 
-        return cmsStudyPlanAllocationMapper.updateById(cmsStudyPlanItem);
+        return cmsStudyPlanItemMapper.updateById(cmsStudyPlanItem);
     }
 
     @Override
@@ -75,14 +75,14 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
         CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
         query.setIdList(idList);
         query.setModifyTime(new Date());
-        return cmsStudyPlanAllocationMapper.markAsDeletedByQuery(query);
+        return cmsStudyPlanItemMapper.markAsDeletedByQuery(query);
     }
 
     @Override
     public int deleteById(Long id) {
         Assert.notNull(id, "删除记录id不能为空");
 
-        return cmsStudyPlanAllocationMapper.deleteById(id);
+        return cmsStudyPlanItemMapper.deleteById(id);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
 
         validateQueryParameter(query);
 
-        return cmsStudyPlanAllocationMapper.selectListByParam(query);
+        return cmsStudyPlanItemMapper.selectListByParam(query);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
 
         validateQueryParameter(query);
 
-        return cmsStudyPlanAllocationMapper.selectInfoByParam(query);
+        return cmsStudyPlanItemMapper.selectInfoByParam(query);
     }
 
     @Override
@@ -109,7 +109,7 @@ public class CmsStudyPlanItemDaoImpl implements CmsStudyPlanItemDao {
 
         validateQueryParameter(query);
 
-        return cmsStudyPlanAllocationMapper.selectCountByParam(query);
+        return cmsStudyPlanItemMapper.selectCountByParam(query);
     }
 
     private void validateQueryParameter(CmsStudyPlanItemQuery query) {

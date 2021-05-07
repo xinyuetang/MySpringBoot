@@ -9,18 +9,19 @@
         <result column="enroll_year" property="enrollYear"/>
         <result column="reference_date" property="referenceDate"/>
         <result column="name" property="name"/>
+        <result column="version" property="version"/>
         <result column="create_time" property="createTime"/>
         <result column="modify_time" property="modifyTime"/>
     </resultMap>
 
     <!-- 字段列表信息 -->
     <sql id="_field_list">
-        `id`, `enroll_year`, `reference_date`, `name`, `create_time`,  `modify_time`
+        `id`, `enroll_year`, `reference_date`, `name`, `version`, `create_time`,  `modify_time`
     </sql>
 
     <!-- 值列表信息 -->
     <sql id="_value_list">
-        #{id}, #{enrollYear}, #{referenceDate}, #{name}, #{createTime},  #{modifyTime}
+        #{id}, #{enrollYear}, #{referenceDate}, #{name}, #{version}, #{createTime},  #{modifyTime}
     </sql>
 
     <!-- 普通条件查询 -->
@@ -43,6 +44,9 @@
         </if>
         <if test="name != null">
             AND `name` = #{name}
+        </if>
+        <if test="version != null">
+            AND `version` = #{version}
         </if>
         <if test="eltCreateTime != null">
             <![CDATA[
@@ -78,7 +82,7 @@
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO
-            `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `create_time`, `modify_time`)
+            `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `version`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
             #{enrollYear}, #{referenceDate}, #{name}, #{createTime}, #{modifyTime}
@@ -87,17 +91,18 @@
 
     <insert id="bulkUpsert" parameterType="list">
         INSERT INTO
-            `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `create_time`, `modify_time`)
+        `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `version`, `create_time`, `modify_time`)
         VALUES
         <foreach collection="list" item="data" separator=",">
-            (#{data.enrollYear}, #{data.referenceDate}, #{data.name}, #{data.createTime}, #{data.modifyTime})
+            (#{data.enrollYear}, #{data.referenceDate}, #{data.name}, #{data.version}, #{data.createTime}, #{data.modifyTime})
         </foreach>
         ON DUPLICATE KEY UPDATE
-       `enroll_year` = VALUES(`enroll_year`), 
-       `reference_date` = VALUES(`reference_date`), 
-       `name` = VALUES(`name`), 
-       `create_time` = `create_time`, 
-       `modify_time` = VALUES(`modify_time`)
+        `enroll_year` = VALUES(`enroll_year`),
+        `reference_date` = VALUES(`reference_date`),
+        `name` = VALUES(`name`),
+        `version` = VALUES(`version`),
+        `create_time` = `create_time`,
+        `modify_time` = VALUES(`modify_time`)
     </insert>
 
     <update id="updateById">
@@ -111,6 +116,9 @@
             </if>
             <if test="name != null">
                 `name` = #{name},
+            </if>
+            <if test="version != null">
+                `version` = #{version},
             </if>
             <if test="createTime != null">
                 `create_time` = #{createTime},
@@ -128,6 +136,12 @@
         DELETE FROM `cms_study_plan` WHERE `id` = #{id} LIMIT 1
         ]]>
     </delete>
+
+    <update id="increaseVersionById">
+        <![CDATA[
+        UPDATE `cms_study_plan` SET `version` = `version` + 1, `modify_time` = CURRENT_TIMESTAMP FROM `cms_study_plan` WHERE `id` = #{id} LIMIT 1
+        ]]>
+    </update>
 
     <select id="selectListByParam" parameterType="map" resultMap="CmsStudyPlanMap">
         SELECT

@@ -8,14 +8,14 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 培养方案
+ * 培养方案分配
  * <p>
- * Created by Xinyue.Tang at 2021-05-07 11:39:06
+ * Created by Xinyue.Tang at 2021-05-07 11:34:54
  */
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlan implements Serializable {
+public class CmsStudyPlanAllocation implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -27,32 +27,32 @@ public class CmsStudyPlan implements Serializable {
     private Long id;
 
     /**
-     * 字段备注:入学年份 <p>
-     * 数据库字段长度:(4,0) <p>
+     * 字段备注:用户id <p>
+     * 数据库字段长度:(19,0) <p>
      * 是否索引:是
      */
-    private Integer enrollYear;
+    private Long userId;
 
     /**
-     * 字段备注:基准日期 <p>
-     * 数据库字段长度:(10,0) <p>
-     * 是否索引:不是
+     * 字段备注:培养方案id <p>
+     * 数据库字段长度:(19,0) <p>
+     * 是否索引:是
      */
-    private Date referenceDate;
+    private Long planId;
 
     /**
-     * 字段备注:名称 <p>
-     * 数据库字段长度:(32,0) <p>
-     * 是否索引:不是
-     */
-    private String name;
-
-    /**
-     * 字段备注:版本 <p>
+     * 字段备注:培养方案版本 <p>
      * 数据库字段长度:(19,0) <p>
      * 是否索引:不是
      */
-    private Long version;
+    private Long planVersion;
+
+    /**
+     * 字段备注:删除标记 <p>
+     * 数据库字段长度:(19,0) <p>
+     * 是否索引:不是
+     */
+    private Long deleted;
 
     /**
      * 字段备注:创建时间 <p>

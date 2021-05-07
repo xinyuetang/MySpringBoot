@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
     public void update${classSimpleName}ById(${classSimpleName} ${classVariableName}) {
         ${classSimpleName} updater = new ${classSimpleName}();
         //TODO 值映射校验与赋值映射
-
+        updater.setModifyTime(new Date());
         int affect = ${classVariableName}Dao.updateById(updater);
         logger.info("更新${classSimpleName} affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
