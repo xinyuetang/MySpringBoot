@@ -2,7 +2,7 @@ package com.fudanuniversity.cms.business.service.impl;
 
 import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
-import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
+import com.fudanuniversity.cms.business.service.CmsStudyPlanItemService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
@@ -13,9 +13,9 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.wrapper.PairTuple;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.commons.util.DateExUtils;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
+import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
 import com.fudanuniversity.cms.repository.entity.*;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -39,12 +39,12 @@ import java.util.stream.Collectors;
  * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
 @Service
-public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocationService {
+public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CmsStudyPlanAllocationServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(CmsStudyPlanItemServiceImpl.class);
 
     @Resource
-    private CmsStudyPlanAllocationDao cmsStudyPlanAllocationDao;
+    private CmsStudyPlanItemDao cmsStudyPlanItemDao;
 
     @Resource
     private CmsStudyPlanComponent cmsStudyPlanComponent;
@@ -56,7 +56,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
      * 为学生分配生成培养计划
      */
     @Override
-    public void generateUserAllocations(CmsStudyPlanAllocationGenerateVo generateVo) {
+    public void generateUserAllocations(CmsStudyPlanItemGenerateVo generateVo) {
         Long planId = generateVo.getPlanId();
         CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
@@ -90,19 +90,19 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         List<List<Long>> partitions = Lists.partition(userIds, 10);
         partitions.forEach(partition -> {
             //TODO 最好开启一个新的内置事务操作
-            List<CmsStudyPlanAllocation> userAllocationList = cmsStudyPlanComponent.queryStudyPlanAllocationByUserIds(userIds);
+            List<CmsStudyPlanItem> userAllocationList = cmsStudyPlanComponent.queryStudyPlanAllocationByUserIds(userIds);
             /*  新的培养计划可能删除了部分任务CmsStudyPlanWork，但是先前已经有部分用户生成了培养计划，
                 再次为同一个用户生成任务培养计划，需要删除用户中对应已不存在的任务，
                 仍然存在的任务出发更新（参照MySQL语法：ON DUPLICATE KEY UPDATE）*/
             List<Long> userDeletedAllocationIdList = Lists.newArrayList();
-            for (CmsStudyPlanAllocation userExitsAllocation : userAllocationList) {
+            for (CmsStudyPlanItem userExitsAllocation : userAllocationList) {
                 if (!idWorkMap.containsKey(userExitsAllocation.getPlanWorkId())) {//用户当前存在培养计划已删除的任务
                     userDeletedAllocationIdList.add(userExitsAllocation.getId());
                 }
             }
-            cmsStudyPlanAllocationDao.markAsDeletedByIds(userDeletedAllocationIdList);
+            cmsStudyPlanItemDao.markAsDeletedByIds(userDeletedAllocationIdList);
             //新增/更新生成用户培养计划
-            List<CmsStudyPlanAllocation> planAllocations = Lists.newArrayList();
+            List<CmsStudyPlanItem> planAllocations = Lists.newArrayList();
             for (Long userId : userIds) {
                 CmsUser cmsUser = userMap.get(userId);
                 for (CmsStudyPlanStage planStage : planStages) {
@@ -111,7 +111,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
                         List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
                         if (CollectionUtils.isNotEmpty(commonWorks)) {
                             for (CmsStudyPlanWork commonWork : commonWorks) {
-                                CmsStudyPlanAllocation allocation = createCmsStudyPlanAllocation(
+                                CmsStudyPlanItem allocation = createCmsStudyPlanAllocation(
                                         cmsUser, studyPlan, planStage, commonWork, stageDateMap);
                                 planAllocations.add(allocation);
                             }
@@ -120,7 +120,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
                             List<CmsStudyPlanWork> keshuoWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Keshuo.getCode());
                             if (CollectionUtils.isNotEmpty(keshuoWorks)) {
                                 for (CmsStudyPlanWork keshuoWork : keshuoWorks) {
-                                    CmsStudyPlanAllocation allocation = createCmsStudyPlanAllocation(
+                                    CmsStudyPlanItem allocation = createCmsStudyPlanAllocation(
                                             cmsUser, studyPlan, planStage, keshuoWork, stageDateMap);
                                     planAllocations.add(allocation);
                                 }
@@ -131,7 +131,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
                             List<CmsStudyPlanWork> studyTypeWorks = workTypeMap.get(studyWorkTypeEnum.getCode());
                             if (CollectionUtils.isNotEmpty(studyTypeWorks)) {
                                 for (CmsStudyPlanWork studyTypeWork : studyTypeWorks) {
-                                    CmsStudyPlanAllocation allocation = createCmsStudyPlanAllocation(
+                                    CmsStudyPlanItem allocation = createCmsStudyPlanAllocation(
                                             cmsUser, studyPlan, planStage, studyTypeWork, stageDateMap);
                                     planAllocations.add(allocation);
                                 }
@@ -140,16 +140,16 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
                     }
                 }
             }
-            int affect = cmsStudyPlanAllocationDao.bulkUpsert(planAllocations);
+            int affect = cmsStudyPlanItemDao.bulkUpsert(planAllocations);
             logger.info("批量保存CmsStudyPlanAllocation affect:{}, planAllocations: {}", affect, planAllocations);
             AssertUtils.state(affect > 0);
         });
     }
 
-    private CmsStudyPlanAllocation createCmsStudyPlanAllocation(
+    private CmsStudyPlanItem createCmsStudyPlanAllocation(
             CmsUser cmsUser, CmsStudyPlan studyPlan, CmsStudyPlanStage planStage,
             CmsStudyPlanWork commonWork, Map<Long, PairTuple<Date, Date>> stageDateMap) {
-        CmsStudyPlanAllocation allocation = new CmsStudyPlanAllocation();
+        CmsStudyPlanItem allocation = new CmsStudyPlanItem();
         allocation.setUserId(cmsUser.getId());
         allocation.setPlanId(studyPlan.getId());
         allocation.setPlanStageId(planStage.getId());
@@ -168,12 +168,12 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
     }
 
     @Override
-    public void editAllocation(CmsStudyPlanAllocationEditVo editVo) {
+    public void editAllocation(CmsStudyPlanItemEditVo editVo) {
         Long allocationId = editVo.getId();
-        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryStudyPlanAllocationById(allocationId);
+        CmsStudyPlanItem allocation = cmsStudyPlanComponent.queryStudyPlanAllocationById(allocationId);
         AssertUtils.notNull(allocation, "培养计划安排[" + allocationId + "]不存在");
 
-        CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
+        CmsStudyPlanItem updater = new CmsStudyPlanItem();
         updater.setId(allocationId);
         Integer finished = editVo.getFinished();
         Date current = new Date();
@@ -193,33 +193,33 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         }
         updater.setRemark(updater.getRemark());
         updater.setModifyTime(new Date());
-        int affect = cmsStudyPlanAllocationDao.updateById(updater);
+        int affect = cmsStudyPlanItemDao.updateById(updater);
         logger.info("更新CmsStudyPlanAllocation affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
     }
 
     @Override
     public void deleteAllocationById(Long id) {
-        int affect = cmsStudyPlanAllocationDao.deleteById(id);
+        int affect = cmsStudyPlanItemDao.deleteById(id);
         logger.info("删除CmsStudyPlanAllocation affect:{}, id: {}", affect, id);
         AssertUtils.state(affect == 1);
     }
 
     @Override
-    public PagingResult<CmsStudyPlanAllocationVo> queryPagingResult(CmsStudyPlanAllocationQueryVo queryVo, Paging paging) {
-        PagingResult<CmsStudyPlanAllocationVo> pagingResult = PagingResult.create(paging);
+    public PagingResult<CmsStudyPlanItemVo> queryPagingResult(CmsStudyPlanItemQueryVo queryVo, Paging paging) {
+        PagingResult<CmsStudyPlanItemVo> pagingResult = PagingResult.create(paging);
 
-        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
-        Long count = cmsStudyPlanAllocationDao.selectCountByParam(query);
+        CmsStudyPlanItemQuery query = new CmsStudyPlanItemQuery();
+        Long count = cmsStudyPlanItemDao.selectCountByParam(query);
         pagingResult.setTotal(count);
 
         if (count > 0L) {
             query.setOffset(paging.getOffset());
             query.setLimit(paging.getLimit());
             //query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
-            List<CmsStudyPlanAllocation> cmsStudyPlanAllocationList = cmsStudyPlanAllocationDao.selectListByParam(query);
-            pagingResult.setRows(cmsStudyPlanAllocationList, allocation -> {
-                CmsStudyPlanAllocationVo allocationVo = new CmsStudyPlanAllocationVo();
+            List<CmsStudyPlanItem> cmsStudyPlanItemList = cmsStudyPlanItemDao.selectListByParam(query);
+            pagingResult.setRows(cmsStudyPlanItemList, allocation -> {
+                CmsStudyPlanItemVo allocationVo = new CmsStudyPlanItemVo();
                 allocationVo.setId(allocation.getId());
                 allocationVo.setUserId(allocation.getUserId());
                 allocationVo.setPlanId(allocation.getPlanId());
@@ -248,12 +248,12 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
     }
 
     @Override
-    public void editUserAllocation(Long userId, CmsStudyPlanAllocationUserEditVo userEditVo) {
+    public void editUserAllocation(Long userId, CmsStudyPlanItemUserEditVo userEditVo) {
         Long allocationId = userEditVo.getId();
-        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryUserStudyPlanAllocation(userId, allocationId);
+        CmsStudyPlanItem allocation = cmsStudyPlanComponent.queryUserStudyPlanAllocation(userId, allocationId);
         AssertUtils.notNull(allocation, "培养计划安排[" + allocationId + "]不存在");
 
-        CmsStudyPlanAllocation updater = new CmsStudyPlanAllocation();
+        CmsStudyPlanItem updater = new CmsStudyPlanItem();
         updater.setId(allocationId);
         Integer finished = userEditVo.getFinished();
         Date current = new Date();
@@ -267,24 +267,24 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         }
         updater.setRemark(updater.getRemark());
         updater.setModifyTime(current);
-        int affect = cmsStudyPlanAllocationDao.updateById(updater);
+        int affect = cmsStudyPlanItemDao.updateById(updater);
         logger.info("更新CmsStudyPlanAllocation affect:{}, updater: {}", affect, updater);
         AssertUtils.state(affect == 1);
     }
 
     @Override
-    public CmsStudyPlanAllocationInfoVo queryUserAllocationInfo(Long userId, Long planId) {
+    public CmsStudyPlanItemInfoVo queryUserAllocationInfo(Long userId, Long planId) {
         CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(studyPlan, "培养计划[" + planId + "]不存在");
 
-        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
-        List<CmsStudyPlanInfo> infoList = cmsStudyPlanAllocationDao.selectInfoByParam(query);
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
+        List<CmsStudyPlanInfo> infoList = cmsStudyPlanItemDao.selectInfoByParam(query);
         CmsStudyPlanInfo planInfo = null;
         if (CollectionUtils.isNotEmpty(infoList)) {
             planInfo = infoList.get(0);
         }
 
-        CmsStudyPlanAllocationInfoVo allocationInfoVo = new CmsStudyPlanAllocationInfoVo();
+        CmsStudyPlanItemInfoVo allocationInfoVo = new CmsStudyPlanItemInfoVo();
         allocationInfoVo.setUserId(userId);
         allocationInfoVo.setPlanId(planId);
         allocationInfoVo.setTotal(planInfo == null ? 0 : planInfo.getTotal());

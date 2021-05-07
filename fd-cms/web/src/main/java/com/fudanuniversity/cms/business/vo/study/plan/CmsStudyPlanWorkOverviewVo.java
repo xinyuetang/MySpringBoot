@@ -63,5 +63,5 @@ public class CmsStudyPlanWorkOverviewVo implements Serializable {
     /**
      *
      */
-    private CmsStudyPlanAllocationVo allocation;
+    private CmsStudyPlanItemVo allocation;
 }

@@ -234,7 +234,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
             List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(stageIds);
             Map<Long, Map<Integer, List<CmsStudyPlanWork>>> planStageWorkMap
                     = cmsStudyPlanComponent.convertCmsStudyPlanWorkMap(planWorks);
-            Map<Long, CmsStudyPlanAllocation> allocationMap
+            Map<Long, CmsStudyPlanItem> allocationMap
                     = cmsStudyPlanComponent.queryUserStudyPlanAllocationMap(cmsUser.getId());
             for (CmsStudyPlanStage stage : stages) {
                 CmsStudyPlanStageOverviewVo stageOverviewVo = convertCmsStudyPlanStageOverviewVo(stage);
@@ -293,7 +293,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     }
 
     private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(
-            List<CmsStudyPlanWork> stageWorks, Map<Long, CmsStudyPlanAllocation> allocationMap) {
+            List<CmsStudyPlanWork> stageWorks, Map<Long, CmsStudyPlanItem> allocationMap) {
         if (CollectionUtils.isNotEmpty(stageWorks)) {
             List<CmsStudyPlanWorkOverviewVo> workOverviewVoList = Lists.newArrayList();
             stageWorks.forEach(commonWork -> {
@@ -306,9 +306,9 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
                 workOverviewVo.setName(commonWork.getName());
                 workOverviewVo.setCreateTime(commonWork.getCreateTime());
                 workOverviewVo.setModifyTime(commonWork.getModifyTime());
-                CmsStudyPlanAllocation allocation = allocationMap.get(commonWork.getId());
+                CmsStudyPlanItem allocation = allocationMap.get(commonWork.getId());
                 if (allocation != null) {
-                    CmsStudyPlanAllocationVo allocationVo = convertCmsStudyPlanAllocationVo(allocation);
+                    CmsStudyPlanItemVo allocationVo = convertCmsStudyPlanAllocationVo(allocation);
                     workOverviewVo.setAllocation(allocationVo);
                 }
                 workOverviewVoList.add(workOverviewVo);
@@ -318,8 +318,8 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return Collections.emptyList();
     }
 
-    private CmsStudyPlanAllocationVo convertCmsStudyPlanAllocationVo(CmsStudyPlanAllocation allocation) {
-        CmsStudyPlanAllocationVo allocationVo = new CmsStudyPlanAllocationVo();
+    private CmsStudyPlanItemVo convertCmsStudyPlanAllocationVo(CmsStudyPlanItem allocation) {
+        CmsStudyPlanItemVo allocationVo = new CmsStudyPlanItemVo();
         allocationVo.setId(allocation.getId());
         allocationVo.setUserId(allocation.getUserId());
         allocationVo.setPlanId(allocation.getPlanId());

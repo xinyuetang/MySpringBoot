@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocation implements Serializable {
+public class CmsStudyPlanItem implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

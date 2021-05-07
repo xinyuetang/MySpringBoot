@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationInfoVo implements Serializable {
+public class CmsStudyPlanItemInfoVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

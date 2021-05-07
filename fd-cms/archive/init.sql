@@ -385,8 +385,8 @@ CREATE TABLE `fd_cms`.`cms_study_plan_work`
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案任务';
 
-DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_allocation`;
-CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
+DROP TABLE IF EXISTS `fd_cms`.`cms_study_plan_item`;
+CREATE TABLE `fd_cms`.`cms_study_plan_item`
 (
     `id`                   bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
     `user_id`              bigint   NOT NULL COMMENT '用户id',
@@ -403,8 +403,8 @@ CREATE TABLE `fd_cms`.`cms_study_plan_allocation`
     `create_time`          datetime NOT NULL COMMENT '创建时间',
     `modify_time`          datetime          DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    KEY `idx_plan_id` (`plan_id`, `user_id`, `deleted`) USING BTREE,
-    UNIQUE KEY `uk_uid_pid_stage_id_work_id` (`user_id`, `plan_id`, `plan_stage_id`, `plan_work_id`) USING BTREE
+    KEY `idx_plan_id` (`user_id`, `plan_id`, `deleted`) USING BTREE,
+    UNIQUE KEY `uk_uid_pid_deleted_stage_id_work_id` (`plan_id`, `user_id`, `deleted`, `plan_stage_id`, `plan_work_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案分配';

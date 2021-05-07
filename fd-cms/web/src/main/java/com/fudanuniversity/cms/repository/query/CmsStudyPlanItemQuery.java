@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString
-public class CmsStudyPlanAllocationQuery extends BaseQuery {
+public class CmsStudyPlanItemQuery extends BaseQuery {
 
     private static final long serialVersionUID = 1L;
 
@@ -156,14 +156,14 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
      */
     private Date egtModifyTime;
 
-    public static CmsStudyPlanAllocationQuery singletonQuery() {
-        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
+    public static CmsStudyPlanItemQuery singletonQuery() {
+        CmsStudyPlanItemQuery query = new CmsStudyPlanItemQuery();
         query.setLimit(1);
         return query;
     }
 
-    public static CmsStudyPlanAllocationQuery listQuery() {
-        CmsStudyPlanAllocationQuery query = new CmsStudyPlanAllocationQuery();
+    public static CmsStudyPlanItemQuery listQuery() {
+        CmsStudyPlanItemQuery query = new CmsStudyPlanItemQuery();
         query.setLimit(MAX_ROWS);
         return query;
     }

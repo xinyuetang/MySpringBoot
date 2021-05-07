@@ -1,19 +1,17 @@
-package com.fudanuniversity.cms.repository.mapper;
+package com.fudanuniversity.cms.repository.dao;
 
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanInfo;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
- * CmsStudyPlanAllocationMapper接口
+ * CmsStudyPlanAllocationDao
  * <p>
- * Created by Xinyue.Tang at 2021-05-05 19:58:05
+ * Created by Xinyue.Tang at 2021-05-05 17:50:00
  */
-@Mapper
-public interface CmsStudyPlanAllocationMapper {
+public interface CmsStudyPlanItemDao {
 
     /**
      * 保存处理
@@ -26,33 +24,32 @@ public interface CmsStudyPlanAllocationMapper {
     int bulkUpsert(List<CmsStudyPlanItem> cmsStudyPlanItemList);
 
     /**
-     * 删除处理
-     */
-    int deleteById(Long id);
-
-    /**
-     * 软删除
-     */
-    int markAsDeletedByQuery(CmsStudyPlanItemQuery query);
-
-    /**
-     * 更新处理
+     * 根据id更新处理
      */
     int updateById(CmsStudyPlanItem cmsStudyPlanItem);
 
     /**
-     * 根据条件查询信息列表
+     * 根据id列表软删除
+     */
+    int markAsDeletedByIds(List<Long> idList);
+
+    /**
+     * 根据id删除
+     */
+    int deleteById(Long id);
+
+    /**
+     * 查询数据
      */
     List<CmsStudyPlanItem> selectListByParam(CmsStudyPlanItemQuery query);
 
     /**
-     *
+     * 查询数据
      */
     List<CmsStudyPlanInfo> selectInfoByParam(CmsStudyPlanItemQuery query);
 
     /**
-     * 根据条件查询信息总数目
+     * 查询数量
      */
     Long selectCountByParam(CmsStudyPlanItemQuery query);
-
 }

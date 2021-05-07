@@ -1,11 +1,11 @@
 package com.fudanuniversity.cms.controller;
 
-import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
+import com.fudanuniversity.cms.business.service.CmsStudyPlanItemService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationEditVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationGenerateVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfoVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationUserEditVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemEditVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemGenerateVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemInfoVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemUserEditVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.commons.util.ValueUtils;
@@ -25,10 +25,10 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  */
 @RestController
 @RequestMapping("/study/plan/allocation")
-public class CmsStudyPlanAllocationController extends BaseController {
+public class CmsStudyPlanItemController extends BaseController {
 
     @Resource
-    private CmsStudyPlanAllocationService cmsStudyPlanAllocationService;
+    private CmsStudyPlanItemService cmsStudyPlanItemService;
 
     @Resource
     private CmsUserService cmsUserService;
@@ -37,10 +37,10 @@ public class CmsStudyPlanAllocationController extends BaseController {
      * 管理员为学生分配生成培养计划
      */
     @PostMapping("/generate")
-    public JsonResult<?> generateAllocations(@Valid @RequestBody CmsStudyPlanAllocationGenerateVo generateVo) {
+    public JsonResult<?> generateAllocations(@Valid @RequestBody CmsStudyPlanItemGenerateVo generateVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanAllocationService.generateUserAllocations(generateVo);
+        cmsStudyPlanItemService.generateUserAllocations(generateVo);
         return JsonResult.buildSuccess();
     }
 
@@ -49,10 +49,10 @@ public class CmsStudyPlanAllocationController extends BaseController {
      */
     @PostMapping("/edit")
     public JsonResult<?> editAllocation(
-            @Valid @RequestBody CmsStudyPlanAllocationEditVo editVo) {
+            @Valid @RequestBody CmsStudyPlanItemEditVo editVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanAllocationService.editAllocation(editVo);
+        cmsStudyPlanItemService.editAllocation(editVo);
         return JsonResult.buildSuccess();
     }
 
@@ -61,9 +61,9 @@ public class CmsStudyPlanAllocationController extends BaseController {
      */
     @PostMapping("/user/edit")
     public JsonResult<?> changeUserCmsStudyPlanAllocationStatus(
-            @Valid @RequestBody CmsStudyPlanAllocationUserEditVo userEditVo) {
+            @Valid @RequestBody CmsStudyPlanItemUserEditVo userEditVo) {
         LoginUser loginUser = getLoginUser();
-        cmsStudyPlanAllocationService.editUserAllocation(loginUser.getUserId(), userEditVo);
+        cmsStudyPlanItemService.editUserAllocation(loginUser.getUserId(), userEditVo);
         return JsonResult.buildSuccess();
     }
 
@@ -77,8 +77,8 @@ public class CmsStudyPlanAllocationController extends BaseController {
         if (!Objects.equals(userId, loginUser.getUserId())) {//至允许userId对应的本人和管理员查看指定用户分配的培养计划
             cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
         }
-        CmsStudyPlanAllocationInfoVo infoVo =
-                cmsStudyPlanAllocationService.queryUserAllocationInfo(userId, planId);
+        CmsStudyPlanItemInfoVo infoVo =
+                cmsStudyPlanItemService.queryUserAllocationInfo(userId, planId);
         return JsonResult.buildSuccess(infoVo);
     }
 }

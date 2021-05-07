@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationQueryVo {
+public class CmsStudyPlanItemQueryVo {
 
     private static final long serialVersionUID = 1L;
 

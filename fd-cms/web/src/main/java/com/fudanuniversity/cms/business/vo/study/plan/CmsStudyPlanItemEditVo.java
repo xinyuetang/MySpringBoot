@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 培养方案分配
@@ -17,7 +18,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationUserEditVo implements Serializable {
+public class CmsStudyPlanItemEditVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +29,12 @@ public class CmsStudyPlanAllocationUserEditVo implements Serializable {
     private Long id;
 
     /**
-     *
+     * 培养方案任务延迟日期
+     */
+    private Date delayDate;
+
+    /**
+     * 状态
      */
     @EnumValue(enumClass = BooleanEnum.class, property = "code")
     private Integer finished;

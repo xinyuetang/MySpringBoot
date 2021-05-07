@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsStudyPlanAllocationGenerateVo implements Serializable {
+public class CmsStudyPlanItemGenerateVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

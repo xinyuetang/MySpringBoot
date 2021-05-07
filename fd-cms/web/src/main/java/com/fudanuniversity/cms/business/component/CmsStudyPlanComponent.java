@@ -4,15 +4,15 @@ import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.model.query.SortColumn;
 import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
-import com.fudanuniversity.cms.repository.dao.CmsStudyPlanAllocationDao;
+import com.fudanuniversity.cms.repository.dao.CmsStudyPlanItemDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanStageDao;
 import com.fudanuniversity.cms.repository.dao.CmsStudyPlanWorkDao;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlan;
-import com.fudanuniversity.cms.repository.entity.CmsStudyPlanAllocation;
+import com.fudanuniversity.cms.repository.entity.CmsStudyPlanItem;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanStage;
 import com.fudanuniversity.cms.repository.entity.CmsStudyPlanWork;
-import com.fudanuniversity.cms.repository.query.CmsStudyPlanAllocationQuery;
+import com.fudanuniversity.cms.repository.query.CmsStudyPlanItemQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanStageQuery;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanWorkQuery;
@@ -44,7 +44,7 @@ public class CmsStudyPlanComponent {
     private CmsStudyPlanWorkDao cmsStudyPlanWorkDao;
 
     @Resource
-    private CmsStudyPlanAllocationDao cmsStudyPlanAllocationDao;
+    private CmsStudyPlanItemDao cmsStudyPlanItemDao;
 
     public CmsStudyPlan queryStudyPlanById(Long planId) {
         AssertUtils.notNull(planId);
@@ -130,33 +130,33 @@ public class CmsStudyPlanComponent {
         return cmsStudyPlanWorkDao.selectListByParam(query);
     }
 
-    public List<CmsStudyPlanAllocation> queryStudyPlanAllocationByUserIds(List<Long> userIds) {
+    public List<CmsStudyPlanItem> queryStudyPlanAllocationByUserIds(List<Long> userIds) {
         if (CollectionUtils.isNotEmpty(userIds)) {
-            CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+            CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
             query.setUserIdList(userIds);
             query.setDeleted(DeletedEnum.Normal.getCode().longValue());
-            return cmsStudyPlanAllocationDao.selectListByParam(query);
+            return cmsStudyPlanItemDao.selectListByParam(query);
         }
         return Collections.emptyList();
     }
 
-    public CmsStudyPlanAllocation queryStudyPlanAllocationById(Long allocationId) {
-        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
+    public CmsStudyPlanItem queryStudyPlanAllocationById(Long allocationId) {
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
         query.setId(allocationId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
-        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        List<CmsStudyPlanItem> allocations = cmsStudyPlanItemDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(allocations)) {
             return allocations.get(0);
         }
         return null;
     }
 
-    public CmsStudyPlanAllocation queryUserStudyPlanAllocation(Long userId, Long allocationId) {
-        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
+    public CmsStudyPlanItem queryUserStudyPlanAllocation(Long userId, Long allocationId) {
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
         query.setId(allocationId);
         query.setUserId(userId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
-        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        List<CmsStudyPlanItem> allocations = cmsStudyPlanItemDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(allocations)) {
             return allocations.get(0);
         }
@@ -166,12 +166,12 @@ public class CmsStudyPlanComponent {
     /**
      * Key: workId
      */
-    public Map<Long, CmsStudyPlanAllocation> queryUserStudyPlanAllocationMap(Long userId) {
-        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+    public Map<Long, CmsStudyPlanItem> queryUserStudyPlanAllocationMap(Long userId) {
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
         query.setUserId(userId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
-        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
-        return allocations.stream().collect(Collectors.toMap(CmsStudyPlanAllocation::getPlanWorkId, Function.identity()));
+        List<CmsStudyPlanItem> allocations = cmsStudyPlanItemDao.selectListByParam(query);
+        return allocations.stream().collect(Collectors.toMap(CmsStudyPlanItem::getPlanWorkId, Function.identity()));
     }
 
     /**
