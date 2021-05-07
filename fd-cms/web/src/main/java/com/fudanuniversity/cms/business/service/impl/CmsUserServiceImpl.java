@@ -20,6 +20,7 @@ import com.fudanuniversity.cms.repository.dao.CmsUserDao;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.fudanuniversity.cms.repository.query.CmsUserQuery;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -115,8 +116,10 @@ public class CmsUserServiceImpl implements CmsUserService {
 
         CmsUserAccount cmsUserAccount = new CmsUserAccount();
         cmsUserAccount.setStuId(stuId);
+        String saltString = stuId + "123456";
+        String digestPassword = DigestUtils.md5Hex(saltString);
         cmsUserAccount.setSalt(stuId);
-        cmsUserAccount.setPassword("123456");
+        cmsUserAccount.setPassword(digestPassword);
         cmsUserAccountService.saveCmsUserAccount(cmsUserAccount);
     }
 
