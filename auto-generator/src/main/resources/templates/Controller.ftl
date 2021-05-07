@@ -32,7 +32,7 @@ public class ${classSimpleName}Controller extends BaseController {
     /**
      * 保存处理
      */
-    @PostMapping("/save")
+    @PostMapping("/add")
     public JsonResult<?> save${classSimpleName}(@Valid ${classSimpleName}Dto ${classVariableName}Dto) {
         ${classVariableName}Service.save${classSimpleName}(${classVariableName}Dto);
         return JsonResult.buildSuccess();
@@ -41,7 +41,7 @@ public class ${classSimpleName}Controller extends BaseController {
     /**
      * 根据id更新处理
      */
-    @PostMapping("/update")
+    @PostMapping("/modify")
     public JsonResult<?> update${classSimpleName}ById(@Valid ${classSimpleName}Dto ${classVariableName}Dto) {
         ${classVariableName}Service.update${classSimpleName}ById(${classVariableName}Dto);
         return JsonResult.buildSuccess();
@@ -50,7 +50,7 @@ public class ${classSimpleName}Controller extends BaseController {
     /**
      * 根据id删除处理
      */
-    @PostMapping("/delete")
+    @PostMapping("/remove")
     public JsonResult<?> delete${classSimpleName}ById(@NotNull @Min(1L) ${idType} ${id}) {
         ${classVariableName}Service.delete${classSimpleName}ById(${id});
         return JsonResult.buildSuccess();
