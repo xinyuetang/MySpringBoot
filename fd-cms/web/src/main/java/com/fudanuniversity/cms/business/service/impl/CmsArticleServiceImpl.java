@@ -96,7 +96,7 @@ public class CmsArticleServiceImpl implements CmsArticleService {
             throw new BusinessException("当前文章已不存在");
         }
         CmsArticle updater = new CmsArticle();
-
+        updater.setId(articleId);
         Long categoryId = editVo.getCategoryId();
         if (categoryId != null) {
             CmsArticleCategory category = cmsArticleComponent.queryArticleCategory(categoryId);
