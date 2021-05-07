@@ -424,4 +424,4 @@ CREATE TABLE `fd_cms`.`cms_study_plan_item`
     UNIQUE KEY `uk_uid_pid_deleted_stage_id_work_id` (`plan_id`, `user_id`, `deleted`, `plan_stage_id`, `plan_work_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养项目';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='培养方案分配的工作项目';
