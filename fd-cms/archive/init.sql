@@ -4,6 +4,7 @@ CREATE USER 'fd_cms'@'%' IDENTIFIED BY 'FuDan!123';
 GRANT ALL ON fd_cms.* TO 'fd_cms'@'%';
 FLUSH PRIVILEGES;
 
+USE `fd_cms`;
 
 DROP TABLE IF EXISTS `fd_cms`.`cms_user`;
 CREATE TABLE `fd_cms`.`cms_user`
