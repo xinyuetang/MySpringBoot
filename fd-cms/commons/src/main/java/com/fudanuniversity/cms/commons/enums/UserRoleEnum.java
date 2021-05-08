@@ -1,5 +1,7 @@
 package com.fudanuniversity.cms.commons.enums;
 
+import java.util.Objects;
+
 /**
  * Created by Xinyue.Tang at 2021-05-01 18:11:32
  */
@@ -29,5 +31,18 @@ public enum UserRoleEnum {
 
     public String getDesc() {
         return desc;
+    }
+
+    public static boolean isAdministrator(Integer roleId) {
+        return Objects.equals(roleId, UserRoleEnum.Administrator.getCode());
+    }
+
+    public static boolean hasManageRole(Integer roleId) {
+        return Objects.equals(roleId, UserRoleEnum.Administrator.getCode())
+                || Objects.equals(roleId, UserRoleEnum.Seminar.getCode())
+                || Objects.equals(roleId, UserRoleEnum.Lab.getCode())
+                || Objects.equals(roleId, UserRoleEnum.EssayRecommendation.getCode())
+                || Objects.equals(roleId, UserRoleEnum.TrainingScheme.getCode())
+                || Objects.equals(roleId, UserRoleEnum.Bulletin.getCode());
     }
 }

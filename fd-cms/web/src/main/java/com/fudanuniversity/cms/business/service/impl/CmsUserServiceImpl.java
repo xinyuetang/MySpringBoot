@@ -55,11 +55,24 @@ public class CmsUserServiceImpl implements CmsUserService {
     private CmsUserAccountService cmsUserAccountService;
 
     @Override
-    public void confirmUserPrivilege(String stuId, UserRoleEnum privilege) {
+    public void checkManagePrivilege(String stuId) {
         CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
         AssertUtils.notNull(cmsUser, "用户[" + stuId + "]不存在");
-        if (!Objects.equals(cmsUser.getRoleId(), UserRoleEnum.Administrator.getCode())
-                && !Objects.equals(cmsUser.getRoleId(), privilege.getCode())) {
+        if (UserRoleEnum.isAdministrator(cmsUser.getRoleId())
+                || UserRoleEnum.hasManageRole(cmsUser.getRoleId())) {
+            return;
+        }
+        throw new BusinessException("用户没有任何管理权限");
+    }
+
+    @Override
+    public void checkManagePrivilege(String stuId, UserRoleEnum privilege) {
+        CmsUser cmsUser = cmsUserComponent.queryUser(stuId);
+        AssertUtils.notNull(cmsUser, "用户[" + stuId + "]不存在");
+        if (UserRoleEnum.isAdministrator(cmsUser.getRoleId())) {
+            return;
+        }
+        if (!UserRoleEnum.hasManageRole(cmsUser.getRoleId())) {
             throw new BusinessException("用户没有[" + privilege.getDesc() + "]权限");
         }
     }

@@ -1,6 +1,7 @@
 package com.fudanuniversity.cms.controller.user;
 
 import com.fudanuniversity.cms.business.service.CmsDeviceAllocationService;
+import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationApplyVo;
 import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationReturnVo;
 import com.fudanuniversity.cms.business.vo.device.CmsDeviceAllocationVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
@@ -24,6 +25,16 @@ public class DeviceAllocationController extends BaseController {
 
     @Resource
     private CmsDeviceAllocationService cmsDeviceAllocationService;
+
+    /**
+     * 申请设备
+     */
+    @PostMapping("/apply")
+    public JsonResult<?> applyDeviceAllocation(@Valid @RequestBody CmsDeviceAllocationApplyVo allocationApplyVo) {
+        LoginUser loginUser = getLoginUser();
+        cmsDeviceAllocationService.applyDeviceAllocation(loginUser.getUserId(), allocationApplyVo);
+        return JsonResult.buildSuccess();
+    }
 
     /**
      * 返还设备

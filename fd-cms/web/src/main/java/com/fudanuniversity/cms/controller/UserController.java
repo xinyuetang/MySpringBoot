@@ -92,7 +92,7 @@ public class UserController extends BaseController {
     @GetMapping(path = "/list")
     public JsonResult<?> queryUserList(@Valid CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId());
         List<CmsUserVo> userList = cmsUserService.queryUserList(queryVo, paging);
         return JsonResult.buildSuccess(userList);
     }
@@ -100,7 +100,7 @@ public class UserController extends BaseController {
     @GetMapping(path = "/paging")
     public JsonResult<?> queryPagingResult(@Valid CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId());
         PagingResult<CmsUserVo> pagingResult = cmsUserService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
@@ -110,7 +110,7 @@ public class UserController extends BaseController {
         LoginUser loginUser = getLoginUser();
         //如果是管理员可以查所有的用户，如果是普通用户只可以查自己的数据
         if (!Objects.equals(stuId, loginUser.getStuId())) {
-            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+            cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         }
         CmsUserDetailVo userDetailVo = cmsUserService.queryUserDetail(stuId);
         return JsonResult.buildSuccess(userDetailVo);
@@ -120,7 +120,7 @@ public class UserController extends BaseController {
     @PostMapping(path = "/add")
     public JsonResult<?> addNewUser(@Valid @RequestBody CmsUserAddVo userAddVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsUserService.saveCmsUser(userAddVo);
         return JsonResult.buildSuccess();
     }
@@ -128,7 +128,7 @@ public class UserController extends BaseController {
     @PostMapping(path = "/update")
     public JsonResult<?> updateUser(@Valid @RequestBody CmsUserUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsUserService.updateCmsUserById(updateVo);
         return JsonResult.buildSuccess();
     }
@@ -136,7 +136,7 @@ public class UserController extends BaseController {
     @PostMapping(path = "/delete")
     public JsonResult<?> delete(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsUserService.deleteCmsUserById(id);
         return JsonResult.buildSuccess();
     }

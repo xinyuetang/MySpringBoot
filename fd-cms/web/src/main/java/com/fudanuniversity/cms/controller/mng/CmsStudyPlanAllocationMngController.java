@@ -1,13 +1,14 @@
-package com.fudanuniversity.cms.controller;
+package com.fudanuniversity.cms.controller.mng;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfoVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationOverviewVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanOverviewVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.commons.util.ValueUtils;
+import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +28,8 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * Created by Xinyue.Tang at 2021-05-07 11:39:06
  */
 @RestController
-@RequestMapping("/study/plan/allocation")
-public class CmsStudyPlanAllocationController extends BaseController {
+@RequestMapping("/mng/study/plan/allocation")
+public class CmsStudyPlanAllocationMngController extends BaseController {
 
     @Resource
     private CmsStudyPlanAllocationService cmsStudyPlanAllocationService;
@@ -36,15 +37,12 @@ public class CmsStudyPlanAllocationController extends BaseController {
     @Resource
     private CmsUserService cmsUserService;
 
-
-    /**
-     * 管理员查询培养计划任务完成情况
-     */
+    @Operation(summary = "管理员查询培养计划任务完成情况")
     @GetMapping("/info/list")
     public JsonResult<?> queryAllocationInfoList(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         List<CmsStudyPlanAllocationInfoVo> infoVoList = cmsStudyPlanAllocationService.queryAllocationInfoList(id);
         return JsonResult.buildSuccess(infoVoList);
     }
@@ -56,7 +54,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
     @PostMapping("/delete")
     public JsonResult<?> deleteCmsStudyPlanAllocationById(@NotNull @Min(1L) Long id, @NotNull @Min(1L) Long userId) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanAllocationService.deleteCmsStudyPlanAllocationById(id, userId);
         return JsonResult.buildSuccess();
     }
@@ -71,7 +69,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
         LoginUser loginUser = getLoginUser();
         userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         if (!Objects.equals(userId, loginUser.getUserId())) {//至允许userId对应的本人和管理员查看指定用户分配的培养计划
-            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+            cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         }
         CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(id, userId);
         return JsonResult.buildSuccess(allocationInfoVo);
@@ -87,7 +85,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
         LoginUser loginUser = getLoginUser();
         userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         if (!Objects.equals(userId, loginUser.getUserId())) {//至允许userId对应的本人和管理员查看指定用户分配的培养计划
-            cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+            cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         }
         CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, id);
         return JsonResult.buildSuccess(overview);

@@ -13,7 +13,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.validation.Validator;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Xinyue.Tang at 2021-04-16 10:16:47
  */
 @Configuration
-public class WebmvcConfigurerAdapter extends WebMvcConfigurationSupport {
+public class WebmvcConfigurerAdapter implements WebMvcConfigurer {
 
     @Override
     public Validator getValidator() {
@@ -41,24 +41,25 @@ public class WebmvcConfigurerAdapter extends WebMvcConfigurationSupport {
      * 拦截器
      */
     @Override
-    protected void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginInterceptor())
                 //默认所有请求都需要登录，如果有需要请调整
                 .addPathPatterns("/**")
                 //排除登录的地址
                 .excludePathPatterns(
                         "/",
+                        "/docs/**",  //API
+                        "/error",   //默认错误路径
                         "/user/login",  //用户登录入口不要拦截
                         "/static"   //静态资源，如果有请约定 /static 前缀访问
                 );
-
     }
 
     /**
      * 统一异常处理
      */
     @Override
-    protected void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
+    public void extendHandlerExceptionResolvers(List<HandlerExceptionResolver> exceptionResolvers) {
         //DefaultHandlerExceptionResolver优先级为Ordered.LOWEST_PRECEDENCE，是最后一个异常处理，这里将该异常处理替换掉
         exceptionResolvers.removeIf(
                 exceptionResolver -> exceptionResolver instanceof DefaultHandlerExceptionResolver);
@@ -90,8 +91,7 @@ public class WebmvcConfigurerAdapter extends WebMvcConfigurationSupport {
      * HttpMessageConverter注册
      */
     @Override
-    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.addDefaultHttpMessageConverters(converters);
+    public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         //替换默认Jackson2配置
         converters.removeIf(converter -> converter instanceof MappingJackson2HttpMessageConverter);
         MappingJackson2HttpMessageConverter jsonConverter = new MappingJackson2HttpMessageConverter();
@@ -99,4 +99,23 @@ public class WebmvcConfigurerAdapter extends WebMvcConfigurationSupport {
         jsonConverter.setObjectMapper(objectMapper);
         converters.add(0, jsonConverter);
     }
+
+    /*@Value("${springfox.documentation.swagger-ui.base-url:}")
+    private String swaggerBaseUrl;
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        String baseUrl = StringUtils.trimTrailingCharacter(nullToEmpty(swaggerBaseUrl), '/');
+        registry.
+                addResourceHandler(baseUrl + "/swagger-ui/**")
+                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
+                .resourceChain(false);
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        String baseUrl = StringUtils.trimTrailingCharacter(nullToEmpty(swaggerBaseUrl), '/');
+        registry.addViewController(baseUrl + "/swagger-ui/")
+                .setViewName("forward:" + baseUrl + "/swagger-ui/index.html");
+    }*/
 }

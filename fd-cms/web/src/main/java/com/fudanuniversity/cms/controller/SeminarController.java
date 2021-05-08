@@ -32,7 +32,7 @@ public class SeminarController extends BaseController {
     @PostMapping(path = "/add")
     public JsonResult<?> addNewSeminar(@Valid @RequestBody CmsSeminarAddVo seminarVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
         cmsSeminarService.addNewSeminar(seminarVo);
         return JsonResult.buildSuccess();
     }
@@ -40,7 +40,7 @@ public class SeminarController extends BaseController {
     @PostMapping(path = "/update")
     public JsonResult<?> updateSeminar(@Valid @RequestBody CmsSeminarUpdateVo seminarUpdateVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
         cmsSeminarService.updateSeminarById(seminarUpdateVo);
         return JsonResult.buildSuccess();
     }
@@ -48,7 +48,7 @@ public class SeminarController extends BaseController {
     @PostMapping(path = "/delete")
     public JsonResult<?> deleteSeminar(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), UserRoleEnum.Seminar);
         cmsSeminarService.deleteCmsSeminarById(id);
         return JsonResult.buildSuccess();
     }

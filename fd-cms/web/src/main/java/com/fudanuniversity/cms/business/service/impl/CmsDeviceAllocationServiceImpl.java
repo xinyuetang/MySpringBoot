@@ -87,7 +87,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
     public void returnDeviceAllocation(Long userId, CmsDeviceAllocationReturnVo allocationReturnVo) {
         Long allocationId = allocationReturnVo.getAllocationId();
         //查询分配记录
-        CmsDeviceAllocation deviceAllocation = queryCmsDeviceAllocation(allocationId);
+        CmsDeviceAllocation deviceAllocation = queryCmsDeviceAllocation(userId, allocationId);
         AssertUtils.notNull(deviceAllocation);
         //查询设备
         Long deviceId = deviceAllocation.getDeviceId();
@@ -104,9 +104,10 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         AssertUtils.state(affect == 1);
     }
 
-    private CmsDeviceAllocation queryCmsDeviceAllocation(Long allocationId) {
+    private CmsDeviceAllocation queryCmsDeviceAllocation(Long userId, Long allocationId) {
         CmsDeviceAllocationQuery query = CmsDeviceAllocationQuery.singletonQuery();
         query.setId(allocationId);
+        query.setUserId(userId);
         List<CmsDeviceAllocation> allocations = cmsDeviceAllocationDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(allocations)) {
             return allocations.get(0);

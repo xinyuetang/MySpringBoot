@@ -85,7 +85,7 @@
             `cms_study_plan`(`enroll_year`, `reference_date`, `name`, `version`, `create_time`, `modify_time`)
         VALUES
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            #{enrollYear}, #{referenceDate}, #{name}, #{createTime}, #{modifyTime}
+            #{enrollYear}, #{referenceDate}, #{name}, #{version}, #{createTime},  #{modifyTime}
         </trim>
     </insert>
 

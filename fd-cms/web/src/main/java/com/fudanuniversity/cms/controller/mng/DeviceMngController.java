@@ -30,7 +30,7 @@ public class DeviceMngController extends BaseController {
     @PostMapping(path = "/add")
     public JsonResult<?> addNewDevice(@RequestBody CmsDeviceAddVo addVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsDeviceService.saveCmsDevice(addVo);
         return JsonResult.buildSuccess();
     }
@@ -38,7 +38,7 @@ public class DeviceMngController extends BaseController {
     @PostMapping(path = "/update")
     public JsonResult<?> updateDevice(@RequestBody CmsDeviceUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsDeviceService.updateCmsDeviceById(updateVo);
         return JsonResult.buildSuccess();
     }
@@ -46,7 +46,7 @@ public class DeviceMngController extends BaseController {
     @PostMapping(path = "/delete")
     public JsonResult<?> deleteDevice(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsDeviceService.deleteCmsDeviceById(id);
         return JsonResult.buildSuccess();
     }

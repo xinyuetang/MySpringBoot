@@ -37,7 +37,8 @@ public class DeviceAllocationMngController extends BaseController {
     @PostMapping("/return")
     public JsonResult<?> returnDeviceAllocation(@Valid @RequestBody CmsDeviceAllocationReturnVo allocationReturnVo) {
         LoginUser loginUser = getLoginUser();
-        cmsDeviceAllocationService.returnDeviceAllocation(loginUser.getUserId(), allocationReturnVo);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
+        cmsDeviceAllocationService.returnDeviceAllocation(null, allocationReturnVo);
         return JsonResult.buildSuccess();
     }
 
@@ -47,7 +48,7 @@ public class DeviceAllocationMngController extends BaseController {
     @GetMapping("/paging")
     public JsonResult<?> queryPagingResult(Long userId, Paging paging) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsDeviceAllocationVo> pagingResult
                 = cmsDeviceAllocationService.queryPagingResult(userId, paging);
         return JsonResult.buildSuccess(pagingResult);

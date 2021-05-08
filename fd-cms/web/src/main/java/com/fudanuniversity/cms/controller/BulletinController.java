@@ -28,7 +28,7 @@ public class BulletinController extends BaseController {
     @PostMapping(path = "/add")
     public JsonResult<?> addNewBulletin(@RequestBody @Valid CmsBulletinAddVo addVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Bulletin);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Bulletin);
         cmsBulletinService.addNewBulletin(addVo);
         return JsonResult.buildSuccess();
     }
@@ -36,7 +36,7 @@ public class BulletinController extends BaseController {
     @PostMapping(path = "/update")
     public JsonResult<?> editBulletin(@RequestBody @Valid CmsBulletinEditVo editVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Bulletin);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Bulletin);
         cmsBulletinService.editBulletin(editVo);
         return JsonResult.buildSuccess();
     }
@@ -44,7 +44,7 @@ public class BulletinController extends BaseController {
     @PostMapping(path = "/delete")
     public JsonResult<?> deleteBulletin(@NotNull Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Bulletin);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Bulletin);
         cmsBulletinService.deleteCmsBulletinById(id);
         return JsonResult.buildSuccess();
     }

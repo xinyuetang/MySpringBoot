@@ -34,7 +34,7 @@ public class RecorderController extends BaseController {
     @ResponseBody
     public JsonResult<?> addRecorder(@Valid @RequestBody CmsRecorderAddVo addVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Seminar);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Seminar);
         cmsRecorderService.saveCmsRecorder(addVo);
         return JsonResult.buildSuccess();
     }
@@ -43,7 +43,7 @@ public class RecorderController extends BaseController {
     @ResponseBody
     public JsonResult<?> updateRecorder(@Valid @RequestBody CmsRecorderUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Seminar);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Seminar);
         cmsRecorderService.updateCmsRecorderById(updateVo);
         return JsonResult.buildSuccess();
     }
@@ -52,7 +52,7 @@ public class RecorderController extends BaseController {
     @ResponseBody
     public JsonResult<?> deleteRecorder(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Seminar);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Seminar);
         cmsRecorderService.deleteCmsRecorderById(id);
         return JsonResult.buildSuccess();
     }

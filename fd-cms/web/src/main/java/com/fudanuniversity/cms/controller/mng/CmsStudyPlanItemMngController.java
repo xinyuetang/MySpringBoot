@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.controller;
+package com.fudanuniversity.cms.controller.mng;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanItemService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
@@ -6,6 +6,7 @@ import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemEditVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemUserEditVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import com.fudanuniversity.cms.controller.BaseController;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,8 +23,8 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * Created by Xinyue.Tang at 2021-05-05 18:08:08
  */
 @RestController
-@RequestMapping("/study/plan/allocation")
-public class CmsStudyPlanItemController extends BaseController {
+@RequestMapping("/mng/study/plan/allocation")
+public class CmsStudyPlanItemMngController extends BaseController {
 
     @Resource
     private CmsStudyPlanItemService cmsStudyPlanItemService;
@@ -38,7 +39,7 @@ public class CmsStudyPlanItemController extends BaseController {
     public JsonResult<?> editAllocation(
             @Valid @RequestBody CmsStudyPlanItemEditVo editVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanItemService.editStudyPlanItem(editVo);
         return JsonResult.buildSuccess();
     }

@@ -1,4 +1,13 @@
-## logger
+# swagger
+springfox:
+  documentation:
+    open-api:
+      v3:
+        path: /docs/api/v3
+    swagger-ui:
+      enabled: true
+      base-url: /docs/api
+# logging(logback)
 logging:
   config: classpath:config/logback-dev.xml
 ## 数据库

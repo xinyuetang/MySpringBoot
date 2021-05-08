@@ -14,7 +14,6 @@ import com.fudanuniversity.cms.commons.model.query.SortMode;
 import com.fudanuniversity.cms.commons.model.wrapper.PairTuple;
 import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.commons.util.DateExUtils;
-import com.fudanuniversity.cms.commons.validation.group.Delete;
 import com.fudanuniversity.cms.repository.dao.*;
 import com.fudanuniversity.cms.repository.entity.*;
 import com.fudanuniversity.cms.repository.query.CmsStudyPlanQuery;
@@ -108,6 +107,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         CmsStudyPlan updater = new CmsStudyPlan();
         updater.setId(updateVo.getId());
         updater.setName(updateVo.getName());
+        updater.setReferenceDate(updateVo.getReferenceDate());
         updater.setModifyTime(new Date());
         int affect = cmsStudyPlanDao.updateById(updater);
         logger.info("更新CmsStudyPlan affect:{}, updater: {}", affect, updater);

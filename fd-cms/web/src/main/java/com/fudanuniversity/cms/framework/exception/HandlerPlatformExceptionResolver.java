@@ -61,7 +61,7 @@ public class HandlerPlatformExceptionResolver extends DefaultHandlerExceptionRes
         if (isPlatformEx) {//平台定义的异常记录WARN日志
             logger.warn("Application occurred platform exception, code: {}, message: {}", code, ex.getMessage(), ex);
         } else {//其他意外错误记录ERROR日志，出现了该日志意味着需要优化代码设计
-            logger.warn("Application occurred unexpected exception, message: {}", ex.getMessage(), ex);
+            logger.error("Application occurred unexpected exception, message: {}", ex.getMessage(), ex);
         }
 
         return modelAndView;

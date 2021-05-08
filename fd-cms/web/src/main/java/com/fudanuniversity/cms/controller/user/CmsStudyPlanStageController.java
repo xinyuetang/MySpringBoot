@@ -1,10 +1,11 @@
-package com.fudanuniversity.cms.controller;
+package com.fudanuniversity.cms.controller.user;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanStageService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
 import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import com.fudanuniversity.cms.controller.BaseController;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -21,7 +22,7 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * Created by Xinyue.Tang at 2021-05-05 18:08:08
  */
 @RestController
-@RequestMapping("/study/plan/stage")
+@RequestMapping("/u/study/plan/stage")
 public class CmsStudyPlanStageController extends BaseController {
 
     @Resource
@@ -33,10 +34,10 @@ public class CmsStudyPlanStageController extends BaseController {
     /**
      * 保存处理
      */
-    @PostMapping("/save")
+    @PostMapping("/add")
     public JsonResult<?> saveCmsStudyPlanStage(@Valid @RequestBody CmsStudyPlanStageAddVo addVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanStageService.saveCmsStudyPlanStage(addVo);
         return JsonResult.buildSuccess();
     }
@@ -47,7 +48,7 @@ public class CmsStudyPlanStageController extends BaseController {
     @PostMapping("/update")
     public JsonResult<?> updateCmsStudyPlanStageById(@Valid @RequestBody CmsStudyPlanStageUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanStageService.updateCmsStudyPlanStageById(updateVo);
         return JsonResult.buildSuccess();
     }
@@ -58,7 +59,7 @@ public class CmsStudyPlanStageController extends BaseController {
     @PostMapping("/edit")
     public JsonResult<?> updateCmsStudyPlanStageById(@Valid @RequestBody List<CmsStudyPlanStageEditVo> editVoList) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanStageService.editCmsStudyPlanStages(editVoList);
         return JsonResult.buildSuccess();
     }
@@ -69,7 +70,7 @@ public class CmsStudyPlanStageController extends BaseController {
     @PostMapping("/delete")
     public JsonResult<?> deleteCmsStudyPlanStageById(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanStageService.deleteCmsStudyPlanStageById(id);
         return JsonResult.buildSuccess();
     }

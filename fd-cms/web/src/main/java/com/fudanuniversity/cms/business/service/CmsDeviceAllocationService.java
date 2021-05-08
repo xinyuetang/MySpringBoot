@@ -13,6 +13,8 @@ import com.fudanuniversity.cms.commons.model.paging.PagingResult;
  */
 public interface CmsDeviceAllocationService {
 
+    /*  ～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～～  */
+
     /**
      * 设备分配
      */

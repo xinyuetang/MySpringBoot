@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.controller;
+package com.fudanuniversity.cms.controller.user;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanWorkService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
@@ -8,6 +8,7 @@ import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkUpdateVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import com.fudanuniversity.cms.controller.BaseController;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -24,7 +25,7 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * Created by Xinyue.Tang at 2021-05-05 18:08:08
  */
 @RestController
-@RequestMapping("/study/plan/work")
+@RequestMapping("/u/study/plan/work")
 public class CmsStudyPlanWorkController extends BaseController {
 
     @Resource
@@ -39,7 +40,7 @@ public class CmsStudyPlanWorkController extends BaseController {
     @PostMapping("/save")
     public JsonResult<?> saveCmsStudyPlanWork(@Valid @RequestBody CmsStudyPlanWorkAddVo addVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanWorkService.saveCmsStudyPlanWork(addVo);
         return JsonResult.buildSuccess();
     }
@@ -50,7 +51,7 @@ public class CmsStudyPlanWorkController extends BaseController {
     @PostMapping("/update")
     public JsonResult<?> updateCmsStudyPlanWorkById(@Valid @RequestBody CmsStudyPlanWorkUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanWorkService.updateCmsStudyPlanWorkById(updateVo);
         return JsonResult.buildSuccess();
     }
@@ -61,7 +62,7 @@ public class CmsStudyPlanWorkController extends BaseController {
     @PostMapping("/delete")
     public JsonResult<?> deleteCmsStudyPlanWorkById(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
-        cmsUserService.confirmUserPrivilege(loginUser.getStuId(), Administrator);
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsStudyPlanWorkService.deleteCmsStudyPlanWorkById(id);
         return JsonResult.buildSuccess();
     }

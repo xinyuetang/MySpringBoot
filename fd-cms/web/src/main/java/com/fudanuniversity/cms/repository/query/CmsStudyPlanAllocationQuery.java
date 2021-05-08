@@ -49,6 +49,7 @@ public class CmsStudyPlanAllocationQuery extends BaseQuery {
      * 索引字段:是
      */
     private Long userId;
+    private List<Long> userIdList;
 
     /**
      * 字段备注:培养方案id <p>

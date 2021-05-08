@@ -18,10 +18,10 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 /**
  * CmsStudyPlanStageService 实现类
@@ -99,7 +99,10 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         }
 
         cmsStudyPlanComponent.increaseStudyPlanVersion(planId);
-        for (int i = 0; i < editVoList.size(); i++) {
+        Map<Integer, List<CmsStudyPlanStage>> termGroupMap = stages.stream().collect(
+                groupingBy(CmsStudyPlanStage::getTerm, LinkedHashMap::new, Collectors.toList()));
+        Collection<List<CmsStudyPlanStage>> termStages = termGroupMap.values();
+        for (int i = 0; i < termStages.size(); i++) {
             CmsStudyPlanStageEditVo updateVo = editVoList.get(i);
             CmsStudyPlanStage updater = new CmsStudyPlanStage();
             updater.setId(updateVo.getId());

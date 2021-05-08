@@ -16,9 +16,14 @@ import java.util.List;
 public interface CmsUserService {
 
     /**
-     * 确认用户权限
+     * 确认用户是否有管理员权限
      */
-    void confirmUserPrivilege(String stuId, UserRoleEnum privilege);
+    void checkManagePrivilege(String stuId);
+
+    /**
+     * 确认用户是否存在某种管理员权限
+     */
+    void checkManagePrivilege(String stuId, UserRoleEnum privilege);
 
     /**
      * 保存处理

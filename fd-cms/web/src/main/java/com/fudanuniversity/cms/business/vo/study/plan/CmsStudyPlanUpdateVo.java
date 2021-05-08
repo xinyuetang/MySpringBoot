@@ -33,5 +33,10 @@ public class CmsStudyPlanUpdateVo implements Serializable {
      * 名称
      */
     private String name;
+
+    /**
+     * 基准日期
+     */
+    private Date referenceDate;
 }
 
