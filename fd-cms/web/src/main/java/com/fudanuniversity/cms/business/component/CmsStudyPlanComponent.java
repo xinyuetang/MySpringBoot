@@ -1,7 +1,6 @@
 package com.fudanuniversity.cms.business.component;
 
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanOverviewVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageOverviewVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkOverviewVo;
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
@@ -247,7 +246,7 @@ public class CmsStudyPlanComponent {
                 stageOverviewVo.setModifyTime(stage.getModifyTime());
                 //任务
                 Long stageId = stage.getId();
-                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
+                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.getOrDefault(stageId, Collections.emptyMap());
                 //公共任务
                 List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
                 List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks);
@@ -287,7 +286,7 @@ public class CmsStudyPlanComponent {
                 CmsStudyPlanStageOverviewVo stageOverviewVo = convertCmsStudyPlanStageOverviewVo(stage);
                 //任务
                 Long stageId = stage.getId();
-                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.get(stageId);
+                Map<Integer, List<CmsStudyPlanWork>> workTypeMap = planStageWorkMap.getOrDefault(stageId, Collections.emptyMap());
                 //公共任务
                 List<CmsStudyPlanWork> commonWorks = workTypeMap.get(StudyPlanWorkTypeEnum.Common.getCode());
                 List<CmsStudyPlanWorkOverviewVo> commonWorkOverviewVoList = convertWorkOverviewVo(commonWorks, allocationMap);

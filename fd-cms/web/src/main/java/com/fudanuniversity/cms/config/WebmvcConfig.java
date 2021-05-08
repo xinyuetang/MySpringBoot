@@ -22,7 +22,7 @@ import java.util.List;
  * Created by Xinyue.Tang at 2021-04-16 10:16:47
  */
 @Configuration
-public class WebmvcConfigurerAdapter implements WebMvcConfigurer {
+public class WebmvcConfig implements WebMvcConfigurer {
 
     @Override
     public Validator getValidator() {
@@ -99,23 +99,4 @@ public class WebmvcConfigurerAdapter implements WebMvcConfigurer {
         jsonConverter.setObjectMapper(objectMapper);
         converters.add(0, jsonConverter);
     }
-
-    /*@Value("${springfox.documentation.swagger-ui.base-url:}")
-    private String swaggerBaseUrl;
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String baseUrl = StringUtils.trimTrailingCharacter(nullToEmpty(swaggerBaseUrl), '/');
-        registry.
-                addResourceHandler(baseUrl + "/swagger-ui/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-                .resourceChain(false);
-    }
-
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        String baseUrl = StringUtils.trimTrailingCharacter(nullToEmpty(swaggerBaseUrl), '/');
-        registry.addViewController(baseUrl + "/swagger-ui/")
-                .setViewName("forward:" + baseUrl + "/swagger-ui/index.html");
-    }*/
 }

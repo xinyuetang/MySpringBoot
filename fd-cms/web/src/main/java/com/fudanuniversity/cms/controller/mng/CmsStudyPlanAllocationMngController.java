@@ -52,11 +52,11 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
     @GetMapping("/info")
     public JsonResult<CmsStudyPlanAllocationInfoVo> queryAllocationInfo(
             @NotNull(message = "用户id不能为空") @Min(1L) Long userId,
-            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         LoginUser loginUser = getLoginUser();
         userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
-        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(id, userId);
+        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(planId, userId);
         return JsonResult.buildSuccess(allocationInfoVo);
     }
 

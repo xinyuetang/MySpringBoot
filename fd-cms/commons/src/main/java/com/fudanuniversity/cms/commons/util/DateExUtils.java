@@ -228,7 +228,10 @@ public class DateExUtils {
         }
 
         //根据字符串长度匹配转换时间
-        if (source.length() == DATE_PATTERN.length()) {
+        if (StringUtils.isNumeric(source)) {
+            long timestamp = Long.parseLong(source);
+            return new Date(timestamp);
+        } else if (source.length() == DATE_PATTERN.length()) {
             return DateExUtils.parseDate(source);
         } else if (source.length() == DATETIME_PATTERN.length()) {
             return DateExUtils.parseDatetime(source);

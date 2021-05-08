@@ -7,7 +7,8 @@ import java.util.Objects;
  */
 public enum StudyPlanAllocationStatusEnum {
 
-    Normal(10, "正常"),
+    Undefined(0, "未分配"),
+    Normal(10, "已分配"),
     Expired(20, "已过期"),
     ;
 

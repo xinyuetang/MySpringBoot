@@ -70,9 +70,9 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         Long stageId = updateVo.getId();
         AssertUtils.notNull(stageId);
         CmsStudyPlanStage stage = cmsStudyPlanComponent.queryStudyPlanStageById(stageId);
+        AssertUtils.notNull(stage, "培养计划阶段[" + stageId + "]不存在");
 
         cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getId());
-        AssertUtils.notNull(stage, "培养计划阶段[" + stageId + "]不存在");
         CmsStudyPlanStage updater = new CmsStudyPlanStage();
         updater.setId(stageId);
         updater.setEndDate(updater.getEndDate());
@@ -132,7 +132,8 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getPlanId());
         //删除一个阶段后，在同一个其他plan下的stage需要更新index
         Long planId = stage.getPlanId();
-        List<CmsStudyPlanStage> planStageList = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
+        Integer term = stage.getTerm();
+        List<CmsStudyPlanStage> planStageList = cmsStudyPlanComponent.queryStudyPlanStages(planId, term);
         for (int i = 0; i < planStageList.size(); i++) {
             CmsStudyPlanStage planStage = planStageList.get(i);
             Integer stageIndex = planStage.getIndex();

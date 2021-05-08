@@ -32,9 +32,9 @@ public class CmsStudyPlanAllocationController extends BaseController {
      */
     @GetMapping("/info")
     public JsonResult<?> queryAllocationInfo(
-            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         Long userId = getLoginUser().getUserId();
-        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(id, userId);
+        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(planId, userId);
         return JsonResult.buildSuccess(allocationInfoVo);
     }
 
@@ -43,9 +43,9 @@ public class CmsStudyPlanAllocationController extends BaseController {
      */
     @GetMapping("/overview")
     public JsonResult<?> queryUserCmsStudyPlanOverview(
-            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         Long userId = getLoginUser().getUserId();
-        CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, id);
+        CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, planId);
         return JsonResult.buildSuccess(overview);
     }
 }

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -75,7 +74,7 @@ public final class JsonUtils {
         mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         //默认开启：如果一个类没有public的方法或属性时，会得到一个空JSON串，而不是序列化失败
         mapper.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
-        //BigDecimal不输出科学计数法的值
+        //BigDecimal不要输出科学计数法的值
         mapper.getFactory().configure(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN, true);
         return mapper;
     }
@@ -93,15 +92,7 @@ public final class JsonUtils {
         @Override
         public Date deserialize(JsonParser jsonParser,
                                 DeserializationContext deserializationContext) throws IOException {
-            String dateText = jsonParser.getText();
-            if (StringUtils.isEmpty(dateText)) {
-                return null;
-            } else if (StringUtils.isNumeric(dateText)) {
-                long timestamp = Long.parseLong(dateText);
-                return new Date(timestamp);
-            } else {
-                return DateExUtils.parseDynamicFormat(dateText);
-            }
+            return DateExUtils.parseDynamicFormat(jsonParser.getText());
         }
     }
 

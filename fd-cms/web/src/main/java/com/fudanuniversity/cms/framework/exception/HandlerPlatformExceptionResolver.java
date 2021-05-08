@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import static javax.servlet.RequestDispatcher.ERROR_STATUS_CODE;
+
 /**
  * DefaultHandlerExceptionResolver优先级为Ordered.LOWEST_PRECEDENCE，是最后一个异常处理，这里将spring自带的异常处理类替换掉
  * <p>
@@ -41,7 +43,7 @@ public class HandlerPlatformExceptionResolver extends DefaultHandlerExceptionRes
         if (modelAndView != null) {
             httpStatus = WebExceptionHelper.getStatus(wrapper.getStatusCode());
             modelAndView.setStatus(httpStatus);
-            request.setAttribute("javax.servlet.error.status_code", httpStatus.value());
+            request.setAttribute(ERROR_STATUS_CODE, httpStatus.value());
             JsonResult<Object> errorInfo = JsonResult.buildFail(
                     WebExceptionHelper.getCode(httpStatus, null), WebExceptionHelper.getMessage(httpStatus));
             modelAndView.addAllObjects(BeanExUtils.introspect(errorInfo));
@@ -50,7 +52,7 @@ public class HandlerPlatformExceptionResolver extends DefaultHandlerExceptionRes
             code = isPlatformEx ? ((PlatformException) ex).getCode() : ErrorCode.DefaultErrorCode;
             message = isPlatformEx ? ex.getMessage() : WebExceptionHelper.getMessage(httpStatus);
             Object model = JsonResult.buildFail(code, message);
-            request.setAttribute("javax.servlet.error.status_code", httpStatus.value());
+            request.setAttribute(ERROR_STATUS_CODE, httpStatus.value());
             modelAndView = new ModelAndView();
             modelAndView.setStatus(httpStatus);
             modelAndView.addAllObjects(BeanExUtils.introspect(model));

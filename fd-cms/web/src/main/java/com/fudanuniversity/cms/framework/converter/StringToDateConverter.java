@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.framework.converter;
 import com.fudanuniversity.cms.commons.util.DateExUtils;
 import org.springframework.core.convert.converter.Converter;
 
+import javax.annotation.Nullable;
 import java.util.Date;
 
 /**
@@ -20,7 +21,7 @@ public class StringToDateConverter implements Converter<String, Date> {
     public final static StringToDateConverter INSTANCE = new StringToDateConverter();
 
     @Override
-    public Date convert(String source) {
+    public Date convert(@Nullable String source) {
         return DateExUtils.parseDynamicFormat(source);
     }
 }

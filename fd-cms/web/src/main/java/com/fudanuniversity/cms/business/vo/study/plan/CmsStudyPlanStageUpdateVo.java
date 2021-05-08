@@ -33,7 +33,6 @@ public class CmsStudyPlanStageUpdateVo implements Serializable {
      * 节点日期
      */
     @NotNull
-    @Min(0L)
     private Date endDate;
 }
 
