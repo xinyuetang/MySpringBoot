@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Created by Xinyue.Tang at 2020-05-19 11:09:20
@@ -42,6 +43,21 @@ public final class ValueUtils {
         }
     }
 
+    public static Integer defaultInteger(Integer value) {
+        return defaultInteger(value, DEFAULT_INTEGER);
+    }
+
+    public static Integer defaultInteger(Integer value, Integer defaultValue) {
+        return value == null ? defaultValue : value;
+    }
+
+    public static <T> Integer integerOf(T obj, Function<T, Integer> function) {
+        if (obj == null) {
+            return null;
+        }
+        return function.apply(obj);
+    }
+
     public static Long toLong(final String str) {
         return toLong(str, 0L);
     }
@@ -55,18 +71,6 @@ public final class ValueUtils {
         } catch (final NumberFormatException nfe) {
             return defaultValue;
         }
-    }
-
-    public static Integer defaultInteger(Integer value) {
-        return defaultInteger(value, DEFAULT_INTEGER);
-    }
-
-    public static Integer defaultInteger(Integer value, Integer defaultValue) {
-        return value == null ? defaultValue : value;
-    }
-
-    public static Integer defaultInteger(Number value, Integer defaultValue) {
-        return value == null ? defaultValue : value.intValue();
     }
 
     public static <T> T defaultObject(Object value) {
@@ -90,6 +94,13 @@ public final class ValueUtils {
 
     public static Long defaultLong(Number value, Long defaultValue) {
         return value == null ? defaultValue : value.longValue();
+    }
+
+    public static <T> Long longOf(T obj, Function<T, Long> function) {
+        if (obj == null) {
+            return null;
+        }
+        return function.apply(obj);
     }
 
     public static final String DEFAULT_STRING = "";

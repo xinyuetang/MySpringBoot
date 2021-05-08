@@ -29,6 +29,12 @@ public class ${classSimpleName}Query extends BaseQuery {
     private static final long serialVersionUID = 1L;
     <#list columnList as column>
     <#if (column.columnProperty=='createTime') || (column.columnProperty=='modifyTime')>
+    /**
+    * 字段备注:${column.columnComment} <p>
+    * 数据库字段长度:(${column.columnPrecision},${column.columnScale}) <p>
+    * 索引字段:${column.index?string("是","不是")}
+    */
+    private ${column.javaType} ${column.columnProperty};
 
     /**
      * 字段备注:小于等于${column.columnComment} <p>
@@ -54,13 +60,6 @@ public class ${classSimpleName}Query extends BaseQuery {
     <#if (column.columnProperty == primaryColumnClass.columnName)>
 
     /**
-     * 字段备注:${column.columnComment}
-     * 数据库字段长度:(${column.columnPrecision},${column.columnScale})
-     * 索引字段:${column.index?string("是","不是")}
-     */
-    private Long gt${column.columnProperty?cap_first};
-
-    /**
      * 字段备注:${column.columnComment} <p>
      * 数据库字段长度:(${column.columnPrecision},${column.columnScale}) <p>
      * 索引字段:${column.index?string("是","不是")}
@@ -69,6 +68,14 @@ public class ${classSimpleName}Query extends BaseQuery {
     </#if>
     </#if>
     </#list>
+
+    public void checkIndexCondition(){
+        if (get${primaryColumnClass.columnProperty?cap_first}() == null
+        <#list indexColumnList as column>       && get${column.columnProperty?cap_first}() == null<#if (column_has_next)>
+        </#if></#list>) {
+            throw new UnsupportedOperationException("请通过索引查询！");
+        }
+    }
 
     public static ${classSimpleName}Query singletonQuery() {
         ${classSimpleName}Query query = new ${classSimpleName}Query();

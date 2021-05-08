@@ -18,11 +18,6 @@ public interface ${classSimpleName}Dao {
     int insert(${classSimpleName} ${classVariableName});
 
     /**
-     * 批量upsert
-     */
-    int bulkUpsert(List<${classSimpleName}> ${classVariableName}List);
-
-    /**
      * 根据id更新处理
      */
     int updateById(${classSimpleName} ${classVariableName});

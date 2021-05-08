@@ -31,17 +31,6 @@ public class ${classSimpleName}DaoImpl implements ${classSimpleName}Dao {
         return ${classVariableName}Mapper.insert(${classVariableName});
     }
 
-    @Override
-    public int bulkUpsert(List<${classSimpleName}> ${classVariableName}List){
-        Assert.notEmpty(${classVariableName}List, "保存对象列表不能为空");
-
-        for(${classSimpleName} ${classVariableName} : ${classVariableName}List){
-            validateEntity(${classVariableName});
-        }
-
-        return ${classVariableName}Mapper.bulkUpsert(${classVariableName}List);
-    }
-
     private void validateEntity(${classSimpleName} ${classVariableName}) {
 <#list columnList as column>
     <#if (column.allowEmpty == false)>
@@ -87,11 +76,6 @@ public class ${classSimpleName}DaoImpl implements ${classSimpleName}Dao {
     private void validateQueryParameter(${classSimpleName}Query query) {
         query.validateBaseArgument();
 
-        if (query.get${primaryColumnClass.columnProperty?cap_first}() == null
-                && query.getGt${primaryColumnClass.columnProperty?cap_first}() == null
-        <#list indexColumnList as column>       && query.get${column.columnProperty?cap_first}() == null<#if (column_has_next)>
-        </#if></#list>) {
-            throw new UnsupportedOperationException("请通过索引查询！");
-        }
+        query.checkIndexCondition();
     }
 }
