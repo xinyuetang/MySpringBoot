@@ -9,6 +9,7 @@ import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * <p>
  * Created by Xinyue.Tang at 2021-05-03
  */
+@Api(tags = "管理员 - 设备分配")
 @RestController
 @RequestMapping("/mng/device/allocation")
 public class DeviceAllocationMngController extends BaseController {

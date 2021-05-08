@@ -14,6 +14,7 @@ import com.fudanuniversity.cms.framework.util.Webmvc;
 import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.google.common.collect.Maps;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,6 +29,7 @@ import java.util.Objects;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
+@Api(tags = "用户")
 @RestController
 @RequestMapping(path = "/user")
 public class UserController extends BaseController {

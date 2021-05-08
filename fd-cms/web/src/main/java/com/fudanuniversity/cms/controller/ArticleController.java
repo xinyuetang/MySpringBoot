@@ -6,6 +6,7 @@ import com.fudanuniversity.cms.business.vo.article.*;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 
+@Api(tags = "文章")
 @RestController
 @RequestMapping(path = "/article")
 public class ArticleController extends BaseController {

@@ -8,6 +8,7 @@ import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.commons.util.UrlUtils;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ import javax.annotation.Resource;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Seminar;
 
+@Api(tags = "演讲记录安排")
 @Controller
 @RequestMapping(path = "/recorder")
 public class RecorderController extends BaseController {

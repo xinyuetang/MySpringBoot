@@ -8,6 +8,7 @@ import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
+@Api(tags = "管理员 - 设备")
 @RestController
 @RequestMapping(path = "/mng/device")
 public class DeviceMngController extends BaseController {

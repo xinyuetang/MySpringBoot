@@ -9,6 +9,7 @@ import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.annotations.Api;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import javax.annotation.Resource;
  * <p>
  * Created by Xinyue.Tang at 2021-05-03
  */
+@Api(tags = "用户 - 设备分配")
 @RestController
 @RequestMapping("/u/device/allocation")
 public class DeviceAllocationController extends BaseController {
