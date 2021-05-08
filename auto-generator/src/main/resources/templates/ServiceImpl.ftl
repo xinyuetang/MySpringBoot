@@ -33,7 +33,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
      * 保存处理
      */
     @Override
-    public void save${classSimpleName}(${classSimpleName} ${classVariableName}) {
+    public void add${classSimpleName}(${classSimpleName} ${classVariableName}) {
         //TODO 校验与赋值映射
 
         int affect = ${classVariableName}Dao.insert(${classVariableName});
@@ -45,7 +45,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
      * 根据id更新处理
      */
     @Override
-    public void update${classSimpleName}ById(${classSimpleName} ${classVariableName}) {
+    public void modify${classSimpleName}ById(${classSimpleName} ${classVariableName}) {
         ${classSimpleName} updater = new ${classSimpleName}();
         //TODO 值映射校验与赋值映射
         updater.setModifyTime(new Date());
@@ -58,7 +58,7 @@ public class ${classSimpleName}ServiceImpl implements ${classSimpleName}Service 
      * 根据id删除处理
      */
     @Override
-    public void delete${classSimpleName}ById(${idType} ${id}) {
+    public void remove${classSimpleName}ById(${idType} ${id}) {
         //TODO 补充状态检测业务逻辑
         int affect = ${classVariableName}Dao.deleteById(${id});
         logger.info("删除${classSimpleName} affect:{}, id: {}", affect, id);

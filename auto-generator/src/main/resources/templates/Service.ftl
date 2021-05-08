@@ -15,17 +15,17 @@ public interface ${classSimpleName}Service {
     /**
      * 保存处理
      */
-    void save${classSimpleName}(${classSimpleName} ${classVariableName});
+    void add${classSimpleName}(${classSimpleName} ${classVariableName});
 
     /**
      * 根据id更新处理
      */
-    void update${classSimpleName}ById(${classSimpleName} ${classVariableName});
+    void modify${classSimpleName}ById(${classSimpleName} ${classVariableName});
 
     /**
      * 根据id删除处理
      */
-    void delete${classSimpleName}ById(${idType} ${id});
+    void remove${classSimpleName}ById(${idType} ${id});
 
     /**
      * 分页查询数据列表

@@ -139,7 +139,7 @@
 
     <update id="increaseVersionById">
         <![CDATA[
-        UPDATE `cms_study_plan` SET `version` = `version` + 1, `modify_time` = CURRENT_TIMESTAMP FROM `cms_study_plan` WHERE `id` = #{id} LIMIT 1
+        UPDATE `cms_study_plan` SET `version` = `version` + 1, `modify_time` = CURRENT_TIMESTAMP WHERE `id` = #{id} LIMIT 1
         ]]>
     </update>
 

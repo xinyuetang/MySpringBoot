@@ -84,6 +84,16 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess(welcome);
     }
 
+    @PostMapping(path = "/logout")
+    public JsonResult<?> logout() {
+        Object loginUserObj = Webmvc.session().getAttribute(CmsConstants.LoginSessionUserKey);
+        if (!(loginUserObj instanceof LoginUser)) {
+            throw new BusinessException("请先登录");
+        }
+        Webmvc.session().removeAttribute(CmsConstants.LoginSessionUserKey);
+        return JsonResult.buildSuccess();
+    }
+
     @PostMapping(path = "/reset")
     public JsonResult<?> reset(@Valid @RequestBody CmsUserAccountResetPasswordVo resetPasswordVo) {
         LoginUser loginUser = getLoginUser();
