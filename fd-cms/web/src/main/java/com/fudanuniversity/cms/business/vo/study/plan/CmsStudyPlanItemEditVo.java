@@ -40,6 +40,11 @@ public class CmsStudyPlanItemEditVo implements Serializable {
     private Integer finished;
 
     /**
+     * 培养方案任务延迟日期
+     */
+    private Date finishedDate;
+
+    /**
      * 备注
      */
     private String remark;

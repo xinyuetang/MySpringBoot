@@ -1,4 +1,4 @@
-package com.fudanuniversity.cms.controller;
+package com.fudanuniversity.cms.controller.mng;
 
 import com.fudanuniversity.cms.business.service.CmsDeviceService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
@@ -7,6 +7,7 @@ import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
+import com.fudanuniversity.cms.controller.BaseController;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -17,8 +18,8 @@ import javax.annotation.Resource;
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
 @RestController
-@RequestMapping(path = "/device")
-public class DeviceController extends BaseController {
+@RequestMapping(path = "/mng/device")
+public class DeviceMngController extends BaseController {
 
     @Resource
     private CmsDeviceService cmsDeviceService;

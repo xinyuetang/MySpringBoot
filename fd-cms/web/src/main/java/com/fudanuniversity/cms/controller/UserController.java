@@ -53,7 +53,7 @@ public class UserController extends BaseController {
         return JsonResult.buildSuccess(loginUserVo);
     }
 
-    @RequestMapping(path = "/login") //TODO
+    @RequestMapping(path = "/login")
     //@PostMapping(path = "/login")
     public JsonResult<?> login(@Valid CmsUserAccountLoginVo userAccountVo) {
         /*

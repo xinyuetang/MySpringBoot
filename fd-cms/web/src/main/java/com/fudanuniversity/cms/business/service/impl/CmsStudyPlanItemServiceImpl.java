@@ -48,13 +48,18 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
         CmsStudyPlanItem updater = new CmsStudyPlanItem();
         updater.setId(allocationId);
         Integer finished = editVo.getFinished();
+        Date finishedDate = editVo.getFinishedDate();
+        Date dbFinishedDate = allocation.getFinishedDate();
+
         Date current = new Date();
         if (finished == null) {
-            updater.setFinishedDate(allocation.getFinishedDate());//finished为null不更新完成日期
+            updater.setFinishedDate(dbFinishedDate);//finished为null不更新完成日期
         } else {
             updater.setFinished(finished);
             if (BooleanEnum.isTrue(finished)) {
-                updater.setFinishedDate(current);
+                //如果管理员设置了完成时间则取传入的完成时间
+                finishedDate = finishedDate == null ? current : finishedDate;
+                updater.setFinishedDate(finishedDate);
             }
         }
         Date delayDate = editVo.getDelayDate();

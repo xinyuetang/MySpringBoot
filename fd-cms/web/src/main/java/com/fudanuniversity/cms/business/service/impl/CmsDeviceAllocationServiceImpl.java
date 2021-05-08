@@ -98,8 +98,8 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         //更新设备分配状态为已返还
         CmsDeviceAllocation updater = new CmsDeviceAllocation();
         updater.setId(allocationId);
-        deviceAllocation.setStatus(DeviceAllocationStatusEnum.Returned.getCode());
-        deviceAllocation.setModifyTime(new Date());
+        updater.setStatus(DeviceAllocationStatusEnum.Returned.getCode());
+        updater.setModifyTime(new Date());
         int affect = cmsDeviceAllocationDao.updateById(updater);
         AssertUtils.state(affect == 1);
     }

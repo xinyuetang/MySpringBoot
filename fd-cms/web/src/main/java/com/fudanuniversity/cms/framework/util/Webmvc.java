@@ -23,8 +23,12 @@ public final class Webmvc {
     }
 
     public static HttpSession session() {
+        return session(false);
+    }
+
+    public static HttpSession session(boolean create) {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        return attr.getRequest().getSession(true); // true == allow create
+        return attr.getRequest().getSession(create); // true == allow create
     }
 
     private Webmvc() {
