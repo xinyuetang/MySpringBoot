@@ -44,7 +44,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void saveCmsStudyPlanStage(CmsStudyPlanStageAddVo addVo) {
+    public void addCmsStudyPlanStage(CmsStudyPlanStageAddVo addVo) {
         Long planId = addVo.getPlanId();
         CmsStudyPlan cmsStudyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
         AssertUtils.notNull(cmsStudyPlan, "培养计划[" + planId + "]不存在");

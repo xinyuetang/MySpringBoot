@@ -14,7 +14,7 @@ public interface CmsStudyPlanStageService {
     /**
      * 保存处理
      */
-    void saveCmsStudyPlanStage(CmsStudyPlanStageAddVo addVo);
+    void addCmsStudyPlanStage(CmsStudyPlanStageAddVo addVo);
 
     /**
      * 根据id更新处理

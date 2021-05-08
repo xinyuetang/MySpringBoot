@@ -7,6 +7,8 @@ import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +22,7 @@ import java.util.List;
  * <p>
  * Created by Xinyue.Tang at 2021-05-05 17:59:46
  */
+@Api(tags = "用户 - 培养计划")
 @RestController
 @RequestMapping("/u/study/plan")
 public class CmsStudyPlanController extends BaseController {
@@ -27,9 +30,7 @@ public class CmsStudyPlanController extends BaseController {
     @Resource
     private CmsStudyPlanService cmsStudyPlanService;
 
-    /**
-     * 根据条件查询信息列表
-     */
+    @Operation(summary = "用户查询培养计划分页列表")
     @GetMapping("/paging")
     public JsonResult<List<CmsStudyPlanVo>> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
         PagingResult<CmsStudyPlanVo> pagingResult = cmsStudyPlanService.queryPagingResult(queryVo, paging);

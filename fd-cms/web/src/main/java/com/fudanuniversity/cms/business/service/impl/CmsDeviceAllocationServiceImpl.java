@@ -133,7 +133,7 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsDeviceAllocation> allocationList = cmsDeviceAllocationDao.selectListByParam(query);
 
-            List<Long> deviceIds = Lists.transform(allocationList, CmsDeviceAllocation::getId);
+            List<Long> deviceIds = Lists.transform(allocationList, CmsDeviceAllocation::getDeviceId);
             Map<Long, CmsDevice> cmsDeviceMap = cmsDeviceComponent.queryCmsDeviceMap(deviceIds);
 
             pagingResult.setRows(allocationList, allocation -> {

@@ -1,12 +1,12 @@
 package com.fudanuniversity.cms.controller.user;
 
 import com.fudanuniversity.cms.business.service.CmsStudyPlanItemService;
-import com.fudanuniversity.cms.business.service.CmsUserService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemEditVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemUserEditVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
-import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
-
 /**
  * CmsStudyPlanAllocationController
  * <p>
  * Created by Xinyue.Tang at 2021-05-05 18:08:08
  */
+@Api(tags = "用户 - 用户分配的培养计划任务")
 @RestController
 @RequestMapping("/u/study/plan/allocation")
 public class CmsStudyPlanItemController extends BaseController {
@@ -29,24 +28,7 @@ public class CmsStudyPlanItemController extends BaseController {
     @Resource
     private CmsStudyPlanItemService cmsStudyPlanItemService;
 
-    @Resource
-    private CmsUserService cmsUserService;
-
-    /**
-     * 管理员变更培养计划分配状态
-     */
-    @PostMapping("/edit")
-    public JsonResult<?> editAllocation(
-            @Valid @RequestBody CmsStudyPlanItemEditVo editVo) {
-        LoginUser loginUser = getLoginUser();
-        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanItemService.editStudyPlanItem(editVo);
-        return JsonResult.buildSuccess();
-    }
-
-    /**
-     * 用户点击完成任务
-     */
+    @Operation(summary = "用户变更用户分配的培养计划任务状态")
     @PostMapping("/user/edit")
     public JsonResult<?> changeUserCmsStudyPlanAllocationStatus(
             @Valid @RequestBody CmsStudyPlanItemUserEditVo userEditVo) {

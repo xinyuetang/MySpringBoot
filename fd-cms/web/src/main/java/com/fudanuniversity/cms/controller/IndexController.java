@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * Created by Xinyue.Tang at 2021-05-03 02:27:52
  */
-@Api(tags = {"首页"})
+@Api(tags = "首页")
 @RestController
 public class IndexController extends BaseController {
 

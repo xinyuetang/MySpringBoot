@@ -26,7 +26,7 @@ public class CmsDeviceComponent {
 
     public CmsDevice queryCmsDevice(Long deviceId) {
         AssertUtils.notNull(deviceId);
-        CmsDeviceQuery query = new CmsDeviceQuery();
+        CmsDeviceQuery query = CmsDeviceQuery.singletonQuery();
         query.setId(deviceId);
         query.setDeleted(DeletedEnum.Normal.getCode());
         List<CmsDevice> devices = cmsDeviceDao.selectListByParam(query);
@@ -38,7 +38,7 @@ public class CmsDeviceComponent {
 
     public Map<Long, CmsDevice> queryCmsDeviceMap(List<Long> deviceIds) {
         if (CollectionUtils.isNotEmpty(deviceIds)) {
-            CmsDeviceQuery query = new CmsDeviceQuery();
+            CmsDeviceQuery query = CmsDeviceQuery.listQuery();
             query.setIdList(deviceIds);
             List<CmsDevice> devices = cmsDeviceDao.selectListByParam(query);
             if (CollectionUtils.isNotEmpty(devices)) {

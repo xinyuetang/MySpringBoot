@@ -9,6 +9,8 @@ import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanWorkVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
 import com.fudanuniversity.cms.controller.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +26,7 @@ import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
  * <p>
  * Created by Xinyue.Tang at 2021-05-05 18:08:08
  */
+@Api(tags = "管理员 - 培养计划任务")
 @RestController
 @RequestMapping("/mng/study/plan/work")
 public class CmsStudyPlanWorkMngController extends BaseController {
@@ -34,9 +37,7 @@ public class CmsStudyPlanWorkMngController extends BaseController {
     @Resource
     private CmsUserService cmsUserService;
 
-    /**
-     * 保存处理
-     */
+    @Operation(summary = "管理员新增培养计划任务")
     @PostMapping("/add")
     public JsonResult<?> saveCmsStudyPlanWork(@Valid @RequestBody CmsStudyPlanWorkAddVo addVo) {
         LoginUser loginUser = getLoginUser();
@@ -45,9 +46,7 @@ public class CmsStudyPlanWorkMngController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    /**
-     * 根据id更新处理
-     */
+    @Operation(summary = "管理员更新培养计划任务")
     @PostMapping("/update")
     public JsonResult<?> updateCmsStudyPlanWorkById(@Valid @RequestBody CmsStudyPlanWorkUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
@@ -56,9 +55,7 @@ public class CmsStudyPlanWorkMngController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    /**
-     * 根据id删除处理
-     */
+    @Operation(summary = "管理员删除培养计划任务")
     @PostMapping("/delete")
     public JsonResult<?> deleteCmsStudyPlanWorkById(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
@@ -70,6 +67,7 @@ public class CmsStudyPlanWorkMngController extends BaseController {
     /**
      * 根据条件查询信息列表
      */
+    @Operation(summary = "管理员查询培养计划任务分页列表")
     @GetMapping("/list")
     public JsonResult<List<CmsStudyPlanWorkVo>> queryCmsStudyPlanWorkList(@Valid CmsStudyPlanWorkQueryVo queryVo) {
         List<CmsStudyPlanWorkVo> pagingResult = cmsStudyPlanWorkService.queryCmsStudyPlanWorkList(queryVo);
