@@ -71,7 +71,7 @@ public class CmsStudyPlanWorkMngController extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/list")
-    public JsonResult<?> queryCmsStudyPlanWorkList(@Valid CmsStudyPlanWorkQueryVo queryVo) {
+    public JsonResult<List<CmsStudyPlanWorkVo>> queryCmsStudyPlanWorkList(@Valid CmsStudyPlanWorkQueryVo queryVo) {
         List<CmsStudyPlanWorkVo> pagingResult = cmsStudyPlanWorkService.queryCmsStudyPlanWorkList(queryVo);
         return JsonResult.buildSuccess(pagingResult);
     }

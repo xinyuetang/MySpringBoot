@@ -60,7 +60,7 @@ public class ${classSimpleName}Controller extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/paging")
-    public JsonResult<?> queryPagingResult(@Valid ${classSimpleName}QueryDto queryDto, @Valid Paging paging) {
+    public JsonResult<List<${classSimpleName}Dto>> queryPagingResult(@Valid ${classSimpleName}QueryDto queryDto, @Valid Paging paging) {
         PagingResult<${classSimpleName}Dto> pagingResult = ${classVariableName}Service.queryPagingResult(queryDto, paging);
         return JsonResult.buildSuccess(pagingResult);
     }

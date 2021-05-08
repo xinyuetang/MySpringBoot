@@ -79,7 +79,7 @@ public class CmsStudyPlanStageController extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/list")
-    public JsonResult<?> queryCmsStudyPlanStageList(@Valid CmsStudyPlanStageQueryVo queryVo) {
+    public JsonResult<List<CmsStudyPlanStageVo>> queryCmsStudyPlanStageList(@Valid CmsStudyPlanStageQueryVo queryVo) {
         List<CmsStudyPlanStageVo> pagingResult = cmsStudyPlanStageService.queryCmsStudyPlanStageList(queryVo);
         return JsonResult.buildSuccess(pagingResult);
     }

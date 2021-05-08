@@ -40,7 +40,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
      * 管理员查询培养计划任务完成情况
      */
     @GetMapping("/info/list")
-    public JsonResult<?> queryAllocationInfoList(
+    public JsonResult<List<CmsStudyPlanAllocationInfoVo>> queryAllocationInfoList(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);

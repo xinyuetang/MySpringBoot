@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * CmsStudyPlanController
@@ -30,7 +31,7 @@ public class CmsStudyPlanController extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/paging")
-    public JsonResult<?> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
+    public JsonResult<List<CmsStudyPlanVo>> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
         PagingResult<CmsStudyPlanVo> pagingResult = cmsStudyPlanService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }

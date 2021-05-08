@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
+import java.util.List;
+
 import static com.fudanuniversity.cms.commons.enums.UserRoleEnum.Administrator;
 
 /**
@@ -80,7 +82,7 @@ public class CmsStudyPlanMngController extends BaseController {
      * 根据条件查询信息列表
      */
     @GetMapping("/paging")
-    public JsonResult<?> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
+    public JsonResult<List<CmsStudyPlanVo>> queryPagingResult(@Valid CmsStudyPlanQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         PagingResult<CmsStudyPlanVo> pagingResult = cmsStudyPlanService.queryPagingResult(queryVo, paging);
@@ -91,7 +93,7 @@ public class CmsStudyPlanMngController extends BaseController {
      * 管理员预览培养计划
      */
     @GetMapping("/overview")
-    public JsonResult<?> queryCmsStudyPlanOverview(@NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+    public JsonResult<CmsStudyPlanOverviewVo> queryCmsStudyPlanOverview(@NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         CmsStudyPlanOverviewVo overview = cmsStudyPlanService.queryCmsStudyPlanOverview(id);

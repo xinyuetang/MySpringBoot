@@ -63,7 +63,7 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
      * 管理员或用户查看培养计划任务完成情况
      */
     @GetMapping("/info")
-    public JsonResult<?> queryAllocationInfo(
+    public JsonResult<CmsStudyPlanAllocationInfoVo> queryAllocationInfo(
             Long userId,
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
@@ -79,7 +79,7 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
      * 管理员或用户预览用户分配的培养计划
      */
     @GetMapping("/overview")
-    public JsonResult<?> queryUserCmsStudyPlanOverview(
+    public JsonResult<CmsStudyPlanAllocationOverviewVo> queryUserCmsStudyPlanOverview(
             Long userId,
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
