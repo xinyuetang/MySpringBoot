@@ -27,7 +27,9 @@ import org.springframework.util.Assert;
  * @see RedisHttpSessionConfiguration
  */
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 60 * 45 * 100/*TODO 为了方便调试会话时间太大，完成后修改会话时间*/, redisNamespace = "fd:cms:session")
+@EnableRedisHttpSession(
+        maxInactiveIntervalInSeconds = 60 * 45 * 100/*TODO 为了方便调试会话时间太大，完成后修改会话时间*/,
+        redisNamespace = "fd:cms:session")
 public class RedisSessionConfig {
 
     /**
