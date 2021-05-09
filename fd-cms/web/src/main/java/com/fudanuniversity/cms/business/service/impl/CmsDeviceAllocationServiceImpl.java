@@ -50,10 +50,10 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void applyDeviceAllocation(Long userId, CmsDeviceAllocationApplyVo allocationApplyVo) {
         Long deviceId = allocationApplyVo.getDeviceId();
-        //加锁
+        //查询后加锁
         CmsDevice cmsDevice = cmsDeviceDao.selectByIdForUpdate(deviceId);
-        Integer inventoryUsage = allocationApplyVo.getInventoryUsage();
         AssertUtils.notNull(cmsDevice, "设备不存在");
+        Integer inventoryUsage = allocationApplyVo.getInventoryUsage();
         if (inventoryUsage > cmsDevice.getInventory()) {
             throw new BusinessException(String.format(
                     "超过设备可申请使用限制 %s%s", cmsDevice.getInventory(), cmsDevice.getInventoryUnit()));
