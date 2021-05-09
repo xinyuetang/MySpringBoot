@@ -1,7 +1,7 @@
 package com.fudanuniversity.cms.framework.validation;
 
-import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.exception.ErrorCode;
+import com.fudanuniversity.cms.commons.exception.ParameterException;
 import com.fudanuniversity.cms.commons.util.JsonUtils;
 import com.fudanuniversity.cms.commons.validation.ValidGroup;
 import jakarta.validation.*;
@@ -121,6 +121,6 @@ public class MethodArgumentValidationInterceptor implements MethodInterceptor {
         String message = violation.getMessage();
         logger.warn("Application method argument constraint violation, label:{}, propertyPath: {}, message: {}, invalidValue: {}",
                 label, propertyPath, message, JsonUtils.toJsonString(invalidValue));
-        throw new BusinessException(ErrorCode.IllegalParameterCode, message);
+        throw new ParameterException(ErrorCode.IllegalParameterCode, message);
     }
 }
