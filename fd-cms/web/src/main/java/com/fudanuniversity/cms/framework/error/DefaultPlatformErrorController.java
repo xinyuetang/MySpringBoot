@@ -3,6 +3,8 @@ package com.fudanuniversity.cms.framework.error;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.util.BeanExUtils;
 import com.fudanuniversity.cms.framework.exception.WebExceptionHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -28,6 +30,8 @@ import java.util.Map;
 @RequestMapping("${server.error.path:${error.path:/error}}")
 public class DefaultPlatformErrorController implements ErrorController, PlatformErrorController {
 
+    private final static Logger logger = LoggerFactory.getLogger(DefaultPlatformErrorController.class);
+
     @Resource
     private ErrorAttributes errorAttributes;
 
@@ -44,10 +48,11 @@ public class DefaultPlatformErrorController implements ErrorController, Platform
         WebRequest webRequest = new ServletWebRequest(request);
         Throwable throwable = errorAttributes.getError(webRequest);
         HttpStatus status = WebExceptionHelper.getStatus(request, throwable);
-        String errorCode = WebExceptionHelper.getCode(status, throwable);
+        String code = WebExceptionHelper.getCode(status, throwable);
         String message = WebExceptionHelper.getMessage(status, throwable);
-        Object model = JsonResult.buildFail(errorCode, message);
+        Object model = JsonResult.buildFail(code, message);
         Map<String, Object> body = BeanExUtils.introspect(model);
+        logger.error("Application occurred error, status: {}, code: {}, message: {}", status, code, message, throwable);
         return new ResponseEntity<>(body, status);
     }
 }

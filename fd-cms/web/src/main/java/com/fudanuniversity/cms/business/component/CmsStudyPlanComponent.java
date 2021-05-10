@@ -67,6 +67,17 @@ public class CmsStudyPlanComponent {
         return null;
     }
 
+    public Map<Long, CmsStudyPlan> queryStudyPlanMap(List<Long> planIds) {
+        AssertUtils.notEmpty(planIds);
+        CmsStudyPlanQuery query = CmsStudyPlanQuery.listQuery();
+        query.setIdList(planIds);
+        List<CmsStudyPlan> studyPlans = cmsStudyPlanDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(studyPlans)) {
+            return studyPlans.stream().collect(Collectors.toMap(CmsStudyPlan::getId, Function.identity()));
+        }
+        return Collections.emptyMap();
+    }
+
     public CmsStudyPlan queryStudyPlanByEnrollYear(Integer enrollYear) {
         AssertUtils.notNull(enrollYear);
         CmsStudyPlanQuery query = CmsStudyPlanQuery.singletonQuery();

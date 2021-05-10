@@ -3,10 +3,7 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsStudyPlanComponent;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfoVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationOverviewVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanItemInfoVo;
-import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanStageOverviewVo;
+import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
@@ -58,6 +55,41 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
 
     @Resource
     private CmsUserComponent cmsUserComponent;
+
+    @Override
+    public List<CmsStudyPlanAllocationVo> queryAllocationList(Long userId) {
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
+        query.setUserId(userId);
+        query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+        query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
+        List<CmsStudyPlanAllocation> allocationList = cmsStudyPlanAllocationDao.selectListByParam(query);
+
+        if (CollectionUtils.isEmpty(allocationList)) {
+            return Collections.emptyList();
+        }
+
+        List<Long> planIds = Lists.transform(allocationList, CmsStudyPlanAllocation::getPlanId);
+        Map<Long, CmsStudyPlan> studyPlanMap = cmsStudyPlanComponent.queryStudyPlanMap(planIds);
+
+        return allocationList.stream().map(allocation -> {
+            CmsStudyPlanAllocationVo allocationVo = new CmsStudyPlanAllocationVo();
+            allocationVo.setId(allocation.getId());
+            Long planId = allocation.getPlanId();
+            CmsStudyPlan studyPlan = studyPlanMap.get(planId);
+            if (studyPlan != null) {
+                allocationVo.setPlanId(studyPlan.getId());
+                allocationVo.setEnrollYear(studyPlan.getEnrollYear());
+                allocationVo.setReferenceDate(studyPlan.getReferenceDate());
+                allocationVo.setName(studyPlan.getName());
+                StudyPlanAllocationStatusEnum allocationStatusEnum =
+                        StudyPlanAllocationStatusEnum.eval(studyPlan.getVersion(), allocation.getPlanVersion());
+                allocationVo.setStatus(allocationStatusEnum.getCode());
+            }
+            allocationVo.setCreateTime(allocation.getCreateTime());
+            allocationVo.setModifyTime(allocation.getModifyTime());
+            return allocationVo;
+        }).collect(Collectors.toList());
+    }
 
     @Override
     public List<CmsStudyPlanAllocationInfoVo> queryAllocationInfoList(Long planId) {
@@ -133,20 +165,8 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         return infoVo;
     }
 
-    /**
-     * 根据id删除处理
-     */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteCmsStudyPlanAllocationById(Long planId, Long userId) {
-        int affect = cmsStudyPlanAllocationDao.deleteByPlanId(planId, userId);
-        cmsStudyPlanItemDao.deleteByPlanId(planId, userId);
-        logger.info("删除CmsStudyPlanAllocation affect:{}, id: {}", affect, planId);
-        AssertUtils.state(affect == 1);
-    }
-
-    @Override
-    public CmsStudyPlanAllocationInfoVo queryAllocationInfo(Long planId, Long userId) {
+    public CmsStudyPlanAllocationInfoVo queryAllocationInfo(Long userId, Long planId) {
         CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
         query.setPlanId(planId);
         query.setUserId(userId);
@@ -189,5 +209,17 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         List<CmsStudyPlanStageOverviewVo> stageOverviewList = cmsStudyPlanComponent.convertStageOverviewVoList(cmsUser, stages);
         overviewVo.setStages(stageOverviewList);
         return overviewVo;
+    }
+
+    /**
+     * 根据id删除处理
+     */
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void deleteCmsStudyPlanAllocationById(Long planId, Long userId) {
+        int affect = cmsStudyPlanAllocationDao.deleteByPlanId(planId, userId);
+        cmsStudyPlanItemDao.deleteByPlanId(planId, userId);
+        logger.info("删除CmsStudyPlanAllocation affect:{}, id: {}", affect, planId);
+        AssertUtils.state(affect == 1);
     }
 }

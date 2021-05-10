@@ -56,7 +56,7 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
         LoginUser loginUser = getLoginUser();
         userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
-        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(planId, userId);
+        CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(userId, planId);
         return JsonResult.buildSuccess(allocationInfoVo);
     }
 

@@ -3,9 +3,11 @@ package com.fudanuniversity.cms.controller.user;
 import com.fudanuniversity.cms.business.service.CmsStudyPlanAllocationService;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfoVo;
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationOverviewVo;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.controller.BaseController;
 import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * CmsStudyPlanAllocationController
@@ -27,9 +30,15 @@ public class CmsStudyPlanAllocationController extends BaseController {
     @Resource
     private CmsStudyPlanAllocationService cmsStudyPlanAllocationService;
 
-    /**
-     * 管理员或用户查看培养计划任务完成情况
-     */
+    @Operation(summary = "用户查看分配的培养计划列表")
+    @GetMapping("/list")
+    public JsonResult<?> queryAllocationList() {
+        Long userId = getLoginUser().getUserId();
+        List<CmsStudyPlanAllocationVo> allocationList = cmsStudyPlanAllocationService.queryAllocationList(userId);
+        return JsonResult.buildSuccess(allocationList);
+    }
+
+    @Operation(summary = "用户查看培养计划任务完成情况")
     @GetMapping("/info")
     public JsonResult<?> queryAllocationInfo(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
@@ -38,9 +47,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
         return JsonResult.buildSuccess(allocationInfoVo);
     }
 
-    /**
-     * 管理员或用户预览用户分配的培养计划
-     */
+    @Operation(summary = "用户预览用户分配的培养计划")
     @GetMapping("/overview")
     public JsonResult<?> queryUserCmsStudyPlanOverview(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
