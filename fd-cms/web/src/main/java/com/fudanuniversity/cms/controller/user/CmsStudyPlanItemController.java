@@ -29,7 +29,7 @@ public class CmsStudyPlanItemController extends BaseController {
     private CmsStudyPlanItemService cmsStudyPlanItemService;
 
     @Operation(summary = "用户变更用户分配的培养计划任务状态")
-    @PostMapping("/user/edit")
+    @PostMapping("/edit")
     public JsonResult<?> changeUserCmsStudyPlanAllocationStatus(
             @Valid @RequestBody CmsStudyPlanItemUserEditVo userEditVo) {
         LoginUser loginUser = getLoginUser();
