@@ -36,4 +36,5 @@ public class CmsStudyPlanController extends BaseController {
         PagingResult<CmsStudyPlanVo> pagingResult = cmsStudyPlanService.queryPagingResult(queryVo, paging);
         return JsonResult.buildSuccess(pagingResult);
     }
+
 }

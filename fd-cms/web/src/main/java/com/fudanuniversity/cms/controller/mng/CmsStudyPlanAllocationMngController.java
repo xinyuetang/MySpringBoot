@@ -40,7 +40,7 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
 
     @Operation(summary = "管理员查询用户分配的培养计划任务完成情况")
     @GetMapping("/info/list")
-    public JsonResult<?> queryAllocationInfoList(
+    public JsonResult<List<CmsStudyPlanAllocationInfoVo>> queryAllocationInfoList(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
@@ -73,11 +73,11 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
     @GetMapping("/overview")
     public JsonResult<CmsStudyPlanAllocationOverviewVo> queryUserCmsStudyPlanOverview(
             @NotNull(message = "用户id不能为空") @Min(1L) Long userId,
-            @NotNull(message = "培养计划id不能为空") @Min(1L) Long id) {
+            @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         LoginUser loginUser = getLoginUser();
         userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
-        CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, id);
+        CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, planId);
         return JsonResult.buildSuccess(overview);
     }
 }

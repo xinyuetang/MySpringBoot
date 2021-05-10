@@ -32,7 +32,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
 
     @Operation(summary = "用户查看分配的培养计划列表")
     @GetMapping("/list")
-    public JsonResult<?> queryAllocationList() {
+    public JsonResult<List<CmsStudyPlanAllocationVo>> queryAllocationList() {
         Long userId = getLoginUser().getUserId();
         List<CmsStudyPlanAllocationVo> allocationList = cmsStudyPlanAllocationService.queryAllocationList(userId);
         return JsonResult.buildSuccess(allocationList);
@@ -40,7 +40,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
 
     @Operation(summary = "用户查看培养计划任务完成情况")
     @GetMapping("/info")
-    public JsonResult<?> queryAllocationInfo(
+    public JsonResult<CmsStudyPlanAllocationInfoVo> queryAllocationInfo(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         Long userId = getLoginUser().getUserId();
         CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(planId, userId);
@@ -49,7 +49,7 @@ public class CmsStudyPlanAllocationController extends BaseController {
 
     @Operation(summary = "用户预览用户分配的培养计划")
     @GetMapping("/overview")
-    public JsonResult<?> queryUserCmsStudyPlanOverview(
+    public JsonResult<CmsStudyPlanAllocationOverviewVo> queryUserCmsStudyPlanOverview(
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         Long userId = getLoginUser().getUserId();
         CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, planId);
