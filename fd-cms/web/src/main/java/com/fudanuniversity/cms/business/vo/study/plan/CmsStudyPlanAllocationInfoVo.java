@@ -40,7 +40,7 @@ public class CmsStudyPlanAllocationInfoVo implements Serializable {
     /**
      * 培养方案版本
      */
-    private Long planVersion;
+    private Integer status;
 
     /**
      *

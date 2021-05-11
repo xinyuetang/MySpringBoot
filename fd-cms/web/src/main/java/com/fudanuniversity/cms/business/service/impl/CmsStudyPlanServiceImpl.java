@@ -67,7 +67,10 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     private CmsUserComponent cmsUserComponent;
 
     /**
-     * 保存处理
+     * <pre>
+     * 新增培养计划
+     * enrollYear表示入学年份，referenceDate表示入学年份开始日期
+     * </pre>
      */
     @Override
     public void saveCmsStudyPlan(CmsStudyPlanAddVo addVo) {
@@ -90,13 +93,19 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         AssertUtils.state(affect == 1);
     }
 
+    /**
+     * <pre>
+     * 根据一个模版创建出一个完整的培养计划
+     * TODO 待实现
+     * </pre>
+     */
     @Override
     public void createFullCmsStudyPlan(CmsStudyPlanFullVo fullVo) {
 
     }
 
     /**
-     * 根据id更新处理
+     * 更新处理
      */
     @Override
     public void updateCmsStudyPlanById(CmsStudyPlanUpdateVo updateVo) {
@@ -115,7 +124,8 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     }
 
     /**
-     * 根据id删除处理
+     * 删除处理
+     * 此操作会删除该培养计划下所有关联的阶段，任务，以及分配用户的所有分配记录和分配任务等
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
@@ -148,7 +158,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         if (count > 0L) {
             query.setOffset(paging.getOffset());
             query.setLimit(paging.getLimit());
-            query.setSorts(SortColumn.create("enroll_year", SortMode.DESC));
+            query.setSorts(SortColumn.create("enroll_year", SortMode.DESC));//按照培养计划的年份倒序
             List<CmsStudyPlan> cmsStudyPlanList = cmsStudyPlanDao.selectListByParam(query);
             pagingResult.setRows(cmsStudyPlanList, plan -> {
                 CmsStudyPlanVo studyPlanVo = new CmsStudyPlanVo();
@@ -166,6 +176,9 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return pagingResult;
     }
 
+    /**
+     * 将一个培养计划分配某些用户，会为每个用户生成分配记录和分配任务
+     */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void assignCmsStudyPlan(CmsStudyPlanAssignVo assignVo) {
@@ -215,7 +228,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         //userIds可能较多分段处理
         List<List<Long>> partitions = Lists.partition(userIds, 10);
         partitions.forEach(partition -> {
-            //TODO 最好开启一个新的内置事务操作
+            //最好开启一个新的内置事务操作，能人可改造下
             List<CmsStudyPlanItem> userAllocationList = cmsStudyPlanComponent.queryStudyPlanAllocationByUserIds(userIds);
             /*  新的培养计划可能删除了部分任务CmsStudyPlanWork，但是先前已经有部分用户生成了培养计划，
                 再次为同一个用户生成任务培养计划，需要删除用户中对应已不存在的任务，
@@ -293,6 +306,11 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         return allocation;
     }
 
+    /**
+     * 预览培养计划
+     * <p>
+     * 这里预览的信息包括阶段，任务等
+     */
     @Override
     public CmsStudyPlanOverviewVo queryCmsStudyPlanOverview(Long planId) {
         CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);

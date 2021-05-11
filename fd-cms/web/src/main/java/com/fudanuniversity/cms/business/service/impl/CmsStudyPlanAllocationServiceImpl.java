@@ -56,6 +56,9 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
     @Resource
     private CmsUserComponent cmsUserComponent;
 
+    /**
+     * 查询某个用户的
+     */
     @Override
     public List<CmsStudyPlanAllocationVo> queryAllocationList(Long userId) {
         CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
@@ -93,6 +96,9 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
 
     @Override
     public List<CmsStudyPlanAllocationInfoVo> queryAllocationInfoList(Long planId) {
+        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
+        AssertUtils.notNull(studyPlan);
+
         CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.listQuery();
         query.setPlanId(planId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
@@ -113,7 +119,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         for (CmsStudyPlanAllocation allocation : allocationList) {
             CmsUser cmsUser = userMap.get(allocation.getUserId());
             CmsStudyPlanItemInfo itemInfo = itemInfoVoMap.get(allocation.getPlanId());
-            CmsStudyPlanAllocationInfoVo allocationInfoVo = convertAllocationInfoVo(cmsUser, allocation, itemInfo);
+            CmsStudyPlanAllocationInfoVo allocationInfoVo = convertAllocationInfoVo(cmsUser, studyPlan, allocation, itemInfo);
             retList.add(allocationInfoVo);
         }
 
@@ -130,7 +136,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
     }
 
     private CmsStudyPlanAllocationInfoVo convertAllocationInfoVo(
-            CmsUser cmsUser, CmsStudyPlanAllocation allocation, CmsStudyPlanItemInfo itemInfo) {
+            CmsUser cmsUser, CmsStudyPlan studyPlan, CmsStudyPlanAllocation allocation, CmsStudyPlanItemInfo itemInfo) {
         CmsStudyPlanAllocationInfoVo allocationInfoVo = new CmsStudyPlanAllocationInfoVo();
         allocationInfoVo.setId(allocation.getId());
         Long userId = allocation.getUserId();
@@ -143,7 +149,9 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         allocationInfoVo.setPlanId(planId);
         CmsStudyPlanItemInfoVo itemInfoVo = convertItemInfoVo(userId, planId, itemInfo);
         allocationInfoVo.setInfo(itemInfoVo);
-        allocationInfoVo.setPlanVersion(allocation.getPlanVersion());
+        StudyPlanAllocationStatusEnum allocationStatusEnum =
+                StudyPlanAllocationStatusEnum.eval(studyPlan.getVersion(), allocation.getPlanVersion());
+        allocationInfoVo.setStatus(allocationStatusEnum.getCode());
         allocationInfoVo.setCreateTime(allocation.getCreateTime());
         allocationInfoVo.setModifyTime(allocation.getModifyTime());
         return allocationInfoVo;
@@ -167,6 +175,8 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
 
     @Override
     public CmsStudyPlanAllocationInfoVo queryAllocationInfo(Long userId, Long planId) {
+        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
+        AssertUtils.notNull(studyPlan);
         CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
         query.setPlanId(planId);
         query.setUserId(userId);
@@ -179,7 +189,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
             List<CmsStudyPlanItemInfo> itemInfoList
                     = queryUserStudyPlanItemInfoList(Collections.singletonList(userId), planId);
             CmsStudyPlanItemInfo itemInfo = CollectionUtils.isEmpty(itemInfoList) ? null : itemInfoList.get(0);
-            return convertAllocationInfoVo(cmsUser, allocation, itemInfo);
+            return convertAllocationInfoVo(cmsUser, studyPlan, allocation, itemInfo);
         }
         return null;
     }
