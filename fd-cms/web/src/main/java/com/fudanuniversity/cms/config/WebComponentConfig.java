@@ -1,9 +1,8 @@
 package com.fudanuniversity.cms.config;
 
 import com.fudanuniversity.cms.framework.validation.ControllerValidationPostProcessor;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
+import com.fudanuniversity.cms.framework.validation.LocaleContextMessageInterpolator;
+import jakarta.validation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -18,7 +17,11 @@ public class WebComponentConfig {
     @Bean
     public Validator validator() {
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        return validatorFactory.getValidator();
+        ValidatorContext validatorContext = validatorFactory.usingContext();
+        MessageInterpolator targetInterpolator = validatorFactory.getMessageInterpolator();
+        LocaleContextMessageInterpolator localeContextMessageInterpolator = new LocaleContextMessageInterpolator(targetInterpolator);
+        validatorContext.messageInterpolator(localeContextMessageInterpolator);
+        return validatorContext.getValidator();
     }
 
     /**

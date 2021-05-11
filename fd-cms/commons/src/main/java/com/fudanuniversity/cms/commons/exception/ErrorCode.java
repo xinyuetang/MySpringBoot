@@ -20,26 +20,4 @@ public final class ErrorCode {
 
     public final static String IllegalParameterCode = "error.parameter";
     public final static String IllegalParameterMessage = "参数出错了";
-
-    /**
-     * 从异常错误中获取错误码
-     */
-    public static String extractErrorCode(Throwable t) {
-        if (t instanceof PlatformException) {
-            return t.getMessage();
-        }
-
-        return DefaultErrorMsg;
-    }
-
-    /**
-     * 从异常错误中抽取易读的信息返回给上层
-     */
-    public static String extractErrorMsg(Throwable t) {
-        if (t instanceof PlatformException) {
-            return t.getMessage();
-        }
-
-        return DefaultErrorMsg;
-    }
 }

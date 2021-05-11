@@ -4,6 +4,12 @@
                      xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.1.xsd"
                      xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
 
+    <constraint-definition annotation="com.fudanuniversity.cms.commons.validation.constraints.Email">
+        <validated-by>
+            <value>com.fudanuniversity.cms.commons.validation.internal.EmailValidatorForCharSequence</value>
+        </validated-by>
+    </constraint-definition>
+
     <constraint-definition annotation="com.fudanuniversity.cms.commons.validation.constraints.EnumString">
         <validated-by>
             <value>com.fudanuniversity.cms.commons.validation.internal.EnumStringValidatorForCharSequence</value>
@@ -47,6 +53,12 @@
     <constraint-definition annotation="com.fudanuniversity.cms.commons.validation.constraints.NonSameElement">
         <validated-by>
             <value>com.fudanuniversity.cms.commons.validation.internal.NonSameElementValidatorForIterable</value>
+        </validated-by>
+    </constraint-definition>
+
+    <constraint-definition annotation="com.fudanuniversity.cms.commons.validation.constraints.Phone">
+        <validated-by>
+            <value>com.fudanuniversity.cms.commons.validation.internal.PhoneValidatorForCharSequence</value>
         </validated-by>
     </constraint-definition>
 
