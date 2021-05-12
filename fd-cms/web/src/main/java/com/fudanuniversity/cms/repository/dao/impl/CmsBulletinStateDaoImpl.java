@@ -93,6 +93,15 @@ public class CmsBulletinStateDaoImpl implements CmsBulletinStateDao {
     }
 
     @Override
+    public List<Long> selectUnreadBulletinIdList(CmsBulletinStateQuery query) {
+        Assert.notNull(query, "查询参数不能为空");
+
+        validateQueryParameter(query);
+
+        return cmsBulletinStateMapper.selectUnreadBulletinIdList(query);
+    }
+
+    @Override
     public TripleTuple<Long, Long, Long> queryCmsBulletinReadCount(CmsBulletinStateQuery query) {
         Assert.notNull(query, "查询参数不能为空");
 

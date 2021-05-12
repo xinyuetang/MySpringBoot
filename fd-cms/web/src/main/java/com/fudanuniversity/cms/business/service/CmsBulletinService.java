@@ -32,6 +32,16 @@ public interface CmsBulletinService {
     void readBulletin(Long userId, Long bulletinId);
 
     /**
+     * 读取所有消息
+     */
+    void readAllBulletin(Long userId);
+
+    /**
+     * 分页查询数据列表
+     */
+    PagingResult<CmsBulletinVo> queryPagingResult(CmsBulletinQueryVo queryVo, Paging paging);
+
+    /**
      * 分页查询数据列表
      */
     PagingResult<CmsBulletinVo> queryPagingResult(Long userId, CmsBulletinQueryVo queryVo, Paging paging);
@@ -40,5 +50,4 @@ public interface CmsBulletinService {
      * 查询通知读取状态数量等信息
      */
     CmsBulletinStateVo queryCmsBulletinReadState(Long userId, CmsBulletinStateQueryVo stateQueryVo);
-
 }

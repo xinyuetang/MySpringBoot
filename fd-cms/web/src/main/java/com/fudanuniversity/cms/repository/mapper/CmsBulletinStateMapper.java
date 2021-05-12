@@ -50,5 +50,10 @@ public interface CmsBulletinStateMapper {
     /**
      *
      */
+    List<Long> selectUnreadBulletinIdList(CmsBulletinStateQuery query);
+
+    /**
+     *
+     */
     TripleTuple<Long, Long, Long> queryCmsBulletinReadCount(CmsBulletinStateQuery query);
 }

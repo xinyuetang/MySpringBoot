@@ -171,6 +171,17 @@
         </trim>
     </select>
 
+    <select id="selectUnreadBulletinIdList" parameterType="map" resultType="java.lang.Long">
+        SELECT cb.id 'id'
+        FROM `cms_bulletin` cb
+        LEFT JOIN `cms_bulletin_state` cbs
+            ON cb.id = cbs.bulletin_id
+            AND cbs.user_id = #{userId}
+            AND cbs.read = 1
+        WHERE cbs.id IS NULL
+        LIMIT #{offset}, #{limit}
+    </select>
+
     <select id="queryCmsBulletinReadCount" parameterType="map" resultMap="CmsBulletinReadStateMap">
         SELECT
             COUNT(cb.id) 'total',

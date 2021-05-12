@@ -16,7 +16,9 @@ import com.fudanuniversity.cms.repository.dao.CmsBulletinStateDao;
 import com.fudanuniversity.cms.repository.entity.CmsBulletin;
 import com.fudanuniversity.cms.repository.entity.CmsBulletinState;
 import com.fudanuniversity.cms.repository.query.CmsBulletinQuery;
+import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,6 +28,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * CmsBulletinService 实现类
@@ -100,6 +103,62 @@ public class CmsBulletinServiceImpl implements CmsBulletinService {
         readState.setRead(BooleanEnum.True.getCode());
         readState.setCreateTime(new Date());
         cmsBulletinStateDao.replace(readState);
+    }
+
+    @Override
+    public void readAllBulletin(Long userId) {
+        CmsBulletinStateQuery query = CmsBulletinStateQuery.listQuery();
+        query.setUserId(userId);
+        List<Long> unreadBulletinIds = cmsBulletinStateDao.selectUnreadBulletinIdList(query);
+
+        if (CollectionUtils.isEmpty(unreadBulletinIds)) {
+            return;
+        }
+
+        List<CmsBulletinState> readStateList = unreadBulletinIds.stream().map(unreadBulletinId -> {
+            CmsBulletinState readState = new CmsBulletinState();
+            readState.setUserId(userId);
+            readState.setBulletinId(unreadBulletinId);
+            readState.setRead(BooleanEnum.True.getCode());
+            readState.setCreateTime(new Date());
+            return readState;
+        }).collect(Collectors.toList());
+        cmsBulletinStateDao.bulkUpsert(readStateList);
+    }
+
+    @Override
+    public PagingResult<CmsBulletinVo> queryPagingResult(CmsBulletinQueryVo queryVo, Paging paging) {
+        PagingResult<CmsBulletinVo> pagingResult = PagingResult.create(paging);
+
+        CmsBulletinQuery query = new CmsBulletinQuery();
+        query.setId(queryVo.getId());
+        query.setTitle(queryVo.getTitle());
+        query.setEltCreateTime(queryVo.getEltCreateTime());
+        query.setEgtCreateTime(queryVo.getEgtCreateTime());
+        query.setEltModifyTime(queryVo.getEltModifyTime());
+        query.setEgtModifyTime(queryVo.getEgtModifyTime());
+
+        Long count = cmsBulletinDao.selectCountByParam(query);
+        pagingResult.setTotal(count);
+
+        if (count > 0L) {
+            query.setOffset(query.getOffset());
+            query.setLimit(query.getLimit());
+            query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
+            List<CmsBulletin> bulletins = cmsBulletinDao.selectListByParam(query);
+
+            pagingResult.setRows(bulletins, bulletin -> {
+                CmsBulletinVo bulletinVo = new CmsBulletinVo();
+                bulletinVo.setId(bulletin.getId());
+                bulletinVo.setTitle(bulletin.getTitle());
+                bulletinVo.setContent(bulletin.getContent());
+                bulletinVo.setCreateTime(bulletin.getCreateTime());
+                bulletinVo.setModifyTime(bulletin.getModifyTime());
+                return bulletinVo;
+            });
+        }
+
+        return pagingResult;
     }
 
     /**

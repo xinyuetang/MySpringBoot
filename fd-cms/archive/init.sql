@@ -244,16 +244,17 @@ CREATE TABLE `fd_cms`.`cms_bulletin`
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='通知';
 
 DROP TABLE IF EXISTS `fd_cms`.`cms_bulletin_state`;
-CREATE TABLE `fd_cms`.`cms_bulletin_state`
+CREATE TABLE `cms_bulletin_state`
 (
     `id`          bigint   NOT NULL AUTO_INCREMENT COMMENT 'id',
     `user_id`     bigint   NOT NULL COMMENT '用户id',
     `bulletin_id` bigint   NOT NULL COMMENT '通知id',
-    `read`        tinyint  NOT NULL DEFAULT 0 COMMENT '是否已读',
+    `read`        tinyint  NOT NULL DEFAULT '0' COMMENT '是否已读',
     `create_time` datetime NOT NULL COMMENT '创建时间',
     `modify_time` datetime          DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_user_id_bulletin_id` (`user_id`, `bulletin_id`) USING BTREE
+    UNIQUE KEY `uk_bulletin_id_user_id` (`bulletin_id`, `user_id`) USING BTREE,
+    KEY `idx_user_id` (`user_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户通知状态';

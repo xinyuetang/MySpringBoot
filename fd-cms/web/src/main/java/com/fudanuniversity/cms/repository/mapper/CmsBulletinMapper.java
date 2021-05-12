@@ -37,6 +37,11 @@ public interface CmsBulletinMapper {
     /**
      * 根据条件查询信息列表
      */
+    List<Long> selectUnreadBulletinIdList(CmsBulletinQuery query);
+
+    /**
+     * 根据条件查询信息列表
+     */
     List<CmsBulletin> selectListByParam(CmsBulletinQuery query);
 
     /**

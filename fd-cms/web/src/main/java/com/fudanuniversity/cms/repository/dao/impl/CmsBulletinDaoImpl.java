@@ -1,10 +1,9 @@
 package com.fudanuniversity.cms.repository.dao.impl;
 
 import com.fudanuniversity.cms.repository.dao.CmsBulletinDao;
-import com.fudanuniversity.cms.repository.mapper.CmsBulletinMapper;
 import com.fudanuniversity.cms.repository.entity.CmsBulletin;
+import com.fudanuniversity.cms.repository.mapper.CmsBulletinMapper;
 import com.fudanuniversity.cms.repository.query.CmsBulletinQuery;
-
 import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
@@ -32,10 +31,10 @@ public class CmsBulletinDaoImpl implements CmsBulletinDao {
     }
 
     @Override
-    public int bulkUpsert(List<CmsBulletin> cmsBulletinList){
+    public int bulkUpsert(List<CmsBulletin> cmsBulletinList) {
         Assert.notEmpty(cmsBulletinList, "保存对象列表不能为空");
 
-        for(CmsBulletin cmsBulletin : cmsBulletinList){
+        for (CmsBulletin cmsBulletin : cmsBulletinList) {
             validateEntity(cmsBulletin);
         }
 

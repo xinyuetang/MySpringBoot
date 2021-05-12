@@ -20,7 +20,7 @@ public interface CmsBulletinStateDao {
 
     /**
      * 如果存在主键或唯一键冲突的记录，删除再添加
-     * */
+     */
     int replace(CmsBulletinState cmsBulletinState);
 
     /**
@@ -47,6 +47,11 @@ public interface CmsBulletinStateDao {
      * 查询数量
      */
     Long selectCountByParam(CmsBulletinStateQuery query);
+
+    /**
+     * 查询未读通知Id列表
+     */
+    List<Long> selectUnreadBulletinIdList(CmsBulletinStateQuery query);
 
     /**
      * 查询总数/已读/未读数量
