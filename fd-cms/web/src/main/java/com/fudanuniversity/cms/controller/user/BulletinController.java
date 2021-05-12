@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +30,7 @@ public class BulletinController extends BaseController {
     private CmsBulletinService cmsBulletinService;
 
     @Operation(summary = "用户标记通知已读")
-    @RequestMapping(path = "/read")
+    @PostMapping(path = "/read")
     public JsonResult<?> readBulletin(@NotNull Long id) {
         LoginUser loginUser = getLoginUser();
         cmsBulletinService.readBulletin(loginUser.getUserId(), id);
@@ -37,7 +38,7 @@ public class BulletinController extends BaseController {
     }
 
     @Operation(summary = "用户标记所有通知已读")
-    @RequestMapping(path = "/read/all")
+    @PostMapping(path = "/read/all")
     public JsonResult<?> readAllBulletin() {
         LoginUser loginUser = getLoginUser();
         cmsBulletinService.readAllBulletin(loginUser.getUserId());
