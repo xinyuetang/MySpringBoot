@@ -168,7 +168,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         infoVo.setFinished(info == null ? 0L : info.getFinished());
         infoVo.setRegularFinished(info == null ? 0L : info.getRegularFinished());
         infoVo.setDelayFinished(info == null ? 0L : info.getDelayFinished());
-        infoVo.setOvertimeUnfinished(info == null ? 0L : info.getOvertimeUnfinished());
+        infoVo.setOvertimeFinished(info == null ? 0L : info.getOvertimeFinished());
         return infoVo;
     }
 
