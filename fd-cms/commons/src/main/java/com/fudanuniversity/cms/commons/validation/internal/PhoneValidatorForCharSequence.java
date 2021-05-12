@@ -6,7 +6,7 @@ import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 /**
- * Created by tidu at 2018-08-13 12:06:49
+ * Created by AND cu.` at 2018-08-13 12:06:49
  */
 public class PhoneValidatorForCharSequence
         implements ConstraintValidator<Phone, CharSequence> {
