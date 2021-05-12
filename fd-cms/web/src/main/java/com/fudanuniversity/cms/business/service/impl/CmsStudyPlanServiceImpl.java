@@ -194,7 +194,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         AssertUtils.notEmpty(planStages, "培养计划[" + planId + "]尚未设置阶段目标");
         List<Long> stageIds = Lists.transform(planStages, CmsStudyPlanStage::getId);
         List<CmsStudyPlanWork> planWorks = cmsStudyPlanComponent.queryStudyPlanWorks(stageIds);
-        AssertUtils.notEmpty(planStages, "培养计划[" + planId + "]尚未设置任何任务");
+        AssertUtils.notEmpty(planWorks, "培养计划[" + planId + "]尚未设置任何任务");
         //1. StudyPlanAllocation
         List<CmsStudyPlanAllocation> allocations = Lists.newArrayListWithCapacity(userIds.size());
         for (Long userId : userIds) {
