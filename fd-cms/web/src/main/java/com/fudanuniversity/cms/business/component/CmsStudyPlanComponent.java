@@ -16,6 +16,7 @@ import com.fudanuniversity.cms.repository.query.*;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -365,7 +366,7 @@ public class CmsStudyPlanComponent {
                 workOverviewVo.setModifyTime(commonWork.getModifyTime());
                 CmsStudyPlanItem allocation = allocationMap.get(commonWork.getId());
                 if (allocation != null) {
-                    CmsStudyPlanItemVo allocationVo = convertCmsStudyPlanAllocationVo(allocation);
+                    CmsStudyPlanItemVo allocationVo = convertCmsStudyPlanItemVo(allocation);
                     workOverviewVo.setAllocation(allocationVo);
                 }
                 workOverviewVoList.add(workOverviewVo);
@@ -375,7 +376,7 @@ public class CmsStudyPlanComponent {
         return Collections.emptyList();
     }
 
-    private CmsStudyPlanItemVo convertCmsStudyPlanAllocationVo(CmsStudyPlanItem allocation) {
+    private CmsStudyPlanItemVo convertCmsStudyPlanItemVo(CmsStudyPlanItem allocation) {
         CmsStudyPlanItemVo allocationVo = new CmsStudyPlanItemVo();
         allocationVo.setId(allocation.getId());
         allocationVo.setUserId(allocation.getUserId());
@@ -387,6 +388,7 @@ public class CmsStudyPlanComponent {
         Date planWorkEndDate = allocation.getPlanWorkEndDate();
         allocationVo.setPlanWorkEndDate(planWorkEndDate);
         Integer planWorkDelay = allocation.getPlanWorkDelay();
+        allocationVo.setPlanWorkExpectedEndDate(DateUtils.addDays(planWorkEndDate, planWorkDelay));
         allocationVo.setPlanWorkDelay(planWorkDelay);
         Integer finished = allocation.getFinished();
         allocationVo.setFinished(finished);

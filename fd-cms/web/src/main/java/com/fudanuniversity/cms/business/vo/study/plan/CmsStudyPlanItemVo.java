@@ -56,6 +56,11 @@ public class CmsStudyPlanItemVo implements Serializable {
     private Date planWorkEndDate;
 
     /**
+     * 培养方案任务期望的结束日期
+     */
+    private Date planWorkExpectedEndDate;
+
+    /**
      * 培养方案任务延期天数
      */
     private Integer planWorkDelay;
