@@ -2,7 +2,6 @@ package com.fudanuniversity.cms.business.vo.recorder;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -17,7 +16,6 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsRecorderDownloadVo implements Serializable {
 

@@ -3,6 +3,7 @@ package com.fudanuniversity.cms.controller;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsUserStudyPlanQueryVo;
 import com.fudanuniversity.cms.business.vo.user.*;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
@@ -15,6 +16,7 @@ import com.fudanuniversity.cms.repository.entity.CmsUser;
 import com.fudanuniversity.cms.repository.entity.CmsUserAccount;
 import com.google.common.collect.Maps;
 import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -57,7 +59,7 @@ public class UserController extends BaseController {
 
     @RequestMapping(path = "/login")
     //@PostMapping(path = "/login")
-    public JsonResult<?> login(@Valid CmsUserAccountLoginVo userAccountVo) {
+    public JsonResult<Map<String, Object>> login(@Valid CmsUserAccountLoginVo userAccountVo) {
         /*
         更换用户登录后替换老用户session
         Object loginUserObj = Webmvc.session().getAttribute(CmsConstants.LoginSessionUserKey);
@@ -102,15 +104,24 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(path = "/list")
-    public JsonResult<?> queryUserList(@Valid CmsUserQueryVo queryVo, Paging paging) {
+    public JsonResult<List<CmsUserVo>> queryUserList(@Valid CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId());
         List<CmsUserVo> userList = cmsUserService.queryUserList(queryVo, paging);
         return JsonResult.buildSuccess(userList);
     }
 
+    @Operation(summary = "管理员查询培养计划未分配用户列表")
+    @GetMapping("/allocation/list")
+    public JsonResult<List<CmsUserVo>> queryAllocationAvailableUserList(@Valid CmsUserStudyPlanQueryVo queryVo) {
+        LoginUser loginUser = getLoginUser();
+        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
+        List<CmsUserVo> userVoList = cmsUserService.queryAvailableAllocationUserList(queryVo);
+        return JsonResult.buildSuccess(userVoList);
+    }
+
     @GetMapping(path = "/paging")
-    public JsonResult<?> queryPagingResult(@Valid CmsUserQueryVo queryVo, Paging paging) {
+    public JsonResult<List<CmsUserVo>> queryPagingResult(@Valid CmsUserQueryVo queryVo, Paging paging) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId());
         PagingResult<CmsUserVo> pagingResult = cmsUserService.queryPagingResult(queryVo, paging);
@@ -118,7 +129,7 @@ public class UserController extends BaseController {
     }
 
     @GetMapping(path = "/detail")
-    public JsonResult<?> queryUserDetail(@NotEmpty String stuId) {
+    public JsonResult<CmsUserDetailVo> queryUserDetail(@NotEmpty String stuId) {
         LoginUser loginUser = getLoginUser();
         //如果是管理员可以查所有的用户，如果是普通用户只可以查自己的数据
         if (!Objects.equals(stuId, loginUser.getStuId())) {

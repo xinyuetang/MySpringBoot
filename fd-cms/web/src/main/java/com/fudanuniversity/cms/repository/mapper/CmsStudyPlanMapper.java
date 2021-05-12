@@ -48,5 +48,4 @@ public interface CmsStudyPlanMapper {
      * 根据条件查询信息总数目
      */
     Long selectCountByParam(CmsStudyPlanQuery query);
-
 }

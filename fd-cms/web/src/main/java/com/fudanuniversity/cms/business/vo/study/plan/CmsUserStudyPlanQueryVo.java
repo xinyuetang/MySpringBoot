@@ -1,12 +1,11 @@
-package com.fudanuniversity.cms.business.vo.user;
+package com.fudanuniversity.cms.business.vo.study.plan;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.Date;
-
 
 /**
  * 用户
@@ -16,29 +15,30 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsUserVo implements Serializable {
+public class CmsUserStudyPlanQueryVo {
 
     private static final long serialVersionUID = 1L;
 
     /**
-     * id
+     * planId
      */
-    private Long id;
+    @NotNull
+    private Long planId;
 
     /**
-     * 用户类型
+     * id
      */
-    private Integer type;
+    private Long userId;
+
+    /**
+     * 模糊搜索学号和姓名，学号为精确搜索，姓名模糊搜索
+     */
+    private String kw;
 
     /**
      * 学号
      */
     private String stuId;
-
-    /**
-     * 权限身份
-     */
-    private Integer roleId;
 
     /**
      * 用户名
@@ -89,20 +89,4 @@ public class CmsUserVo implements Serializable {
      * 状态
      */
     private Integer status;
-
-    /**
-     * 删除状态
-     */
-    private Integer deleted;
-
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date modifyTime;
 }
-

@@ -126,7 +126,6 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         return retList;
     }
 
-
     public List<CmsStudyPlanItemInfo> queryUserStudyPlanItemInfoList(List<Long> userIds, Long planId) {
         CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
         query.setPlanId(planId);

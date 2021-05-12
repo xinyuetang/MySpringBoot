@@ -3,10 +3,12 @@ package com.fudanuniversity.cms.business.service.impl;
 import com.fudanuniversity.cms.business.component.CmsUserComponent;
 import com.fudanuniversity.cms.business.service.CmsUserAccountService;
 import com.fudanuniversity.cms.business.service.CmsUserService;
+import com.fudanuniversity.cms.business.vo.study.plan.CmsUserStudyPlanQueryVo;
 import com.fudanuniversity.cms.business.vo.user.*;
 import com.fudanuniversity.cms.commons.constant.CmsConstants;
 import com.fudanuniversity.cms.commons.enums.DeletedEnum;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
+import com.fudanuniversity.cms.commons.enums.UserTypeEnum;
 import com.fudanuniversity.cms.commons.exception.BusinessException;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
@@ -244,6 +246,7 @@ public class CmsUserServiceImpl implements CmsUserService {
 
         CmsUserQuery query = CmsUserQuery.listQuery();
         query.setId(queryVo.getId());
+        query.setKw(queryVo.getKw());
         query.setType(queryVo.getType());
         query.setStuId(queryVo.getStuId());
         query.setRoleId(queryVo.getRoleId());
@@ -273,6 +276,29 @@ public class CmsUserServiceImpl implements CmsUserService {
         }
 
         return pagingResult;
+    }
+
+    @Override
+    public List<CmsUserVo> queryAvailableAllocationUserList(CmsUserStudyPlanQueryVo queryVo) {
+        CmsUserQuery query = CmsUserQuery.listQuery();
+        query.setPlanId(queryVo.getPlanId());
+        query.setId(queryVo.getUserId());
+        query.setKw(queryVo.getKw());
+        query.setType(UserTypeEnum.Student.getCode());
+        query.setStuId(queryVo.getStuId());
+        query.setName(queryVo.getName());
+        query.setTelephone(queryVo.getTelephone());
+        query.setEmail(queryVo.getEmail());
+        query.setMentor(queryVo.getMentor());
+        query.setLeader(queryVo.getLeader());
+        query.setStudyType(queryVo.getStudyType());
+        query.setKeshuo(queryVo.getKeshuo());
+        query.setEnrollYear(queryVo.getEnrollYear());
+        query.setEnrollDate(queryVo.getEnrollDate());
+        query.setStatus(queryVo.getStatus());
+
+        List<CmsUser> cmsUserList = cmsUserDao.selectAvailableAllocationUserListByParam(query);
+        return cmsUserList.stream().map(this::convertCmsUserVo).collect(Collectors.toList());
     }
 
     private CmsUserVo convertCmsUserVo(CmsUser cmsUser) {
@@ -324,4 +350,5 @@ public class CmsUserServiceImpl implements CmsUserService {
         detailVo.setModifyTime(cmsUser.getModifyTime());
         return detailVo;
     }
+
 }

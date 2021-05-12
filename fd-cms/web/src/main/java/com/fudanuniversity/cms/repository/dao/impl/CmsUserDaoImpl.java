@@ -91,6 +91,15 @@ public class CmsUserDaoImpl implements CmsUserDao {
         return cmsUserMapper.selectCountByParam(query);
     }
 
+    @Override
+    public List<CmsUser> selectAvailableAllocationUserListByParam(CmsUserQuery query) {
+        Assert.notNull(query, "查询参数不能为空");
+
+        validateQueryParameter(query);
+
+        return cmsUserMapper.selectAvailableAllocationUserListByParam(query);
+    }
+
     private void validateQueryParameter(CmsUserQuery query) {
         query.validateBaseArgument();
 

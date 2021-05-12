@@ -44,4 +44,8 @@ public interface CmsUserMapper {
      */
     Long selectCountByParam(CmsUserQuery query);
 
+    /**
+     *
+     */
+    List<CmsUser> selectAvailableAllocationUserListByParam(CmsUserQuery query);
 }

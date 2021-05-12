@@ -30,6 +30,11 @@ public class CmsUserQuery extends BaseQuery {
     private Long id;
 
     /**
+     * planId
+     */
+    private Long planId;
+
+    /**
      * 字段备注:id
      * 数据库字段长度:(19,0)
      * 索引字段:是

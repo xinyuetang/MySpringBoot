@@ -42,4 +42,8 @@ public interface CmsUserDao {
      */
     Long selectCountByParam(CmsUserQuery query);
 
+    /**
+     *
+     */
+    List<CmsUser> selectAvailableAllocationUserListByParam(CmsUserQuery query);
 }

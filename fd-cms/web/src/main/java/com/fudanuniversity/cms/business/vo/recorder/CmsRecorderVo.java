@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.business.vo.recorder;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -16,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+
 @ToString
 public class CmsRecorderVo implements Serializable {
 

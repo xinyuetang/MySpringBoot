@@ -1,6 +1,5 @@
 package com.fudanuniversity.cms.business.vo.device;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -15,7 +14,6 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsDeviceAllocationReturnVo implements Serializable {
 

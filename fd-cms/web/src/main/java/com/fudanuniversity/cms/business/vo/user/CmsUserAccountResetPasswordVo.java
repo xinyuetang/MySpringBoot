@@ -1,12 +1,11 @@
 package com.fudanuniversity.cms.business.vo.user;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.validator.constraints.Length;
 
-import jakarta.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -16,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
+
 @ToString
 public class CmsUserAccountResetPasswordVo implements Serializable {
 

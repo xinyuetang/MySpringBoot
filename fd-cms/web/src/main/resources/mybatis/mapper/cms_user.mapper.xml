@@ -64,7 +64,7 @@
             </foreach>
         </if>
         <if test="kw != null">
-            (`stu_id` = #{kw} OR `name` LIKE CONCAT('%',#{kw},'%'))
+            AND (`stu_id` = #{kw} OR `name` LIKE CONCAT('%',#{kw},'%'))
         </if>
         <if test="roleId != null">
             AND `role_id` = #{roleId}
@@ -265,6 +265,114 @@
         FROM `cms_user`
         <trim prefix="WHERE" prefixOverrides="AND" suffix="">
             <include refid="_common_where"/>
+        </trim>
+        <include refid="_common_sorts"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="selectAvailableAllocationUserListByParam" parameterType="map" resultMap="CmsUserMap">
+        SELECT
+            cu.`id`, cu.`type`, cu.`stu_id`, cu.`role_id`, cu.`name`, cu.`telephone`, cu.`email`, cu.`mentor`, 
+            cu.`leader`, cu.`study_type`, cu.`keshuo`, cu.`enroll_year`, cu.`enroll_date`, cu.`papers`, cu.`patents`, 
+            cu.`services`, cu.`projects`, cu.`status`, cu.`deleted`, cu.`create_time`,  cu.`modify_time`
+        FROM `cms_user` cu
+        LEFT JOIN `cms_study_plan_allocation` cspa ON cu.id = cspa.user_id AND cspa.plan_id = #{planId}
+        <trim prefix="WHERE" prefixOverrides="AND" suffix="">
+            cspa.id IS NULL
+            <if test="id != null">
+                AND cu.`id` = #{id}
+            </if>
+            <if test="idList != null and idList.size() > 0">
+                AND cu.`id` IN
+                <foreach collection="idList" item="id"
+                         open="( " separator=" , " close=" )">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="type != null">
+                AND cu.`type` = #{type}
+            </if>
+            <if test="stuId != null">
+                AND cu.`stu_id` = #{stuId}
+            </if>
+            <if test="stuIdList != null and stuIdList.size() > 0">
+                AND cu.`stu_id` IN
+                <foreach collection="stuIdList" item="stuId"
+                         open="( " separator=" , " close=" )">
+                    #{stuId}
+                </foreach>
+            </if>
+            <if test="kw != null">
+                AND (cu.`stu_id` = #{kw} OR cu.`name` LIKE CONCAT('%',#{kw},'%'))
+            </if>
+            <if test="roleId != null">
+                AND cu.`role_id` = #{roleId}
+            </if>
+            <if test="name != null">
+                AND cu.`name` = #{name}
+            </if>
+            <if test="telephone != null">
+                AND cu.`telephone` = #{telephone}
+            </if>
+            <if test="email != null">
+                AND cu.`email` = #{email}
+            </if>
+            <if test="mentor != null">
+                AND cu.`mentor` = #{mentor}
+            </if>
+            <if test="leader != null">
+                AND cu.`leader` = #{leader}
+            </if>
+            <if test="studyType != null">
+                AND cu.`study_type` = #{studyType}
+            </if>
+            <if test="keshuo != null">
+                AND cu.`keshuo` = #{keshuo}
+            </if>
+            <if test="enrollYear != null">
+                AND cu.`enroll_year` = #{enrollYear}
+            </if>
+            <if test="enrollDate != null">
+                AND cu.`enroll_date` = #{enrollDate}
+            </if>
+            <if test="papers != null">
+                AND cu.`papers` = #{papers}
+            </if>
+            <if test="patents != null">
+                AND cu.`patents` = #{patents}
+            </if>
+            <if test="services != null">
+                AND cu.`services` = #{services}
+            </if>
+            <if test="projects != null">
+                AND cu.`projects` = #{projects}
+            </if>
+            <if test="status != null">
+                AND cu.`status` = #{status}
+            </if>
+            <if test="deleted != null">
+                AND cu.`deleted` = #{deleted}
+            </if>
+            <if test="eltCreateTime != null">
+                <![CDATA[
+                AND cu.`create_time` <= #{eltCreateTime}
+                ]]>
+            </if>
+            <if test="egtCreateTime != null">
+                <![CDATA[
+                AND cu.`create_time` >= #{egtCreateTime}
+                ]]>
+            </if>
+            <if test="eltModifyTime != null">
+                <![CDATA[
+                AND cu.`modify_time` <= #{eltModifyTime}
+                ]]>
+            </if>
+            <if test="egtModifyTime != null">
+                <![CDATA[
+                AND cu.`modify_time` >= #{egtModifyTime}
+                ]]>
+            </if>
         </trim>
         <include refid="_common_sorts"/>
         LIMIT #{offset}, #{limit}

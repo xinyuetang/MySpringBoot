@@ -1,11 +1,8 @@
 package com.fudanuniversity.cms.business.vo.article;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-
-import java.util.Date;
 
 /**
  * 文章分类
@@ -14,7 +11,6 @@ import java.util.Date;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsArticleCategoryQueryVo {
 

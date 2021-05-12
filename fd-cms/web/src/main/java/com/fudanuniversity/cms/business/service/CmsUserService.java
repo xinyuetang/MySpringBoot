@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.business.service;
 
+import com.fudanuniversity.cms.business.vo.study.plan.CmsUserStudyPlanQueryVo;
 import com.fudanuniversity.cms.business.vo.user.*;
 import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
@@ -49,6 +50,11 @@ public interface CmsUserService {
      * 分页查询数据列表
      */
     PagingResult<CmsUserVo> queryPagingResult(CmsUserQueryVo queryVo, Paging paging);
+
+    /**
+     *
+     */
+    List<CmsUserVo> queryAvailableAllocationUserList(CmsUserStudyPlanQueryVo queryVo);
 
     /**
      * 查询用户详细信息

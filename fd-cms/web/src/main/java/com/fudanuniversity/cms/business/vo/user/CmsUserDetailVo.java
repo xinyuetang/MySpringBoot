@@ -1,11 +1,11 @@
 package com.fudanuniversity.cms.business.vo.user;
 
-import java.io.Serializable;
-import java.util.Date;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -15,7 +15,6 @@ import lombok.ToString;
  */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @ToString
 public class CmsUserDetailVo implements Serializable {
 
