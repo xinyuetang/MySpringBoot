@@ -75,7 +75,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getPlanId());
         CmsStudyPlanStage updater = new CmsStudyPlanStage();
         updater.setId(stageId);
-        updater.setEndDate(updater.getEndDate());
+        updater.setEndDate(updateVo.getEndDate());
         updater.setModifyTime(new Date());
         int affect = cmsStudyPlanStageDao.updateById(updater);
         logger.info("更新CmsStudyPlanStage affect:{}, updater: {}", affect, updater);
