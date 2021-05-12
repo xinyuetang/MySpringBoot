@@ -1,5 +1,6 @@
 package com.fudanuniversity.cms.business.vo.study.plan;
 
+import com.fudanuniversity.cms.commons.enums.StudyPlanAllocationStatusEnum;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -43,6 +44,8 @@ public class CmsStudyPlanAllocationOverviewVo implements Serializable {
 
     /**
      * 培养方案状态
+     *
+     * @see StudyPlanAllocationStatusEnum
      */
     private Integer status;
 
