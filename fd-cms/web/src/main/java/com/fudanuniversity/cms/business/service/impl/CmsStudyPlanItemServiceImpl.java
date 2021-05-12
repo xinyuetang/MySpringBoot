@@ -65,8 +65,8 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
         Date delayDate = editVo.getDelayDate();
         if (delayDate != null) {
             Date planWorkEndDate = allocation.getPlanWorkEndDate();
-            int delayDays = DateExUtils.evalCrossDays(planWorkEndDate, delayDate);
-            updater.setPlanWorkDelay(delayDays);
+            long delayDays = DateExUtils.evalCrossDays(planWorkEndDate, delayDate);
+            updater.setPlanWorkDelay((int) delayDays);
         }
         updater.setRemark(updater.getRemark());
         updater.setModifyTime(new Date());

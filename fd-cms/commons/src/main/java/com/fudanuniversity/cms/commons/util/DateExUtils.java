@@ -5,8 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
@@ -203,15 +203,14 @@ public class DateExUtils {
     /**
      * 返回date1 -> date2共经历了多少天
      */
-    public static int evalCrossDays(Date date1, Date date2) {
+    public static long evalCrossDays(Date date1, Date date2) {
         if (date1 == null || date2 == null) {
             throw new NullPointerException();
         }
 
         LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        Period period = Period.between(localDate1, localDate2);
-        return period.getDays();
+        return ChronoUnit.DAYS.between(localDate1, localDate2);
     }
 
     /**
