@@ -118,7 +118,7 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         List<CmsStudyPlanAllocationInfoVo> retList = Lists.newArrayList();
         for (CmsStudyPlanAllocation allocation : allocationList) {
             CmsUser cmsUser = userMap.get(allocation.getUserId());
-            CmsStudyPlanItemInfo itemInfo = itemInfoVoMap.get(allocation.getPlanId());
+            CmsStudyPlanItemInfo itemInfo = itemInfoVoMap.get(allocation.getUserId());
             CmsStudyPlanAllocationInfoVo allocationInfoVo = convertAllocationInfoVo(cmsUser, studyPlan, allocation, itemInfo);
             retList.add(allocationInfoVo);
         }
