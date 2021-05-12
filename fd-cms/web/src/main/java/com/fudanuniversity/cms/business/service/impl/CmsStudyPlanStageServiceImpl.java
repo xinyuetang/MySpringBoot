@@ -72,7 +72,7 @@ public class CmsStudyPlanStageServiceImpl implements CmsStudyPlanStageService {
         CmsStudyPlanStage stage = cmsStudyPlanComponent.queryStudyPlanStageById(stageId);
         AssertUtils.notNull(stage, "培养计划阶段[" + stageId + "]不存在");
 
-        cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getId());
+        cmsStudyPlanComponent.increaseStudyPlanVersion(stage.getPlanId());
         CmsStudyPlanStage updater = new CmsStudyPlanStage();
         updater.setId(stageId);
         updater.setEndDate(updater.getEndDate());
