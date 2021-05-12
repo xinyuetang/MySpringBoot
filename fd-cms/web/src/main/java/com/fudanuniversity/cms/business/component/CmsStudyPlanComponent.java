@@ -347,7 +347,23 @@ public class CmsStudyPlanComponent {
     }
 
     private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(List<CmsStudyPlanWork> stageWorks) {
-        return convertWorkOverviewVo(stageWorks, Collections.emptyMap());
+        if (CollectionUtils.isNotEmpty(stageWorks)) {
+            List<CmsStudyPlanWorkOverviewVo> workOverviewVoList = Lists.newArrayList();
+            stageWorks.forEach(commonWork -> {
+                CmsStudyPlanWorkOverviewVo workOverviewVo = new CmsStudyPlanWorkOverviewVo();
+                workOverviewVo.setId(commonWork.getId());
+                workOverviewVo.setPlanId(commonWork.getPlanId());
+                workOverviewVo.setPlanStageId(commonWork.getPlanStageId());
+                workOverviewVo.setWorkType(commonWork.getWorkType());
+                workOverviewVo.setIndex(commonWork.getIndex());
+                workOverviewVo.setName(commonWork.getName());
+                workOverviewVo.setCreateTime(commonWork.getCreateTime());
+                workOverviewVo.setModifyTime(commonWork.getModifyTime());
+                workOverviewVoList.add(workOverviewVo);
+            });
+            return workOverviewVoList;
+        }
+        return Collections.emptyList();
     }
 
     private List<CmsStudyPlanWorkOverviewVo> convertWorkOverviewVo(

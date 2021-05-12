@@ -58,7 +58,15 @@ public class CmsStudyPlanAllocationOverviewVo implements Serializable {
      * 更新时间
      */
     private Date modifyTime;
+    /**
+     * 创建时间
+     */
+    private Date allocationCreateTime;
 
+    /**
+     * 更新时间
+     */
+    private Date allocationModifyTime;
     /**
      *
      */

@@ -31,10 +31,16 @@ public interface CmsStudyPlanAllocationService {
     /**
      *
      */
+    CmsStudyPlanAllocationOverviewVo queryCmsStudyPlanOverview(Long planId);
+
+    /**
+     *
+     */
     CmsStudyPlanAllocationOverviewVo queryUserAllocationOverview(Long userId, Long planId);
 
     /**
      *
      */
     void deleteCmsStudyPlanAllocationById(Long id, Long userId);
+
 }

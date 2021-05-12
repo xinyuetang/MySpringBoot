@@ -194,6 +194,25 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
     }
 
     @Override
+    public CmsStudyPlanAllocationOverviewVo queryCmsStudyPlanOverview(Long planId) {
+        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(planId);
+        AssertUtils.notNull(studyPlan);
+
+        CmsStudyPlanAllocationOverviewVo overviewVo = new CmsStudyPlanAllocationOverviewVo();
+        overviewVo.setId(studyPlan.getId());
+        overviewVo.setName(studyPlan.getName());
+        overviewVo.setEnrollYear(studyPlan.getEnrollYear());
+        overviewVo.setReferenceDate(studyPlan.getReferenceDate());
+        overviewVo.setCreateTime(studyPlan.getCreateTime());
+        overviewVo.setModifyTime(studyPlan.getModifyTime());
+
+        List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
+        List<CmsStudyPlanStageOverviewVo> stageOverviewList = cmsStudyPlanComponent.convertStageOverviewVoList(stages);
+        overviewVo.setStages(stageOverviewList);
+        return overviewVo;
+    }
+
+    @Override
     public CmsStudyPlanAllocationOverviewVo queryUserAllocationOverview(Long userId, Long planId) {
         CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryUserStudyPlanAllocation(userId, planId);
         AssertUtils.notNull(allocation, "当前未分配对应的培养计划");
@@ -210,8 +229,8 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
         StudyPlanAllocationStatusEnum allocationStatusEnum =
                 StudyPlanAllocationStatusEnum.eval(studyPlan.getVersion(), allocation.getPlanVersion());
         overviewVo.setStatus(allocationStatusEnum.getCode());
-        overviewVo.setCreateTime(allocation.getCreateTime());
-        overviewVo.setModifyTime(allocation.getModifyTime());
+        overviewVo.setAllocationCreateTime(allocation.getCreateTime());
+        overviewVo.setAllocationModifyTime(allocation.getModifyTime());
         CmsUser cmsUser = cmsUserComponent.queryUser(userId);
         AssertUtils.notNull(cmsUser);
         List<CmsStudyPlanStage> stages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(planId);
