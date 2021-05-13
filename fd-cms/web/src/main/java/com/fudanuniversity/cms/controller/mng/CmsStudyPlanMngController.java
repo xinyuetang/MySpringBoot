@@ -45,15 +45,6 @@ public class CmsStudyPlanMngController extends BaseController {
         return JsonResult.buildSuccess();
     }
 
-    @Operation(summary = "管理员创建一个完整的培养计划")
-    @PostMapping("/create")
-    public JsonResult<?> saveCmsStudyPlan(@Valid @RequestBody CmsStudyPlanFullVo fullVo) {
-        LoginUser loginUser = getLoginUser();
-        cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanService.createFullCmsStudyPlan(fullVo);
-        return JsonResult.buildSuccess();
-    }
-
     @Operation(summary = "管理员更新培养计划")
     @PostMapping("/update")
     public JsonResult<?> updateCmsStudyPlanById(@Valid @RequestBody CmsStudyPlanUpdateVo updateVo) {
