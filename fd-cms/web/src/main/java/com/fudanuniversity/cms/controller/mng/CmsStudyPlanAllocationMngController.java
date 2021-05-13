@@ -6,7 +6,6 @@ import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationInfo
 import com.fudanuniversity.cms.business.vo.study.plan.CmsStudyPlanAllocationOverviewVo;
 import com.fudanuniversity.cms.commons.model.JsonResult;
 import com.fudanuniversity.cms.commons.model.web.LoginUser;
-import com.fudanuniversity.cms.commons.util.ValueUtils;
 import com.fudanuniversity.cms.controller.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,7 +53,6 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
             @NotNull(message = "用户id不能为空") @Min(1L) Long userId,
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         LoginUser loginUser = getLoginUser();
-        userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         CmsStudyPlanAllocationInfoVo allocationInfoVo = cmsStudyPlanAllocationService.queryAllocationInfo(userId, planId);
         return JsonResult.buildSuccess(allocationInfoVo);
@@ -86,7 +84,6 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
             @NotNull(message = "用户id不能为空") @Min(1L) Long userId,
             @NotNull(message = "培养计划id不能为空") @Min(1L) Long planId) {
         LoginUser loginUser = getLoginUser();
-        userId = ValueUtils.defaultLong(userId, loginUser.getUserId());
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         CmsStudyPlanAllocationOverviewVo overview = cmsStudyPlanAllocationService.queryUserAllocationOverview(userId, planId);
         return JsonResult.buildSuccess(overview);
