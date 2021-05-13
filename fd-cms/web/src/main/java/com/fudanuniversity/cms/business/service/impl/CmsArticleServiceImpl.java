@@ -146,8 +146,8 @@ public class CmsArticleServiceImpl implements CmsArticleService {
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsArticle> cmsArticleList = cmsArticleDao.selectInfoListByParam(query);
             pagingResult.setRows(cmsArticleList, this::convertCmsArticleVo);

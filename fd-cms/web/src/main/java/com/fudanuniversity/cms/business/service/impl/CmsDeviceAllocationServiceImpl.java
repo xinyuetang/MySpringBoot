@@ -127,8 +127,8 @@ public class CmsDeviceAllocationServiceImpl implements CmsDeviceAllocationServic
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsDeviceAllocation> allocationList = cmsDeviceAllocationDao.selectListByParam(query);
 

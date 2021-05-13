@@ -142,8 +142,8 @@ public class CmsBulletinServiceImpl implements CmsBulletinService {
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsBulletin> bulletins = cmsBulletinDao.selectListByParam(query);
 
@@ -180,8 +180,8 @@ public class CmsBulletinServiceImpl implements CmsBulletinService {
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsBulletin> bulletins = cmsBulletinDao.selectListByParam(query);
 

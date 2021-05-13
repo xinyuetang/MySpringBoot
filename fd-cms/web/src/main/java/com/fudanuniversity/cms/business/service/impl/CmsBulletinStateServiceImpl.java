@@ -1,11 +1,12 @@
 package com.fudanuniversity.cms.business.service.impl;
 
+import com.fudanuniversity.cms.business.service.CmsBulletinStateService;
+import com.fudanuniversity.cms.commons.model.paging.Paging;
+import com.fudanuniversity.cms.commons.model.paging.PagingResult;
+import com.fudanuniversity.cms.commons.util.AssertUtils;
 import com.fudanuniversity.cms.repository.dao.CmsBulletinStateDao;
 import com.fudanuniversity.cms.repository.entity.CmsBulletinState;
 import com.fudanuniversity.cms.repository.query.CmsBulletinStateQuery;
-import com.fudanuniversity.cms.business.service.CmsBulletinStateService;
-import com.fudanuniversity.cms.commons.model.paging.PagingResult;
-import com.fudanuniversity.cms.commons.util.AssertUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
      * 分页查询数据列表
      */
     @Override
-    public PagingResult<CmsBulletinState> queryPagingResult(CmsBulletinStateQuery query) {
+    public PagingResult<CmsBulletinState> queryPagingResult(CmsBulletinStateQuery query, Paging paging) {
         PagingResult<CmsBulletinState> pagingResult = PagingResult.create(query);
 
         //TODO 设置参数（分页参数除外）
@@ -75,8 +76,8 @@ public class CmsBulletinStateServiceImpl implements CmsBulletinStateService {
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
             //query.setSorts(SortColumn.create("create_at", SortMode.DESC));
             List<CmsBulletinState> cmsBulletinStateList = cmsBulletinStateDao.selectListByParam(query);
             pagingResult.setRows(cmsBulletinStateList);
