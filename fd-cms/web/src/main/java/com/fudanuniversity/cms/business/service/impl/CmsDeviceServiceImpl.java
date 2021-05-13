@@ -76,6 +76,7 @@ public class CmsDeviceServiceImpl implements CmsDeviceService {
     public void updateCmsDeviceById(CmsDeviceUpdateVo updateVo) {
         CmsDevice updater = new CmsDevice();
         updater.setId(updateVo.getId());
+        updater.setType(updateVo.getType());
         updater.setModel(updateVo.getModel());
         updater.setName(updateVo.getName());
         updater.setPrincipal(updateVo.getPrincipal());
