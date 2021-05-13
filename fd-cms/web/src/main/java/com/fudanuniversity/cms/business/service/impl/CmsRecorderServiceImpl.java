@@ -304,8 +304,8 @@ public class CmsRecorderServiceImpl implements CmsRecorderService {
         pagingResult.setTotal(count);
 
         if (count > 0L) {
-            query.setOffset(query.getOffset());
-            query.setLimit(query.getLimit());
+            query.setOffset(paging.getOffset());
+            query.setLimit(paging.getLimit());
             query.setSorts(SortColumn.create(CmsConstants.CreatedTimeColumn, SortMode.DESC));
             List<CmsRecorder> cmsRecorderList = cmsRecorderDao.selectInfoListByParam(query);
 
