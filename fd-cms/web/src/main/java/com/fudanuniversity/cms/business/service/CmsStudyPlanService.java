@@ -4,8 +4,6 @@ import com.fudanuniversity.cms.business.vo.study.plan.*;
 import com.fudanuniversity.cms.commons.model.paging.Paging;
 import com.fudanuniversity.cms.commons.model.paging.PagingResult;
 
-import java.util.List;
-
 /**
  * CmsStudyPlanService
  * <p>
@@ -17,11 +15,6 @@ public interface CmsStudyPlanService {
      * 保存处理
      */
     void saveCmsStudyPlan(CmsStudyPlanAddVo cmsStudyPlan);
-
-    /**
-     * 创建一个完整的培养计划
-     */
-    void createFullCmsStudyPlan(CmsStudyPlanFullVo fullVo);
 
     /**
      * 根据id更新处理

@@ -94,17 +94,6 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     }
 
     /**
-     * <pre>
-     * 根据一个模版创建出一个完整的培养计划
-     * TODO 待实现
-     * </pre>
-     */
-    @Override
-    public void createFullCmsStudyPlan(CmsStudyPlanFullVo fullVo) {
-
-    }
-
-    /**
      * 更新处理
      */
     @Override
