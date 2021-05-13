@@ -244,10 +244,12 @@ public class CmsStudyPlanAllocationServiceImpl implements CmsStudyPlanAllocation
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public void deleteCmsStudyPlanAllocationById(Long planId, Long userId) {
-        int affect = cmsStudyPlanAllocationDao.deleteByPlanId(planId, userId);
-        cmsStudyPlanItemDao.deleteByPlanId(planId, userId);
-        logger.info("删除CmsStudyPlanAllocation affect:{}, id: {}", affect, planId);
+    public void deleteCmsStudyPlanAllocationById(Long allocationId) {
+        CmsStudyPlanAllocation allocation = cmsStudyPlanComponent.queryUserStudyPlanAllocationById(allocationId);
+        AssertUtils.notNull(allocation);
+        int affect = cmsStudyPlanAllocationDao.deleteById(allocationId);
+        logger.info("删除CmsStudyPlanAllocation affect:{}, id: {}", affect, allocationId);
         AssertUtils.state(affect == 1);
+        cmsStudyPlanItemDao.deleteByPlanId(allocationId, allocation.getUserId());
     }
 }

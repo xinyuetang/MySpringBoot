@@ -60,10 +60,10 @@ public class CmsStudyPlanAllocationMngController extends BaseController {
 
     @Operation(summary = "管理员删除用户分配的培养计划任务")
     @PostMapping("/delete")
-    public JsonResult<?> deleteCmsStudyPlanAllocationById(@NotNull @Min(1L) Long id, @NotNull @Min(1L) Long userId) {
+    public JsonResult<?> deleteCmsStudyPlanAllocationById(@NotNull @Min(1L) Long id) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
-        cmsStudyPlanAllocationService.deleteCmsStudyPlanAllocationById(id, userId);
+        cmsStudyPlanAllocationService.deleteCmsStudyPlanAllocationById(id);
         return JsonResult.buildSuccess();
     }
 

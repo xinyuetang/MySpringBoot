@@ -151,21 +151,11 @@ public class CmsStudyPlanComponent {
         return cmsStudyPlanWorkDao.selectListByParam(query);
     }
 
-    public List<CmsStudyPlanItem> queryStudyPlanAllocationByUserIds(List<Long> userIds) {
-        if (CollectionUtils.isNotEmpty(userIds)) {
-            CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
-            query.setUserIdList(userIds);
-            query.setDeleted(DeletedEnum.Normal.getCode().longValue());
-            return cmsStudyPlanItemDao.selectListByParam(query);
-        }
-        return Collections.emptyList();
-    }
-
-    public CmsStudyPlanItem queryStudyPlanAllocationById(Long allocationId) {
-        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
+    public CmsStudyPlanAllocation queryUserStudyPlanAllocationById(Long allocationId) {
+        CmsStudyPlanAllocationQuery query = CmsStudyPlanAllocationQuery.singletonQuery();
         query.setId(allocationId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
-        List<CmsStudyPlanItem> allocations = cmsStudyPlanItemDao.selectListByParam(query);
+        List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(allocations)) {
             return allocations.get(0);
         }
@@ -178,6 +168,27 @@ public class CmsStudyPlanComponent {
         query.setPlanId(planId);
         query.setDeleted(DeletedEnum.Normal.getCode().longValue());
         List<CmsStudyPlanAllocation> allocations = cmsStudyPlanAllocationDao.selectListByParam(query);
+        if (CollectionUtils.isNotEmpty(allocations)) {
+            return allocations.get(0);
+        }
+        return null;
+    }
+
+    public List<CmsStudyPlanItem> queryStudyPlanItemsByUserIds(List<Long> userIds) {
+        if (CollectionUtils.isNotEmpty(userIds)) {
+            CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.listQuery();
+            query.setUserIdList(userIds);
+            query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+            return cmsStudyPlanItemDao.selectListByParam(query);
+        }
+        return Collections.emptyList();
+    }
+
+    public CmsStudyPlanItem queryStudyPlanItemById(Long allocationId) {
+        CmsStudyPlanItemQuery query = CmsStudyPlanItemQuery.singletonQuery();
+        query.setId(allocationId);
+        query.setDeleted(DeletedEnum.Normal.getCode().longValue());
+        List<CmsStudyPlanItem> allocations = cmsStudyPlanItemDao.selectListByParam(query);
         if (CollectionUtils.isNotEmpty(allocations)) {
             return allocations.get(0);
         }

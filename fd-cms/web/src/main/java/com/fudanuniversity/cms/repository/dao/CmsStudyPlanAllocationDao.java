@@ -37,7 +37,7 @@ public interface CmsStudyPlanAllocationDao {
      */
     int deleteByPlanId(Long planId);
 
-    int deleteByPlanId(Long planId, Long userId);
+    int deleteByPlanAndUserId(Long planId, Long userId);
 
     /**
      * 查询数据

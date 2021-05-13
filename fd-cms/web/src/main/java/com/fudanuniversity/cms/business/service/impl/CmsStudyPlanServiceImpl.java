@@ -218,7 +218,7 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         List<List<Long>> partitions = Lists.partition(userIds, 10);
         partitions.forEach(partition -> {
             //最好开启一个新的内置事务操作，能人可改造下
-            List<CmsStudyPlanItem> userAllocationList = cmsStudyPlanComponent.queryStudyPlanAllocationByUserIds(userIds);
+            List<CmsStudyPlanItem> userAllocationList = cmsStudyPlanComponent.queryStudyPlanItemsByUserIds(userIds);
             /*  新的培养计划可能删除了部分任务CmsStudyPlanWork，但是先前已经有部分用户生成了培养计划，
                 再次为同一个用户生成任务培养计划，需要删除用户中对应已不存在的任务，
                 仍然存在的任务出发更新（参照MySQL语法：ON DUPLICATE KEY UPDATE）*/

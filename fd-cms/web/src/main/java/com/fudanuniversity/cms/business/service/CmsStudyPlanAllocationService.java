@@ -41,6 +41,6 @@ public interface CmsStudyPlanAllocationService {
     /**
      *
      */
-    void deleteCmsStudyPlanAllocationById(Long id, Long userId);
+    void deleteCmsStudyPlanAllocationById(Long allocationId);
 
 }

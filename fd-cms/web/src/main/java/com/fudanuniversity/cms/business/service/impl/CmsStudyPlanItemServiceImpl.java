@@ -42,7 +42,7 @@ public class CmsStudyPlanItemServiceImpl implements CmsStudyPlanItemService {
     @Override
     public void editStudyPlanItem(CmsStudyPlanItemEditVo editVo) {
         Long allocationId = editVo.getId();
-        CmsStudyPlanItem allocation = cmsStudyPlanComponent.queryStudyPlanAllocationById(allocationId);
+        CmsStudyPlanItem allocation = cmsStudyPlanComponent.queryStudyPlanItemById(allocationId);
         AssertUtils.notNull(allocation, "培养计划安排[" + allocationId + "]不存在");
 
         CmsStudyPlanItem updater = new CmsStudyPlanItem();

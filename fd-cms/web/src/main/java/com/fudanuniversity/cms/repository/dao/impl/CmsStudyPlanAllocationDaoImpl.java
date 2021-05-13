@@ -77,7 +77,7 @@ public class CmsStudyPlanAllocationDaoImpl implements CmsStudyPlanAllocationDao 
     }
 
     @Override
-    public int deleteByPlanId(Long planId, Long userId) {
+    public int deleteByPlanAndUserId(Long planId, Long userId) {
         Assert.notNull(planId, "planId不能为空");
         Assert.notNull(userId, "userId不能为空");
 
