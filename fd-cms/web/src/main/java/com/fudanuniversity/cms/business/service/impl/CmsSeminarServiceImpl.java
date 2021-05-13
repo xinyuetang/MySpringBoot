@@ -96,6 +96,7 @@ public class CmsSeminarServiceImpl implements CmsSeminarService {
         query.setTheme(queryVo.getTheme());
         query.setDate(queryVo.getDate());
         Long total = cmsSeminarDao.selectCountByParam(query);
+        pagingResult.setTotal(total);
 
         if (total > 0L) {
             query.setPaging(paging);
