@@ -38,5 +38,10 @@ public class CmsStudyPlanAddVo implements Serializable {
      */
     @NotEmpty
     private String name;
+
+    /**
+     * 非0表示使用一个模板创建培养方案，目前前端只传 0 或 1
+     */
+    private Long templateId;
 }
 
