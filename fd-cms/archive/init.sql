@@ -32,11 +32,18 @@ CREATE TABLE `fd_cms`.`cms_user`
     `modify_time` datetime             DEFAULT NULL COMMENT '更新时间',
     PRIMARY KEY (`id`),
     UNIQUE KEY `idx_stu_id` (`stu_id`) USING BTREE,
-    KEY `idx_stu_id_name` (`stu_id`, `name`) USING BTREE,
+    KEY `idx_type` (`type`) USING BTREE,
+    KEY `idx_role_id` (`role_id`) USING BTREE,
+    KEY `idx_name` (`name`) USING BTREE,
+    KEY `idx_telephone` (`telephone`) USING BTREE,
+    KEY `idx_email` (`email`) USING BTREE,
+    KEY `idx_mentor` (`mentor`) USING BTREE,
+    KEY `idx_leader` (`leader`) USING BTREE,
+    KEY `idx_study_type` (`study_type`) USING BTREE,
+    KEY `idx_keshuo` (`keshuo`) USING BTREE,
     KEY `idx_enroll_year` (`enroll_year`) USING BTREE,
     KEY `idx_create_time` (`create_time`) USING BTREE
 ) ENGINE = InnoDB
-  AUTO_INCREMENT = 100
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci COMMENT ='用户';
 
