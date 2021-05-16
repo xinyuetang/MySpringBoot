@@ -214,6 +214,19 @@ public class DateExUtils {
     }
 
     /**
+     * 返回date1 -> date2共经历了多少年
+     */
+    public static long evalCrossYears(Date date1, Date date2) {
+        if (date1 == null || date2 == null) {
+            throw new NullPointerException();
+        }
+
+        LocalDate localDate1 = date1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate2 = date2.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        return ChronoUnit.YEARS.between(localDate1, localDate2);
+    }
+
+    /**
      * 动态适配日期转换，目前支持一下几种格式
      * <ul>
      *   <li>"yyyy-MM-dd"</li>

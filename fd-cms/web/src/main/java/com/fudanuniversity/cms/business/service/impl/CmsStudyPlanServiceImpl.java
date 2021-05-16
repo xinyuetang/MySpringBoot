@@ -21,6 +21,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -67,12 +68,14 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
     private CmsUserComponent cmsUserComponent;
 
     /**
-     * <pre>
      * 新增培养计划
-     * enrollYear表示入学年份，referenceDate表示入学年份开始日期
-     * </pre>
+     * <p>
+     * (2)enrollYear表示入学年份，referenceDate表示入学年份开始日期
+     * <p>
+     * (2)如果templateId不为空，则使用传入的模板创建培养计划阶段和任务
      */
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void saveCmsStudyPlan(CmsStudyPlanAddVo addVo) {
         Integer enrollYear = addVo.getEnrollYear();
         CmsStudyPlan exitsStudyPlan = cmsStudyPlanComponent.queryStudyPlanByEnrollYear(enrollYear);
@@ -89,8 +92,56 @@ public class CmsStudyPlanServiceImpl implements CmsStudyPlanService {
         cmsStudyPlan.setVersion(0L);
         cmsStudyPlan.setCreateTime(new Date());
         int affect = cmsStudyPlanDao.insert(cmsStudyPlan);
+        Long templateId = addVo.getTemplateId();
+        if (templateId != null && templateId > 0) {
+            createTemplateStudyPlanStages(cmsStudyPlan.getId(), templateId, referenceDate);
+        }
         logger.info("保存CmsStudyPlan affect:{}, cmsStudyPlan: {}", affect, cmsStudyPlan);
         AssertUtils.state(affect == 1);
+    }
+
+    private void createTemplateStudyPlanStages(Long storePlanId, Long templateId, Date referenceDate) {
+        CmsStudyPlan studyPlan = cmsStudyPlanComponent.queryStudyPlanById(templateId);
+        if (studyPlan == null) {
+            return;
+        }
+        //计算创建的培养计划年份比模板的计划多了多少年
+        long intervalYears = DateExUtils.evalCrossYears(studyPlan.getReferenceDate(), referenceDate);
+        List<CmsStudyPlanStage> templateStages = cmsStudyPlanComponent.queryStudyPlanStageByPlanId(templateId);
+        Map<Long, Long> stageIdMap = Maps.newHashMap();//模板stageId与新建的stageId映射关系
+        Date current = new Date();
+        if (CollectionUtils.isNotEmpty(templateStages)) {
+            for (CmsStudyPlanStage stage : templateStages) {
+                CmsStudyPlanStage storeStage = new CmsStudyPlanStage();
+                storeStage.setPlanId(storePlanId);
+                storeStage.setTerm(stage.getTerm());
+                storeStage.setIndex(stage.getIndex());
+                Date endDate = DateUtils.addYears(stage.getEndDate(), (int) intervalYears);
+                storeStage.setEndDate(endDate);
+                storeStage.setCreateTime(current);
+                cmsStudyPlanStageDao.insert(storeStage);//新增后storeStage会设置自增的id (see -> mybatis useGeneratedKeys="true")
+                stageIdMap.put(stage.getId(), storeStage.getId());//模板对应的stageId与数据库新增的stageId映射关系
+            }
+            List<Long> templateStageIds = Lists.transform(templateStages, CmsStudyPlanStage::getId);
+            List<CmsStudyPlanWork> templateWorks = cmsStudyPlanComponent.queryStudyPlanWorks(templateStageIds);
+            List<CmsStudyPlanWork> storeWorks = Lists.newArrayListWithCapacity(templateWorks.size());
+            if (CollectionUtils.isNotEmpty(templateWorks)) {
+                for (CmsStudyPlanWork templateWork : templateWorks) {
+                    Long storePlanStageId = stageIdMap.get(templateWork.getPlanStageId());
+                    if (storePlanStageId != null) {//正常情况下stageIdMap映射的storePlanStageId不为空，兜底策略
+                        CmsStudyPlanWork storeWork = new CmsStudyPlanWork();
+                        storeWork.setPlanId(storePlanId);
+                        storeWork.setPlanStageId(storePlanStageId);
+                        storeWork.setWorkType(templateWork.getWorkType());
+                        storeWork.setIndex(templateWork.getIndex());
+                        storeWork.setName(templateWork.getName());
+                        storeWork.setCreateTime(current);
+                        storeWorks.add(storeWork);
+                    }
+                }
+                cmsStudyPlanWorkDao.bulkUpsert(storeWorks);//批量保存新增的任务
+            }
+        }
     }
 
     /**

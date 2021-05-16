@@ -105,6 +105,7 @@ public class CmsStudyPlanComponent {
         AssertUtils.notEmpty(stageIds);
         CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.singletonQuery();
         query.setIdList(stageIds);
+        query.setSorts(SortColumn.create("id", SortMode.ASC));
         return cmsStudyPlanStageDao.selectListByParam(query);
     }
 
@@ -121,6 +122,7 @@ public class CmsStudyPlanComponent {
         CmsStudyPlanStageQuery query = CmsStudyPlanStageQuery.listQuery();
         query.setPlanId(planId);
         query.setTerm(term);
+        query.setSorts(SortColumn.create("index", SortMode.ASC));
         return cmsStudyPlanStageDao.selectListByParam(query);
     }
 
