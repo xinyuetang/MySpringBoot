@@ -50,7 +50,7 @@ public class WebmvcConfig implements WebMvcConfigurer {
                         "/",
                         "/docs/**",  //API
                         "/error",   //默认错误路径
-                        "/user/login",  //用户登录入口不要拦截
+                        "/u/user/login",  //用户登录入口不要拦截
                         "/static"   //静态资源，如果有请约定 /static 前缀访问
                 );
     }

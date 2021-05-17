@@ -94,7 +94,7 @@ public class CmsBulletinServiceImpl implements CmsBulletinService {
     public void readBulletin(Long userId, Long bulletinId) {
         CmsBulletinState bulletinState = cmsBulletinComponent.queryCmsBulletinState(userId, bulletinId);
         //存在已读的记录不做操作了
-        if (BooleanEnum.isTrue(bulletinState.getRead())) {
+        if (bulletinState != null && BooleanEnum.isTrue(bulletinState.getRead())) {
             return;
         }
         CmsBulletinState readState = new CmsBulletinState();
