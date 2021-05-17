@@ -142,7 +142,7 @@ public class CmsUserServiceImpl implements CmsUserService {
      * 根据id更新处理
      */
     @Override
-    public void updateCmsUserById(CmsUserUpdateVo updateVo) {
+    public void updateCmsUserById(CmsUserUpdateMngVo updateVo) {
         Long userId = updateVo.getId();
         CmsUserQuery existsQuery = CmsUserQuery.singletonQuery();
         existsQuery.setId(userId);
@@ -174,12 +174,48 @@ public class CmsUserServiceImpl implements CmsUserService {
         updater.setServices(updateVo.getServices());
         updater.setProjects(updateVo.getProjects());
         updater.setStatus(0);
-        updater.setDeleted(DeletedEnum.Normal.getCode());
         updater.setModifyTime(new Date());
 
         int affect = cmsUserDao.updateById(updater);
         AssertUtils.state(affect == 1);
-        logger.info("更新CmsUser affect:{}, updater: {}", affect, updater);
+        logger.info("管理员更新CmsUser affect:{}, updater: {}", affect, updater);
+    }
+
+    @Override
+    public void updateCmsUserById(Long userId, CmsUserUpdateVo updateVo) {
+        CmsUserQuery existsQuery = CmsUserQuery.singletonQuery();
+        existsQuery.setId(userId);
+        existsQuery.setDeleted(DeletedEnum.Normal.getCode());
+        List<CmsUser> updateUsers = cmsUserDao.selectListByParam(existsQuery);
+        if (CollectionUtils.isEmpty(updateUsers)) {
+            throw new BusinessException("更新的用户不存在");
+        }
+        CmsUser updateUser = updateUsers.get(0);
+
+        CmsUser updater = new CmsUser();
+        updater.setId(updateUser.getId());
+        updater.setName(updateVo.getName());
+        updater.setTelephone(ValueUtils.defaultString(updateVo.getTelephone()));
+        updater.setEmail(ValueUtils.defaultString(updateVo.getEmail()));
+        updater.setMentor(ValueUtils.defaultString(updateVo.getMentor()));
+        updater.setLeader(ValueUtils.defaultString(updateVo.getLeader()));
+        updater.setStudyType(ValueUtils.defaultInteger(updateVo.getStudyType()));
+        updater.setKeshuo(ValueUtils.defaultInteger(updateVo.getKeshuo()));
+        Date enrollDate = updateVo.getEnrollDate();
+        if (enrollDate != null) {
+            updater.setEnrollDate(enrollDate);
+            updater.setEnrollYear(DateExUtils.getYear(enrollDate));
+        }
+        updater.setPapers(updateVo.getPapers());
+        updater.setPatents(updateVo.getPatents());
+        updater.setServices(updateVo.getServices());
+        updater.setProjects(updateVo.getProjects());
+        updater.setStatus(0);
+        updater.setModifyTime(new Date());
+
+        int affect = cmsUserDao.updateById(updater);
+        AssertUtils.state(affect == 1);
+        logger.info("管理员更新CmsUser affect:{}, updater: {}", affect, updater);
     }
 
     /**

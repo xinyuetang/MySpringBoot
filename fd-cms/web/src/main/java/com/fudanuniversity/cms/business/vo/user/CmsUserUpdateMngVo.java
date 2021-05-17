@@ -2,10 +2,13 @@ package com.fudanuniversity.cms.business.vo.user;
 
 import com.fudanuniversity.cms.commons.enums.BooleanEnum;
 import com.fudanuniversity.cms.commons.enums.StudyTypeEnum;
+import com.fudanuniversity.cms.commons.enums.UserRoleEnum;
+import com.fudanuniversity.cms.commons.enums.UserTypeEnum;
 import com.fudanuniversity.cms.commons.validation.constraints.EnumValue;
 import com.fudanuniversity.cms.commons.validation.constraints.XSS;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,9 +24,29 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @ToString
-public class CmsUserUpdateVo implements Serializable {
+public class CmsUserUpdateMngVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * id
+     */
+    @NotNull
+    private Long id;
+
+    /**
+     * 用户类型
+     */
+    @EnumValue(enumClass = UserTypeEnum.class, property = "code", message = "用户类型参数格式错误")
+    private Integer type;
+
+    /**
+     * 权限身份
+     */
+    @NotNull
+    //roleId必须为RoleEnum某个的code
+    @EnumValue(enumClass = UserRoleEnum.class, property = "code", message = "权限身份参数格式错误")
+    private Integer roleId;
 
     /**
      * 用户名

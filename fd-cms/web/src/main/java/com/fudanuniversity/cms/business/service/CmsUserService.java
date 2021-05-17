@@ -32,9 +32,14 @@ public interface CmsUserService {
     void saveCmsUser(CmsUserAddVo userAddVo);
 
     /**
-     * 根据id更新处理
+     * 管理员更新用户信息
      */
-    void updateCmsUserById(CmsUserUpdateVo updateVo);
+    void updateCmsUserById(CmsUserUpdateMngVo updateVo);
+
+    /**
+     * 用户更新自己用户信息
+     */
+    void updateCmsUserById(Long userId, CmsUserUpdateVo updateVo);
 
     /**
      * 根据id删除处理
@@ -60,4 +65,5 @@ public interface CmsUserService {
      * 查询用户详细信息
      */
     CmsUserDetailVo queryUserDetail(@NotNull String stuId);
+
 }
