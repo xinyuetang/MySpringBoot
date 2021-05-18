@@ -30,7 +30,7 @@ public class DeviceMngController extends BaseController {
     private CmsUserService cmsUserService;
 
     @PostMapping(path = "/add")
-    public JsonResult<?> addNewDevice(@RequestBody CmsDeviceAddVo addVo) {
+    public JsonResult<?> addNewDevice(@Valid @RequestBody CmsDeviceAddVo addVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsDeviceService.saveCmsDevice(addVo);
@@ -38,7 +38,7 @@ public class DeviceMngController extends BaseController {
     }
 
     @PostMapping(path = "/update")
-    public JsonResult<?> updateDevice(@RequestBody CmsDeviceUpdateVo updateVo) {
+    public JsonResult<?> updateDevice(@Valid @RequestBody CmsDeviceUpdateVo updateVo) {
         LoginUser loginUser = getLoginUser();
         cmsUserService.checkManagePrivilege(loginUser.getStuId(), Administrator);
         cmsDeviceService.updateCmsDeviceById(updateVo);
