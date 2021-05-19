@@ -54,8 +54,7 @@ services:
           - redis
           - mysql
         volumes:
-          #  - ./app/fd-cms-01/fd-cms-web-1.0.0.jar:/opt/application/fd-cms-web-1.0.0.jar    # 本地jar包路径
-          - /Users/tidu/Prj/MySpringBoot/fd-cms/web/target/fd-cms-web-1.0.0.jar:/opt/application/fd-cms-web-1.0.0.jar    # 本地jar包路径
+          - ./app/fd-cms-01/fd-cms-web-1.0.0.jar:/opt/application/fd-cms-web-1.0.0.jar    # 本地jar包路径
           - ./app/fd-cms-01/applogs:/data/applogs                                         # 挂载日志
           - /etc/localtime:/etc/localtime                                       # 指定容器时间为宿主机时间
         ports:
@@ -74,8 +73,7 @@ services:
           - redis
           - mysql
         volumes:
-        #  - ./app/fd-cms-02/fd-cms-web-1.0.0.jar:/opt/application/fd-cms-web-1.0.0.jar    # 本地jar包路径
-          - /Users/tidu/Prj/MySpringBoot/fd-cms/web/target/fd-cms-web-1.0.0.jar:/opt/application/fd-cms-web-1.0.0.jar    # 本地jar包路径
+          - ./app/fd-cms-02/fd-cms-web-1.0.0.jar:/opt/application/fd-cms-web-1.0.0.jar    # 本地jar包路径
           - ./app/fd-cms-02/applogs:/data/applogs                                         # 挂载日志
           - /etc/localtime:/etc/localtime                                       # 指定容器时间为宿主机时间
         ports:
