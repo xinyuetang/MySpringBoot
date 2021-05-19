@@ -81,7 +81,7 @@ services:
         environment:
           - TZ="Asia/Shanghai"              # 指定时区
         #启动容器后执行的命令
-        command: nohup java -Dspring.profiles.active=docker -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m  -Xms1024m -Xmx1024m -XX:+PrintGCDetails -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 -jar /opt/application/fd-cms-web-1.0.0.jar >/dev/null 2>&1 & 
+        command: nohup java -Dspring.profiles.active=docker -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=512m  -Xms1024m -Xmx1024m -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:+UseCMSInitiatingOccupancyOnly -XX:CMSInitiatingOccupancyFraction=70 -jar /opt/application/fd-cms-web-1.0.0.jar >/dev/null 2>&1 &
 
     nginx:
         image: nginx:1.20.0
